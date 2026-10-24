@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8.1,
+   "systemS": 8,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -112,26 +112,47 @@ export const WYNIKI = {
    }
   }
  },
+ "impeccable": {
+  "kod": 0,
+  "ekrany": 0,
+  "ramka": 0,
+  "razem": 0,
+  "ekranow": 29,
+  "szczegoly": [],
+  "ref": {
+   "kod": 7,
+   "ekrany": 11,
+   "razem": 18,
+   "reguly": [
+    "low-contrast",
+    "cramped-padding",
+    "pulsing-dot",
+    "dark-glow",
+    "overused-font",
+    "undersized-ui-text"
+   ]
+  }
+ },
  "lighthouse": {
   "nasz": {
-   "performance": 98,
+   "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2403,
-   "tbtMs": 11
+   "lcpMs": 2584,
+   "tbtMs": 0
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4369,
-   "tbtMs": 75
+   "lcpMs": 4358,
+   "tbtMs": 31
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 578,
-   "slowa": 2867,
+   "zdania": 579,
+   "slowa": 2872,
    "sredniaDlugoscZdania": 5,
    "procentTrudnych": 12.5,
    "fog": 7
