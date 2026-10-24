@@ -1,0 +1,397 @@
+// Ekrany poza przebiegami spraw: start, dokumenty, skrzynka, prywatność, bliscy, ustawienia.
+import { ic } from './icons.js';
+import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane } from './core.js';
+import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna } from './data.js';
+
+const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
+const poz = (href, ikona, t, opis, extra = '') => `<li><a class="poz" href="${href}">${ic(ikona, 'okr')}<span><b>${esc(t)}</b>${opis ? `<small>${opis}</small>` : ''}</span>${extra}${ic('right', 'strz')}</a></li>`;
+const otwarte = () => zadania.filter(z => !stan.zrobione[z.id]);
+const nowePisma = () => skrzynka.filter(p => p.nowa && !stan.przeczytane[p.id]).length;
+export const licznikSkrzynki = nowePisma;
+
+/* ---------------- Start ---------------- */
+export function start() {
+  if (stan.ustawienia.prosty) return startProsty();
+  const zad = otwarte();
+  const narodzinyOtwarte = !stan.zrobione.narodziny;
+  const autoWl = autopilot.filter(a => stan.autopilot[a.id] ?? a.wl).length;
+  const godz = new Date().getHours();
+  const powitanie = godz < 5 || godz >= 18 ? 'Dobry wieczór' : 'Dzień dobry';
+  return {
+    tytul: 'Start',
+    html: `
+    <h1 tabindex="-1" class="powitanie">${powitanie}, ${esc(ja.wolacz)}</h1>
+    <form class="zapytaj" action="#/asystent" role="search" id="f-zap">
+      <label for="zap" class="sr">Co chcesz załatwić?</label>
+      <input id="zap" name="q" placeholder="Co chcesz załatwić?" autocomplete="off" enterkeyhint="send">
+      <button class="ib" aria-label="Zapytaj asystenta">${ic('send')}</button>
+    </form>
+
+    ${narodzinyOtwarte ? `
+    <a class="hero" href="#/sprawa/narodziny">
+      <span class="hero-et">${ic('bolt')}Sprawa przyszła do Ciebie</span>
+      <b class="hero-t">Urodziła się Twoja córka. Gratulacje!</b>
+      <span class="hero-o">Szpital zgłosił narodziny ${fmt(dziecko.urodzone)}. Zostało 6 spraw w 4 instytucjach. Załatwisz je jednym podpisem.</span>
+      <span class="btn glowny">Załatw wszystko naraz${ic('right')}</span>
+    </a>` : ''}
+
+    <section aria-labelledby="h-zad">
+      <h2 id="h-zad" class="sekcja">Do zrobienia <span class="licz">${zad.length}</span></h2>
+      ${zad.length ? `<ul class="lista">${zad.map(z => poz(z.cel, z.ikona, z.tytul, esc(z.opis), z.pilne ? '<span class="plak czerwona">pilne</span>' : '')).join('')}</ul>` : '<p class="pusto">Nic pilnego. Przypomnimy, gdy coś się zbliży.</p>'}
+    </section>
+
+    <section aria-labelledby="h-nal">
+      <h2 id="h-nal" class="sekcja">Należy Ci się</h2>
+      <a class="karta link-karta" href="#/naleznosci">
+        ${ic('gift', 'okr zielona')}
+        <span><b>${stan.zrobione.narodziny ? '2 świadczenia przyznane, 2 przyjdą same' : '4 świadczenia dla Twojej rodziny'}</b><small>800+, becikowe, ulga w PIT, „Aktywny rodzic”. Sprawdziliśmy je z danych, które państwo już ma.</small></span>${ic('right', 'strz')}
+      </a>
+    </section>
+
+    <section aria-labelledby="h-bl">
+      <h2 id="h-bl" class="sekcja">Bliscy</h2>
+      <ul class="lista">${poz('#/bliscy/mama', 'users', `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}</ul>
+    </section>
+
+    <section aria-labelledby="h-ap">
+      <h2 id="h-ap" class="sekcja">Autopilot</h2>
+      <a class="karta link-karta" href="#/autopilot">${ic('clock', 'okr')}<span><b>${autoWl} z ${autopilot.length} spraw pilnuje się samo</b><small>Za Twoją zgodą: przypomnienia, płatności, nowy adres w urzędach.</small></span>${ic('right', 'strz')}</a>
+    </section>
+
+    ${stan.wyslane.length ? `<section aria-labelledby="h-wys"><h2 id="h-wys" class="sekcja">Ostatnio wysłane</h2><ul class="lista mala">${stan.wyslane.slice(0, 4).map(w => `<li class="poz">${ic('check', 'okr zielona')}<span><b>${esc(w.tytul)}</b><small>do: ${esc(w.do)}</small></span></li>`).join('')}</ul></section>` : ''}
+
+    <p class="stopka-info">Niezależny prototyp na mObywatel Challenge. Dane są fikcyjne. To nie jest usługa administracji publicznej. <a href="#/jury">Dla jury</a></p>`,
+    po(root) {
+      $('#f-zap', root).onsubmit = e => { e.preventDefault(); const q = $('#zap', root).value.trim(); location.hash = '#/asystent' + (q ? '?q=' + encodeURIComponent(q) : ''); };
+    },
+  };
+}
+
+function startProsty() {
+  const zad = otwarte();
+  const najwazniejsza = !stan.zrobione.narodziny ? { t: 'Urodziła się córka: załatw sprawy', h: '#/sprawa/narodziny' } : zad[0] ? { t: zad[0].tytul, h: zad[0].cel } : null;
+  return {
+    tytul: 'Start',
+    html: `
+    <h1 tabindex="-1" class="powitanie">Dzień dobry, ${esc(ja.wolacz)}</h1>
+    ${najwazniejsza ? `<a class="hero prosty-hero" href="${najwazniejsza.h}"><span class="hero-et">Najważniejsze teraz</span><b class="hero-t">${esc(najwazniejsza.t)}</b><span class="btn glowny">Zacznij${ic('right')}</span></a>` : ''}
+    <ul class="kafle">
+      <li><a href="#/dokumenty">${ic('wallet')}<span>Moje dokumenty</span></a></li>
+      <li><a href="#/asystent?mow=1">${ic('mic')}<span>Powiedz, co chcesz załatwić</span></a></li>
+      <li><a href="#/skrzynka">${ic('mail')}<span>Pisma i płatności${nowePisma() ? ` <b class="licz">${nowePisma()}</b>` : ''}</span></a></li>
+      <li><a href="#/konsultant">${ic('phone')}<span>Pomoc człowieka</span></a></li>
+    </ul>
+    <p class="stopka-info">Tryb prosty. Wyłączysz go w <a href="#/ustawienia">Ustawieniach</a>.</p>`,
+  };
+}
+
+/* ---------------- Dokumenty ---------------- */
+export function dokumentyWidok() {
+  return {
+    tytul: 'Dokumenty',
+    html: `<h1 tabindex="-1">Dokumenty</h1>
+    <ul class="portfel">${dokumenty.map(d => `<li><a class="dok dok-${d.kolor}" href="#/dokument/${d.id}"><b>${esc(d.nazwa)}</b><span>${esc(d.linia)}</span>${d.alert ? `<span class="dok-alert">${ic('clock')}${esc(d.alert)}</span>` : ''}</a></li>`).join('')}
+    ${stan.zrobione.narodziny ? `<li><a class="dok dok-zielony" href="#/bliscy"><b>${esc(stan.imieDziecka)} ${esc(ja.nazwisko)}</b><span>Dane córki: PESEL i odpis aktu urodzenia (w drodze)</span></a></li>` : ''}</ul>
+    <a class="karta link-karta" href="#/pokaz">${ic('eye', 'okr')}<span><b>Pokaż tylko to, co potrzebne</b><small>Np. że masz 18 lat, bez pokazywania daty urodzenia i adresu.</small></span>${ic('right', 'strz')}</a>
+    <p class="stopka-info">Dokumenty w telefonie działają już w obecnym mObywatelu. Tu dodajemy źródło i datę aktualizacji każdej danej oraz zgłaszanie błędów.</p>`,
+  };
+}
+
+export function dokument(id) {
+  const d = dokumenty.find(x => x.id === id);
+  if (!d) return null;
+  return {
+    tytul: d.nazwa,
+    html: `<h1 tabindex="-1">${esc(d.nazwa)}</h1>
+    <div class="dok dok-${d.kolor} dok-duzy"><b>${esc(ja.imie)} ${esc(ja.nazwisko)}</b><span>${esc(d.linia)}</span><span class="qr" role="img" aria-label="Kod do sprawdzenia dokumentu"></span></div>
+    <section class="karta">${d.pola.map(p => wiersz(...p)).join('')}
+      <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>
+      <button class="btn tekst" id="blad-dan">Te dane są błędne? Zgłoś to</button>
+    </section>
+    ${id === 'pojazd' ? `<a class="karta link-karta" href="#/autopilot">${ic('clock', 'okr')}<span><b>Badanie techniczne za 19 dni</b><small>Przypomnimy 7 dni wcześniej. Stacje kontroli w pobliżu pokażemy na mapie.</small></span>${ic('right', 'strz')}</a>` : ''}
+    ${id === 'dowod' ? `<a class="btn glowny szeroki" href="#/sprawa/dowod">Złóż wniosek o nowy dowód</a>` : ''}`,
+    po(root) { $('#blad-dan', root).onclick = () => toast(`Zgłoszenie trafiło do: ${d.zrodlo}. Odpowiedź dostaniesz w skrzynce.`); },
+  };
+}
+
+export function pokaz() {
+  return {
+    tytul: 'Pokaż tylko to, co potrzebne',
+    html: `<h1 tabindex="-1">Pokaż tylko to, co potrzebne</h1>
+    <p class="wstep">Wybierz, co chcesz potwierdzić. Odbiorca zobaczy tylko to, a nie cały dowód.</p>
+    <form id="f-pok" class="karta">
+      <fieldset class="grupa"><legend class="etyk">Co potwierdzić</legend>
+        <label class="opcja"><input type="radio" name="co" value="18" checked> Mam ukończone 18 lat</label>
+        <label class="opcja"><input type="radio" name="co" value="tozs"> Imię, nazwisko i zdjęcie (np. w hotelu)</label>
+        <label class="opcja"><input type="radio" name="co" value="adres"> Adres zameldowania</label>
+      </fieldset>
+      <button class="btn glowny szeroki">Pokaż kod</button>
+    </form>
+    <div id="kod" aria-live="polite"></div>`,
+    po(root) {
+      $('#f-pok', root).onsubmit = e => {
+        e.preventDefault();
+        const co = $('input[name=co]:checked', root).value;
+        const t = { 18: 'Ta osoba ma ukończone 18 lat', tozs: `${ja.imie} ${ja.nazwisko}`, adres: ja.adres }[co];
+        $('#kod', root).innerHTML = `<div class="karta srodek"><span class="qr duzy" role="img" aria-label="Kod do zeskanowania"></span><p><b>${esc(t)}</b></p><p class="maly">Kod ważny 2 minuty. Data urodzenia, PESEL i adres ${co === 'adres' ? 'poza adresem ' : ''}pozostają ukryte.</p></div>`;
+      };
+    },
+  };
+}
+
+/* ---------------- Skrzynka ---------------- */
+export function skrzynkaWidok() {
+  const doZap = [!stan.zrobione.mandat && ['#/mandat', 'Mandat z fotoradaru', '200 zł do ' + fmt(za(6))], !stan.zrobione.podatek && ['#/podatek', 'Podatek od nieruchomości', '186 zł do ' + fmt(za(23))]].filter(Boolean);
+  return {
+    tytul: 'Skrzynka',
+    html: `<h1 tabindex="-1">Pisma i płatności</h1>
+    ${doZap.length ? `<h2 class="sekcja">Do zapłaty</h2><ul class="lista">${doZap.map(p => poz(p[0], 'coin', p[1], esc(p[2]))).join('')}</ul>` : ''}
+    <h2 class="sekcja">Pisma</h2>
+    <ul class="lista">${skrzynka.map(p => poz('#/pismo/' + p.id, 'mail', p.tytul, `${esc(p.od)} · ${fmt(p.data)}`, p.nowa && !stan.przeczytane[p.id] ? '<span class="plak niebieska">nowe</span>' : '')).join('')}</ul>
+    <p class="stopka-info">Pisma przychodzą przez e-Doręczenia, które już działają. Nowość: każde pismo ma wersję prostym językiem i przycisk do załatwienia sprawy.</p>`,
+  };
+}
+
+export function pismo(id) {
+  const p = skrzynka.find(x => x.id === id);
+  if (!p) return null;
+  stan.przeczytane[id] = true; zapisz();
+  return {
+    tytul: p.tytul,
+    html: `<h1 tabindex="-1">${esc(p.tytul)}</h1>
+    <p class="maly">${esc(p.od)} · ${fmtPelna(p.data)}</p>
+    <section class="karta prosto" aria-labelledby="h-pr"><h2 id="h-pr" class="nag">${ic('chat')}Prostym językiem</h2><p>${esc(p.prosto)}</p></section>
+    ${p.cel ? `<a class="btn glowny szeroki" href="${p.cel}">Załatw tę sprawę</a>` : ''}
+    <details class="rozw"><summary>Oryginalna treść pisma</summary><p>${esc(p.tresc)}</p></details>
+    <p class="zrodlo">${ic('info')}<span>Wersję prostym językiem przygotowuje urząd razem z pismem i odpowiada za nią tak samo jak za oryginał.</span></p>`,
+  };
+}
+
+/* ---------------- Należy Ci się, autopilot ---------------- */
+export function naleznosciWidok() {
+  return {
+    tytul: 'Należy Ci się',
+    html: `<h1 tabindex="-1">Należy Ci się</h1>
+    <p class="wstep">Sprawdziliśmy to w rejestrach, do których państwo już ma dostęp. Nic nie musisz wpisywać.</p>
+    <ul class="lista-kart">${naleznosci.map(n => {
+      const zalatwione = stan.zrobione.narodziny && (n.id === 'becikowe' || n.id === '800');
+      return `<li class="karta"><h2 class="nag">${ic('gift')}${esc(n.tytul)}</h2><p class="kwota">${esc(n.kwota)}</p><p><b>Dlaczego Tobie:</b> ${esc(n.dlaczego)}</p>
+      <p class="maly">${zalatwione ? 'Wniosek wysłany.' : esc(n.status)}</p>
+      <p class="zrodlo">${ic('info')}<span><a href="${n.zrodlo[1]}" target="_blank" rel="noopener">${esc(n.zrodlo[0])}</a></span></p>
+      ${!zalatwione && n.cel !== '#/naleznosci' ? `<a class="btn drugi" href="${n.cel}">Złóż wniosek</a>` : ''}</li>`;
+    }).join('')}</ul>`,
+  };
+}
+
+export function autopilotWidok() {
+  return {
+    tytul: 'Autopilot',
+    html: `<h1 tabindex="-1">Autopilot</h1>
+    <p class="wstep">Sprawy powtarzalne mogą załatwiać się same. Tylko za Twoją zgodą, zawsze z powiadomieniem wcześniej i z możliwością wstrzymania.</p>
+    <ul class="lista-kart">${autopilot.map(a => `<li class="karta"><label class="przel-duzy"><span><b>${esc(a.tytul)}</b><small>${esc(a.opis)}</small></span><input type="checkbox" role="switch" data-ap="${a.id}" ${(stan.autopilot[a.id] ?? a.wl) ? 'checked' : ''}></label></li>`).join('')}</ul>
+    <p class="stopka-info">Wzorowane na usłudze AutoGov w Abu Zabi i usługach proaktywnych w Estonii.</p>`,
+    po(root) {
+      $$('[data-ap]', root).forEach(i => i.onchange = () => { stan.autopilot[i.dataset.ap] = i.checked; zapisz(); toast(i.checked ? 'Zgoda zapisana. Wycofasz ją tutaj w każdej chwili.' : 'Wyłączone. Będziemy tylko przypominać.'); });
+    },
+  };
+}
+
+/* ---------------- Prywatność ---------------- */
+export function dane() {
+  const n = dostep.length + stan.noweDostepy.length;
+  return {
+    tytul: 'Twoje dane',
+    html: `<h1 tabindex="-1">Twoje dane i prywatność</h1>
+    <ul class="lista">
+      ${poz('#/dane/dostep', 'eye', 'Kto sprawdzał moje dane', `${n} odczytów w ostatnich 60 dniach`, '<span class="plak pomaranczowa">1 do wyjaśnienia</span>')}
+      ${poz('#/dane/rejestry', 'doc', 'Co państwo o mnie wie', '5 rejestrów, źródło i data każdej danej')}
+      ${poz('#/autopilot', 'clock', 'Zgody i autopilot', 'co dzieje się samo i za jaką zgodą')}
+      ${poz('#/pokaz', 'shield', 'Pokaż tylko to, co potrzebne', 'np. pełnoletność bez daty urodzenia')}
+    </ul>`,
+  };
+}
+
+export function dostepWidok() {
+  const wpisy = [...stan.noweDostepy.map(d => ({ ...d, kiedy: new Date(d.kiedy), nowy: true })), ...dostep];
+  return {
+    tytul: 'Kto sprawdzał moje dane',
+    html: `<h1 tabindex="-1">Kto sprawdzał moje dane</h1>
+    <p class="wstep">Każdy odczyt Twoich danych przez urząd, policję czy bank: kto, kiedy, po co i na jakiej podstawie.</p>
+    <ul class="lista-kart">${wpisy.map((d, i) => `<li><details class="karta wpis${d.podejrzane ? ' podejrzane' : ''}" data-wpis="${d.id || 'n' + i}">
+      <summary><span><b>${esc(d.kto)}</b><small>${fmt(d.kiedy)} · ${esc(d.po)}</small></span>${d.podejrzane ? '<span class="plak pomaranczowa">sprawdź</span>' : d.nowy ? '<span class="plak niebieska">nowe</span>' : ''}</summary>
+      ${wiersz('Jakie dane', d.co)}${wiersz('Po co', d.po)}${d.podstawa ? wiersz('Podstawa prawna', d.podstawa) : wiersz('Podstawa', 'Twój wniosek')}
+      ${d.podejrzane ? '<p class="ostrz">' + ic('alert') + '<span>Nie kupowałaś karty SIM? Ktoś mógł próbować użyć Twoich danych. Zastrzeżenie PESEL zadziałało i operator odmówił.</span></p>' : ''}
+      <button class="btn tekst" data-zglos="${esc(d.kto)}">To nie ja / zgłoś nieuprawniony dostęp</button>
+    </details></li>`).join('')}</ul>
+    <p class="stopka-info">Wzór: estoński „Andmejälgija” (Data Tracker) w portalu eesti.ee.</p>`,
+    po(root) {
+      $$('details[data-wpis]', root).forEach(d => d.addEventListener('toggle', () => { if (d.open && d.dataset.wpis === 'policja') cel('dostep-policja'); }));
+      $$('[data-zglos]', root).forEach(b => b.onclick = () => toast('Zgłoszenie wysłane do inspektora ochrony danych: ' + b.dataset.zglos));
+    },
+  };
+}
+
+export function rejestry() {
+  const R = [
+    ['Rejestr PESEL', 'imię, nazwisko, PESEL, adres, stan cywilny, dzieci', 'Ministerstwo Cyfryzacji'],
+    ['Centralna Ewidencja Pojazdów i Kierowców', 'Toyota Yaris EL 4K217, prawo jazdy kat. B, 2 punkty', 'Ministerstwo Cyfryzacji'],
+    ['Krajowa Administracja Skarbowa', 'dochody za 2025 r., nadpłata 214 zł', 'Ministerstwo Finansów'],
+    ['ZUS', 'zatrudnienie: ' + ja.pracodawca + ', zasiłek macierzyński', 'ZUS'],
+    ['NFZ / Internetowe Konto Pacjenta', 'ubezpieczenie, recepty, skierowania', 'NFZ, Ministerstwo Zdrowia'],
+  ];
+  return {
+    tytul: 'Co państwo o mnie wie',
+    html: `<h1 tabindex="-1">Co państwo o mnie wie</h1>
+    <ul class="lista-kart">${R.map(r => `<li class="karta"><h2 class="nag">${esc(r[0])}</h2><p>${esc(r[1])}</p><p class="maly">Administrator: ${esc(r[2])}</p><button class="btn tekst" data-blad="${esc(r[0])}">Zgłoś błąd w tych danych</button></li>`).join('')}</ul>`,
+    po(root) { $$('[data-blad]', root).forEach(b => b.onclick = () => toast('Zgłoszenie trafiło do: ' + b.dataset.blad)); },
+  };
+}
+
+/* ---------------- Bliscy ---------------- */
+export function bliscy() {
+  return {
+    tytul: 'Bliscy',
+    html: `<h1 tabindex="-1">Bliscy</h1>
+    <p class="wstep">Załatwiaj sprawy w imieniu osób, które Cię upoważniły, i dzieci. One widzą wszystko, co robisz w ich imieniu.</p>
+    <ul class="lista">
+      ${poz('#/bliscy/mama', 'user', `${mama.imie} ${mama.nazwisko}, ${mama.wiek} lat`, `upoważnienie: ${esc(mama.pelnomocnictwo)}`, stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}
+      ${stan.zrobione.narodziny ? poz('#/dokumenty', 'baby', `${stan.imieDziecka} ${ja.nazwisko}`, 'córka · PESEL nadawany, odpis aktu w drodze') : poz('#/sprawa/narodziny', 'baby', 'Córka', 'najpierw zgłoś urodzenie')}
+    </ul>
+    <button class="btn drugi szeroki" id="dodaj-bl">${ic('users')}Dodaj bliską osobę</button>
+    <p class="stopka-info">Upoważnienie podpisuje osoba, która go udziela: w swoim mObywatelu albo w urzędzie, jeśli nie ma telefonu.</p>`,
+    po(root) { $('#dodaj-bl', root).onclick = () => toast('Wyślemy prośbę o upoważnienie. Bliska osoba podpisze ją u siebie albo w urzędzie.'); },
+  };
+}
+
+export function blMama() {
+  return {
+    tytul: 'Mama',
+    html: `<h1 tabindex="-1">${esc(mama.imie)} ${esc(mama.nazwisko)}</h1>
+    <p class="maly">Działasz z upoważnienia mamy (${esc(mama.pelnomocnictwo)}) do ${fmtPelna(mama.pelnomocnictwoDo)}. Mama widzi w swojej aplikacji albo w liście z urzędu, co robisz w jej imieniu.</p>
+    ${stan.zrobione.mama ? `<div class="karta">${ic('check', 'okr zielona')} <b>Urzędnik przyjedzie do mamy ${fmt(za(12))}</b><p class="maly">Przyjmie wniosek o dowód i pobierze odciski palców w domu.</p></div>` : `
+    <section class="karta">
+      <h2 class="nag">${ic('id')}Dowód mamy traci ważność ${fmt(za(77))}</h2>
+      <p>Mama ma kłopot z chodzeniem. Urzędnik może przyjść do domu, przyjąć wniosek i pobrać odciski palców.</p>
+      <button class="btn glowny szeroki" id="wizyta">Zamów wizytę urzędnika u mamy</button>
+    </section>`}
+    <section class="karta"><h2 class="nag">${ic('doc')}Recepta gotowa</h2>${wiersz('Lek', 'Metformax 500, 60 tabl.')}${wiersz('Kod', '4821')}<p class="maly">Z Internetowego Konta Pacjenta mamy, na podstawie upoważnienia.</p></section>
+    <section class="karta"><h2 class="nag">${ic('coin')}Emerytura</h2><p>Od marca wyższa o waloryzację. Mama nie musi nic robić.</p></section>`,
+    po(root) {
+      const b = $('#wizyta', root);
+      if (b) b.onclick = async () => {
+        const ok = await arkuszZgody({ tytul: 'Wizyta urzędnika u mamy', pozycje: [{ co: 'Wniosek o przyjęcie wniosku o dowód w miejscu pobytu', do: 'Urząd Miasta Zgierza' }], dane: ['dane mamy z rejestru PESEL', 'Twoje upoważnienie', 'adres mamy'], cofniecie: 'Termin wizyty zmienisz albo odwołasz tutaj.', przycisk: 'Podpisz w imieniu mamy', cel: 'mama' });
+        if (!ok) return;
+        stan.zrobione.mama = true; dodajWyslane('Wizyta urzędnika u mamy', 'Urząd Miasta Zgierza'); zapisz();
+        dispatchEvent(new HashChangeEvent('hashchange'));
+      };
+    },
+  };
+}
+
+/* ---------------- Problem z logowaniem (najczęstsza skarga w recenzjach) ---------------- */
+let dostepKrok = 'diagnoza';
+export function odzyskaj() {
+  if (dostepKrok === 'gotowe') {
+    return { tytul: 'Dostęp odzyskany', html: `<h1 tabindex="-1">Dostęp odzyskany</h1><div class="gotowe"><div class="gotowe-ik">${ic('check', 'duza')}</div><h2>mDowód znów działa</h2><p>Nowy certyfikat jest ważny do ${fmtPelna(za(365 * 2))}. Przypomnimy Ci miesiąc przed końcem, żeby to się nie powtórzyło.</p><div class="przyciski pion"><a class="btn glowny" href="#/start">Wróć na start</a></div></div>` };
+  }
+  if (dostepKrok === 'bank') {
+    return {
+      tytul: 'Potwierdzenie w banku',
+      html: `<h1 tabindex="-1">Potwierdzenie w banku</h1>
+      <ol class="postep" aria-label="Postęp"><li class="ok">Wybór sposobu</li><li class="teraz" aria-current="step">Bank</li><li>Gotowe</li></ol>
+      <section class="karta"><p>Otworzymy aplikację Twojego banku. Gdy potwierdzisz tam tożsamość, <b>wrócisz dokładnie w to miejsce</b>. Nie zaczynasz od nowa.</p>
+      <label class="etyk" for="bank">Twój bank</label><select id="bank" class="pole"><option>PKO BP</option><option>Pekao</option><option>mBank</option><option>ING</option><option>Santander</option></select>
+      <button class="btn glowny szeroki" id="bank-ok">Otwórz bank i wróć</button></section>
+      <details class="rozw"><summary>Co, jeśli bank nie odpowie?</summary><p>Pokażemy jasny komunikat, co poszło nie tak, i zaproponujemy inny sposób. Nigdy nie wrócisz do pierwszego ekranu bez wyjaśnienia.</p></details>`,
+      po(root) {
+        $('#bank-ok', root).onclick = async () => {
+          const b = $('#bank-ok', root); b.disabled = true; b.textContent = 'Czekam na potwierdzenie z banku…';
+          await new Promise(r => setTimeout(r, window.__SZYBKO ? 50 : 1200));
+          dostepKrok = 'gotowe'; cel('dostep'); ogloszenie('Bank potwierdził tożsamość. Dostęp odzyskany.');
+          dispatchEvent(new HashChangeEvent('hashchange'));
+        };
+      },
+    };
+  }
+  return {
+    tytul: 'Nie możesz się zalogować?',
+    html: `<h1 tabindex="-1">Nie możesz się zalogować?</h1>
+    <section class="karta diag"><h2 class="nag">${ic('info')}Co się stało</h2>
+      <p>Certyfikat Twojego mDowodu wygasł 2 dni temu. <b>To nie Twoja wina i Twoje dane są bezpieczne.</b> Potrzebujesz jednego potwierdzenia tożsamości.</p>
+      <p class="maly">Do czasu odnowienia dokumenty w telefonie możesz okazać przez 30 dni w trybie „tylko do wglądu”.</p></section>
+    <h2 class="sekcja">Wybierz jeden sposób</h2>
+    <ul class="lista">
+      <li><button class="poz" data-sp="bank">${ic('key', 'okr')}<span><b>Przez bank</b><small>ok. 2 minuty · działa dla 15 banków</small></span><span class="plak zielona">polecane</span>${ic('right', 'strz')}</button></li>
+      <li><button class="poz" data-sp="nfc">${ic('id', 'okr')}<span><b>Dowodem z chipem (NFC)</b><small>ok. 1 minuta · potrzebny kod CAN i PIN dowodu</small></span>${ic('right', 'strz')}</button></li>
+      <li><button class="poz" data-sp="pz">${ic('shield', 'okr')}<span><b>Profilem zaufanym</b><small>ok. 3 minuty</small></span>${ic('right', 'strz')}</button></li>
+      <li><a class="poz" href="#/konsultant">${ic('phone', 'okr')}<span><b>Z pomocą człowieka</b><small>oddzwonimy albo umówimy wizytę w urzędzie</small></span>${ic('right', 'strz')}</a></li>
+    </ul>
+    <p class="stopka-info">Ten ekran odpowiada na najczęstszą skargę w recenzjach mObywatela: 33% ocen 1–2★ dotyczy logowania i „pętli” przy potwierdzaniu tożsamości.</p>`,
+    po(root) {
+      $$('[data-sp]', root).forEach(b => b.onclick = () => {
+        if (b.dataset.sp === 'bank') { dostepKrok = 'bank'; dispatchEvent(new HashChangeEvent('hashchange')); }
+        else toast('W prototypie pokazujemy ścieżkę przez bank. Pozostałe działają tak samo: wracasz w to samo miejsce.');
+      });
+    },
+  };
+}
+export function resetDostepu() { dostepKrok = 'diagnoza'; }
+
+/* ---------------- Konsultant, ustawienia, menu ---------------- */
+export function konsultant() {
+  return {
+    tytul: 'Pomoc człowieka',
+    html: `<h1 tabindex="-1">Pomoc człowieka</h1>
+    <p class="wstep">Asystent nie wie wszystkiego. Konsultant widzi, na czym utknęłaś, więc nie musisz tłumaczyć od początku (jeśli się zgodzisz).</p>
+    <form id="f-kon" class="karta">
+      <label class="opcja"><input type="checkbox" checked> Pokaż konsultantowi, gdzie utknęłam</label>
+      <button class="btn glowny szeroki">${ic('phone')}Poproś o telefon</button>
+    </form>
+    <p class="stopka-info">W prototypie nie łączymy się z nikim.</p>`,
+    po(root) { $('#f-kon', root).onsubmit = e => { e.preventDefault(); cel('konsultant'); toast('Konsultant oddzwoni w ciągu 15 minut (symulacja).'); }; },
+  };
+}
+
+export function ustawienia() {
+  const U = stan.ustawienia;
+  const prz = (id, t, o) => `<li class="karta"><label class="przel-duzy"><span><b>${t}</b><small>${o}</small></span><input type="checkbox" role="switch" data-ust="${id}" ${U[id] ? 'checked' : ''}></label></li>`;
+  return {
+    tytul: 'Ustawienia',
+    html: `<h1 tabindex="-1">Ustawienia</h1>
+    <ul class="lista-kart">
+      ${prz('prosty', 'Tryb prosty', 'Duże przyciski, najważniejsze rzeczy na starcie, krótkie zdania.')}
+      ${prz('duzy', 'Większy tekst', 'Tekst o 25% większy.')}
+      ${prz('kontrast', 'Wysoki kontrast', 'Mocniejsze kolory i obramowania.')}
+      ${prz('czytaj', 'Czytaj na głos', 'Odpowiedzi asystenta i komunikaty czytane głosem.')}
+    </ul>
+    <ul class="lista">
+      ${poz('#/dostep', 'lock', 'Problem z logowaniem', 'pokaz: wygasły certyfikat mDowodu')}
+      ${poz('#/test', 'test', 'Tryb testowy', 'zadania dla testerów z pomiarem czasu')}
+      ${poz('#/jury', 'info', 'O prototypie i dla jury', '')}
+    </ul>
+    <button class="btn drugi szeroki" id="reset">Zacznij pokaz od nowa</button>`,
+    po(root) {
+      $$('[data-ust]', root).forEach(i => i.onchange = () => { U[i.dataset.ust] = i.checked; zapisz(); dispatchEvent(new Event('ustawienia')); });
+      $('#reset', root).onclick = () => { resetuj(); resetDostepu(); dispatchEvent(new Event('ustawienia')); toast('Pokaz zaczyna się od nowa.'); location.hash = '#/start'; };
+    },
+  };
+}
+
+export function wiecej() {
+  return {
+    tytul: 'Więcej',
+    html: `<h1 tabindex="-1">Więcej</h1>
+    <ul class="lista">
+      ${poz('#/skrzynka', 'mail', 'Pisma i płatności', nowePisma() ? nowePisma() + ' nowe' : '')}
+      ${poz('#/naleznosci', 'gift', 'Należy Ci się', '4 świadczenia')}
+      ${poz('#/bliscy', 'users', 'Bliscy', 'mama, córka')}
+      ${poz('#/dane', 'eye', 'Twoje dane i prywatność', 'kto sprawdzał moje dane')}
+      ${poz('#/autopilot', 'clock', 'Autopilot', 'zgody na sprawy, które dzieją się same')}
+      ${poz('#/dostep', 'lock', 'Problem z logowaniem', '')}
+      ${poz('#/konsultant', 'phone', 'Pomoc człowieka', '')}
+      ${poz('#/ustawienia', 'gear', 'Ustawienia i dostępność', 'tryb prosty, większy tekst, czytanie na głos')}
+      ${poz('#/jury', 'info', 'Dla jury', 'co mierzyliśmy i jak to sprawdzić')}
+      ${poz('#/test', 'test', 'Tryb testowy', '')}
+    </ul>`,
+  };
+}

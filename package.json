@@ -1,6 +1,7 @@
 {
   "name": "nowy-mobywatel",
   "private": true,
+  "type": "module",
   "description": "Państwo, które przychodzi ze sprawą — prototyp na mObywatel Challenge",
   "license": "MIT",
   "scripts": {

@@ -1,0 +1,10 @@
+{
+  "name": "mObywatel (prototyp konkursowy)",
+  "short_name": "mObywatel proto",
+  "lang": "pl",
+  "start_url": "./#/start",
+  "display": "standalone",
+  "background_color": "#f4f6fa",
+  "theme_color": "#1d4ed8",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Niezależny prototyp mObywatela: państwo, które przychodzi ze sprawą. Jeden podpis zamiast wielu wniosków. Dane fikcyjne.">
+<meta name="theme-color" content="#f4f6fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1420" media="(prefers-color-scheme: dark)">
+<title>mObywatel (prototyp): państwo, które przychodzi ze sprawą</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<a class="skok" href="#tresc">Przejdź do treści</a>
+<div class="aplikacja">
+  <header class="gora">
+    <a href="#/start" class="marka" aria-label="Start"><img src="icon.svg" alt="" width="28" height="28"><span>mObywatel <small>prototyp</small></span></a>
+    <span class="odstep"></span>
+    <a href="#/skrzynka" class="ib" id="skrzynka-btn" aria-label="Pisma i płatności"></a>
+    <a href="#/ustawienia" class="ib" id="ustawienia-btn" aria-label="Ustawienia i dostępność"></a>
+  </header>
+  <main id="tresc" tabindex="-1"><noscript><p>Prototyp wymaga włączonego JavaScriptu.</p></noscript></main>
+  <nav id="nawigacja" class="dol" aria-label="Główna nawigacja"></nav>
+</div>
+<div id="ogloszenia" class="sr" aria-live="polite" role="status"></div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
