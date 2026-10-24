@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "lato",
+        "createdAt": "2026-10-24T20:14:48.160Z",
+        "reason": "Świadoma decyzja autora (24.10.2026): Lato, polski krój Łukasza Dziedzica, staranne polskie znaki, ten sam wygląd na każdym urządzeniu. Zasada Impeccable: wiążąca decyzja autora wygrywa z ostrzeżeniem."
+      }
+    ]
+  }
+}

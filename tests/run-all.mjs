@@ -6,6 +6,7 @@ import { serve } from './lib.mjs';
 import { crawler, sprawy, offline } from './e2e.mjs';
 import { klm } from './klm.mjs';
 import { axeNasz, axeRef, lighthouse, fogPl, tekstyNasze, tekstyRef } from './audit.mjs';
+import { impeccable, impeccableRef } from './impeccable.mjs';
 
 const REF_URL = process.env.REF_URL, REF_DIR = process.env.REF_DIR;
 const CHROME = process.env.CHROME_PATH || '/opt/pw-browsers/chromium-1243/chrome-linux64/chrome';
@@ -39,6 +40,11 @@ const axN = await axeNasz(url, trasy);
 W.axe = { nasz: axN.naruszenia, naszWezly: axN.wezly, naszReguly: axN.reguly };
 prog('axe: 0 naruszeń WCAG 2.2 AA i dobrych praktyk (29 tras + 4 stany, jasny i ciemny, 320 i 390 px, widok komputerowy z telefonem)', axN.naruszenia === 0, `${axN.naruszenia} reguł, ${axN.wezly} elementów ${Object.keys(axN.reguly).join(', ')}`);
 if (REF_URL) { const axR = await axeRef(REF_URL); W.axe.ref = axR.naruszenia; W.axe.refWezly = axR.wezly; W.axe.refReguly = axR.reguly; log(`   referencja: ${axR.naruszenia} reguł, ${axR.wezly} elementów: ${Object.entries(axR.reguly).map(([k, v]) => `${k}(${v.impact})`).join(', ')}`); }
+
+log('4b/6 Detektor Impeccable (wzorce „interfejsu z AI”)…');
+W.impeccable = impeccable(url, trasy, CHROME);
+prog('Impeccable: 0 zgłoszeń (kod, ' + W.impeccable.ekranow + ' ekranów, ramka telefonu)', W.impeccable.razem === 0, `${W.impeccable.razem}${W.impeccable.razem ? '\n   ' + W.impeccable.szczegoly.join('\n   ') : ''}`);
+if (REF_URL) { W.impeccable.ref = impeccableRef(REF_URL, REF_DIR, CHROME); log(`   referencja: ${W.impeccable.ref.razem} zgłoszeń (kod ${W.impeccable.ref.kod}, ekran ${W.impeccable.ref.ekrany}): ${W.impeccable.ref.reguly.join(', ')}`); }
 
 log('5/6 Lighthouse (telefon, symulowane spowolnienie)…');
 if (!BEZ_LH) {

@@ -30,6 +30,14 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 
 Technicznie: czysty HTML, CSS i JavaScript (moduły ES), bez budowania, bez frameworka, bez serwera i bez zewnętrznych zasobów. Service worker zapewnia działanie offline.
 
+## Wygląd (design system)
+
+Wygląd natywnej aplikacji iOS z charakterem mObywatela: listy grupowane, duże tytuły, pasek kart, arkusz zgody, portfel kart dokumentów i czerwony akcent. Krój **Lato** (polski projekt Łukasza Dziedzica, licencja OFL), przycięty do znaków polskich i dołączony do repozytorium (ok. 44 KB).
+
+- [DESIGN.md](DESIGN.md): tokeny (kolory, typografia, odstępy, zaokrąglenia, komponenty) i zasady, w formacie [Impeccable](https://impeccable.style/)
+- [PRODUCT.md](PRODUCT.md): dla kogo, po co i jakie ograniczenia
+- Zasady sprawdza detektor Impeccable w `npm test` (próg: 0 zgłoszeń, kod i ekrany). Jedyny zapisany wyjątek: krój Lato, który detektor uznaje za „nadużywany” (`.impeccable/config.json`).
+
 ## Wyniki pomiarów
 
 Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z prototypem referencyjnym tymi samymi narzędziami:

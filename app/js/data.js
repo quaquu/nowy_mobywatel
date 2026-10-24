@@ -35,7 +35,7 @@ export const dokumenty = [
     linia: 'Ważny do ' + fmtPelna(za(41)), alert: 'Ważny jeszcze 41 dni',
     pola: [['Imię i nazwisko', 'Anna Wójcik'], ['PESEL', '93051507780'], ['Seria i numer', 'ZWA 418263'], ['Ważny do', fmtPelna(za(41))]],
     zrodlo: 'Rejestr Dowodów Osobistych' },
-  { id: 'prawo', nazwa: 'mPrawo jazdy', kolor: 'fiolet', istnieje: true,
+  { id: 'prawo', nazwa: 'mPrawo jazdy', kolor: 'bordo', istnieje: true,
     linia: 'Kat. B · 2 punkty karne',
     pola: [['Kategorie', 'B'], ['Ważne do', '14.03.2033'], ['Punkty karne', '2 (wygasną ' + fmtPelna(za(220)) + ')']],
     zrodlo: 'Centralna Ewidencja Kierowców' },

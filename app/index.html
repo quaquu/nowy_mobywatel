@@ -4,13 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Niezależny prototyp mObywatela: państwo, które przychodzi ze sprawą. Jeden podpis zamiast wielu wniosków. Dane fikcyjne.">
-<meta name="theme-color" content="#f2f3f7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0e0f13" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <title>mObywatel (prototyp): państwo, które przychodzi ze sprawą</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/inter-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/lato-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/lato-latin-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/lato-pl-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -32,10 +33,9 @@
 </div>
 <aside class="panel" aria-labelledby="panel-t">
   <a class="panel-wroc" href="https://mobywatel.ai/" target="_blank" rel="noopener">← mObywatel Challenge</a>
-  <p class="panel-et">Niezależny prototyp · dane fikcyjne</p>
   <h2 id="panel-t" class="panel-t">Państwo, które przychodzi ze sprawą</h2>
   <p class="panel-o">Klikalny prototyp mObywatela. Zamiast czekać, aż zapytasz, aplikacja sama przychodzi ze sprawą, łączy sprawy z kilku urzędów i prosi o jeden podpis.</p>
-  <p class="panel-sek">Co sprawdzić</p>
+  <h3 class="panel-sek">Co sprawdzić</h3>
   <ol class="panel-kroki">
     <li><a href="#/sprawa/narodziny" data-panel="1"><span><b>Narodziny dziecka:</b> 5 spraw w 4 urzędach, jeden podpis.</span></a></li>
     <li><a href="#/dane/dostep" data-panel="2"><span><b>Kto sprawdzał moje dane:</b> każdy odczyt z celem i podstawą prawną.</span></a></li>
@@ -48,7 +48,7 @@
     <button type="button" class="btn drugi" id="od-nowa-btn">Zacznij od nowa</button>
   </div>
   <p class="panel-linki"><a href="#/jury">Dla jury: wyniki pomiarów</a> · <a href="#/test">Tryb testowy</a> · <a href="https://github.com/quaquu/nowy_mobywatel" target="_blank" rel="noopener">Kod i dokumentacja</a></p>
-  <p class="panel-uw">To symulacja telefonu. Na telefonie aplikacja otwiera się na całym ekranie. To nie jest usługa administracji publicznej.</p>
+  <p class="panel-uw">Niezależny prototyp, dane fikcyjne. To nie jest usługa administracji publicznej. Na komputerze widzisz symulację telefonu; na telefonie aplikacja otwiera się na całym ekranie.</p>
 </aside>
 </div>
 <button type="button" class="btn drugi" id="telefon-btn" hidden>Pokaż w telefonie</button>

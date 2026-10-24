@@ -59,7 +59,7 @@ export function start() {
     ${narodzinyOtwarte ? `
     <a class="hero" href="#/sprawa/narodziny" aria-label="Sprawa przyszła do Ciebie: urodziła się Twoja córka. 5 spraw w 4 instytucjach, jeden podpis. Załatw wszystko naraz.">
       ${ic('baby', 'hero-ik')}
-      <span class="hero-tr"><span class="hero-et">Przyszła do Ciebie</span><b class="hero-t">Urodziła się Twoja córka</b><span class="hero-o">5 spraw w 4 instytucjach · jeden podpis</span></span>
+      <span class="hero-tr"><b class="hero-t">Urodziła się Twoja córka</b><span class="hero-o">5 spraw w 4 instytucjach, jeden podpis</span></span>
       <span class="hero-go">Załatw${ic('right')}</span>
     </a>` : ''}
     ${stos(dokumentyDoStosu())}
@@ -109,7 +109,7 @@ function startProsty() {
     tytul: 'Start',
     html: `
     <h1 tabindex="-1" class="powitanie">Dzień dobry, ${esc(ja.wolacz)}</h1>
-    ${najwazniejsza ? `<a class="hero prosty-hero" href="${najwazniejsza.h}"><span class="hero-et">Najważniejsze teraz</span><b class="hero-t">${esc(najwazniejsza.t)}</b><span class="btn glowny">Zacznij${ic('right')}</span></a>` : ''}
+    ${najwazniejsza ? `<a class="hero prosty-hero" href="${najwazniejsza.h}"><b class="hero-t">${esc(najwazniejsza.t)}</b><span class="btn glowny">Zacznij${ic('right')}</span></a>` : ''}
     <ul class="kafle">
       <li><a href="#/dokumenty">${ic('wallet')}<span>Moje dokumenty</span></a></li>
       <li><a href="#/asystent?mow=1">${ic('mic')}<span>Powiedz, co chcesz załatwić</span></a></li>
@@ -137,7 +137,8 @@ export function dokument(id) {
   return {
     tytul: d.nazwa,
     html: `<h1 tabindex="-1">${esc(d.nazwa)}</h1>
-    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span><span class="kd-dol"><span class="kd-foto">${SYLWETKA}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="qr" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span></span></div>
+    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span><span class="kd-dol"><span class="kd-foto">${SYLWETKA}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span></div>
+    <details class="karta kod-qr"><summary>${ic('eye')}Pokaż kod do sprawdzenia dokumentu</summary><span class="qr duzy" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span><p class="maly srodek">Kod ważny 2 minuty. Sprawdzający zobaczy go w swojej aplikacji.</p></details>
     <section class="karta">${d.pola.map(p => wiersz(...p)).join('')}
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>
       <button class="btn tekst" id="blad-dan">Te dane są błędne? Zgłoś to</button>

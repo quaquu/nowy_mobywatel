@@ -30,6 +30,7 @@ export function jury() {
       ${wiersz('Złośliwe prośby odrzucone', m.intencje?.test?.odmowy ?? '–', '–')}
       ${(m.bielik || []).map(b => wiersz(`Polski model ${esc(b.model.replace(/-v3\.0-Instruct.*$/, ' v3').replace(/-/g, ' '))} (lokalnie, bez przykładów): sam / jako wsparcie reguł`, `${p(b.test.bielik, 1)} / ${p(b.test.hybryda, 1)}`, '–')).join('')}
       ${wiersz('Naruszenia dostępności (axe, WCAG 2.2 AA)', m.axe?.nasz ?? '–', m.axe?.ref ?? '–')}
+      ${wiersz('Detektor Impeccable: wzorce „interfejsu z AI” i błędy jakości', m.impeccable?.razem ?? '–', m.impeccable?.ref?.razem ?? '–')}
       ${wiersz('Lighthouse: dostępność', m.lighthouse?.nasz?.accessibility ?? '–', m.lighthouse?.ref?.accessibility ?? '–')}
       ${wiersz('Lighthouse: wydajność (telefon)', m.lighthouse?.nasz?.performance ?? '–', m.lighthouse?.ref?.performance ?? '–')}
       ${wiersz('Czytelność tekstów (FOG-PL, mniej = prościej)', pl(m.czytelnosc?.nasz?.fog), pl(m.czytelnosc?.ref?.fog))}
