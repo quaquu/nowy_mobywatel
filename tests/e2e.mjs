@@ -26,8 +26,9 @@ export async function crawler(url) {
   const { chromium } = loadPlaywright();
   const b = await chromium.launch();
   const out = { strony: 0, trasy: new Set(), problemy: [] };
-  for (const w of SZEROKOSCI) {
+  for (const [w, prosty] of [...SZEROKOSCI.map(w => [w, false]), [320, true], [390, true]]) {
     const p = await nowaStrona(b, url, w);
+    if (prosty) await p.evaluate(() => { const k = 'mobywatel-proto-v1'; const s = JSON.parse(localStorage.getItem(k) || '{}'); s.ustawienia = { prosty: true }; localStorage.setItem(k, JSON.stringify(s)); });
     const kolejka = ['#/start'], widziane = new Set(kolejka);
     while (kolejka.length) {
       const h = kolejka.shift();
@@ -38,11 +39,13 @@ export async function crawler(url) {
         przewijanie: document.documentElement.scrollWidth > innerWidth + 1,
         linki: [...document.querySelectorAll('a[href^="#/"]')].map(a => a.getAttribute('href').split('?')[0]),
         wyjscia: document.querySelectorAll('main a, main button, nav a').length,
+        nachodzace: [...document.querySelectorAll('nav a span, .kafle span')].some(e => { const r = e.getBoundingClientRect(), q = e.parentElement.getBoundingClientRect(); return r.width > 0 && (r.left < q.left - 1 || r.right > q.right + 1); }) || [...document.querySelectorAll('.btn')].some(e => e.offsetParent && e.scrollWidth > e.clientWidth + 1),
         malePrzyciski: [...document.querySelectorAll('main button:not(.chip), main a.btn, nav a, .ib')].filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && (r.height < 40 || r.width < 40); }).length,
       }));
       if (!st.h1 || st.h1 === 'Nie ma takiej strony') out.problemy.push(`${w}px ${h}: brak strony`);
       if (st.przewijanie) out.problemy.push(`${w}px ${h}: przewijanie w poziomie`);
       if (st.wyjscia < 2) out.problemy.push(`${w}px ${h}: ślepy zaułek`);
+      if (st.nachodzace) out.problemy.push(`${w}px ${h}: tekst wychodzi poza przycisk lub etykietę`);
       if (st.malePrzyciski) out.problemy.push(`${w}px ${h}: ${st.malePrzyciski} cel(e) dotyku < 40 px`);
       for (const l of st.linki) if (!widziane.has(l)) { widziane.add(l); kolejka.push(l); }
     }
@@ -123,6 +126,12 @@ export async function sprawy(url) {
   await krok('anulowanie', async p => {
     await p.goto(url + '#/sprawa/dowod'); await p.click('#f-dow .btn.glowny'); await p.click('dialog.arkusz button[value=anuluj]');
     if (/Wniosek złożony/.test(await p.textContent('main'))) throw new Error('anulowanie wysłało wniosek');
+  });
+  await krok('wstecz-zamyka-arkusz', async p => {
+    await p.goto(url + '#/sprawa/dowod'); await p.click('#f-dow .btn.glowny'); await p.waitForSelector('dialog.arkusz');
+    await p.goBack(); await p.waitForSelector('dialog.arkusz', { state: 'detached', timeout: 2000 });
+    await p.goto(url + '#/sprawa/dowod');
+    if (/Wniosek złożony/.test(await p.textContent('main'))) throw new Error('wniosek wysłany mimo wyjścia');
   });
   await krok('asystent', async p => {
     await p.goto(url + '#/asystent');

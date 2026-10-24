@@ -11,13 +11,15 @@ const fnv = s => { let h = 0x811c9dc5; for (const c of s) { h ^= c.codePointAt(0
 for (const r of rows) r.split = fnv(r.t) % 10 >= 6 ? 'test' : 'dev';
 
 const showTest = process.argv.includes('--pokaz-test');
+const predykcje = [];
 const res = { dev: {}, test: {} };
 for (const split of ['dev', 'test']) {
   const S = rows.filter(r => r.split === split);
   let ok = 0, okRef = 0, okShared = 0, okRefShared = 0, nShared = 0, odmowaOk = 0, odmowaN = 0, falseRefusal = 0;
   const errs = [];
   for (const r of S) {
-    const got = rozpoznaj(r.t).intencja;
+    const rr = rozpoznaj(r.t), got = rr.intencja;
+    predykcje.push({ t: r.t, i: r.i, split, nasz: got, pewnosc: +rr.pewnosc.toFixed(2) });
     const ref = trasaReferencyjna(r.t);
     const refOk = (MAPA_REF[ref] || []).includes(r.i);
     if (got === r.i) ok++; else errs.push(`${r.i} <- ${got}: ${r.t}`);
@@ -33,3 +35,4 @@ for (const split of ['dev', 'test']) {
 }
 mkdirSync(new URL('./out/', import.meta.url), { recursive: true });
 writeFileSync(new URL('./out/intencje.json', import.meta.url), JSON.stringify(res, null, 2));
+writeFileSync(new URL('./out/intencje_predykcje.json', import.meta.url), JSON.stringify(predykcje, null, 1));

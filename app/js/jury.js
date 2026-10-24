@@ -4,7 +4,8 @@ import { esc } from './core.js';
 import { WYNIKI as W } from './wyniki.js';
 
 const REPO = 'https://github.com/quaquu/nowy_mobywatel';
-const p = (x, d = 0) => x == null ? '–' : (100 * x).toFixed(d) + '%';
+const p = (x, d = 0) => x == null ? '–' : (100 * x).toFixed(d).replace('.', ',') + '%';
+const pl = x => x == null ? '–' : String(x).replace('.', ',');
 const wiersz = (a, b, c) => `<tr><th scope="row">${a}</th><td>${b}</td><td>${c}</td></tr>`;
 
 export function jury() {
@@ -19,19 +20,20 @@ export function jury() {
 
     <h2 class="sekcja">Co zmierzyliśmy</h2>
     ${W ? `<p class="maly">Pomiar z ${esc(m.data)}. Te same narzędzia uruchomiliśmy na prototypie referencyjnym (kod z mobywatel.ai, tryb przeglądarkowy).</p>
-    <div class="tabela"><table><caption class="sr">Porównanie z prototypem referencyjnym</caption>
+    <div class="tabela" tabindex="0" role="region" aria-label="Tabela porównania, przewijana w poziomie"><table><caption class="sr">Porównanie z prototypem referencyjnym</caption>
       <thead><tr><th scope="col">Miara</th><th scope="col">Ten prototyp</th><th scope="col">Referencyjny</th></tr></thead><tbody>
       ${wiersz('Narodziny dziecka: liczba dotknięć do wysłania wszystkich spraw', m.klm?.nasz?.akcje ?? '–', m.klm?.ref?.akcje ?? '–')}
       ${wiersz('…liczba podpisów', m.klm?.nasz?.podpisy ?? '–', m.klm?.ref?.podpisy ?? '–')}
       ${wiersz('…sprawy załatwione', m.klm?.nasz?.sprawy ?? '–', m.klm?.ref?.sprawy ?? '–')}
       ${wiersz('…przewidywany czas (model KLM)', (m.klm?.nasz?.sekundy ?? '–') + ' s', (m.klm?.ref?.sekundy ?? '–') + ' s')}
       ${wiersz('Rozpoznanie sprawy z tekstu (zbiór testowy, n=' + (m.intencje?.test?.n ?? '–') + ')', p(m.intencje?.test?.nasz, 1), p(m.intencje?.test?.referencja, 1))}
-      ${wiersz('Złośliwe prośby odrzucone', m.intencje?.test?.odmowy ?? '–', '– (brak osobnej obsługi)')}
+      ${wiersz('Złośliwe prośby odrzucone', m.intencje?.test?.odmowy ?? '–', '–')}
+      ${(m.bielik || []).map(b => wiersz(`Polski model ${esc(b.model.replace(/-v3\.0-Instruct.*$/, ' v3').replace(/-/g, ' '))} (lokalnie, bez przykładów): sam / jako wsparcie reguł`, `${p(b.test.bielik, 1)} / ${p(b.test.hybryda, 1)}`, '–')).join('')}
       ${wiersz('Naruszenia dostępności (axe, WCAG 2.2 AA)', m.axe?.nasz ?? '–', m.axe?.ref ?? '–')}
       ${wiersz('Lighthouse: dostępność', m.lighthouse?.nasz?.accessibility ?? '–', m.lighthouse?.ref?.accessibility ?? '–')}
       ${wiersz('Lighthouse: wydajność (telefon)', m.lighthouse?.nasz?.performance ?? '–', m.lighthouse?.ref?.performance ?? '–')}
-      ${wiersz('Czytelność tekstów (FOG-PL, mniej = prościej)', m.czytelnosc?.nasz?.fog ?? '–', m.czytelnosc?.ref?.fog ?? '–')}
-      ${wiersz('Działa bez internetu po pierwszym otwarciu', m.offline ? 'tak' : '–', 'nie sprawdzano')}
+      ${wiersz('Czytelność tekstów (FOG-PL, mniej = prościej)', pl(m.czytelnosc?.nasz?.fog), pl(m.czytelnosc?.ref?.fog))}
+      ${wiersz('Działa bez internetu po pierwszym otwarciu', m.offline ? 'tak' : '–', '–')}
       </tbody></table></div>` : '<p class="maly">Wyniki pojawią się po uruchomieniu testów (npm test).</p>'}
 
     <h2 class="sekcja">Skąd pomysły</h2>
@@ -45,7 +47,7 @@ export function jury() {
     </ul>
 
     <h2 class="sekcja">Uczciwie: co już jest w mObywatelu</h2>
-    <p>Dokumenty w telefonie, e-Doręczenia, historia pojazdu, punkty karne, zastrzeżenie PESEL i mStłuczka już działają. Nie udajemy, że to nasze. Nowe są: sprawy przychodzące same, pakiety spraw z jednym podpisem, „Należy Ci się”, autopilot, rejestr dostępu do danych, sprawy bliskich, tryb prosty i odzyskiwanie dostępu bez pętli.</p>
+    <p>Dokumenty w telefonie, e-Doręczenia, historia pojazdu, punkty karne, zastrzeżenie PESEL, zawieszenie dowodu, mStłuczka i informacja o odbiorcach danych z rejestru PESEL (na wniosek, jako plik) już działają. Nie udajemy, że to nasze. Nowe są: sprawy przychodzące same, pakiety spraw z jednym podpisem, „Należy Ci się”, autopilot, bieżący rejestr dostępu do danych ze wszystkich rejestrów, sprawy bliskich, tryb prosty i odzyskiwanie dostępu bez pętli.</p>
 
     <h2 class="sekcja">Dokumentacja</h2>
     <ul class="lista mala">

@@ -55,9 +55,9 @@ export const zadania = [
 
 export const naleznosci = [
   { id: 'becikowe', tytul: 'Becikowe', kwota: '1 000 zł jednorazowo', dlaczego: 'Urodziło się dziecko, a dochód w rodzinie za 2025 r. jest niższy niż próg 1 922 zł na osobę (dane z urzędu skarbowego).', status: 'w pakiecie „Narodziny dziecka”', cel: '#/sprawa/narodziny', zrodlo: ['gov.pl: Uzyskaj becikowe', 'https://www.gov.pl/web/gov/uzyskaj-becikowe'] },
-  { id: '800', tytul: 'Świadczenie wychowawcze 800+', kwota: '800 zł miesięcznie', dlaczego: 'Przysługuje na każde dziecko do 18 lat. Wniosek w ciągu 3 miesięcy od urodzenia daje wypłatę od miesiąca urodzenia.', status: 'w pakiecie „Narodziny dziecka”', cel: '#/sprawa/narodziny', zrodlo: ['ZUS: Świadczenie wychowawcze 800+', 'https://www.zus.pl/swiadczenia/swiadczenie-wychowawcze'] },
+  { id: '800', tytul: 'Świadczenie wychowawcze 800+', kwota: '800 zł miesięcznie', dlaczego: 'Przysługuje na każde dziecko do 18 lat. Wniosek w ciągu 3 miesięcy od urodzenia daje wypłatę od miesiąca urodzenia.', status: 'w pakiecie „Narodziny dziecka”', cel: '#/sprawa/narodziny', zrodlo: ['gov.pl: Skorzystaj z programu Rodzina 800+', 'https://www.gov.pl/web/gov/skorzystaj-z-programu-rodzina-500'] },
   { id: 'aktywny', tytul: '„Aktywny rodzic”', kwota: 'do 1 500 zł miesięcznie', dlaczego: 'Gdy dziecko skończy 12 miesięcy i oboje rodzice pracują albo dziecko pójdzie do żłobka.', status: 'przypomnimy ' + fmt(za(362), { month: 'long', year: 'numeric' }), cel: '#/naleznosci', zrodlo: ['gov.pl: Aktywny rodzic', 'https://www.gov.pl/web/rodzina/aktywny-rodzic'] },
-  { id: 'ulga', tytul: 'Ulga na dziecko w PIT', kwota: 'ok. 1 112 zł rocznie', dlaczego: 'Dopiszemy ją sami do Twojego e-PIT za 2026 r. Nie musisz nic robić.', status: 'automatycznie w lutym', cel: '#/naleznosci', zrodlo: ['podatki.gov.pl: ulga prorodzinna', 'https://www.podatki.gov.pl/pit/ulgi-odliczenia-i-zwolnienia/ulga-na-dzieci/'] },
+  { id: 'ulga', tytul: 'Ulga na dziecko w PIT', kwota: 'ok. 1 112 zł rocznie', dlaczego: 'Dopiszemy ją sami do Twojego e-PIT za 2026 r. Nie musisz nic robić.', status: 'automatycznie w lutym', cel: '#/naleznosci', zrodlo: ['gov.pl: Skorzystaj z ulgi podatkowej na dziecko', 'https://www.gov.pl/web/gov/skorzystaj-z-ulgi-podatkowej-na-dziecko'] },
 ];
 
 export const autopilot = [
@@ -90,7 +90,7 @@ export const skrzynka = [
 
 // Katalog zdarzeń życiowych. `pelne` = przebieg do przejścia w prototypie.
 export const sprawy = [
-  { id: 'narodziny', tytul: 'Urodziło się dziecko', opis: '6 spraw w 4 instytucjach, jeden podpis', ikona: 'baby', pelne: true },
+  { id: 'narodziny', tytul: 'Urodziło się dziecko', opis: '5 spraw w 4 instytucjach, jeden podpis', ikona: 'baby', pelne: true },
   { id: 'przeprowadzka', tytul: 'Przeprowadzka', opis: 'meldunek i nowy adres w urzędach', ikona: 'home', pelne: true },
   { id: 'auto', tytul: 'Kupno używanego auta', opis: 'historia, umowa, podatek, rejestracja', ikona: 'car', pelne: true },
   { id: 'utrata', tytul: 'Zgubiłam / ukradli mi dokumenty', opis: 'zastrzeżenie w 1 minutę, nowy dowód', ikona: 'shield', pelne: true },

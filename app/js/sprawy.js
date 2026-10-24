@@ -4,6 +4,8 @@ import { ic } from './icons.js';
 import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast, cel } from './core.js';
 import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy } from './data.js';
 
+// 1 sprawa, 2–4 sprawy, 5+ spraw (12–14: spraw)
+export const ileSpraw = n => `${n} ${n === 1 ? 'sprawa' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'sprawy' : 'spraw'}`;
 const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
 const zrodlo = (t, u) => `<p class="zrodlo">${ic('info')}<span>Na podstawie: <a href="${u}" target="_blank" rel="noopener">${esc(t)}</a></span></p>`;
 
@@ -59,7 +61,7 @@ export function narodziny() {
     tytul: 'Urodziło się dziecko',
     html: `
     <h1 tabindex="-1">Gratulacje, ${esc(ja.wolacz)}!</h1>
-    <p class="wstep">${fmt(dziecko.urodzone)} w szpitalu urodziła się Twoja córka. Szpital przesłał kartę urodzenia do urzędu. <b>Zostało 6 spraw w 4 instytucjach. Załatwisz je jednym podpisem.</b></p>
+    <p class="wstep">${fmt(dziecko.urodzone)} w szpitalu urodziła się Twoja córka. Szpital przesłał kartę urodzenia do urzędu. <b>Zostało 5 spraw w 4 instytucjach. Załatwisz je jednym podpisem.</b></p>
     <form id="f-nar" class="karta" novalidate>
       <label for="imie" class="etyk">Jak córka będzie miała na imię?</label>
       <input id="imie" name="imie" class="pole" autocomplete="off" value="${esc(imie)}" placeholder="np. Zofia" aria-describedby="imie-pom" required>
@@ -85,7 +87,7 @@ export function narodziny() {
         const wyb = zaznaczone(root, NARODZINY());
         const nazwa = imie.charAt(0).toUpperCase() + imie.slice(1);
         const ok = await arkuszZgody({
-          tytul: `${wyb.length} spraw dla: ${nazwa} ${ja.nazwisko}`,
+          tytul: `${nazwa} ${ja.nazwisko}: ${ileSpraw(wyb.filter(k => k.id !== 'mob').length)} do wysłania`,
           pozycje: wyb.map(k => ({ co: k.tytul, do: k.doKogo })),
           dane: ['Twoje imię, nazwisko i PESEL', 'adres zameldowania', 'numer konta', 'dane z karty urodzenia'],
           cofniecie: 'Wnioski o świadczenia możesz wycofać do czasu decyzji. Zgłoszenia urodzenia nie da się cofnąć, ale błąd w akcie poprawi USC.',
@@ -97,7 +99,7 @@ export function narodziny() {
           { kto: 'ZUS', co: 'Twój PESEL, numer konta, dane córki', po: 'wniosek 800+ (wysłany przez Ciebie)', kiedy: Date.now() },
           { kto: 'Urząd Miasta Łodzi (świadczenia)', co: 'dochód z urzędu skarbowego za 2025 r.', po: 'wniosek o becikowe (wysłany przez Ciebie)', kiedy: Date.now() });
         wyb.forEach(k => dodajWyslane(k.tytul, k.doKogo));
-        zapisz(); ogloszenie(`Wysłano ${wyb.length} spraw. Gratulacje!`);
+        zapisz(); ogloszenie(`Wysłano: ${ileSpraw(wyb.filter(k => k.id !== 'mob').length)}. Gratulacje!`);
         dispatchEvent(new HashChangeEvent('hashchange'));
       };
     },
@@ -147,7 +149,7 @@ export function przeprowadzka() {
       <ul class="kroki">${kroki.map(krok).join('')}</ul>
       <button class="btn glowny szeroki">${ic('key')}Przejrzyj i podpisz</button>
     </form>
-    ${zrodlo('gov.pl: Zamelduj się na pobyt stały', 'https://www.gov.pl/web/gov/zamelduj-sie-na-pobyt-staly-lub-czasowy')}`,
+    ${zrodlo('gov.pl: Zamelduj się na pobyt stały', 'https://www.gov.pl/web/gov/zamelduj-sie-na-pobyt-staly-lub-czasowy-dluzszy-niz-3-miesiace')}`,
     po(root) {
       const pole = $('#adres', root);
       $$('[data-adres]', root).forEach(b => b.onclick = () => { pole.value = b.dataset.adres; $('#adres-blad', root).hidden = true; });
@@ -278,7 +280,7 @@ export function utrata() {
       <p class="uwaga">${ic('phone')}<span>Karty płatnicze zastrzeżesz pod numerem <a href="tel:+48828828828">828 828 828</a>. Kradzież zgłoś policji: <a href="tel:112">112</a>.</span></p>
       <button class="btn glowny szeroki pilny">${ic('shield')}Zastrzeż zaznaczone</button>
     </form>
-    ${zrodlo('gov.pl: Zgłoś utratę lub uszkodzenie dowodu osobistego', 'https://www.gov.pl/web/gov/zglos-utrate-lub-uszkodzenie-dowodu-osobistego')}`,
+    ${zrodlo('gov.pl: Zgłoś utratę swojego dowodu osobistego', 'https://www.gov.pl/web/gov/zglos-utrate-lub-uszkodzenie-swojego-dowodu-osobistego-uniewaznij-dowod')}`,
     po(root) {
       $('#f-ut', root).onsubmit = async e => {
         e.preventDefault();

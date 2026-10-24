@@ -2,7 +2,7 @@
 :root {
   --tlo: #f4f6fa; --pow: #ffffff; --pow2: #eef1f7; --tekst: #111827; --tekst2: #4b5563; --linia: #dde2ea;
   --gl: #1d4ed8; --gl-tekst: #ffffff; --gl-jasny: #e6edff; --gl-ciemny: #1e3a8a;
-  --ok: #047857; --ok-jasny: #dcf5ea; --ostrz: #b45309; --ostrz-jasny: #fff1dc; --zle: #b91c1c; --zle-jasny: #fde5e5;
+  --ok: #047857; --ok-jasny: #dcf5ea; --zle-tekst: #ffffff; --ostrz: #b45309; --ostrz-jasny: #fff1dc; --zle: #b91c1c; --zle-jasny: #fde5e5;
   --cien: 0 1px 2px rgb(16 24 40 / .06), 0 2px 8px rgb(16 24 40 / .05);
   --r: 16px; --r-maly: 10px; --skala: 1;
   color-scheme: light;
@@ -11,7 +11,7 @@
   :root:not([data-theme="light"]) {
     --tlo: #0f1420; --pow: #171e2e; --pow2: #1e2638; --tekst: #f1f4f9; --tekst2: #aeb7c7; --linia: #2c364b;
     --gl: #6d9bff; --gl-tekst: #0b1020; --gl-jasny: #1c2a4d; --gl-ciemny: #a9c3ff;
-    --ok: #4ade80; --ok-jasny: #12301f; --ostrz: #fbbf24; --ostrz-jasny: #34270c; --zle: #f87171; --zle-jasny: #3a1616;
+    --ok: #4ade80; --ok-jasny: #12301f; --zle-tekst: #1a0505; --ostrz: #fbbf24; --ostrz-jasny: #34270c; --zle: #f87171; --zle-jasny: #3a1616;
     --cien: 0 1px 2px rgb(0 0 0 / .4);
     color-scheme: dark;
   }
@@ -40,7 +40,7 @@ a { color: var(--gl); }
 .ib { position: relative; display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 0; background: transparent; color: var(--tekst); cursor: pointer; }
 .ib:hover { background: var(--pow2); }
 .ib .ic { width: 24px; height: 24px; }
-.kropka { position: absolute; top: 6px; right: 4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--zle); color: #fff; font-size: 11px; font-weight: 700; line-height: 18px; }
+.kropka { position: absolute; top: 6px; right: 4px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--zle); color: var(--zle-tekst); font-size: 11px; font-weight: 700; line-height: 18px; }
 
 main { flex: 1; padding: 4px 16px 112px; outline: none; }
 .testuje main { padding-top: 8px; }
@@ -99,7 +99,7 @@ h2 { font-size: 1.15rem; margin: 0 0 8px; }
 .btn.glowny { background: var(--gl); color: var(--gl-tekst); }
 .btn.glowny:hover { filter: brightness(1.08); }
 .btn.drugi { background: var(--gl-jasny); color: var(--gl-ciemny); }
-.btn.pilny { background: var(--zle); color: #fff; }
+.btn.pilny { background: var(--zle); color: var(--zle-tekst); }
 .btn.tekst { background: none; color: var(--gl); padding: 8px 0; min-height: 44px; text-decoration: underline; }
 .btn.szeroki { width: 100%; margin-top: 14px; }
 .btn.maly-btn { min-height: 44px; padding: 8px 14px; font-size: .92rem; }
@@ -147,7 +147,8 @@ h2 { font-size: 1.15rem; margin: 0 0 8px; }
 .wiersz span { color: var(--tekst2); }
 .wiersz b { text-align: right; font-weight: 600; }
 .zrodlo { display: flex; gap: 8px; align-items: flex-start; font-size: .82rem; color: var(--tekst2); margin: 12px 0 0; }
-.zrodlo .ic { width: 16px; height: 16px; margin-top: 2px; }
+.zrodlo .ic { width: 16px; height: 16px; margin-top: 6px; }
+.zrodlo a { display: inline-block; padding: 4px 0; }
 .uwaga, .ostrz { display: flex; gap: 10px; align-items: flex-start; padding: 12px; border-radius: var(--r-maly); background: var(--gl-jasny); margin: 12px 0; font-size: .92rem; }
 .ostrz { background: var(--ostrz-jasny); }
 .ostrz .ic { color: var(--ostrz); }
@@ -199,7 +200,8 @@ h2 { font-size: 1.15rem; margin: 0 0 8px; }
 .kafle { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
 .kafle a { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; min-height: 140px; padding: 18px; border-radius: 20px; background: var(--pow); color: var(--tekst); text-decoration: none; font-weight: 700; font-size: 1.1rem; box-shadow: var(--cien); border: 2px solid var(--linia); }
 .kafle .ic { width: 36px; height: 36px; color: var(--gl); }
-html.prosty .dol a span { font-size: .85rem; }
+html.duzy .dol a { font-size: 12px; }
+html.duzy .dol a .ic { width: 26px; height: 26px; }
 html.prosty h1 { font-size: 1.8rem; }
 .prosty-hero .hero-t { font-size: 1.35rem; }
 
@@ -233,7 +235,8 @@ dialog.arkusz::backdrop { background: rgb(0 0 0 / .45); }
 table { width: 100%; border-collapse: collapse; font-size: .88rem; }
 th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--linia); vertical-align: top; }
 thead th { font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; color: var(--tekst2); }
-td { font-weight: 700; white-space: nowrap; }
+td { font-weight: 700; }
+th[scope="row"] { width: 55%; }
 tbody th { font-weight: 500; }
 .wpis summary { display: flex; align-items: center; gap: 10px; cursor: pointer; list-style: none; min-height: 44px; }
 .wpis summary::-webkit-details-marker { display: none; }

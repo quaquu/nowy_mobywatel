@@ -63,6 +63,8 @@ function naglowek() {
 
 let pierwszy = true;
 function pokaz() {
+  // Zmiana ekranu (np. przycisk „wstecz”) zamyka otwarty arkusz zgody bez wysyłania.
+  $$('dialog.arkusz[open]').forEach(d => d.close('anuluj'));
   const [sciezka, qs] = location.hash.replace(/^#/, '').split('?');
   const q = new URLSearchParams(qs || '');
   let widok = null;
