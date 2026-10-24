@@ -39,7 +39,7 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 | Nowy dowód: wniosek ze zdjęciem z telefonu | 🟢 / 🟡 | Wniosek online istnieje. Zdjęcie musi spełniać wymagania; automatyczne sprawdzenie zdjęcia to 🟡. |
 | Wizyta urzędnika u osoby chorej lub niepełnosprawnej, zamówiona przez pełnomocnika | 🟢 / 🟡 | Przyjęcie wniosku w miejscu pobytu przewiduje ustawa o dowodach osobistych. Zamawianie przez aplikację to 🟡. |
 | Mandat z fotoradaru: przyjęcie i płatność w aplikacji | 🟡 | Płatność online istnieje. Przyjęcie mandatu i wskazanie kierowcy w aplikacji wymaga zmian w procesie CANARD/GITD. |
-| Autopilot płatności podatku od nieruchomości | 🟡 | Zapłata przez obywatela na jego zlecenie (polecenie zapłaty). Potrzebna zgoda i powiadomienie przed płatnością (zapisane w prototypie). |
+| Zlecenie stałe płatności podatku od nieruchomości | 🟡 | Zapłata przez obywatela na jego zlecenie (polecenie zapłaty). Potrzebna zgoda i powiadomienie przed płatnością (zapisane w prototypie). |
 | „Należy Ci się” na podstawie danych z rejestrów | 🟡 / 🔴 | Profilowanie pod kątem świadczeń wymaga podstawy prawnej (RODO, art. 6 ust. 1 lit. e i art. 22). Wariant 🟡: dobrowolne włączenie przez obywatela. Wariant 🔴: obowiązek informowania o świadczeniach w ustawie. |
 | Bieżący rejestr dostępu do danych ze wszystkich rejestrów | 🟢 / 🟡 | Dla PESEL i RDO informacja o odbiorcach danych już istnieje ([gov.pl](https://www.gov.pl/web/gov/pobierz-informacje-o-odbiorcach-danych-z-rejestru-pesel-i-rejestru-dowodow-osobistych)). Rozszerzenie na CEPiK, KAS, ZUS i NFZ to 🟡 (logi istnieją; potrzebne udostępnienie). Wyjątki: służby, gdy jawność szkodzi postępowaniu (🔴, osobne przepisy). |
 | Sprawy bliskich na podstawie pełnomocnictwa | 🟡 | Upoważnienia w IKP istnieją. Ogólne pełnomocnictwo do spraw w mObywatelu wymaga wspólnego rejestru pełnomocnictw. |
@@ -56,4 +56,4 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 | 🟡 integracja, rozporządzenie albo zgoda | 9 |
 | 🔴 zmiana ustawy (w tym 🔴 / 🟡) | 4 |
 
-**Pierwszy etap (bez zmian ustaw):** pakiet „Narodziny dziecka” bez automatycznego zaświadczenia lekarskiego, odzyskiwanie dostępu, tryb prosty, pisma prostym językiem, rozszerzony rejestr dostępu dla PESEL i RDO, autopilot przypomnień.
+**Pierwszy etap (bez zmian ustaw):** pakiet „Narodziny dziecka” bez automatycznego zaświadczenia lekarskiego, odzyskiwanie dostępu, tryb prosty, pisma prostym językiem, rozszerzony rejestr dostępu dla PESEL i RDO, przypomnienia o terminach.

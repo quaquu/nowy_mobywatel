@@ -119,7 +119,7 @@ export function przeprowadzka() {
   const dzieckoImie = stan.imieDziecka || 'córka';
   const kroki = [
     { id: 'meld', tytul: 'Zameldowanie na pobyt stały', opis: 'Wymeldowanie ze starego adresu zrobi się samo.', doKogo: 'urząd gminy właściwy dla nowego adresu', wymagany: true },
-    { id: 'urzedy', tytul: 'Nowy adres w urzędach', opis: 'Urząd skarbowy, ZUS i NFZ dostaną adres z rejestru. Nie musisz pisać do każdego z osobna.', doKogo: 'US, ZUS, NFZ', plakietka: ['niebieska', 'autopilot'] },
+    { id: 'urzedy', tytul: 'Nowy adres w urzędach', opis: 'Urząd skarbowy, ZUS i NFZ dostaną adres z rejestru. Nie musisz pisać do każdego z osobna.', doKogo: 'US, ZUS, NFZ', plakietka: ['niebieska', 'zlecenie'] },
     { id: 'pojazd', tytul: 'Nowy adres właściciela pojazdu', opis: 'Zgłoszenie zmiany adresu dla Yarisa. Masz na to 30 dni.', doKogo: 'wydział komunikacji' },
     { id: 'smieci', tytul: 'Deklaracja opłaty za śmieci', opis: 'Obowiązkowa w nowej gminie w ciągu 14 dni. Liczba osób: 3.', doKogo: 'nowa gmina' },
   ];
@@ -390,7 +390,7 @@ export function mandat() {
 
 export function podatek() {
   if (stan.zrobione.podatek) {
-    return { tytul: 'Podatek', html: `<h1 tabindex="-1">Rata zapłacona</h1>` + gotowe({ tytul: '186 zł zapłacone', pozycje: [['Urząd Miasta Łodzi', 'potwierdzenie w skrzynce'], ['Następne raty', stan.autopilot.podatek ? 'zapłacą się same; powiadomimy Cię dzień wcześniej' : 'przypomnimy 7 dni przed terminem']] }) };
+    return { tytul: 'Podatek', html: `<h1 tabindex="-1">Rata zapłacona</h1>` + gotowe({ tytul: '186 zł zapłacone', pozycje: [['Urząd Miasta Łodzi', 'potwierdzenie w skrzynce'], ['Następne raty', stan.autopilot.podatek ? 'zapłacimy je ze zlecenia stałego; dzień wcześniej damy znać' : 'przypomnimy 7 dni przed terminem']] }) };
   }
   return {
     tytul: 'Podatek od nieruchomości',
@@ -399,7 +399,7 @@ export function podatek() {
     <section class="karta">${wiersz('Rata', 'IV rata za 2026 r.')}${wiersz('Kwota', '186 zł')}${wiersz('Termin', fmt(za(23)))}${wiersz('Odbiorca', 'Urząd Miasta Łodzi')}</section>
     <form id="f-pod" class="karta" novalidate>
       ${blik('blik-p')}
-      <label class="opcja przel"><input type="checkbox" id="auto-pod" ${stan.autopilot.podatek ? 'checked' : ''}> <span><b>Autopilot:</b> kolejne raty płać sam(a) z konta w dniu terminu. Dzień wcześniej dostanę powiadomienie i mogę wstrzymać.</span></label>
+      <label class="opcja przel"><input type="checkbox" id="auto-pod" ${stan.autopilot.podatek ? 'checked' : ''}> <span><b>Włącz zlecenie stałe:</b> kolejne raty zapłacimy z Twojego konta w dniu terminu. Dzień wcześniej damy znać i będzie można płatność wstrzymać.</span></label>
       <button class="btn glowny szeroki">${ic('key')}Zapłać 186 zł</button>
     </form>`,
     po(root) {
@@ -407,7 +407,7 @@ export function podatek() {
         e.preventDefault();
         if (!blikOk(root, 'blik-p')) return;
         const auto = $('#auto-pod', root).checked;
-        const ok = await arkuszZgody({ tytul: 'Płatność podatku', pozycje: [{ co: 'Płatność BLIK 186 zł', do: 'Urząd Miasta Łodzi' }, ...(auto ? [{ co: 'Zgoda na autopilota płatności', do: 'mObywatel (możesz ją wycofać)' }] : [])], przycisk: 'Zapłać', cel: 'podatek' });
+        const ok = await arkuszZgody({ tytul: 'Płatność podatku', pozycje: [{ co: 'Płatność BLIK 186 zł', do: 'Urząd Miasta Łodzi' }, ...(auto ? [{ co: 'Zlecenie stałe: kolejne raty z Twojego konta', do: 'Urząd Miasta Łodzi (wyłączysz je w „Przypomnieniach i zleceniach”)' }] : [])], przycisk: 'Zapłać', cel: 'podatek' });
         if (!ok) return;
         stan.zrobione.podatek = true; stan.autopilot.podatek = auto; dodajWyslane('Podatek od nieruchomości 186 zł', 'Urząd Miasta Łodzi'); zapisz();
         dispatchEvent(new HashChangeEvent('hashchange'));

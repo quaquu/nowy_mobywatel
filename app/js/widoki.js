@@ -47,7 +47,9 @@ export function start() {
   if (stan.ustawienia.prosty) return startProsty();
   const zad = otwarte();
   const narodzinyOtwarte = !stan.zrobione.narodziny;
-  const autoWl = autopilot.filter(a => stan.autopilot[a.id] ?? a.wl).length;
+  // 1 zlecenie, 2–4 zlecenia, 0 i 5+ zleceń (12–14: zleceń)
+  const odm = (n, j, k, w) => `${n} ${n === 1 ? j : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? k : w}`;
+  const ileWl = rodzaj => autopilot.filter(a => a.rodzaj === rodzaj && (stan.autopilot[a.id] ?? a.wl)).length;
   const godz = new Date().getHours();
   const powitanie = godz < 5 || godz >= 18 ? 'Dobry wieczór' : 'Dzień dobry';
   return {
@@ -87,8 +89,8 @@ export function start() {
     </section>
 
     <section aria-labelledby="h-ap">
-      <h2 id="h-ap" class="sekcja">Autopilot</h2>
-      <a class="karta link-karta" href="#/autopilot">${ic('clock', 'okr')}<span><b>${autoWl} z ${autopilot.length} spraw pilnuje się samo</b><small>Za Twoją zgodą: przypomnienia, płatności, nowy adres w urzędach.</small></span>${ic('right', 'strz')}</a>
+      <h2 id="h-ap" class="sekcja">Przypomnienia i zlecenia</h2>
+      <a class="karta link-karta" href="#/zlecenia">${ic('clock', 'okr')}<span><b>Włączone: ${odm(ileWl('przypomnienie'), 'przypomnienie', 'przypomnienia', 'przypomnień')}, ${odm(ileWl('zlecenie'), 'zlecenie', 'zlecenia', 'zleceń')}</b><small>Przypomnienie tylko daje znać. Zlecenie robi coś za Ciebie, jak zlecenie stałe w banku.</small></span>${ic('right', 'strz')}</a>
     </section>
 
     ${stan.wyslane.length ? `<section aria-labelledby="h-wys"><h2 id="h-wys" class="sekcja">Ostatnio wysłane</h2><ul class="lista mala">${stan.wyslane.slice(0, 4).map(w => `<li class="poz">${ic('check', 'okr zielona')}<span><b>${esc(w.tytul)}</b><small>do: ${esc(w.do)}</small></span></li>`).join('')}</ul></section>` : ''}
@@ -140,7 +142,7 @@ export function dokument(id) {
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>
       <button class="btn tekst" id="blad-dan">Te dane są błędne? Zgłoś to</button>
     </section>
-    ${id === 'pojazd' ? `<a class="karta link-karta" href="#/autopilot">${ic('clock', 'okr')}<span><b>Badanie techniczne za 19 dni</b><small>Przypomnimy 7 dni wcześniej. Stacje kontroli w pobliżu pokażemy na mapie.</small></span>${ic('right', 'strz')}</a>` : ''}
+    ${id === 'pojazd' ? `<a class="karta link-karta" href="#/zlecenia">${ic('clock', 'okr')}<span><b>Badanie techniczne za 19 dni</b><small>Przypomnimy 7 dni wcześniej. Stacje kontroli w pobliżu pokażemy na mapie.</small></span>${ic('right', 'strz')}</a>` : ''}
     ${id === 'dowod' ? `<a class="btn glowny szeroki" href="#/sprawa/dowod">Złóż wniosek o nowy dowód</a>` : ''}`,
     po(root) { $('#blad-dan', root).onclick = () => toast(`Zgłoszenie trafiło do: ${d.zrodlo}. Odpowiedź dostaniesz w skrzynce.`); },
   };
@@ -199,7 +201,7 @@ export function pismo(id) {
   };
 }
 
-/* ---------------- Należy Ci się, autopilot ---------------- */
+/* ---------------- Należy Ci się, przypomnienia i zlecenia ---------------- */
 export function naleznosciWidok() {
   return {
     tytul: 'Należy Ci się',
@@ -217,13 +219,18 @@ export function naleznosciWidok() {
 
 export function autopilotWidok() {
   return {
-    tytul: 'Autopilot',
-    html: `<h1 tabindex="-1">Autopilot</h1>
-    <p class="wstep">Sprawy powtarzalne mogą załatwiać się same. Tylko za Twoją zgodą, zawsze z powiadomieniem wcześniej i z możliwością wstrzymania.</p>
-    <ul class="lista-kart">${autopilot.map(a => `<li class="karta"><label class="przel-duzy"><span><b>${esc(a.tytul)}</b><small>${esc(a.opis)}</small></span><input type="checkbox" role="switch" data-ap="${a.id}" ${(stan.autopilot[a.id] ?? a.wl) ? 'checked' : ''}></label></li>`).join('')}</ul>
-    <p class="stopka-info">Wzorowane na usłudze AutoGov w Abu Zabi i usługach proaktywnych w Estonii.</p>`,
+    tytul: 'Przypomnienia i zlecenia',
+    html: `<h1 tabindex="-1">Przypomnienia i zlecenia</h1>
+    <p class="wstep"><b>Przypomnienie</b> tylko daje znać o terminie. <b>Zlecenie</b> robi coś za Ciebie, jak zlecenie stałe w banku. Zlecenie działa tylko wtedy, gdy je włączysz, i zawsze uprzedzamy przed jego wykonaniem.</p>
+    ${['przypomnienie', 'zlecenie'].map(r => `<h2 class="sekcja">${r === 'przypomnienie' ? 'Przypomnienia' : 'Zlecenia'}</h2>
+    <ul class="lista-kart">${autopilot.filter(a => a.rodzaj === r).map(a => `<li class="karta"><label class="przel-duzy"><span><b>${esc(a.tytul)}</b><small>${esc(a.opis)}</small></span><input type="checkbox" role="switch" data-ap="${a.id}" data-rodzaj="${a.rodzaj}" ${(stan.autopilot[a.id] ?? a.wl) ? 'checked' : ''}></label></li>`).join('')}</ul>`).join('')}
+    <p class="stopka-info">Każde przypomnienie i zlecenie wyłączysz tutaj w każdej chwili. Wzór: usługa AutoGov w Abu Zabi i usługi proaktywne w Estonii.</p>`,
     po(root) {
-      $$('[data-ap]', root).forEach(i => i.onchange = () => { stan.autopilot[i.dataset.ap] = i.checked; zapisz(); toast(i.checked ? 'Zgoda zapisana. Wycofasz ją tutaj w każdej chwili.' : 'Wyłączone. Będziemy tylko przypominać.'); });
+      $$('[data-ap]', root).forEach(i => i.onchange = () => {
+        stan.autopilot[i.dataset.ap] = i.checked; zapisz();
+        const zl = i.dataset.rodzaj === 'zlecenie';
+        toast(i.checked ? (zl ? 'Zlecenie włączone. Przed każdym wykonaniem damy znać.' : 'Przypomnienie włączone.') : (zl ? 'Zlecenie wyłączone. Będziemy tylko przypominać.' : 'Przypomnienie wyłączone.'));
+      });
     },
   };
 }
@@ -237,7 +244,7 @@ export function dane() {
     <ul class="lista">
       ${poz('#/dane/dostep', 'eye', 'Kto sprawdzał moje dane', `${n} odczytów w ostatnich 60 dniach`, '<span class="plak pomaranczowa">1 do wyjaśnienia</span>')}
       ${poz('#/dane/rejestry', 'doc', 'Co państwo o mnie wie', '5 rejestrów, źródło i data każdej danej')}
-      ${poz('#/autopilot', 'clock', 'Zgody i autopilot', 'co dzieje się samo i za jaką zgodą')}
+      ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'co robimy za Ciebie i za jaką zgodą')}
       ${poz('#/pokaz', 'shield', 'Pokaż tylko to, co potrzebne', 'np. pełnoletność bez daty urodzenia')}
     </ul>`,
   };
@@ -418,7 +425,7 @@ export function wiecej() {
       ${poz('#/naleznosci', 'gift', 'Należy Ci się', '4 świadczenia')}
       ${poz('#/bliscy', 'users', 'Bliscy', 'mama, córka')}
       ${poz('#/dane', 'eye', 'Twoje dane i prywatność', 'kto sprawdzał moje dane')}
-      ${poz('#/autopilot', 'clock', 'Autopilot', 'zgody na sprawy, które dzieją się same')}
+      ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'terminy i sprawy, które robimy za Ciebie')}
       ${poz('#/dostep', 'lock', 'Problem z logowaniem', '')}
       ${poz('#/konsultant', 'phone', 'Pomoc człowieka', '')}
       ${poz('#/ustawienia', 'gear', 'Ustawienia i dostępność', 'tryb prosty, większy tekst, czytanie na głos')}

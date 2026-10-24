@@ -40,7 +40,7 @@ W językach i bazie wiedzy referencja jest od nas bogatsza i tego nie ukrywamy.
 | … tylko intencje obsługiwane przez oba (n=50) | 40,0% | 92,0% | j.w. |
 | Naruszenia axe (WCAG 2.2 AA i dobre praktyki) | 7 reguł, 26 elementów, w tym 1 krytyczne i 3 poważne | 0 | `tests/audit.mjs` |
 | Lighthouse, telefon: wydajność / dostępność | 82 / 87 (LCP ok. 4,4 s) | 97 / 100 (LCP ok. 2,4 s) | Lighthouse 12.6.1 |
-| Czytelność (FOG-PL, mniej = prościej) | 7,1 | 6,9 | `tests/audit.mjs` |
+| Czytelność (FOG-PL, mniej = prościej) | 7,1 | 7,0 | `tests/audit.mjs` |
 
 Zastrzeżenia do porównania:
 - W trybie przeglądarkowym referencja rozpoznaje sprawy wyrażeniami regularnymi. Pełna wersja z dużym modelem językowym rozpoznawałaby więcej. Porównujemy jednak to, co widzi jury pod linkiem.
@@ -108,7 +108,7 @@ Ograniczenia: kodowanie słownikowe (bez drugiego, niezależnego kodera), 111 sk
 **Co z tego wzięliśmy do prototypu:**
 - ekran „Nie możesz się zalogować?”: diagnoza, jeden sposób, powrót w to samo miejsce, bez pętli;
 - źródło i data aktualizacji przy każdej danej oraz przycisk „zgłoś błąd w danych”;
-- autopilot przypomnień o ważności dokumentów;
+- przypomnienia o końcu ważności dokumentów;
 - tryb prosty i sprawy bliskich (wizyta urzędnika w domu);
 - rejestr dostępu do danych.
 
@@ -140,7 +140,7 @@ Na podstawie kart usług gov.pl (kopia w pakiecie referencyjnym) i publikacji z 
 | e-Doręczenia | istnieje (od 2026 główny kanał) | skrzynka + wersja prostym językiem |
 | Informacja o odbiorcach danych z rejestru PESEL i RDO | istnieje (na wniosek, plik) | **rozwinięta** w bieżący rejestr ze wszystkich rejestrów |
 | Zgłoszenie urodzenia | przez gov.pl/e-Doręczenia; w aplikacji zapowiedziane | **nowe:** pakiet 5 spraw z jednym podpisem, zaczęty przez państwo |
-| Płatności podatków lokalnych | pilotaż ePłatności | **nowe:** autopilot płatności za zgodą |
+| Płatności podatków lokalnych | pilotaż ePłatności | **nowe:** zlecenie stałe płatności za zgodą |
 | „Należy Ci się”, sprawy bliskich, tryb prosty, odzyskiwanie dostępu | brak | **nowe** |
 
 ## 6. Wniosek: koncepcja

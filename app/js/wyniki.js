@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8.1,
+   "systemS": 8.2,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -117,24 +117,24 @@ export const WYNIKI = {
    "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2415,
-   "tbtMs": 0
+   "lcpMs": 2419,
+   "tbtMs": 58
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4356,
-   "tbtMs": 49
+   "lcpMs": 4359,
+   "tbtMs": 52
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 571,
-   "slowa": 2792,
-   "sredniaDlugoscZdania": 4.9,
-   "procentTrudnych": 12.4,
-   "fog": 6.9
+   "zdania": 578,
+   "slowa": 2867,
+   "sredniaDlugoscZdania": 5,
+   "procentTrudnych": 12.5,
+   "fog": 7
   },
   "ref": {
    "zdania": 83,

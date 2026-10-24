@@ -60,11 +60,13 @@ export const naleznosci = [
   { id: 'ulga', tytul: 'Ulga na dziecko w PIT', kwota: 'ok. 1 112 zł rocznie', dlaczego: 'Dopiszemy ją sami do Twojego e-PIT za 2026 r. Nie musisz nic robić.', status: 'automatycznie w lutym', cel: '#/naleznosci', zrodlo: ['gov.pl: Skorzystaj z ulgi podatkowej na dziecko', 'https://www.gov.pl/web/gov/skorzystaj-z-ulgi-podatkowej-na-dziecko'] },
 ];
 
+// Przypomnienia (tylko dają znać) i zlecenia (robią coś za Ciebie, jak zlecenie stałe w banku).
+// Każdy opis odpowiada na trzy pytania: co się stanie, kiedy i jak to zatrzymać.
 export const autopilot = [
-  { id: 'podatek', tytul: 'Podatek od nieruchomości', opis: 'Płać raty z konta w dniu terminu. Przed każdą płatnością dostaniesz powiadomienie i możesz ją wstrzymać.', wl: false },
-  { id: 'dokumenty', tytul: 'Ważność dokumentów', opis: 'Przypomnij 60, 30 i 7 dni przed końcem ważności. Przygotuj wniosek z danymi i zdjęciem.', wl: true },
-  { id: 'pojazd', tytul: 'OC i badanie techniczne', opis: 'Przypomnij 30 i 7 dni wcześniej. Pokaż stacje kontroli pojazdów w pobliżu.', wl: true },
-  { id: 'adres', tytul: 'Jeden adres w państwie', opis: 'Gdy zmienisz meldunek, sami powiadomimy urząd skarbowy, ZUS, NFZ i bazę pojazdów.', wl: true },
+  { id: 'dokumenty', rodzaj: 'przypomnienie', tytul: 'Koniec ważności dokumentów', opis: 'Damy znać 60, 30 i 7 dni przed końcem ważności dowodu, prawa jazdy i paszportu. Wniosek przygotujemy, ale wysyłasz go Ty.', wl: true },
+  { id: 'pojazd', rodzaj: 'przypomnienie', tytul: 'OC i badanie techniczne auta', opis: 'Damy znać 30 i 7 dni przed końcem OC i badania technicznego. Pokażemy stacje kontroli w pobliżu.', wl: true },
+  { id: 'adres', rodzaj: 'zlecenie', tytul: 'Nowy adres w urzędach', opis: 'Gdy zmienisz meldunek, przekażemy nowy adres do urzędu skarbowego, ZUS, NFZ i bazy pojazdów. Nie musisz pisać do każdego urzędu.', wl: false },
+  { id: 'podatek', rodzaj: 'zlecenie', tytul: 'Raty podatku od nieruchomości', opis: 'W dniu terminu zapłacimy ratę z Twojego konta. Dzień wcześniej dostaniesz powiadomienie i możesz płatność wstrzymać.', wl: false },
 ];
 
 // Rejestr dostępu do danych: kto, kiedy, po co i na jakiej podstawie (wzór: Estonia, „Andmejälgija”).

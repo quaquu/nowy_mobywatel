@@ -20,7 +20,7 @@ Metoda: zakładamy, że prototyp **odpadł albo został rozbity podczas prezenta
 - **Nic nie wychodzi bez podpisu.** Każda sprawa kończy się tym samym arkuszem zgody: co, dokąd, jakie dane, czego nie da się cofnąć. Test `anulowanie` i `wstecz-zamyka-arkusz` sprawdzają, że wyjście nic nie wysyła.
 - **Państwo nie zbiera nowych danych.** Używa tych, które już ma, w momencie, gdy i tak by ich użyło (USC i tak zna PESEL matki).
 - **Rejestr dostępu** pokazuje każdy odczyt: kto, kiedy, po co, na jakiej podstawie. Po wysłaniu pakietu „Narodziny” od razu widać nowe wpisy (ZUS, gmina). Podejrzany odczyt (operator komórkowy) jest oznaczony.
-- **Autopilot jest dobrowolny** i każdą funkcję można wyłączyć jednym przełącznikiem. Płatność zawsze z powiadomieniem dzień wcześniej.
+- **Zlecenia są dobrowolne** i każde wyłącza się jednym przełącznikiem. Nazwa i działanie są wzięte z bankowości („zlecenie stałe”), którą ludzie znają. Przypomnienia tylko dają znać, a zlecenie zawsze uprzedza dzień wcześniej.
 - „Należy Ci się” w wersji wdrożeniowej to opcja do włączenia, a nie domyślne profilowanie (patrz [macierz](MACIERZ_WYKONALNOSCI.md)).
 
 ## Zarzut 2: „AI będzie zmyślać przepisy i wysyłać wnioski”

@@ -41,13 +41,13 @@ export function jury() {
       <li class="poz">${ic('bolt', 'okr')}<span><b>Estonia</b><small>usługi proaktywne według zdarzeń życiowych; rejestr, kto czytał moje dane</small></span></li>
       <li class="poz">${ic('baby', 'okr')}<span><b>Singapur, LifeSG</b><small>urodzenie i świadczenia w jednym pakiecie: z 60 do 15 minut</small></span></li>
       <li class="poz">${ic('gift', 'okr')}<span><b>Korea, Gov24</b><small>lista świadczeń, które Ci przysługują</small></span></li>
-      <li class="poz">${ic('clock', 'okr')}<span><b>Abu Zabi, TAMM AutoGov</b><small>sprawy powtarzalne na autopilocie, za zgodą</small></span></li>
+      <li class="poz">${ic('clock', 'okr')}<span><b>Abu Zabi, TAMM AutoGov</b><small>sprawy powtarzalne załatwiane za obywatela, za jego zgodą</small></span></li>
       <li class="poz">${ic('chat', 'okr')}<span><b>Ukraina, Diia.AI</b><small>asystent, który wykonuje usługi, także głosem</small></span></li>
       <li class="poz">${ic('mail', 'okr')}<span><b>Włochy, IO</b><small>jedna skrzynka z płatnościami od 15 tys. urzędów</small></span></li>
     </ul>
 
     <h2 class="sekcja">Uczciwie: co już jest w mObywatelu</h2>
-    <p>Dokumenty w telefonie, e-Doręczenia, historia pojazdu, punkty karne, zastrzeżenie PESEL, zawieszenie dowodu, mStłuczka i informacja o odbiorcach danych z rejestru PESEL (na wniosek, jako plik) już działają. Nie udajemy, że to nasze. Nowe są: sprawy przychodzące same, pakiety spraw z jednym podpisem, „Należy Ci się”, autopilot, bieżący rejestr dostępu do danych ze wszystkich rejestrów, sprawy bliskich, tryb prosty i odzyskiwanie dostępu bez pętli.</p>
+    <p>Dokumenty w telefonie, e-Doręczenia, historia pojazdu, punkty karne, zastrzeżenie PESEL, zawieszenie dowodu, mStłuczka i informacja o odbiorcach danych z rejestru PESEL (na wniosek, jako plik) już działają. Nie udajemy, że to nasze. Nowe są: sprawy przychodzące same, pakiety spraw z jednym podpisem, „Należy Ci się”, przypomnienia i zlecenia stałe, bieżący rejestr dostępu do danych ze wszystkich rejestrów, sprawy bliskich, tryb prosty i odzyskiwanie dostępu bez pętli.</p>
 
     <h2 class="sekcja">Dokumentacja</h2>
     <ul class="lista mala">

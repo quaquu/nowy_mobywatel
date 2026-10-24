@@ -17,7 +17,8 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 | Obszar | Co działa |
 |---|---|
 | Sprawy życiowe | Narodziny dziecka (historia flagowa), przeprowadzka, kupno używanego auta, utrata dokumentów, nowy dowód; 5 kolejnych w podglądzie planu |
-| Płatności | Mandat z fotoradaru i podatek od nieruchomości (BLIK), autopilot płatności za zgodą |
+| Płatności | Mandat z fotoradaru i podatek od nieruchomości (BLIK), zlecenie stałe płatności za zgodą |
+| Przypomnienia i zlecenia | Przypomnienie tylko daje znać o terminie; zlecenie robi coś za Ciebie (jak zlecenie stałe w banku), zawsze z uprzedzeniem |
 | Należy Ci się | Świadczenia wykryte z rejestrów, z uzasadnieniem i źródłem |
 | Prywatność | „Kto sprawdzał moje dane” z celem i podstawą prawną, „Co państwo o mnie wie”, „Pokaż tylko to, co potrzebne” |
 | Bliscy | Sprawy mamy na podstawie upoważnienia (wizyta urzędnika w domu) |
@@ -39,7 +40,7 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | Złośliwe prośby odrzucone (test) | 5/5 | – |
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |
 | Lighthouse, telefon: wydajność / dostępność | 97 / 100 | 82 / 87 |
-| Czytelność FOG-PL | 6,9 | 7,1 |
+| Czytelność FOG-PL | 7,0 | 7,1 |
 | Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł | 92,0% / 95,4% | – |
 | Crawler: 37 tras × 4 szerokości (320–430 px) | 0 problemów | – |
 | Offline po pierwszym otwarciu | tak | – |

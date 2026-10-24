@@ -114,7 +114,7 @@ export async function sprawy(url) {
   });
   await krok('podatek', async p => {
     await p.goto(url + '#/podatek'); await p.fill('#blik-p', '123456'); await p.check('#auto-pod'); await p.click('#f-pod .btn.glowny'); await podpisz(p);
-    if (!/zapłacą się same/.test(await p.textContent('main'))) throw new Error('autopilot nie zapisany');
+    if (!/ze zlecenia stałego/.test(await p.textContent('main'))) throw new Error('zlecenie stałe nie zapisane');
   });
   await krok('mama', async p => {
     await p.goto(url + '#/bliscy/mama'); await p.click('#wizyta'); await podpisz(p);

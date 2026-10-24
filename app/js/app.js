@@ -26,7 +26,7 @@ const TRASY = [
   [/^\/skrzynka$/, () => W.skrzynkaWidok()],
   [/^\/pismo\/([a-z]+)$/, m => W.pismo(m[1])],
   [/^\/naleznosci$/, () => W.naleznosciWidok()],
-  [/^\/autopilot$/, () => W.autopilotWidok()],
+  [/^\/(zlecenia|autopilot)$/, () => W.autopilotWidok()],
   [/^\/dane$/, () => W.dane()],
   [/^\/dane\/dostep$/, () => W.dostepWidok()],
   [/^\/dane\/rejestry$/, () => W.rejestry()],
@@ -45,7 +45,7 @@ const ZAKLADKI = [
   ['#/sprawy', 'list', 'Sprawy', /^\/(sprawy|sprawa|mandat|podatek)/],
   ['#/asystent', 'chat', 'Asystent', /^\/asystent/],
   ['#/dokumenty', 'wallet', 'Dokumenty', /^\/(dokument|pokaz)/],
-  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|skrzynka|pismo|naleznosci|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test)/],
+  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test)/],
 ];
 
 function zastosujUstawienia() {

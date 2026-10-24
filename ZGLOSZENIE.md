@@ -32,7 +32,7 @@ Moja wersja odwraca kierunek. Państwo przychodzi ze sprawą: szpital zgłosił 
 Co jeszcze jest w prototypie:
 • Przeprowadzka, kupno auta (historia z ostrzeżeniem o cofniętym liczniku, PCC liczony z ceny), utrata dokumentów, nowy dowód, mandat i podatek z BLIK.
 • „Należy Ci się”: świadczenia wykryte z rejestrów (wzór: Gov24, Korea).
-• Autopilot za zgodą: przypomnienia i płatności, zawsze z powiadomieniem wcześniej (wzór: TAMM, Abu Zabi).
+• Przypomnienia i zlecenia: przypomnienie daje znać o terminie, a zlecenie (jak zlecenie stałe w banku) np. opłaci ratę podatku, zawsze z uprzedzeniem dzień wcześniej (wzór: TAMM, Abu Zabi).
 • „Kto sprawdzał moje dane”: każdy odczyt z celem i podstawą prawną, z ostrzeżeniem o podejrzanym odczycie (wzór: Estonia).
 • Sprawy bliskich: córka zamawia wizytę urzędnika u 78-letniej mamy, która widzi, co dzieje się w jej imieniu.
 • „Nie możesz się zalogować?”: odpowiedź na najczęstszą skargę. 33% ocen 1–2★ z 1600 przeanalizowanych recenzji mObywatela dotyczy logowania i „pętli” certyfikatu.
