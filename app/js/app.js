@@ -1,6 +1,6 @@
 // Router i powłoka aplikacji.
 import { ic } from './icons.js';
-import { stan, $, $$, ogloszenie } from './core.js';
+import { stan, $, $$, ogloszenie, resetuj } from './core.js';
 import * as W from './widoki.js';
 import * as S from './sprawy.js';
 import { asystent } from './asystent.js';
@@ -77,11 +77,46 @@ function pokaz() {
   $$('#nawigacja a').forEach((a, i) => { const akt = ZAKLADKI[i][3].test(sciezka); a.classList.toggle('akt', akt); akt ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); });
   naglowek();
   scrollTo(0, 0);
+  const apl = $('.aplikacja'); if (apl) apl.scrollTop = 0;
+  $$('.panel-kroki a').forEach(a => a.classList.toggle('akt', a.getAttribute('href').slice(1) === sciezka));
   if (!pierwszy) { $('h1', main)?.focus({ preventScroll: true }); ogloszenie(widok.tytul); }
   pierwszy = false;
 }
 
+// Widok na komputerze: „telefon” (symulacja iPhone'a z panelem opisu) albo „pełny ekran”.
+// Na wąskich ekranach (telefon) zawsze pełny ekran. Wybór zapamiętany; można go wymusić adresem ?widok=telefon|pelny.
+const KLUCZ_WIDOKU = 'mobywatel-proto-widok';
+function trybWidoku() {
+  const z = new URLSearchParams(location.search).get('widok');
+  if (z === 'telefon' || z === 'pelny') { try { localStorage.setItem(KLUCZ_WIDOKU, z); } catch {} return z; }
+  try { return localStorage.getItem(KLUCZ_WIDOKU) || 'telefon'; } catch { return 'telefon'; }
+}
+function ustawWidok(tryb = trybWidoku()) {
+  const h = document.documentElement;
+  const szeroki = innerWidth >= 900 && innerHeight >= 600;
+  h.classList.toggle('ramka', szeroki && tryb === 'telefon');
+  h.classList.toggle('pelny', szeroki && tryb === 'pelny');
+  $('#telefon-btn').hidden = !(szeroki && tryb === 'pelny');
+  h.style.setProperty('--skala-tel', Math.min(1, (innerHeight - 48) / 868).toFixed(3));
+}
+function zmienWidok(tryb) {
+  try { localStorage.setItem(KLUCZ_WIDOKU, tryb); } catch {}
+  ustawWidok(tryb);
+  try {
+    if (tryb === 'pelny' && !document.fullscreenElement) document.documentElement.requestFullscreen?.().catch(() => {});
+    if (tryb === 'telefon' && document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+  } catch {}
+}
+function zegar() {
+  const z = $('#zegar'); if (z) z.textContent = new Date().toLocaleTimeString('pl-PL', { hour: 'numeric', minute: '2-digit' });
+}
+
 function powloka() {
+  ustawWidok(); zegar(); setInterval(zegar, 30000);
+  addEventListener('resize', () => ustawWidok());
+  $('#pelny-btn').onclick = () => zmienWidok('pelny');
+  $('#telefon-btn').onclick = () => zmienWidok('telefon');
+  $('#od-nowa-btn').onclick = () => { resetuj(); location.hash = '#/start'; dispatchEvent(new Event('ustawienia')); };
   $('#nawigacja').innerHTML = ZAKLADKI.map(([h, i, t]) => `<a href="${h}">${ic(i)}<span>${t}</span></a>`).join('');
   $('#ustawienia-btn').innerHTML = ic('gear');
   zastosujUstawienia();

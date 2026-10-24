@@ -34,6 +34,14 @@ export async function axeNasz(url, trasy) {
     wyniki[`${w}${ciemny ? 'c' : ''} tryb prosty`] = await runAxe(p);
     await ctx.close();
   }
+  // Komputer: symulacja telefonu z panelem opisu (jasny i ciemny motyw)
+  for (const ciemny of [false, true]) {
+    const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: ciemny ? 'dark' : 'light', serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    await p.goto(url + '#/start'); await p.waitForSelector('main h1');
+    wyniki[`1440${ciemny ? 'c' : ''} telefon z panelem`] = await runAxe(p);
+    await ctx.close();
+  }
   await b.close();
   return zbierz(wyniki);
 }

@@ -162,6 +162,37 @@ export async function sprawy(url) {
     const json = JSON.parse(await (await import('node:fs/promises')).readFile(await dl.path(), 'utf8'));
     if (json.wyniki[0].sukces !== true || json.sus.wynik !== 100) throw new Error('zły eksport');
   });
+  // Komputer: symulacja telefonu z panelem, arkusz zgody w telefonie, przełączanie na pełny ekran i z powrotem.
+  {
+    const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { window.__SZYBKO = true; });
+    const p = await ctx.newPage(); const bledy = []; p.on('pageerror', e => bledy.push(String(e)));
+    try {
+      await p.goto(url + '#/start'); await p.waitForSelector('main h1');
+      const w = await p.evaluate(() => {
+        const t = document.getElementById('telefon').getBoundingClientRect(), n = document.getElementById('nawigacja').getBoundingClientRect();
+        const wSrodku = r => r.left >= t.left - 1 && r.right <= t.right + 1 && r.top >= t.top - 1 && r.bottom <= t.bottom + 1;
+        return { ramka: document.documentElement.classList.contains('ramka'), panel: !!document.querySelector('.panel').offsetParent, nawWTelefonie: wSrodku(n), t };
+      });
+      if (!w.ramka || !w.panel || !w.nawWTelefonie) throw new Error('zły układ ramki: ' + JSON.stringify(w));
+      await p.click('.panel-kroki a[data-panel="1"]'); await p.waitForSelector('#f-nar');
+      await p.click('[data-imie="Zofia"]'); await p.click('#nar-dalej'); await p.waitForSelector('dialog.arkusz');
+      const d = await p.evaluate(() => { const t = document.getElementById('telefon').getBoundingClientRect(), r = document.querySelector('dialog.arkusz').getBoundingClientRect(), ok = document.getElementById('arkusz-ok').getBoundingClientRect();
+        return r.left >= t.left - 1 && r.right <= t.right + 1 && r.bottom <= t.bottom + 1 && ok.bottom <= t.bottom + 1 && ok.top >= t.top; });
+      if (!d) throw new Error('arkusz zgody poza telefonem albo przycisk podpisu niewidoczny');
+      await podpisz(p);
+      if (!/Wszystko wysłane jednym podpisem/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia w ramce');
+      await p.click('#pelny-btn');
+      if (!(await p.evaluate(() => document.documentElement.classList.contains('pelny') && !document.documentElement.classList.contains('ramka')))) throw new Error('nie przełączył na pełny ekran');
+      await p.click('#telefon-btn');
+      if (!(await p.evaluate(() => document.documentElement.classList.contains('ramka')))) throw new Error('nie wrócił do telefonu');
+      await p.goto(url + '?widok=pelny#/start'); await p.waitForSelector('main h1');
+      if (!(await p.evaluate(() => document.documentElement.classList.contains('pelny')))) throw new Error('?widok=pelny nie działa');
+      wyniki['widok-komputer'] = true;
+    } catch (e) { problemy.push('widok-komputer: ' + e.message.split('\n')[0]); wyniki['widok-komputer'] = false; }
+    if (bledy.length) problemy.push('widok-komputer: błędy JS ' + bledy.join('; '));
+    await ctx.close();
+  }
   await b.close();
   return { wyniki, problemy };
 }

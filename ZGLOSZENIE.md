@@ -47,7 +47,7 @@ Sprawdzone pomiarami, a nie opinią (te same narzędzia na obu prototypach, kod 
 • polski model Bielik 11B, uruchomiony lokalnie jako wsparcie reguł: 95,4% trafień;
 • dostępność axe (WCAG 2.2 AA): 0 naruszeń vs 7 reguł w referencji;
 • Lighthouse na telefonie: wydajność 97, dostępność 100 (referencja: 82 i 87);
-• 37 ekranów × 4 szerokości (320–430 px) bez błędów; działa offline.
+• 37 ekranów × 4 szerokości (320–430 px) bez błędów i bez ślepych zaułków; w referencji na stronie 6 z 20 podpowiedzi startowych kończy się „Tego w tej wersji jeszcze nie załatwię”; działa offline.
 
 Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i historia pojazdu już istnieją. Wykorzystuję je jako klocki. Macierz wykonalności prawnej pokazuje, co da się wdrożyć bez zmian ustaw (17 z 30 elementów), a co ich wymaga. Na stronie „Dla jury” w prototypie jest instrukcja na 60 sekund i tryb testowy z pomiarem czasu oraz ankietą SUS.
 ```

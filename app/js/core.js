@@ -85,7 +85,14 @@ export function arkuszZgody({ tytul, pozycje, dane = [], cofniecie, przycisk = '
       res(true);
     });
     d.showModal();
-    $('#arkusz-ok', d).focus();
+    // W symulacji telefonu arkusz wysuwa się z dołu ekranu telefonu, a nie okna przeglądarki.
+    const tel = document.documentElement.classList.contains('ramka') && document.getElementById('telefon');
+    if (tel) {
+      const r = tel.getBoundingClientRect();
+      Object.assign(d.style, { position: 'fixed', margin: '0', left: r.left + 'px', width: r.width + 'px', maxWidth: r.width + 'px', top: 'auto', bottom: (innerHeight - r.bottom) + 'px', maxHeight: (r.height * 0.9) + 'px', borderRadius: '24px 24px 46px 46px' });
+    }
+    // fokus na przycisku podpisu, ale bez przewijania: najpierw widać tytuł i listę
+    $('#arkusz-ok', d).focus({ preventScroll: true }); d.querySelector('.arkusz-in').scrollTop = 0; d.scrollTop = 0;
   });
 }
 

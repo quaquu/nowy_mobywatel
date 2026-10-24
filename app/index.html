@@ -15,6 +15,9 @@
 </head>
 <body>
 <a class="skok" href="#tresc">Przejdź do treści</a>
+<div class="pulpit">
+<div class="telefon" id="telefon">
+<div class="pasek-stanu" aria-hidden="true"><span id="zegar">9:41</span><span class="wyspa"></span><span class="ikony-stanu"><svg viewBox="0 0 17 11" width="17" height="11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx=".8"/><rect x="4.6" y="4.8" width="3" height="6.2" rx=".8"/><rect x="9.2" y="2.4" width="3" height="8.6" rx=".8"/><rect x="13.8" y="0" width="3" height="11" rx=".8"/></svg><span class="bateria"></span></span></div>
 <div class="aplikacja">
   <header class="gora">
     <a href="#/start" class="marka" aria-label="Start"><img src="icon.svg" alt="" width="28" height="28"><span>mObywatel <small>prototyp</small></span></a>
@@ -25,6 +28,30 @@
   <main id="tresc" tabindex="-1"><noscript><p>Prototyp wymaga włączonego JavaScriptu.</p></noscript></main>
   <nav id="nawigacja" class="dol" aria-label="Główna nawigacja"></nav>
 </div>
+<div class="belka-domowa" aria-hidden="true"></div>
+</div>
+<aside class="panel" aria-labelledby="panel-t">
+  <a class="panel-wroc" href="https://mobywatel.ai/" target="_blank" rel="noopener">← mObywatel Challenge</a>
+  <p class="panel-et">Niezależny prototyp · dane fikcyjne</p>
+  <h2 id="panel-t" class="panel-t">Państwo, które przychodzi ze sprawą</h2>
+  <p class="panel-o">Klikalny prototyp mObywatela. Zamiast czekać, aż zapytasz, aplikacja sama przychodzi ze sprawą, łączy sprawy z kilku urzędów i prosi o jeden podpis.</p>
+  <p class="panel-sek">Co sprawdzić</p>
+  <ol class="panel-kroki">
+    <li><a href="#/sprawa/narodziny" data-panel="1"><span><b>Narodziny dziecka:</b> 5 spraw w 4 urzędach, jeden podpis.</span></a></li>
+    <li><a href="#/dane/dostep" data-panel="2"><span><b>Kto sprawdzał moje dane:</b> każdy odczyt z celem i podstawą prawną.</span></a></li>
+    <li><a href="#/asystent" data-panel="3"><span><b>Asystent:</b> napisz „zgubiłem portfel” albo spróbuj go oszukać.</span></a></li>
+    <li><a href="#/zlecenia" data-panel="4"><span><b>Przypomnienia i zlecenia:</b> co państwo zrobi za Ciebie, za zgodą.</span></a></li>
+    <li><a href="#/dostep" data-panel="5"><span><b>Nie możesz się zalogować?</b> Odpowiedź na najczęstszą skargę.</span></a></li>
+  </ol>
+  <div class="panel-przyciski">
+    <button type="button" class="btn glowny" id="pelny-btn">Pełny ekran</button>
+    <button type="button" class="btn drugi" id="od-nowa-btn">Zacznij od nowa</button>
+  </div>
+  <p class="panel-linki"><a href="#/jury">Dla jury: wyniki pomiarów</a> · <a href="#/test">Tryb testowy</a> · <a href="https://github.com/quaquu/nowy_mobywatel" target="_blank" rel="noopener">Kod i dokumentacja</a></p>
+  <p class="panel-uw">To symulacja telefonu. Na telefonie aplikacja otwiera się na całym ekranie. To nie jest usługa administracji publicznej.</p>
+</aside>
+</div>
+<button type="button" class="btn drugi" id="telefon-btn" hidden>Pokaż w telefonie</button>
 <div id="ogloszenia" class="sr" aria-live="polite" role="status"></div>
 <script type="module" src="js/app.js"></script>
 </body>

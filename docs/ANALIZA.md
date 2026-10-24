@@ -47,6 +47,20 @@ Zastrzeżenia do porównania:
 - Pole „sprawy załatwione” to sprawy wysłane do instytucji w historii flagowej. W referencji po wyborze 800+ znika podpowiedź Karty Dużej Rodziny, więc liczymy dwie.
 - Czytelność obu prototypów jest podobna. Nie traktujemy jej jako przewagi.
 
+### Przeklikanie strony na żywo (mobywatel.ai/aplikacja, 24.10.2026)
+
+Wszystkie podpowiedzi z ekranów startowych czterech osób pokazowych kliknięte w przeglądarce, na stronie, którą widzi jury. Skrypty: [`research/referencja-na-zywo/`](../research/referencja-na-zywo/).
+
+| Sprawdzenie | Wynik |
+|---|---|
+| Podpowiedzi na ekranie startowym kończące się „Tego w tej wersji jeszcze nie załatwię” | **6 z 20** (Jan: 3 z 5, Ewa: 2 z 5, Kacper: 1 z 5, Marta: 0 z 5) |
+| Te same zdania wpisane w pole rozmowy | 6 z 8 nierozpoznane |
+| Zgodność strony na żywo z routerem z pobranego kodu (21 zdań ze zbioru testowego) | 21/21, więc wynik 31% opisuje stronę na żywo |
+
+Niedziałające podpowiedzi: „Co chce ode mnie Urząd Skarbowy?”, „Chcę na chwilę odblokować PESEL”, „Jedziemy z dziećmi do Egiptu” (Jan), „Ile będę miała emerytury?”, „Jakie recepty ma moja mama?” (Ewa), „Chcę głosować w Gdańsku” (Kacper). W pełnej wersji z modelem językowym prawdopodobnie działają; w wersji przeglądarkowej to ślepe zaułki. Drobna rzecz: po takim zaułku Jan dostaje podpowiedź w formie żeńskiej („Zgubiłam portfel”).
+
+Dla porównania w tym prototypie crawler przechodzi 37 ekranów i nie znajduje ani jednego ślepego zaułka.
+
 ### Wnioski z przeklikania
 
 1. **Reaktywność.** Asystent czeka, aż obywatel sam zapyta. Kto nie wie, że należy mu się becikowe, nie zapyta o nie.
