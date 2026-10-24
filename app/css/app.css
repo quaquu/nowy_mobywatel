@@ -65,7 +65,7 @@ a { color: var(--gl); text-underline-offset: .18em; text-decoration-thickness: 1
 
 /* ---------- Powłoka: pasek nawigacji, treść, pasek kart ---------- */
 .aplikacja { max-width: 480px; margin: 0 auto; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; background: var(--tlo); }
-.gora { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: var(--o1); min-height: 52px; padding: var(--o1) var(--o3) var(--o1) var(--o4); background: color-mix(in srgb, var(--tlo) 86%, transparent); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+.gora { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: var(--o1); min-height: 52px; padding: var(--o1) var(--o3) var(--o1) var(--o4); background: color-mix(in srgb, var(--tlo) 94%, transparent); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
 .marka { display: flex; align-items: center; gap: var(--o2); color: var(--tekst); text-decoration: none; font-weight: 700; font-size: var(--t-naglowek); }
 .marka img { border-radius: 7px; }
 .marka small { font-weight: 400; color: var(--tekst2); font-size: var(--t-przypis); }
@@ -89,7 +89,7 @@ h2 { font-size: var(--t-tytul3); line-height: 1.25; margin: 0 0 var(--o2); }
 .licz { font-size: var(--t-objasn); font-weight: 400; color: var(--tekst2); font-variant-numeric: tabular-nums; }
 .licz::before { content: "· "; }
 
-.dol { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10; display: flex; justify-content: center; background: color-mix(in srgb, var(--pow) 82%, transparent); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: 1px solid var(--separator); padding-bottom: env(safe-area-inset-bottom); }
+.dol { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10; display: flex; justify-content: center; background: color-mix(in srgb, var(--pow) 94%, transparent); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-top: 1px solid var(--separator); padding-bottom: env(safe-area-inset-bottom); }
 .dol a { flex: 1; max-width: 96px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 8px; min-height: 56px; color: var(--tekst3); text-decoration: none; font-size: 11px; font-weight: 700; letter-spacing: .01em; }
 .dol a .ic { width: 26px; height: 26px; }
 .dol a.akt { color: var(--gl); }

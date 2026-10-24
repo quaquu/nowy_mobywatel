@@ -145,7 +145,7 @@ export async function sprawy(url) {
   await krok('tryb-prosty', async p => {
     await p.goto(url + '#/ustawienia'); await p.check('[data-ust="prosty"]'); await p.goto(url + '#/start');
     if ((await p.locator('.kafle a').count()) !== 4) throw new Error('brak 4 kafli');
-    const fs = await p.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
+    const fs = await p.evaluate(() => parseFloat(getComputedStyle(document.body).fontSize));
     if (fs < 19.9) throw new Error('tekst nie powiększony: ' + fs);
   });
   await krok('tryb-testowy', async p => {

@@ -50,9 +50,12 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |
 | Lighthouse, telefon: wydajność / dostępność | 97 / 100 | 82 / 87 |
 | Czytelność FOG-PL | 7,0 | 7,1 |
+| Detektor Impeccable 4.7.0: wzorce „interfejsu z AI” i błędy jakości (kod + ekrany) | 0 | 18 (kod 7, ekran 11) |
 | Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł | 92,0% / 95,4% | – |
 | Crawler: 37 tras × 4 szerokości (320–430 px) | 0 problemów | – |
 | Offline po pierwszym otwarciu | tak | – |
+
+Zastrzeżenie do wiersza Impeccable: u nas wyłączona jest jedna reguła dla jednego kroju (Lato jako „nadużywany krój”, świadoma decyzja zapisana w `.impeccable/config.json`); bez tego wyjątku byłoby 1 zgłoszenie. W referencji to samo zgłoszenie liczy się raz (Inter).
 
 Szczegóły i zastrzeżenia: [docs/ANALIZA.md](docs/ANALIZA.md). Wyniki modelu Bielik: [research/bielik/](research/bielik/), skrypt: [tests/bielik/](tests/bielik/).
 
