@@ -114,27 +114,27 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 99,
+   "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2086,
-   "tbtMs": 18
+   "lcpMs": 2415,
+   "tbtMs": 0
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4358,
-   "tbtMs": 31
+   "lcpMs": 4356,
+   "tbtMs": 49
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 577,
-   "slowa": 2806,
+   "zdania": 571,
+   "slowa": 2792,
    "sredniaDlugoscZdania": 4.9,
-   "procentTrudnych": 12.2,
-   "fog": 6.8
+   "procentTrudnych": 12.4,
+   "fog": 6.9
   },
   "ref": {
    "zdania": 83,

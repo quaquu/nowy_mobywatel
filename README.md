@@ -38,8 +38,8 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | Rozpoznanie sprawy, odłożony zbiór testowy (n=87) | 92,0% | 31,0% |
 | Złośliwe prośby odrzucone (test) | 5/5 | – |
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |
-| Lighthouse, telefon: wydajność / dostępność | 99 / 100 | 82 / 87 |
-| Czytelność FOG-PL | 6,8 | 7,1 |
+| Lighthouse, telefon: wydajność / dostępność | 97 / 100 | 82 / 87 |
+| Czytelność FOG-PL | 6,9 | 7,1 |
 | Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł | 92,0% / 95,4% | – |
 | Crawler: 37 tras × 4 szerokości (320–430 px) | 0 problemów | – |
 | Offline po pierwszym otwarciu | tak | – |

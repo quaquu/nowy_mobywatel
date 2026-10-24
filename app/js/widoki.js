@@ -9,6 +9,39 @@ const otwarte = () => zadania.filter(z => !stan.zrobione[z.id]);
 const nowePisma = () => skrzynka.filter(p => p.nowa && !stan.przeczytane[p.id]).length;
 export const licznikSkrzynki = nowePisma;
 
+
+// Stos kart dokumentów jak w portfelu mObywatela: karty z tyłu wystają paskiem z nazwą, przednia jest cała.
+// Pozorny kod QR (wzór dekoracyjny, nic nie koduje): 21×21 modułów, trzy znaczniki narożne.
+function kodQR(ziarno = 7) {
+  let x = ziarno, rects = '';
+  const los = () => (x = (x * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const znacznik = (r, c) => r >= 0 && c >= 0 && r < 7 && c < 7 && (r === 0 || r === 6 || c === 0 || c === 6 || (r > 1 && r < 5 && c > 1 && c < 5));
+  for (let r = 0; r < 21; r++) for (let c = 0; c < 21; c++) {
+    const wNarozniku = (r < 8 && c < 8) || (r < 8 && c > 12) || (r > 12 && c < 8);
+    const pelny = wNarozniku ? (znacznik(r, c) || znacznik(r, c - 14) || znacznik(r - 14, c)) : los() > 0.52;
+    if (pelny) rects += `<rect x="${c}" y="${r}" width="1" height="1"/>`;
+  }
+  return `<svg viewBox="-2 -2 25 25" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="-2" y="-2" width="25" height="25" fill="#fff"/><g fill="#111216">${rects}</g></svg>`;
+}
+const SYLWETKA = '<svg viewBox="0 0 64 80" aria-hidden="true" focusable="false"><rect width="64" height="80" fill="#e4e7ee"/><circle cx="32" cy="30" r="13" fill="#b9bfcc"/><path d="M8 80c2-17 12-26 24-26s22 9 24 26z" fill="#b9bfcc"/></svg>';
+function kartaDok(d, przod) {
+  const dolna = przod
+    ? `<span class="kd-dol"><span class="kd-foto">${SYLWETKA}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill">${ic('eye')}Pokaż dane</span></span>`
+    : '';
+  return `<a class="kd kd-${d.kolor}${przod ? ' kd-przod' : ''}" href="${d.href || '#/dokument/' + d.id}" aria-label="${esc(d.nazwa)}: ${esc(d.linia)}${d.alert ? ', ' + esc(d.alert) : ''}">
+    <span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b>${d.alert && !przod ? '<span class="kd-kropka" aria-hidden="true"></span>' : ''}<span class="kd-holo" aria-hidden="true"></span></span>
+    ${przod ? `<span class="kd-linia">${esc(d.linia)}</span>` : ''}${dolna}</a>`;
+}
+export function stos(lista) {
+  // ostatnia karta jest z przodu (cała), pozostałe wystają nad nią
+  return `<div class="stos" role="list">${lista.map((d, i) => `<div role="listitem">${kartaDok(d, i === lista.length - 1)}</div>`).join('')}</div>`;
+}
+const dokumentyDoStosu = () => {
+  const l = [dokumenty[2], dokumenty[1]];
+  if (stan.zrobione.narodziny) l.unshift({ id: 'corka', nazwa: `${stan.imieDziecka} ${ja.nazwisko}`, linia: 'córka · PESEL i odpis aktu w drodze', kolor: 'zielony', href: '#/bliscy' });
+  return [...l, dokumenty[0]];
+};
+
 /* ---------------- Start ---------------- */
 export function start() {
   if (stan.ustawienia.prosty) return startProsty();
@@ -21,19 +54,19 @@ export function start() {
     tytul: 'Start',
     html: `
     <h1 tabindex="-1" class="powitanie">${powitanie}, ${esc(ja.wolacz)}</h1>
+    ${narodzinyOtwarte ? `
+    <a class="hero" href="#/sprawa/narodziny" aria-label="Sprawa przyszła do Ciebie: urodziła się Twoja córka. 5 spraw w 4 instytucjach, jeden podpis. Załatw wszystko naraz.">
+      ${ic('baby', 'hero-ik')}
+      <span class="hero-tr"><span class="hero-et">Przyszła do Ciebie</span><b class="hero-t">Urodziła się Twoja córka</b><span class="hero-o">5 spraw w 4 instytucjach · jeden podpis</span></span>
+      <span class="hero-go">Załatw${ic('right')}</span>
+    </a>` : ''}
+    ${stos(dokumentyDoStosu())}
     <form class="zapytaj" action="#/asystent" role="search" id="f-zap">
       <label for="zap" class="sr">Co chcesz załatwić?</label>
       <input id="zap" name="q" placeholder="Co chcesz załatwić?" autocomplete="off" enterkeyhint="send">
       <button class="ib" aria-label="Zapytaj asystenta">${ic('send')}</button>
     </form>
 
-    ${narodzinyOtwarte ? `
-    <a class="hero" href="#/sprawa/narodziny">
-      <span class="hero-et">${ic('bolt')}Sprawa przyszła do Ciebie</span>
-      <b class="hero-t">Urodziła się Twoja córka. Gratulacje!</b>
-      <span class="hero-o">Szpital zgłosił narodziny ${fmt(dziecko.urodzone)}. Zostało 5 spraw w 4 instytucjach. Załatwisz je jednym podpisem.</span>
-      <span class="btn glowny">Załatw wszystko naraz${ic('right')}</span>
-    </a>` : ''}
 
     <section aria-labelledby="h-zad">
       <h2 id="h-zad" class="sekcja">Do zrobienia <span class="licz">${zad.length}</span></h2>
@@ -90,10 +123,9 @@ export function dokumentyWidok() {
   return {
     tytul: 'Dokumenty',
     html: `<h1 tabindex="-1">Dokumenty</h1>
-    <ul class="portfel">${dokumenty.map(d => `<li><a class="dok dok-${d.kolor}" href="#/dokument/${d.id}"><b>${esc(d.nazwa)}</b><span>${esc(d.linia)}</span>${d.alert ? `<span class="dok-alert">${ic('clock')}${esc(d.alert)}</span>` : ''}</a></li>`).join('')}
-    ${stan.zrobione.narodziny ? `<li><a class="dok dok-zielony" href="#/bliscy"><b>${esc(stan.imieDziecka)} ${esc(ja.nazwisko)}</b><span>Dane córki: PESEL i odpis aktu urodzenia (w drodze)</span></a></li>` : ''}</ul>
+    ${stos(dokumentyDoStosu())}
     <a class="karta link-karta" href="#/pokaz">${ic('eye', 'okr')}<span><b>Pokaż tylko to, co potrzebne</b><small>Np. że masz 18 lat, bez pokazywania daty urodzenia i adresu.</small></span>${ic('right', 'strz')}</a>
-    <p class="stopka-info">Dokumenty w telefonie działają już w obecnym mObywatelu. Tu dodajemy źródło i datę aktualizacji każdej danej oraz zgłaszanie błędów.</p>`,
+    <p class="stopka-info">Dokumenty w telefonie działają już w obecnym mObywatelu. Tu dodajemy źródło i datę aktualizacji każdej danej oraz zgłaszanie błędów. Karty są stylizowane: bez godła i bez oznaczeń urzędowych.</p>`,
   };
 }
 
@@ -103,7 +135,7 @@ export function dokument(id) {
   return {
     tytul: d.nazwa,
     html: `<h1 tabindex="-1">${esc(d.nazwa)}</h1>
-    <div class="dok dok-${d.kolor} dok-duzy"><b>${esc(ja.imie)} ${esc(ja.nazwisko)}</b><span>${esc(d.linia)}</span><span class="qr" role="img" aria-label="Kod do sprawdzenia dokumentu"></span></div>
+    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span><span class="kd-dol"><span class="kd-foto">${SYLWETKA}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="qr" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span></span></div>
     <section class="karta">${d.pola.map(p => wiersz(...p)).join('')}
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>
       <button class="btn tekst" id="blad-dan">Te dane są błędne? Zgłoś to</button>
@@ -133,7 +165,7 @@ export function pokaz() {
         e.preventDefault();
         const co = $('input[name=co]:checked', root).value;
         const t = { 18: 'Ta osoba ma ukończone 18 lat', tozs: `${ja.imie} ${ja.nazwisko}`, adres: ja.adres }[co];
-        $('#kod', root).innerHTML = `<div class="karta srodek"><span class="qr duzy" role="img" aria-label="Kod do zeskanowania"></span><p><b>${esc(t)}</b></p><p class="maly">Kod ważny 2 minuty. Data urodzenia, PESEL i adres ${co === 'adres' ? 'poza adresem ' : ''}pozostają ukryte.</p></div>`;
+        $('#kod', root).innerHTML = `<div class="karta srodek"><span class="qr duzy" role="img" aria-label="Kod do zeskanowania">${kodQR(Date.now() % 997)}</span><p><b>${esc(t)}</b></p><p class="maly">Kod ważny 2 minuty. Data urodzenia, PESEL i adres ${co === 'adres' ? 'poza adresem ' : ''}pozostają ukryte.</p></div>`;
       };
     },
   };

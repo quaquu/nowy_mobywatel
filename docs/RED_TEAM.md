@@ -6,7 +6,7 @@ Metoda: zakładamy, że prototyp **odpadł albo został rozbity podczas prezenta
 
 | Możliwa przyczyna | Co zrobiliśmy |
 |---|---|
-| Jury nie zrozumiało pomysłu w 2 minuty | Na starcie jest jedna karta „Sprawa przyszła do Ciebie”; historia flagowa to 4 dotknięcia. Strona „Dla jury” zaczyna się od instrukcji na 60 sekund. |
+| Jury nie zrozumiało pomysłu w 2 minuty | Na starcie jest jedna karta „Przyszła do Ciebie: Urodziła się Twoja córka”; historia flagowa to 4 dotknięcia. Strona „Dla jury” zaczyna się od instrukcji na 60 sekund. |
 | „To samo co prototyp Cieszyńskiego, tylko inaczej narysowane” | Różnica jest mierzalna: 5 spraw jednym podpisem zamiast 2 spraw dwoma podpisami, 92% vs 31% trafień w rozpoznawaniu spraw, 0 vs 7 reguł naruszonych w axe (patrz [ANALIZA.md](ANALIZA.md)). |
 | Link nie działa w dniu oceny | Statyczna strona bez serwera, bez kluczy API i bez zewnętrznych czcionek. Działa offline po pierwszym otwarciu. Test w CI przy każdej zmianie. |
 | „Za mało spraw” | 5 pełnych przebiegów + mandat, podatek, sprawy mamy, odzyskiwanie dostępu; 5 spraw w podglądzie planu. |
