@@ -1,0 +1,14 @@
+{
+  "name": "nowy-mobywatel",
+  "private": true,
+  "description": "Państwo, które przychodzi ze sprawą — prototyp na mObywatel Challenge",
+  "license": "MIT",
+  "scripts": {
+    "serve": "node tests/serve.mjs",
+    "test": "node tests/run-all.mjs"
+  },
+  "devDependencies": {
+    "axe-core": "4.10.3",
+    "lighthouse": "12.6.1"
+  }
+}

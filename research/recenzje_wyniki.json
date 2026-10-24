@@ -1,0 +1,103 @@
+{
+ "n_all": 1600,
+ "n_low": 301,
+ "counts": [
+  [
+   "Awarie, błędy, nie uruchamia się",
+   79
+  ],
+  [
+   "Logowanie, hasło, biometria, PIN",
+   65
+  ],
+  [
+   "Potwierdzenie tożsamości / certyfikat mDowodu (pętla)",
+   56
+  ],
+  [
+   "Dokumenty znikają / nie da się dodać",
+   20
+  ],
+  [
+   "Trudna obsługa, nie można znaleźć",
+   16
+  ],
+  [
+   "Nieaktualne lub błędne dane (OC, pojazdy, podatki)",
+   14
+  ],
+  [
+   "Powiadomienia (brak albo spam)",
+   13
+  ],
+  [
+   "Prywatność, bezpieczeństwo danych",
+   12
+  ],
+  [
+   "Kontakt z obsługą / infolinia",
+   6
+  ],
+  [
+   "Seniorzy, wykluczenie",
+   5
+  ],
+  [
+   "Nowy telefon / przeniesienie konta",
+   3
+  ]
+ ],
+ "examples": {
+  "Awarie, błędy, nie uruchamia się": [
+   "Slabo się wyszukuje. Zawiesza sie i naweto opinie ciężko wpisac",
+   "nawet po aktualizacji wywala mnie z aplikacji na Sony z androidem16",
+   "Dlaczego nie ma informacji o awarii mObywatela na przykład przez RCB"
+  ],
+  "Logowanie, hasło, biometria, PIN": [
+   "Nie mogę się zalogować,od momentu gdy Zresetowałam telefon.Porazka.",
+   "Mam pytanie dlaczego mój pin nie wchodzi po aktualizacji aplikacji?",
+   "pomimo spełnienia wszystkich wytycznych i tak nie można się zalogować"
+  ],
+  "Potwierdzenie tożsamości / certyfikat mDowodu (pętla)": [
+   "wpadłam w tzw. pętlę aktywacji. kręcę się w kółko próbując aktywować certyfikat 😞",
+   "strasznie duzo klikania z ta i inna aplikacja profilu zaufanego, mozna sie pogubic",
+   "okno odnowienia certyfikatu ważności zapętla się. nie da się korzystać z aplikacji"
+  ],
+  "Trudna obsługa, nie można znaleźć": [
+   "niejasne, trudne, nieklarowne kierowanie w sytuacji problemów. myślę, że to wadliwy konstrukt"
+  ],
+  "Seniorzy, wykluczenie": [
+   "mam dowud starszy który mam wazny muj dowud nie opcji skandowania jestem zawiedziony to powinno być wyproszenie danych osobowych.aplikacja to porażka i jestem bardzo zawiedziony bo to powinno być prosto ."
+  ],
+  "Nowy telefon / przeniesienie konta": [
+   "przy nowym urzadzeniu to kur...cy mozna dostac",
+   "przeniesienie z telefonu na nowszy to porażka 🤬",
+   "mam już konto i inny telefon i nie mogę się zalogować bo aplikacja nie ma tej opcji"
+  ],
+  "Powiadomienia (brak albo spam)": [
+   "Brak powiadomienia. Nie dostałem powiadomienia o tym że moje prawo jazdy straciło ważność",
+   "Aplikacja błędnie obsługuje epłatności dot. podatku od nieruchomości. Otrzymuję powiadomienia o braku zapłaty a rata jest opłacona przelewem bankowym, potwierdzono w UM. Edit 05.10: sposób opłacenia j.w. W UM kwota na rachunku została zaksięgowana, j.w. Proszę nie grać zgłaszającym w pingponga. Edit 09.10: teraz kwota jest już widoczna jako opłacona. Na infoninii polecono wyłączyć powiadomienia aplikacji. Super wsparcie. Wolałbym mieć pewność a nie nadzieję że sytuacja się nie powtórzy.",
+   "chodzi mi o konkretną funkcjonalność: można ustawić sobie info nt. aktualizacji informacji o danym kraju. dla jednego z krajów w ostatnim tygodniu wyskoczyło z pięć powiadomień o aktualizacji sytuacji. problem w tym, że nie jest pokazane co się zmieniło, wiec tak naprawdę powiadomienie jest bezużyteczne. może gdyby zmienił się stopień zagrożenia, to byłoby dość oczywiste, ale jak zmieniają się jakieś małe niuanse, to przecież nie będziemy robić screenów z historycznych zapisów i porównywać.."
+  ],
+  "Kontakt z obsługą / infolinia": [
+   "Katastrofalny kontakt z obsługą aplikacji gdy jest błąd w zapisach.",
+   "mało intuicyjna apka. Dużo niejasności, a żeby wyjaśnić to infolinia czynna tylko w godzinach kiedy najczęściej jest się w pracy. Porażka.",
+   "Mimo kontaktu z pomocą na temat braku aktualizacji OC na rok obecny od maja widoczna jest informacja o braku ubezpieczenia OC. Za każdym razem mam mały zawał widząc infomacje na czerwono!"
+  ],
+  "Dokumenty znikają / nie da się dodać": [
+   "za kazdym razem kiedy chce skorzystac z aplikacji musze aktywowac dowod ktory znika z aplikacji to jest dramat",
+   "DRAMAT. Bardzo niestabilna aplikacja, trzeba odinstalować i zainstalować od nowa, a potem znów dodawać dokumenty",
+   "Szajs. Nie wiem co ostatnio zostało zmienione w tej aplikacja ale u mnie jak i znajomych osób jest to samo brak możliwości dodania dokumentów. Aplikacja powinna zmienić nazwę na mSzajs."
+  ],
+  "Nieaktualne lub błędne dane (OC, pojazdy, podatki)": [
+   "punkty karne się nie kasują. oc pojazdów puźno się aktualizuje",
+   "Jednym słowem dramat. System nie aktualizuje się automatycznie. Przez to musiałem dwukrotnie wykupić polisę na ten sam pojazd.",
+   "System albo przeciążony albo źle zrobiony. Ciągle zamula i nie aktualizuje dokumentów, sypie błędami. Wstyd, że za tyle milionów tak toporna aplikacja powstała."
+  ],
+  "Prywatność, bezpieczeństwo danych": [
+   "Brak bezpieczeństwa, już nic mnie zdziwiło jak wyciekły dane inne",
+   "wyłudza dane, bezsensowne zabezpieczenia, które wymagają dodatkowych danych, nie dając gwarancji bezpieczeństwa, bubel",
+   "Bez użyteczny zapychacz pamięći w telefonie jeśli ktoś się włamie bendzie miał dostęp do wszystkiego głupota to wogle instalować"
+  ]
+ }
+}
