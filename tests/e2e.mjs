@@ -20,7 +20,8 @@ async function nowaStrona(b, url, w = 390) {
 const podpisz = async p => {
   await p.click('#arkusz-ok');
   await p.waitForSelector('dialog.arkusz', { state: 'detached' });
-  await p.waitForSelector('.podpis', { state: 'detached' });
+  // podpis: okienko Face ID na środku albo (w symulacji iPhone'a) w Dynamic Island
+  await p.waitForFunction(() => !document.querySelector('.podpis') && !document.querySelector('#wyspa.fid-on'));
   await p.waitForTimeout(60);
 };
 

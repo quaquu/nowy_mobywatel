@@ -155,6 +155,8 @@ Komórki i grupy: 12 px; pola: 10 px; przyciski: 12 px, małe przyciski i plakie
 
 - **Lista grupowana**: biała grupa z zaokrągleniem 12 px, wiersze ≥ 56 px, ikona w kolorze akcentu bez tła, tytuł pogrubiony, opis w kolorze drugorzędnym, strzałka w kolorze trzeciorzędnym; separator wcięty do tekstu.
 - **Sprawa, która przyszła sama**: jedna biała komórka nad portfelem: ikona, tytuł, opis i kapsuła „Załatw”. Bez etykiety nad tytułem i bez paska z boku.
+- **Karta dokumentu**: co kilka sekund przesuwa się po niej refleks światła, jak po plastikowym dokumencie; na komputerze karta unosi się pod kursorem, lekko przechyla w jego stronę, a hologram mieni się kolorami.
+- **Podpis (Face ID)**: w symulacji iPhone'a rozpoznanie twarzy wyrasta z Dynamic Island (rama, oczy, uśmiech, potem zielony znak); na telefonie ciemne okienko na środku ekranu.
 - **Arkusz zgody**: zawsze ta sama struktura (co, dokąd, jakie dane, co można cofnąć); przyciski „Wróć” i „Podpisz” przyklejone do dołu.
 - **Przyciski**: główny (wypełniony akcentem), drugi (pełne jasne wypełnienie akcentem), tekstowy (sam akcent, bez podkreślenia; podkreślenie po najechaniu).
 - **Pola**: wypełnione tłem systemowym, bez ramki; fokus 3 px w kolorze akcentu.

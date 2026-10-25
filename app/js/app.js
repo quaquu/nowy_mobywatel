@@ -7,7 +7,7 @@ import { asystent } from './asystent.js';
 import { jury } from './jury.js';
 import * as B from './obywatel.js';
 import { testWidok, podlacz } from './test.js';
-import { wjazdEkranu, wyskocz, kaskada } from './ruch.js';
+import { wjazdEkranu, wyskocz, kaskada, spokojnie } from './ruch.js';
 import { otworzSkaner, kodWidok } from './skaner.js';
 
 const TRASY = [
@@ -138,7 +138,24 @@ function zegar() {
   const z = $('#zegar'); if (z) z.textContent = new Date().toLocaleTimeString('pl-PL', { hour: 'numeric', minute: '2-digit' });
 }
 
+// Karty dokumentów przechylają się za kursorem (tylko mysz, bez „ogranicz ruch”).
+function przechylKarty() {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  addEventListener('pointermove', e => {
+    const k = e.target.closest?.('.kd');
+    $$('.kd.ruch').forEach(x => { if (x !== k) { x.classList.remove('ruch'); x.style.cssText = ''; } });
+    if (!k || spokojnie()) return;
+    const r = k.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+    k.classList.add('ruch');
+    k.style.setProperty('--ry', ((x - .5) * 10).toFixed(2) + 'deg');
+    k.style.setProperty('--rx', ((.5 - y) * 8).toFixed(2) + 'deg');
+    k.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
+    k.style.setProperty('--my', (y * 100).toFixed(1) + '%');
+  }, { passive: true });
+}
+
 function powloka() {
+  przechylKarty();
   if (window.__SZYBKO) document.documentElement.classList.add('bez-ruchu'); // testy: bez animacji
   ustawWidok(); zegar(); setInterval(zegar, 30000);
   addEventListener('resize', () => ustawWidok());

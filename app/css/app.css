@@ -253,7 +253,22 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .stos { margin: 0 0 var(--o5); }
 .stos > div + div { margin-top: calc(-66.667% + 54px); }
 .kd { position: relative; display: flex; flex-direction: column; aspect-ratio: 3 / 2; padding: var(--o4) 18px; border-radius: var(--r-karta-dok); overflow: hidden; color: #fff; text-decoration: none; box-shadow: var(--cien-dok); }
-.kd::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 100% 0%, rgb(255 255 255 / .22), transparent 55%); }
+/* Karta żyje jak prawdziwy dokument: światło przesuwa się po karcie, a na komputerze karta lekko się
+   unosi i przechyla za kursorem, refleks idzie za nim. Wszystko wyłącza „ogranicz ruch”. */
+.kd { --rx: 0deg; --ry: 0deg; --ty: 0px; --mx: 100%; --my: 0%; transform: perspective(900px) translateY(var(--ty)) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .35s var(--krzywa), box-shadow .35s var(--krzywa), filter .2s; will-change: transform; }
+.kd::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at var(--mx) var(--my), rgb(255 255 255 / .24), transparent 55%); transition: background .2s; }
+.kd::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / .16) 48%, rgb(255 255 255 / 0) 58%); background-size: 260% 100%; background-position: 130% 0; animation: polysk 7s ease-in-out infinite; }
+.stos > div:nth-child(2) .kd::after { animation-delay: 1.4s; }
+.stos > div:nth-child(3) .kd::after { animation-delay: 2.8s; }
+@keyframes polysk { 0%, 62% { background-position: 130% 0; } 100% { background-position: -40% 0; } }
+.kd.ruch { transition: transform .08s linear, box-shadow .35s var(--krzywa); }
+.kd:active { filter: brightness(.96); }
+@media (hover: hover) {
+  a.kd:hover { --ty: -4px; box-shadow: 0 22px 40px -18px rgb(0 0 0 / .45), 0 2px 6px rgb(0 0 0 / .12); }
+  .stos > div:not(:last-child) a.kd:hover { --ty: -12px; }
+  a.kd:hover .kd-holo { animation: holo 2.4s linear infinite; }
+}
+@keyframes holo { to { filter: hue-rotate(360deg); } }
 .kd > * { position: relative; }
 .kd:focus-visible { outline-offset: 3px; }
 .kd-gora { display: flex; align-items: center; gap: var(--o2); min-height: 22px; }
@@ -299,8 +314,12 @@ dialog.arkusz::backdrop { background: rgb(0 0 0 / .4); }
 .kontrolna .ok { color: var(--ok); margin-top: 2px; }
 dialog.arkusz .przyciski { position: sticky; bottom: 0; margin: var(--o3) calc(-1 * var(--o5)) calc(-1 * var(--o6)); padding: var(--o3) var(--o5) var(--o5); background: var(--pow); border-top: 1px solid var(--separator); }
 .podpis { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: rgb(0 0 0 / .25); }
-.podpis > div { display: flex; flex-direction: column; align-items: center; gap: var(--o2); width: 156px; padding: var(--o5); border-radius: 22px; background: color-mix(in srgb, var(--pow) 88%, transparent); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); color: var(--tekst); font-weight: 700; box-shadow: 0 10px 30px -10px rgb(0 0 0 / .35); }
-.podpis .ic { color: var(--gl); }
+.podpis > div { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--o2); width: 156px; height: 156px; border-radius: 34px; background: rgb(36 37 42 / .88); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); color: #fff; font-weight: 700; box-shadow: 0 10px 30px -10px rgb(0 0 0 / .45); }
+.podpis svg { width: 64px; height: 64px; }
+.podpis .fid { animation: fid-skan .9s ease-in-out infinite; }
+@keyframes fid-skan { 50% { transform: scale(.9); opacity: .75; } }
+.podpis .fid-ok { color: #5fd38a; }
+.podpis .rysuj-l { stroke-dasharray: 24; stroke-dashoffset: 24; animation: rysuj .32s .05s ease-out forwards; }
 .toast { position: fixed; left: 50%; bottom: 96px; transform: translate(-50%, 12px); opacity: 0; max-width: min(440px, calc(100% - 32px)); width: max-content; background: color-mix(in srgb, #1c1c1e 94%, transparent); color: #fff; padding: 12px 18px; border-radius: 14px; z-index: 120; transition: opacity var(--czas), transform var(--czas) var(--krzywa); font-size: var(--t-objasn); box-shadow: 0 10px 30px -12px rgb(0 0 0 / .45); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
 
@@ -348,7 +367,15 @@ html.ramka .telefon { --s: var(--skala-tel, 1); display: flex; flex-direction: c
   box-shadow: 0 0 0 11px #121214, 0 0 0 12px #3a3a3e, 0 40px 80px -24px rgb(0 0 0 / .45);
   transform: scale(var(--s)); margin: calc((var(--s) - 1) * 422px) calc((var(--s) - 1) * 195px); }
 html.ramka .pasek-stanu { display: flex; position: relative; flex: none; height: 50px; padding: 14px 30px 0 38px; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 700; color: var(--tekst); background: var(--tlo); z-index: 30; font-variant-numeric: tabular-nums; }
-.wyspa { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 122px; height: 35px; border-radius: 20px; background: #000; }
+.wyspa { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 122px; height: 35px; border-radius: 20px; background: #000; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; font-size: 14px; font-weight: 700; overflow: hidden;
+  transition: width .42s cubic-bezier(.34, 1.3, .64, 1), height .42s cubic-bezier(.34, 1.3, .64, 1), border-radius .42s; }
+/* Face ID wyrasta z Dynamic Island, jak w iPhonie. */
+.wyspa.fid-on { width: 150px; height: 150px; border-radius: 44px; }
+.wyspa svg { width: 58px; height: 58px; }
+.wyspa > * { animation: tlo-wejscie .2s .12s ease-out backwards; }
+.wyspa .fid { animation: fid-skan .9s ease-in-out infinite; }
+.wyspa .fid-ok { color: #5fd38a; }
+.wyspa .rysuj-l { stroke-dasharray: 24; stroke-dashoffset: 24; animation: rysuj .32s .05s ease-out forwards; }
 .ikony-stanu { display: inline-flex; align-items: center; gap: 6px; }
 .bateria { width: 24px; height: 12px; border: 1.4px solid currentColor; border-radius: 4px; position: relative; }
 .bateria::before { content: ""; position: absolute; inset: 1.5px 5px 1.5px 1.5px; background: currentColor; border-radius: 1.5px; }

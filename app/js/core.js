@@ -114,18 +114,36 @@ export function wTelefonie(d, pelny = false) {
 }
 
 // Symulacja podpisu biometrycznego/PIN-em (w prawdziwej aplikacji: podpis mObywatela).
+// Rozpoznanie twarzy (jak Face ID w iPhonie): ramka, oczy, nos, uśmiech; po sukcesie znak w kółku.
+const TWARZ = '<svg class="fid" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15v-5a4 4 0 0 1 4-4h5M33 6h5a4 4 0 0 1 4 4v5M42 33v5a4 4 0 0 1-4 4h-5M15 42h-5a4 4 0 0 1-4-4v-5"/><path class="fid-tw" d="M17 18v3M31 18v3M24 18v8h-2M18 32s2.4 2.6 6 2.6 6-2.6 6-2.6"/></svg>';
+const ZNAK_OK = '<svg class="fid-ok" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path class="rysuj-l" d="m16 24.5 5.5 5.5L32 19"/></svg>';
+
 // `gdzie`: w otwartym oknie (np. skanerze) animacja musi być w nim, inaczej zostanie pod spodem.
 export function podpis(gdzie = document.body) {
+  // W symulacji iPhone'a Face ID pokazuje się w Dynamic Island, jak w prawdziwym telefonie.
+  const wyspa = document.documentElement.classList.contains('ramka') && document.getElementById('wyspa');
+  if (wyspa && gdzie === document.body) return podpisWyspa(wyspa); // skaner zasłania wyspę: tam okienko w skanerze
   return new Promise(res => {
     const el = document.createElement('div');
     el.className = 'podpis'; el.setAttribute('role', 'status');
-    el.innerHTML = `<div>${ic('key', 'duza')}<span>Podpisuję…</span></div>`;
+    el.innerHTML = `<div>${TWARZ}<span>Face ID</span></div>`;
     gdzie.append(el);
     wyskocz(el.firstElementChild);
     const t = matchMedia('(prefers-reduced-motion: reduce)').matches || window.__SZYBKO ? 50 : 700;
-    setTimeout(() => { el.innerHTML = `<div>${ic('check', 'duza rysuj')}<span>Podpisano</span></div>`; }, t);
+    setTimeout(() => { el.classList.add('ok'); el.innerHTML = `<div>${ZNAK_OK}<span>Podpisano</span></div>`; }, t);
     setTimeout(() => { el.classList.add('znika'); }, t * 1.8 - 160);
     setTimeout(() => { el.remove(); res(); }, t * 1.8);
+  });
+}
+
+function podpisWyspa(w) {
+  return new Promise(res => {
+    const t = matchMedia('(prefers-reduced-motion: reduce)').matches || window.__SZYBKO ? 50 : 700;
+    w.setAttribute('role', 'status');
+    w.classList.add('fid-on'); w.innerHTML = `${TWARZ}<span>Face ID</span>`;
+    setTimeout(() => { w.innerHTML = `${ZNAK_OK}<span>Podpisano</span>`; ogloszenie('Podpisano'); }, t);
+    setTimeout(() => { w.innerHTML = ''; w.classList.remove('fid-on'); w.removeAttribute('role'); }, Math.max(t * 1.8 - 120, t * 1.5)); // wyspa zwija się tuż przed końcem
+    setTimeout(res, t * 1.8);
   });
 }
 
