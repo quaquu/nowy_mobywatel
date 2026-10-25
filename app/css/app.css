@@ -170,7 +170,7 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .btn.glowny { background: var(--gl); color: var(--gl-tekst); }
 .btn.glowny:hover { background: var(--gl-mocny); }
 .btn.drugi { background: var(--gl-wyp-pelny); color: var(--gl); }
-.btn.drugi:hover { background: color-mix(in srgb, var(--gl-wyp-pelny) 92%, var(--gl)); }
+.btn.drugi:hover { background: color-mix(in srgb, var(--gl-wyp-pelny) 92%, var(--gl)); color: var(--gl-mocny); }
 .btn.pilny { background: var(--zle); color: var(--zle-tekst); }
 .btn.tekst { background: none; color: var(--gl); padding: 10px 0; min-height: 44px; font-weight: 700; }
 .btn.tekst:hover { text-decoration: underline; }
@@ -201,7 +201,7 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .przel-duzy input:checked::after { transform: translateX(20px); }
 .chipy { display: flex; flex-wrap: wrap; gap: var(--o2); margin: var(--o3) 0 var(--o1); }
 .chip { min-height: 40px; padding: 8px 14px; border-radius: 99px; border: 0; background: var(--gl-wyp-pelny); color: var(--gl); font: inherit; font-size: var(--t-objasn); font-weight: 700; cursor: pointer; transition: background var(--czas); }
-.chip:hover { background: color-mix(in srgb, var(--gl-wyp-pelny) 90%, var(--gl)); }
+.chip:hover { background: color-mix(in srgb, var(--gl-wyp-pelny) 90%, var(--gl)); color: var(--gl-mocny); }
 
 /* Lista kroków sprawy: wiersze z polem wyboru, oddzielone liniami */
 .kroki { margin-top: var(--o1); }
