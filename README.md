@@ -20,7 +20,7 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 | Sprawy życiowe | Narodziny dziecka (historia flagowa), przeprowadzka, kupno używanego auta, utrata dokumentów, nowy dowód; 5 kolejnych w podglądzie planu |
 | Płatności | Mandat z fotoradaru i podatek od nieruchomości (BLIK), zlecenie stałe płatności za zgodą |
 | Przypomnienia i zlecenia | Przypomnienie tylko daje znać o terminie; zlecenie robi coś za Ciebie (jak zlecenie stałe w banku), zawsze z uprzedzeniem |
-| Należy Ci się | Świadczenia wykryte z rejestrów, z uzasadnieniem i źródłem |
+| Możesz skorzystać | Świadczenia i ulgi wykryte z rejestrów, z uzasadnieniem i źródłem |
 | Prywatność | „Kto sprawdzał moje dane” z celem i podstawą prawną, „Co państwo o mnie wie”, „Pokaż tylko to, co potrzebne” |
 | Bliscy | Sprawy mamy na podstawie upoważnienia (wizyta urzędnika w domu) |
 | Kto dzwoni? | Sprawdzenie numeru: infolinia z wykazu UKE „tylko do odbierania” to oszustwo, numer instytucji z potwierdzeniem rozmowy w aplikacji, prywatnych numerów nie ujawnia |

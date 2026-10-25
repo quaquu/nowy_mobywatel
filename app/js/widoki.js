@@ -76,7 +76,7 @@ export function start() {
     </section>
 
     <section aria-labelledby="h-nal">
-      <h2 id="h-nal" class="sekcja">Należy Ci się</h2>
+      <h2 id="h-nal" class="sekcja">Możesz skorzystać</h2>
       <a class="karta link-karta" href="#/naleznosci">
         ${ic('gift', 'okr zielona')}
         <span><b>${stan.zrobione.narodziny ? '2 świadczenia przyznane, 2 przyjdą same' : '4 świadczenia dla Twojej rodziny'}</b><small>800+, becikowe, ulga w PIT, „Aktywny rodzic”. Sprawdziliśmy je z danych, które państwo już ma.</small></span>${ic('right', 'strz')}
@@ -202,11 +202,11 @@ export function pismo(id) {
   };
 }
 
-/* ---------------- Należy Ci się, przypomnienia i zlecenia ---------------- */
+/* ---------------- Możesz skorzystać, przypomnienia i zlecenia ---------------- */
 export function naleznosciWidok() {
   return {
-    tytul: 'Należy Ci się',
-    html: `<h1 tabindex="-1">Należy Ci się</h1>
+    tytul: 'Możesz skorzystać',
+    html: `<h1 tabindex="-1">Możesz skorzystać</h1>
     <p class="wstep">Sprawdziliśmy to w rejestrach, do których państwo już ma dostęp. Nic nie musisz wpisywać.</p>
     <ul class="lista-kart">${naleznosci.map(n => {
       const zalatwione = stan.zrobione.narodziny && (n.id === 'becikowe' || n.id === '800');
@@ -423,7 +423,7 @@ export function wiecej() {
     html: `<h1 tabindex="-1">Więcej</h1>
     <ul class="lista">
       ${poz('#/skrzynka', 'mail', 'Pisma i płatności', nowePisma() ? nowePisma() + ' nowe' : '')}
-      ${poz('#/naleznosci', 'gift', 'Należy Ci się', '4 świadczenia')}
+      ${poz('#/naleznosci', 'gift', 'Możesz skorzystać', '4 świadczenia i ulgi')}
       ${poz('#/bliscy', 'users', 'Bliscy', 'mama, córka')}
       ${poz('#/dane', 'eye', 'Twoje dane i prywatność', 'kto sprawdzał moje dane')}
       ${poz('#/kto-dzwoni', 'callcheck', 'Kto dzwoni?', 'sprawdź numer, zanim cokolwiek powiesz')}

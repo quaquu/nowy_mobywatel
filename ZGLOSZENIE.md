@@ -31,7 +31,7 @@ Moja wersja odwraca kierunek. Państwo przychodzi ze sprawą: szpital zgłosił 
 
 Co jeszcze jest w prototypie:
 • Przeprowadzka, kupno auta (historia z ostrzeżeniem o cofniętym liczniku, PCC liczony z ceny), utrata dokumentów, nowy dowód, mandat i podatek z BLIK.
-• „Należy Ci się”: świadczenia wykryte z rejestrów (wzór: Gov24, Korea).
+• „Możesz skorzystać”: świadczenia i ulgi wykryte z rejestrów (wzór: Gov24, Korea).
 • Przypomnienia i zlecenia: przypomnienie daje znać o terminie, a zlecenie (jak zlecenie stałe w banku) np. opłaci ratę podatku, zawsze z uprzedzeniem dzień wcześniej (wzór: TAMM, Abu Zabi).
 • „Kto sprawdzał moje dane”: każdy odczyt z celem i podstawą prawną, z ostrzeżeniem o podejrzanym odczycie (wzór: Estonia).
 • Sprawy bliskich: córka zamawia wizytę urzędnika u 78-letniej mamy, która widzi, co dzieje się w jej imieniu.

@@ -15,7 +15,7 @@ export const O = {
   mandat: { t: `Masz mandat z fotoradaru: 200 zł i 3 punkty, termin ${fmt(za(6))}. Teraz masz 2 punkty z 24. Możesz przyjąć mandat i zapłacić BLIK-iem, wskazać innego kierowcę albo odmówić.`, a: [['Zobacz mandat', '#/mandat']], z: ['gov.pl: Sprawdź punkty karne', GOV + 'sprawdz-swoje-punkty-karne'] },
   platnosci: { t: `Do zapłaty masz: mandat 200 zł (do ${fmt(za(6))}) i IV ratę podatku od nieruchomości 186 zł (do ${fmt(za(23))}).`, a: [['Zapłać podatek', '#/podatek'], ['Zobacz mandat', '#/mandat']], z: null },
   skrzynka: { t: 'Masz 2 nowe pisma: zwrot nadpłaty 214 zł z urzędu skarbowego i wezwanie z fotoradaru. Każde pismo pokazuję też prostym językiem.', a: [['Otwórz skrzynkę', '#/skrzynka']], z: null },
-  swiadczenia: { t: 'Sprawdziłem rejestry: należy Ci się 800+, becikowe 1 000 zł i ulga na dziecko w PIT. „Aktywnego rodzica” przypomnę, gdy córka skończy rok.', a: [['Zobacz, co Ci się należy', '#/naleznosci']], z: ['gov.pl: Uzyskaj becikowe', GOV + 'uzyskaj-becikowe'] },
+  swiadczenia: { t: 'Sprawdziłem rejestry: możesz skorzystać z 800+, becikowego 1 000 zł i ulgi na dziecko w PIT. „Aktywnego rodzica” przypomnę, gdy córka skończy rok.', a: [['Zobacz, co Ci się należy', '#/naleznosci']], z: ['gov.pl: Uzyskaj becikowe', GOV + 'uzyskaj-becikowe'] },
   dostep_danych: { t: 'W ostatnich 60 dniach Twoje dane odczytało 5 instytucji. Jeden odczyt warto sprawdzić: operator komórkowy pytał o Twój PESEL przy zakupie karty SIM.', a: [['Kto sprawdzał moje dane', '#/dane/dostep'], ['Co państwo o mnie wie', '#/dane/rejestry']], z: null },
   bliscy: { t: `Masz upoważnienie od mamy, Haliny Nowickiej. Jej dowód traci ważność ${fmt(za(77))}. Mogę zamówić wizytę urzędnika u mamy w domu.`, a: [['Sprawy mamy', '#/bliscy/mama']], z: ['gov.pl: Dowód dla osoby, która nie może przyjść do urzędu', GOV + 'uzyskaj-dowod-osobisty'] },
   logowanie: { t: 'To najczęstszy problem, więc mam na to prosty sposób. Sprawdzę, co się stało, i pokażę jeden sposób potwierdzenia tożsamości. Po powrocie z banku nie zaczynasz od nowa.', a: [['Odzyskaj dostęp', '#/dostep']], z: null },
@@ -34,7 +34,7 @@ const ODMOWY = {
   niezgodne_z_prawem: 'W tym nie pomogę. Mogę za to wyjaśnić, jak sprawa wygląda zgodnie z prawem, np. kiedy wygasają punkty karne albo jakie ulgi Ci przysługują.',
 };
 const NAZWY = { narodziny: 'narodziny dziecka', przeprowadzka: 'przeprowadzkę', kupno_auta: 'kupno auta', utrata_dokumentu: 'zgubione dokumenty', nowy_dowod: 'nowy dowód', mandat: 'mandat', platnosci: 'płatności', skrzynka: 'pisma', swiadczenia: 'świadczenia', dostep_danych: 'Twoje dane', bliscy: 'sprawy bliskich', logowanie: 'logowanie', dokumenty: 'dokumenty', pojazd: 'auto: OC i badanie', stluczka: 'stłuczkę', oszustwo: 'podejrzaną wiadomość', kto_dzwoni: 'podejrzany telefon', poparcie: 'podpisy poparcia', do_zrobienia: 'terminy', konsultant: 'rozmowę z człowiekiem' };
-const PODPOWIEDZI = ['Urodziło nam się dziecko', 'Zgubiłam portfel', 'Przeprowadzam się', 'Kto sprawdzał moje dane?', 'Co mi się należy?'];
+const PODPOWIEDZI = ['Urodziło nam się dziecko', 'Zgubiłam portfel', 'Przeprowadzam się', 'Kto sprawdzał moje dane?', 'Z czego mogę skorzystać?'];
 
 const historia = [];
 

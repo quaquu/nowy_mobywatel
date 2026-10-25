@@ -37,7 +37,7 @@ Prototyp referencyjny odpowiada, gdy zapytasz; ten zaczyna sprawę sam i załatw
 - Sprawy pełne: narodziny dziecka, przeprowadzka, kupno auta, utrata dokumentów, nowy dowód, mandat, podatek; sprawy bliskich; rejestr dostępu do danych; przypomnienia i zlecenia; asystent (tekst i głos, rozpoznawanie w telefonie); tryb prosty; odzyskiwanie dostępu; tryb testowy.
 - Dane są fikcyjne. Nie wolno używać godła, logo ani oznaczeń mObywatela; karty dokumentów są stylizowane.
 - Nic nie jest wysyłane bez arkusza zgody i podpisu.
-- Terminologia: „sprawa”, „przypomnienie” (tylko daje znać), „zlecenie” (robi coś za obywatela, jak zlecenie stałe w banku), „Należy Ci się”, „Bliscy”.
+- Terminologia: „sprawa”, „przypomnienie” (tylko daje znać), „zlecenie” (robi coś za obywatela, jak zlecenie stałe w banku), „Możesz skorzystać” (propozycja, a nie roszczenie), „Bliscy”.
 
 ## Brand Commitments
 

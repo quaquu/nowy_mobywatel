@@ -69,6 +69,7 @@ export const INTENCJE = {
   swiadczenia: [
     [/nalez|przysluguj|doplat|becikow|dofinans|babciow|zasilek|zasilk|dodatek|swiadczen|aktywny rodzic|pomoc od panstwa|jakas pomoc/, 4],
     [/800|plus\b|ulg/, 3],
+    [/(z czego|z jakiej pomocy|co) (moge|mozemy) skorzystac|wsparci\w* (od panstwa|dla rodzin|moge|mi)|jakie wsparcie/, 4],
   ],
   dostep_danych: [
     [/kto (sprawdzal|zagladal|widzial|ogladal|pobieral|mial dostep)|histori\w* dostep|dostep\w* do moich danych/, 5],

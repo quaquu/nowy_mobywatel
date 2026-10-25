@@ -36,7 +36,7 @@ Cel: sprawdzić **na ludziach**, a nie tylko automatami, czy prototyp jest zrozu
    - Co było najtrudniejsze?
    - Czy wiedział(a) Pan/Pani, co zostanie wysłane, zanim Pan/Pani podpisał(a)?
    - Czy chciał(a)by Pan/Pani, żeby państwo samo proponowało takie sprawy? Dlaczego?
-   - **Zrozumienie nazw (przed pokazaniem ekranu):** „W aplikacji jest pozycja »Przypomnienia i zlecenia«. Co Pana/Pani zdaniem tam znajdę? Czym różni się przypomnienie od zlecenia?” Zapisz odpowiedź dosłownie. Zaliczamy, gdy tester sam powie, że zlecenie coś robi (np. płaci), a przypomnienie tylko daje znać. To samo pytanie zadaj o „Należy Ci się”.
+   - **Zrozumienie nazw (przed pokazaniem ekranu):** „W aplikacji jest pozycja »Przypomnienia i zlecenia«. Co Pana/Pani zdaniem tam znajdę? Czym różni się przypomnienie od zlecenia?” Zapisz odpowiedź dosłownie. Zaliczamy, gdy tester sam powie, że zlecenie coś robi (np. płaci), a przypomnienie tylko daje znać. To samo pytanie zadaj o „Możesz skorzystać” (czy brzmi jak propozycja, czy jak nachalna reklama?).
 6. **Eksport.** Na ekranie wyników: „Pobierz wyniki (JSON)” albo „Skopiuj wyniki”. Plik `test-T03-RRRR-MM-DD.json` trafia do folderu `research/testy/` w repozytorium.
 
 ## Jak policzyć wyniki

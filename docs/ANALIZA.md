@@ -65,7 +65,7 @@ Dla porównania w tym prototypie crawler przechodzi 43 ekrany i nie znajduje ani
 
 1. **Reaktywność.** Asystent czeka, aż obywatel sam zapyta. Kto nie wie, że należy mu się becikowe, nie zapyta o nie.
 2. **Jedna sprawa naraz.** Narodziny to w praktyce 5–6 spraw w 4 instytucjach, a rozmowa prowadzi je sekwencyjnie i z osobnymi podpisami.
-3. **Wszystko przez czat.** Trudno zobaczyć całość: co mam do zrobienia, co mi się należy, kto czytał moje dane.
+3. **Wszystko przez czat.** Trudno zobaczyć całość: co mam do zrobienia, z czego mogę skorzystać, kto czytał moje dane.
 4. **Brak odpowiedzi na najczęstszą skargę** (logowanie, patrz niżej).
 
 ### Błędy silnika na odłożonym zbiorze testowym (7 z 87)
@@ -132,7 +132,7 @@ Ograniczenia: kodowanie słownikowe (bez drugiego, niezależnego kodera), 111 sk
 |---|---|---|---|
 | **Estonia**: usługi proaktywne, eesti.ee | Usługi według zdarzeń życiowych; państwo zaczyna sprawę samo. Rejestr „kto czytał moje dane” (Andmejälgija). | 478 tys. wizyt w usługach proaktywnych w 2025 r. ([RIA](https://www.ria.ee/en/state-information-system/personal-services/proactive-government-services)); [OECD OPSI](https://oecd-opsi.org/innovations/life-event-based-services-in-estonia/) | sprawy przychodzące same, rejestr dostępu |
 | **Singapur**: LifeSG (dawniej Moments of Life) | Rejestracja urodzenia i becikowe (Baby Bonus) w jednym pakiecie z kilku agencji. | Czas z 60 do 15 minut ([GovTech](https://www.tech.gov.sg/media/technews/moments-of-life-is-now-lifesg-story-so-far/)) | pakiet „Narodziny dziecka” |
-| **Korea Płd.**: Gov24, Benefit Notifier | Lista świadczeń, które Ci przysługują, na podstawie danych z rejestrów. | Odpowiedź na problem świadczeń niepobranych z niewiedzy ([Asia Economy, 2026](https://view.asiae.co.kr/en/article/2026052915393345298)) | „Należy Ci się” |
+| **Korea Płd.**: Gov24, Benefit Notifier | Lista świadczeń, które Ci przysługują, na podstawie danych z rejestrów. | Odpowiedź na problem świadczeń niepobranych z niewiedzy ([Asia Economy, 2026](https://view.asiae.co.kr/en/article/2026052915393345298)) | „Możesz skorzystać” |
 | **Abu Zabi**: TAMM AutoGov | Sprawy powtarzalne (odnowienia, płatności) załatwiają się same za zgodą. | Gartner Eye on Innovation 2026, EMEA ([Abu Dhabi Media Office](https://www.mediaoffice.abudhabi/en/technology/tamm-autogov-named-emea-winner-at-2026-gartner-eye-on-innovation-awards/)) | autopilot ze zgodą i powiadomieniem przed działaniem |
 | **Ukraina**: Diia.AI | Agent AI, który wykonuje usługi (meldunek, mandaty), od 2026 r. w aplikacji i głosem. | [Ministerstwo Transformacji Cyfrowej](https://ai.thedigital.gov.ua/en/news/Diia.AI%20on%20mobile:%20event-driven%20traffic%20fine%20payments%20and%20instant%20residency%20certificates%20via%20the%20national%20AI%20agent), [głos](https://ai.thedigital.gov.ua/en/news/Just%20say%20your%20request:%20How%20the%20new%20voice%20feature%20in%20Diia.AI%20works%20on%20the%20Diia%20Portal) | asystent, który prowadzi do działania, a nie tylko odpowiada |
 | **Włochy**: app IO | Jedna skrzynka od urzędów z płatnościami pagoPA i portfelem dokumentów. | 15 tys. instytucji, 456 mln wiadomości ([IDB](https://knowledge.iadb.org/en/open-knowledge/code-development/open-source-solution/ioitaliait)) | skrzynka z płatnościami, pismo z przyciskiem „załatw” |
@@ -161,7 +161,7 @@ Na podstawie kart usług gov.pl (kopia w pakiecie referencyjnym), opisu portalu 
 | Kalendarz (dni wolne, niedziele handlowe) | istnieje; przypomnienie o końcu ważności dowodu i paszportu zapowiedziane „w przyszłości” | przypomnienia o terminach już działają w prototypie |
 | Blokowanie połączeń z podszytym numerem, wykaz UKE numerów tylko do odbierania, SMS 8080 do CERT | istnieje u operatorów i w CERT, poza mObywatelem | **nowe:** „Kto dzwoni?”: sprawdzenie numeru w aplikacji i potwierdzenie rozmowy przez instytucję |
 | Poparcie kandydatów przez internet (Portal poparcia) | w ustawie, od lutego 2027; projekty ustaw i referenda tylko na papierze | **nowe:** jedno miejsce na wszystkie zbiórki, komitet widzi tylko licznik, „Moje poparcia” |
-| „Należy Ci się”, zlecenia stałe, tryb prosty, odzyskiwanie dostępu | brak | **nowe** |
+| „Możesz skorzystać”, zlecenia stałe, tryb prosty, odzyskiwanie dostępu | brak | **nowe** |
 
 Najważniejsza różnica: dziś portal ma osobne usługi z kilku urzędów na jednej liście („Załatw sprawę online”), a obywatel sam musi wiedzieć, których potrzebuje. Narodziny dziecka to tam co najmniej 2 osobne miejsca (zgłoszenie urodzenia w mObywatelu, 800+ w ZUS lub banku) i dodatkowe wnioski w innych systemach. Prototyp łączy je w jedną sprawę.
 
