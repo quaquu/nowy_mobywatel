@@ -50,11 +50,11 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | Rozpoznanie sprawy, odłożony zbiór testowy (n=87) | 92,0% | 31,0% |
 | Złośliwe prośby odrzucone (test) | 5/5 | – |
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |
-| Lighthouse, telefon: wydajność / dostępność | 97 / 100 | 82 / 87 |
-| Czytelność FOG-PL | 7,0 | 7,1 |
+| Lighthouse, telefon: wydajność / dostępność | 96 / 100 | 82 / 87 |
+| Czytelność FOG-PL | 7,1 | 7,1 |
 | Detektor Impeccable 4.7.0: wzorce „interfejsu z AI” i błędy jakości (kod + ekrany) | 0 | 18 (kod 7, ekran 11) |
 | Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł | 92,0% / 95,4% | – |
-| Crawler: wszystkie trasy × 4 szerokości (320–430 px) | 0 problemów | – |
+| Crawler: 43 trasy × 4 szerokości (320–430 px) | 0 problemów | – |
 | Offline po pierwszym otwarciu | tak | – |
 
 Zastrzeżenie do wiersza Impeccable: u nas wyłączona jest jedna reguła dla jednego kroju (Lato jako „nadużywany krój”, świadoma decyzja zapisana w `.impeccable/config.json`); bez tego wyjątku byłoby 1 zgłoszenie. W referencji to samo zgłoszenie liczy się raz (Inter).
