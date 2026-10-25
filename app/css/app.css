@@ -143,15 +143,16 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .zapytaj input, .pisz input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--tekst); font: inherit; padding: 10px 0; outline: none; }
 .zapytaj input::placeholder, .pisz input::placeholder, .pole::placeholder { color: var(--tekst3); }
 .zapytaj:focus-within, .pisz:focus-within { outline: 3px solid var(--gl); outline-offset: 1px; }
-/* Pole rozmowy przyklejone nad paskiem kart, na pasie tła: treść czatu chowa się pod nim, a nie prześwituje. */
-.pisz-pasek { position: sticky; bottom: var(--dol-wys); z-index: 5; margin: 0 calc(-1 * var(--o4)); padding: var(--o2) var(--o4); background: var(--tlo); }
+/* Pole rozmowy nad paskiem kart, na pasie tła: treść czatu chowa się pod nim, a nie prześwituje.
+   Pozycja „fixed” jak pasek kart, a nie „sticky”: Safari źle liczy „sticky” w przeskalowanej ramce telefonu. */
+.pisz-pasek { position: fixed; left: 0; right: 0; bottom: var(--dol-wys); z-index: 9; padding: var(--o2) var(--o4); background: var(--tlo); }
 .pisz { box-shadow: 0 0 0 1px var(--separator); }
 .msg { scroll-margin: 64px 0 calc(var(--dol-wys) + 80px); }
 .pisz .wyslij { background: var(--gl); color: var(--gl-tekst); }
 .pisz .wyslij:hover { background: var(--gl-mocny); }
 .pisz .nagrywa { background: var(--zle); color: var(--zle-tekst); animation: puls 1.2s ease-in-out infinite; }
 @keyframes puls { 50% { opacity: .55; } }
-.czat { display: flex; flex-direction: column; gap: var(--o2); margin: var(--o3) 0; min-height: 40vh; }
+.czat { display: flex; flex-direction: column; gap: var(--o2); margin: var(--o3) 0 92px; min-height: 40vh; }
 .msg { max-width: 88%; padding: 10px 14px; border-radius: 20px; line-height: 1.4; }
 .msg p { margin: 0 0 6px; }
 .msg p:last-child { margin-bottom: 0; }
@@ -335,7 +336,7 @@ th[scope="row"] { width: 55%; font-weight: 400; }
 html.pelny #telefon-btn:not([hidden]) { display: inline-flex; position: fixed; top: 12px; right: 16px; z-index: 60; min-height: 40px; padding: 8px 16px; box-shadow: 0 4px 16px -6px rgb(0 0 0 / .3); }
 @media (min-width: 700px) {
   html:not(.ramka) body { background: color-mix(in srgb, var(--tlo) 80%, var(--tekst) 6%); }
-  html:not(.ramka) .dol { left: 50%; right: auto; width: 480px; transform: translateX(-50%); }
+  html:not(.ramka) .dol, html:not(.ramka) .pisz-pasek { left: 50%; right: auto; width: 480px; transform: translateX(-50%); }
 }
 html.ramka body { background: color-mix(in srgb, var(--tlo) 70%, #c9ccd6); min-height: 100vh; }
 @media (prefers-color-scheme: dark) { html.ramka:not([data-theme="light"]) body { background: #141416; } }

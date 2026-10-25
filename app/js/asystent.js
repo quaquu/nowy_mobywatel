@@ -63,7 +63,7 @@ export function asystent(params) {
   return {
     tytul: 'Asystent',
     html: `<h1 tabindex="-1">Asystent</h1>
-    <p class="maly">Rozumie sprawy urzędowe i prowadzi do gotowego wniosku. Niczego nie wysyła bez Twojego podpisu. Działa także bez internetu.</p>
+    <p class="maly">Rozumie sprawy urzędowe i prowadzi do gotowego wniosku. Niczego nie wysyła bez Twojego podpisu. Działa także bez internetu: rozpoznawanie sprawy działa w telefonie. Docelowo rozmowę wspiera polski model Bielik uruchomiony w chmurze rządowej.</p>
     <div class="czat" id="czat" aria-live="polite" aria-relevant="additions">
       ${historia.length ? historia.map(babelek).join('') : `<div class="msg bot"><p>Dzień dobry! Napisz albo powiedz, co chcesz załatwić, własnymi słowami.</p><div class="chipy">${PODPOWIEDZI.map(c => `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>`}
     </div>
@@ -73,7 +73,7 @@ export function asystent(params) {
       <button type="button" class="ib" id="mow" aria-label="Powiedz głosem">${ic('mic')}</button>
       <button class="ib wyslij" aria-label="Wyślij">${ic('send')}</button>
     </form></div>
-    <p class="maly srodek">Rozpoznawanie sprawy działa w telefonie. Docelowo rozmowę wspiera polski model Bielik uruchomiony w chmurze rządowej.</p>`,
+    `,
     po(root) {
       const czat = $('#czat', root), pole = $('#pytanie', root);
       const dodaj = m => { historia.push(m); czat.insertAdjacentHTML('beforeend', babelek(m)); const el = czat.lastElementChild; el.scrollIntoView({ block: el.offsetHeight > 280 ? 'start' : 'end', behavior: 'smooth' }); };
