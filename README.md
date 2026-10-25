@@ -47,7 +47,7 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 
 | Miara | Ten prototyp | Referencyjny |
 |---|---|---|
-| Narodziny dziecka: sprawy / podpisy / dotknięcia / czas (KLM) | 5 / 1 / 4 / 13 s | 2 / 2 / 6 / 24 s |
+| Narodziny dziecka: sprawy / podpisy / dotknięcia / czas (KLM) | 5 / 1 / 4 / 14 s | 2 / 2 / 6 / 24 s |
 | Rozpoznanie sprawy, odłożony zbiór testowy (n=87) | 92,0% | 31,0% |
 | Złośliwe prośby odrzucone (test) | 5/5 | – |
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |

@@ -20,7 +20,7 @@ Jeden slajd albo strona „Dla jury” w prototypie (`Więcej → Dla jury`):
 
 | | Ten prototyp | Referencyjny |
 |---|---|---|
-| Narodziny dziecka | 5 spraw, 1 podpis, ok. 13 s | 2 sprawy, 2 podpisy, ok. 24 s |
+| Narodziny dziecka | 5 spraw, 1 podpis, ok. 14 s | 2 sprawy, 2 podpisy, ok. 24 s |
 | Asystent rozpoznaje sprawę (87 zdań testowych) | 92% | 31% |
 | Dostępność (axe, WCAG 2.2 AA) | 0 naruszeń | 7 reguł |
 | Lighthouse na telefonie | 95–98 / 100 | 82 / 87 |

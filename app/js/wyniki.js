@@ -15,8 +15,8 @@ export const WYNIKI = {
   "nasz": {
    "przyciskiNaKoniec": [],
    "akcje": 4,
-   "systemS": 2.7,
-   "sekundy": 13,
+   "systemS": 3.2,
+   "sekundy": 14,
    "podpisy": 1,
    "sprawy": 5,
    "instytucje": 4
@@ -135,18 +135,18 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 98,
+   "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2270,
-   "tbtMs": 37
+   "lcpMs": 2410,
+   "tbtMs": 47
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4364,
-   "tbtMs": 52
+   "lcpMs": 4359,
+   "tbtMs": 91
   }
  },
  "czytelnosc": {
