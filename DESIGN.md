@@ -155,13 +155,21 @@ Komórki i grupy: 12 px; pola: 10 px; przyciski: 12 px, małe przyciski i plakie
 
 - **Lista grupowana**: biała grupa z zaokrągleniem 12 px, wiersze ≥ 56 px, ikona w kolorze akcentu bez tła, tytuł pogrubiony, opis w kolorze drugorzędnym, strzałka w kolorze trzeciorzędnym; separator wcięty do tekstu.
 - **Sprawa, która przyszła sama**: jedna biała komórka nad portfelem: ikona, tytuł, opis i kapsuła „Załatw”. Bez etykiety nad tytułem i bez paska z boku.
-- **Karta dokumentu**: co kilka sekund przesuwa się po niej refleks światła, jak po plastikowym dokumencie; na komputerze karta unosi się pod kursorem, lekko przechyla w jego stronę, a hologram mieni się kolorami.
-- **Podpis (Face ID)**: w symulacji iPhone'a rozpoznanie twarzy wyrasta z Dynamic Island (rama, oczy, uśmiech, potem zielony znak); na telefonie ciemne okienko na środku ekranu.
+- **Karta dokumentu**: jeden pomysł, światło na materiale. Drobny gilosz jak na dowodzie; miękki refleks przechodzi powoli (2,4 s), gdy karta się pojawia i gdy najedziesz na nią kursorem; na komputerze karta lekko przechyla się za kursorem (do ok. 3,5°), a odblask i hologram idą za światłem. Bez unoszenia i bez pętli.
+- **Podpis (Face ID)**: w symulacji iPhone'a rozpoznanie twarzy wyrasta z Dynamic Island (odsłanianie przez przycinanie, bez odbicia; zwija się szybciej, niż się rozwinęło); na telefonie ciemne okienko na środku ekranu.
 - **Arkusz zgody**: zawsze ta sama struktura (co, dokąd, jakie dane, co można cofnąć); przyciski „Wróć” i „Podpisz” przyklejone do dołu.
 - **Przyciski**: główny (wypełniony akcentem), drugi (pełne jasne wypełnienie akcentem), tekstowy (sam akcent, bez podkreślenia; podkreślenie po najechaniu).
 - **Pola**: wypełnione tłem systemowym, bez ramki; fokus 3 px w kolorze akcentu.
 - **Oś czasu po wysłaniu**: kropki sukcesu połączone linią 1 px, w jednej grupie.
 - **Tryb prosty**: duże wiersze (76 px, tekst 20 px) zamiast kafli.
+
+## Motion
+
+Według `animate.md` z pakietu Impeccable i zasad iOS: ruch tłumaczy stan i kierunek, nie zdobi.
+- Czasy: odpowiedź 100–150 ms, zmiana stanu 150–300 ms, przejście widoku 300–500 ms (ekran 380 ms, arkusz 420 ms), wyjście szybsze niż wejście (arkusz 240 ms).
+- Krzywa: wyhamowanie `cubic-bezier(.16, 1, .3, 1)`, arkusz jak w iOS `cubic-bezier(.32, .72, 0, 1)`. Bez odbić i sprężyn.
+- Animujemy transformację, przezroczystość i przycinanie, nie szerokość ani wysokość; `will-change` tylko w trakcie ruchu.
+- „Ogranicz ruch”: bez przesuwania i skalowania, zostają krótkie przenikania i zmiany koloru (informacja o zmianie nie znika).
 
 ## Illustrations
 

@@ -61,7 +61,8 @@ a { color: var(--gl); text-underline-offset: .18em; text-decoration-thickness: 1
 .skok:focus { top: 8px; }
 .ic { width: 1.25em; height: 1.25em; flex: none; }
 .ic.duza { width: 40px; height: 40px; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after, ::backdrop { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+/* „Ogranicz ruch”: bez przesuwania i skalowania; zostają krótkie przenikania i zmiany koloru, które niosą informację. */
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after, ::backdrop { animation-duration: 1ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-property: opacity, color, background-color, border-color !important; transition-duration: .15s !important; } }
 html.bez-ruchu *, html.bez-ruchu *::before, html.bez-ruchu *::after, html.bez-ruchu ::backdrop { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 
 /* ---------- Powłoka: pasek nawigacji, treść, pasek kart ---------- */
@@ -253,26 +254,25 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .stos { margin: 0 0 var(--o5); }
 .stos > div + div { margin-top: calc(-66.667% + 54px); }
 .kd { position: relative; display: flex; flex-direction: column; aspect-ratio: 3 / 2; padding: var(--o4) 18px; border-radius: var(--r-karta-dok); overflow: hidden; color: #fff; text-decoration: none; box-shadow: var(--cien-dok); }
-/* Karta żyje jak prawdziwy dokument: światło przesuwa się po karcie, a na komputerze karta lekko się
-   unosi i przechyla za kursorem, refleks idzie za nim. Wszystko wyłącza „ogranicz ruch”. */
-.kd { --rx: 0deg; --ry: 0deg; --ty: 0px; --mx: 100%; --my: 0%; transform: perspective(900px) translateY(var(--ty)) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .35s var(--krzywa), box-shadow .35s var(--krzywa), filter .2s; will-change: transform; }
-.kd::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at var(--mx) var(--my), rgb(255 255 255 / .24), transparent 55%); transition: background .2s; }
-/* Refleks przesuwany transformacją (karta graficzna), a nie tłem: bez przerysowywania strony. */
-.kd::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 60%; pointer-events: none; background: linear-gradient(105deg, transparent 20%, rgb(255 255 255 / .16) 50%, transparent 80%); transform: translateX(0); animation: polysk 1.4s .6s ease-in-out both; }
-.stos > div:nth-child(2) .kd::after { animation-delay: .8s; }
-.stos > div:nth-child(3) .kd::after { animation-delay: 1s; }
-/* Refleks raz, gdy karta się pojawia, i znowu przy każdym najechaniu (bez pętli bez końca). */
-@keyframes polysk { to { transform: translateX(300%); } }
-@keyframes polysk-znowu { to { transform: translateX(300%); } }
-.kd.ruch { transition: transform .08s linear, box-shadow .35s var(--krzywa); }
-.kd:active { filter: brightness(.96); }
+/* Karta jak prawdziwy dokument: jeden pomysł, światło na materiale. Drobny gilosz jak na dowodzie,
+   miękki refleks przechodzi powoli, gdy karta się pojawia i gdy najedziesz na nią kursorem; na komputerze
+   karta lekko przechyla się za kursorem, a odblask i hologram idą za światłem. Bez unoszenia, bez pętli. */
+.kd { --rx: 0deg; --ry: 0deg; --mx: 78%; --my: 8%; --kat: 30deg; transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .6s cubic-bezier(.16, 1, .3, 1), filter .15s; }
+.kd::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(90% 75% at var(--mx) var(--my), rgb(255 255 255 / .2), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='32'%3E%3Cg fill='none' stroke='white' stroke-width='.6' stroke-opacity='.11'%3E%3Cpath d='M0 8C20 0 60 0 80 8S140 16 160 8M0 24C20 16 60 16 80 24S140 32 160 24'/%3E%3Cpath d='M0 8C20 16 60 16 80 8S140 0 160 8M0 24C20 32 60 32 80 24S140 16 160 24' stroke-opacity='.07'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 160px 32px; }
+.kd::after { content: ""; position: absolute; top: -20%; bottom: -20%; left: -70%; width: 70%; pointer-events: none; background: linear-gradient(100deg, transparent 15%, rgb(255 255 255 / .05) 35%, rgb(255 255 255 / .2) 50%, rgb(255 255 255 / .05) 65%, transparent 85%); mix-blend-mode: soft-light; transform: translateX(0) skewX(-8deg); animation: polysk 2.4s .5s cubic-bezier(.45, .05, .2, 1) both; }
+.stos > div:nth-child(2) .kd::after { animation-delay: .65s; }
+.stos > div:nth-child(3) .kd::after { animation-delay: .8s; }
+@keyframes polysk { to { transform: translateX(260%) skewX(-8deg); } }
+@keyframes polysk-znowu { to { transform: translateX(260%) skewX(-8deg); } }
+.kd.ruch { will-change: transform; transition: transform .12s linear, filter .15s; }
+.kd:active { filter: brightness(.97); }
+.kd-holo { background: conic-gradient(from var(--kat), #ffffff, #ffd9e3, #d8e8ff, #ddfbe4, #fff1c7, #ffffff); transition: background .3s; }
 @media (hover: hover) {
-  a.kd:hover { --ty: -4px; box-shadow: 0 22px 40px -18px rgb(0 0 0 / .45), 0 2px 6px rgb(0 0 0 / .12); }
-  .stos > div:not(:last-child) a.kd:hover { --ty: -12px; }
-  a.kd:hover::after { animation: polysk-znowu 1s ease-in-out both; }
-  a.kd:hover .kd-holo { animation: holo 2.4s linear infinite; }
+  a.kd:hover::after { animation: polysk-znowu 1.8s cubic-bezier(.45, .05, .2, 1) both; }
 }
-@keyframes holo { to { filter: hue-rotate(360deg); } }
 .kd > * { position: relative; }
 .kd:focus-visible { outline-offset: 3px; }
 .kd-gora { display: flex; align-items: center; gap: var(--o2); min-height: 22px; }
@@ -320,8 +320,8 @@ dialog.arkusz .przyciski { position: sticky; bottom: 0; margin: var(--o3) calc(-
 .podpis { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: rgb(0 0 0 / .25); }
 .podpis > div { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--o2); width: 156px; height: 156px; border-radius: 34px; background: rgb(36 37 42 / .88); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); color: #fff; font-weight: 700; box-shadow: 0 10px 30px -10px rgb(0 0 0 / .45); }
 .podpis svg { width: 64px; height: 64px; }
-.podpis .fid { animation: fid-skan .9s ease-in-out infinite; }
-@keyframes fid-skan { 50% { transform: scale(.9); opacity: .75; } }
+.podpis .fid { animation: fid-skan 1.2s ease-in-out infinite; }
+@keyframes fid-skan { 50% { transform: scale(.94); opacity: .8; } }
 .podpis .fid-ok { color: #5fd38a; }
 .podpis .rysuj-l { stroke-dasharray: 24; stroke-dashoffset: 24; animation: rysuj .32s .05s ease-out forwards; }
 .toast { position: fixed; left: 50%; bottom: 96px; transform: translate(-50%, 12px); opacity: 0; max-width: min(440px, calc(100% - 32px)); width: max-content; background: color-mix(in srgb, #1c1c1e 94%, transparent); color: #fff; padding: 12px 18px; border-radius: 14px; z-index: 120; transition: opacity var(--czas), transform var(--czas) var(--krzywa); font-size: var(--t-objasn); box-shadow: 0 10px 30px -12px rgb(0 0 0 / .45); }
@@ -371,13 +371,14 @@ html.ramka .telefon { --s: var(--skala-tel, 1); display: flex; flex-direction: c
   box-shadow: 0 0 0 11px #121214, 0 0 0 12px #3a3a3e, 0 40px 80px -24px rgb(0 0 0 / .45);
   transform: scale(var(--s)); margin: calc((var(--s) - 1) * 422px) calc((var(--s) - 1) * 195px); }
 html.ramka .pasek-stanu { display: flex; position: relative; flex: none; height: 50px; padding: 14px 30px 0 38px; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 700; color: var(--tekst); background: var(--tlo); z-index: 30; font-variant-numeric: tabular-nums; }
-.wyspa { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 122px; height: 35px; border-radius: 20px; background: #000; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; font-size: 14px; font-weight: 700; overflow: hidden;
-  transition: width .42s cubic-bezier(.34, 1.3, .64, 1), height .42s cubic-bezier(.34, 1.3, .64, 1), border-radius .42s; }
-/* Face ID wyrasta z Dynamic Island, jak w iPhonie. */
-.wyspa.fid-on { width: 150px; height: 150px; border-radius: 44px; }
+.wyspa { position: absolute; top: 11px; left: 50%; width: 150px; height: 150px; margin-left: -75px; border-radius: 44px; background: #000; z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; font-size: 14px; font-weight: 700; overflow: hidden;
+  clip-path: inset(0 14px 115px 14px round 18px); transition: clip-path .5s cubic-bezier(.16, 1, .3, 1); }
+/* Face ID wyrasta z Dynamic Island, jak w iPhonie; zwija się szybciej, niż się rozwinęło. */
+.wyspa.fid-on { clip-path: inset(0 0 0 0 round 44px); }
+.wyspa:not(.fid-on) { transition-duration: .32s; transition-timing-function: cubic-bezier(.4, 0, .2, 1); }
 .wyspa svg { width: 58px; height: 58px; }
-.wyspa > * { animation: tlo-wejscie .2s .12s ease-out backwards; }
-.wyspa .fid { animation: fid-skan .9s ease-in-out infinite; }
+.wyspa > * { animation: tlo-wejscie .25s .15s ease-out backwards; }
+.wyspa .fid { animation: fid-skan 1.2s ease-in-out infinite; }
 .wyspa .fid-ok { color: #5fd38a; }
 .wyspa .rysuj-l { stroke-dasharray: 24; stroke-dashoffset: 24; animation: rysuj .32s .05s ease-out forwards; }
 .ikony-stanu { display: inline-flex; align-items: center; gap: 6px; }

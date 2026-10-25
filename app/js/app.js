@@ -139,7 +139,7 @@ function zegar() {
   const z = $('#zegar'); if (z) z.textContent = new Date().toLocaleTimeString('pl-PL', { hour: 'numeric', minute: '2-digit' });
 }
 
-// Karty dokumentów przechylają się za kursorem (tylko mysz, bez „ogranicz ruch”).
+// Karty dokumentów przechylają się lekko za kursorem, odblask i hologram idą za światłem (tylko mysz, bez „ogranicz ruch”).
 function przechylKarty() {
   if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   addEventListener('pointermove', e => {
@@ -148,8 +148,9 @@ function przechylKarty() {
     if (!k || spokojnie()) return;
     const r = k.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
     k.classList.add('ruch');
-    k.style.setProperty('--ry', ((x - .5) * 10).toFixed(2) + 'deg');
-    k.style.setProperty('--rx', ((.5 - y) * 8).toFixed(2) + 'deg');
+    k.style.setProperty('--ry', ((x - .5) * 7).toFixed(2) + 'deg');
+    k.style.setProperty('--rx', ((.5 - y) * 5).toFixed(2) + 'deg');
+    k.style.setProperty('--kat', Math.round(x * 220) + 'deg'); // hologram mieni się z kątem światła
     k.style.setProperty('--mx', (x * 100).toFixed(1) + '%');
     k.style.setProperty('--my', (y * 100).toFixed(1) + '%');
   }, { passive: true });
