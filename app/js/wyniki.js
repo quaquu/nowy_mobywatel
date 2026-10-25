@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8,
+   "systemS": 8.1,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -138,15 +138,15 @@ export const WYNIKI = {
    "performance": 96,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2790,
-   "tbtMs": 13
+   "lcpMs": 2711,
+   "tbtMs": 7
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4356,
-   "tbtMs": 42
+   "lcpMs": 4355,
+   "tbtMs": 31
   }
  },
  "czytelnosc": {
