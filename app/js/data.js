@@ -41,7 +41,7 @@ export const dokumenty = [
     zrodlo: 'Centralna Ewidencja Kierowców' },
   { id: 'pojazd', nazwa: 'Moje pojazdy', kolor: 'pomarancz', istnieje: true,
     linia: 'Toyota Yaris · EL 4K217', alert: 'Badanie techniczne za 19 dni',
-    pola: [['Pojazd', 'Toyota Yaris 1.5, 2019'], ['Nr rejestracyjny', 'EL 4K217'], ['OC', 'do ' + fmtPelna(za(132)) + ' (Link4)'], ['Badanie techniczne', 'do ' + fmtPelna(za(19))]],
+    pola: [['Pojazd', 'Toyota Yaris 1.5, 2019'], ['Kolor', 'czerwony'], ['Nr rejestracyjny', 'EL 4K217'], ['OC', 'do ' + fmtPelna(za(132)) + ' (Link4)'], ['Badanie techniczne', 'do ' + fmtPelna(za(19))]],
     zrodlo: 'CEPiK, Ubezpieczeniowy Fundusz Gwarancyjny' },
 ];
 

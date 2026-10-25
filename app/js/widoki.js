@@ -1,10 +1,12 @@
 // Ekrany poza przebiegami spraw: start, dokumenty, skrzynka, prywatność, bliscy, ustawienia.
 import { ic } from './icons.js';
 import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane } from './core.js';
+import { zdjecieAnny, twarzMamy, twarzCorki, autoZBoku } from './grafiki.js';
 import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna } from './data.js';
 
 const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
-const poz = (href, ikona, t, opis, extra = '') => `<li><a class="poz" href="${href}">${ic(ikona, 'okr')}<span><b>${esc(t)}</b>${opis ? `<small>${opis}</small>` : ''}</span>${extra}${ic('right', 'strz')}</a></li>`;
+// `ikona`: nazwa ikony albo gotowy rysunek SVG (awatar osoby).
+const poz = (href, ikona, t, opis, extra = '') => `<li><a class="poz" href="${href}">${ikona.startsWith('<') ? `<span class="awatar">${ikona}</span>` : ic(ikona, 'okr')}<span><b>${esc(t)}</b>${opis ? `<small>${opis}</small>` : ''}</span>${extra}${ic('right', 'strz')}</a></li>`;
 const otwarte = () => zadania.filter(z => !stan.zrobione[z.id]);
 const nowePisma = () => skrzynka.filter(p => p.nowa && !stan.przeczytane[p.id]).length;
 export const licznikSkrzynki = nowePisma;
@@ -23,10 +25,9 @@ function kodQR(ziarno = 7) {
   }
   return `<svg viewBox="-2 -2 25 25" aria-hidden="true" focusable="false" shape-rendering="crispEdges"><rect x="-2" y="-2" width="25" height="25" fill="#fff"/><g fill="#111216">${rects}</g></svg>`;
 }
-const SYLWETKA = '<svg viewBox="0 0 64 80" aria-hidden="true" focusable="false"><rect width="64" height="80" fill="#e4e7ee"/><circle cx="32" cy="30" r="13" fill="#b9bfcc"/><path d="M8 80c2-17 12-26 24-26s22 9 24 26z" fill="#b9bfcc"/></svg>';
 function kartaDok(d, przod) {
   const dolna = przod
-    ? `<span class="kd-dol"><span class="kd-foto">${SYLWETKA}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill">${ic('eye')}Pokaż dane</span></span>`
+    ? `<span class="kd-dol"><span class="kd-foto">${zdjecieAnny()}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill">${ic('eye')}Pokaż dane</span></span>`
     : '';
   return `<a class="kd kd-${d.kolor}${przod ? ' kd-przod' : ''}" href="${d.href || '#/dokument/' + d.id}" aria-label="${esc(d.nazwa)}: ${esc(d.linia)}${d.alert ? ', ' + esc(d.alert) : ''}">
     <span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b>${d.alert && !przod ? '<span class="kd-kropka" aria-hidden="true"></span>' : ''}<span class="kd-holo" aria-hidden="true"></span></span>
@@ -58,7 +59,7 @@ export function start() {
     <h1 tabindex="-1" class="powitanie">${powitanie}, ${esc(ja.wolacz)}</h1>
     ${narodzinyOtwarte ? `
     <a class="hero" href="#/sprawa/narodziny" aria-label="Sprawa przyszła do Ciebie: urodziła się Twoja córka. 5 spraw w 4 instytucjach, jeden podpis. Załatw wszystko naraz.">
-      ${ic('baby', 'hero-ik')}
+      <span class="awatar hero-aw">${twarzCorki()}</span>
       <span class="hero-tr"><b class="hero-t">Urodziła się Twoja córka</b><span class="hero-o">5 spraw w 4 instytucjach, jeden podpis</span></span>
       <span class="hero-go">Załatw${ic('right')}</span>
     </a>` : ''}
@@ -85,7 +86,7 @@ export function start() {
 
     <section aria-labelledby="h-bl">
       <h2 id="h-bl" class="sekcja">Bliscy</h2>
-      <ul class="lista">${poz('#/bliscy/mama', 'users', `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}</ul>
+      <ul class="lista">${poz('#/bliscy/mama', twarzMamy(), `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}</ul>
     </section>
 
     <section aria-labelledby="h-ap">
@@ -137,7 +138,7 @@ export function dokument(id) {
   return {
     tytul: d.nazwa,
     html: `<h1 tabindex="-1">${esc(d.nazwa)}</h1>
-    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span><span class="kd-dol"><span class="kd-foto">${SYLWETKA}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span></div>
+    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span>${id === 'pojazd' ? `<span class="kd-auto">${autoZBoku({ kolor: 'czerwony', opis: 'Toyota Yaris, czerwona' })}</span>` : `<span class="kd-dol"><span class="kd-foto">${zdjecieAnny('Zdjęcie: ' + ja.imie + ' ' + ja.nazwisko)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span>`}</div>
     <details class="karta kod-qr"><summary>${ic('eye')}Pokaż kod do sprawdzenia dokumentu</summary><span class="qr duzy" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span><p class="maly srodek">Kod ważny 2 minuty. Sprawdzający zobaczy go w swojej aplikacji.</p></details>
     <section class="karta">${d.pola.map(p => wiersz(...p)).join('')}
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>
@@ -294,8 +295,8 @@ export function bliscy() {
     html: `<h1 tabindex="-1">Bliscy</h1>
     <p class="wstep">Załatwiaj sprawy w imieniu osób, które Cię upoważniły, i dzieci. One widzą wszystko, co robisz w ich imieniu.</p>
     <ul class="lista">
-      ${poz('#/bliscy/mama', 'user', `${mama.imie} ${mama.nazwisko}, ${mama.wiek} lat`, `upoważnienie: ${esc(mama.pelnomocnictwo)}`, stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}
-      ${stan.zrobione.narodziny ? poz('#/dokumenty', 'baby', `${stan.imieDziecka} ${ja.nazwisko}`, 'córka · PESEL nadawany, odpis aktu w drodze') : poz('#/sprawa/narodziny', 'baby', 'Córka', 'najpierw zgłoś urodzenie')}
+      ${poz('#/bliscy/mama', twarzMamy(), `${mama.imie} ${mama.nazwisko}, ${mama.wiek} lat`, `upoważnienie: ${esc(mama.pelnomocnictwo)}`, stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}
+      ${stan.zrobione.narodziny ? poz('#/dokumenty', twarzCorki(), `${stan.imieDziecka} ${ja.nazwisko}`, 'córka · PESEL nadawany, odpis aktu w drodze') : poz('#/sprawa/narodziny', twarzCorki(), 'Córka', 'najpierw zgłoś urodzenie')}
     </ul>
     <button class="btn drugi szeroki" id="dodaj-bl">${ic('users')}Dodaj bliską osobę</button>
     <p class="stopka-info">Upoważnienie podpisuje osoba, która go udziela: w swoim mObywatelu albo w urzędzie, jeśli nie ma telefonu.</p>`,
@@ -306,7 +307,7 @@ export function bliscy() {
 export function blMama() {
   return {
     tytul: 'Mama',
-    html: `<h1 tabindex="-1">${esc(mama.imie)} ${esc(mama.nazwisko)}</h1>
+    html: `<div class="osoba-nag"><span class="awatar duzy">${twarzMamy()}</span><h1 tabindex="-1">${esc(mama.imie)} ${esc(mama.nazwisko)}</h1></div>
     <p class="maly">Działasz z upoważnienia mamy (${esc(mama.pelnomocnictwo)}) do ${fmtPelna(mama.pelnomocnictwoDo)}. Mama widzi w swojej aplikacji albo w liście z urzędu, co robisz w jej imieniu.</p>
     ${stan.zrobione.mama ? `<div class="karta">${ic('check', 'okr zielona')} <b>Urzędnik przyjedzie do mamy ${fmt(za(12))}</b><p class="maly">Przyjmie wniosek o dowód i pobierze odciski palców w domu.</p></div>` : `
     <section class="karta">

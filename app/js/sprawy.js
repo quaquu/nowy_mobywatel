@@ -3,6 +3,7 @@
 import { ic } from './icons.js';
 import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast, cel } from './core.js';
 import { spokojnie } from './ruch.js';
+import { autoZBoku, zdjecieFotoradaru } from './grafiki.js';
 import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy } from './data.js';
 
 // 1 sprawa, 2–4 sprawy, 5+ spraw (12–14: spraw)
@@ -206,6 +207,7 @@ export function auto() {
           $('#sp-blad', root).hidden = true;
           $('#wynik', root).innerHTML = `
             <section class="karta" aria-labelledby="h-hist">
+              <div class="auto-hist">${autoZBoku({ kolor: 'srebrny', opis: 'Toyota Yaris III, srebrna' })}</div>
               <h2 id="h-hist">Toyota Yaris III 1.33, 2016</h2>
               ${wiersz('Kradzież', 'nie zgłoszono')}${wiersz('OC', 'ważne do ' + fmtPelna(za(97)))}${wiersz('Badanie techniczne', 'ważne do ' + fmtPelna(za(160)))}${wiersz('Właściciele', '3, sprzedający od 2023 r.')}
               <div class="ostrz" role="note">${ic('alert')}<span><b>Przebieg spadł.</b> 2023: 148 210 km, 2024: 96 400 km. Zapytaj sprzedającego o wymianę licznika albo zrezygnuj.</span></div>
@@ -353,7 +355,7 @@ export function mandat() {
     html: `
     <h1 tabindex="-1">Mandat z fotoradaru</h1>
     <section class="karta">
-      <div class="foto-radar" role="img" aria-label="Zdjęcie z fotoradaru: Toyota Yaris EL 4K217, 68 km/h"><span>EL 4K217 · 68 km/h</span></div>
+      <div class="foto-radar">${zdjecieFotoradaru({ kiedy: fmtPelna(za(-9)) + ' 17:42:08', opis: 'Zdjęcie z fotoradaru: Toyota Yaris EL 4K217, 68 km/h przy limicie 50 km/h' })}</div>
       ${wiersz('Gdzie', 'Zgierz, ul. Łódzka, obszar zabudowany')}${wiersz('Kiedy', fmtPelna(za(-9)) + ', 17:42')}${wiersz('Prędkość', '68 km/h przy limicie 50 km/h')}${wiersz('Mandat', '200 zł i 3 punkty karne')}${wiersz('Termin', 'do ' + fmt(za(6)))}
     </section>
     <form id="f-man" class="karta" novalidate>

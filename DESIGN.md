@@ -161,6 +161,10 @@ Komórki i grupy: 12 px; pola: 10 px; przyciski: 12 px, małe przyciski i plakie
 - **Oś czasu po wysłaniu**: kropki sukcesu połączone linią 1 px, w jednej grupie.
 - **Tryb prosty**: duże wiersze (76 px, tekst 20 px) zamiast kafli.
 
+## Illustrations
+
+Własne ilustracje wektorowe (`app/js/grafiki.js`), bez zdjęć prawdziwych ludzi: zdjęcie do dowodu (przodem, neutralna mina, jasne tło), awatary bliskich w kółku 40 px, auto z boku w kolorze z rejestru (bez znaków marki), zdjęcie z fotoradaru w odcieniach szarości z paskami danych pomiaru. Płaskie kolory z jednym gradientem na bryłę, bez obrysów. Każdy rysunek ma opis dla czytnika ekranu albo jest ukryty, gdy obok jest ten sam tekst.
+
 ## Do's and Don'ts
 
 - **Rób**: standardowe kontrolki i wzorce iOS; jeden akcent dla działań; płaskie grupy z separatorami; prawdziwe treści i stany (pusty, błąd, ładowanie, sukces).

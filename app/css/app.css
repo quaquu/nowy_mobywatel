@@ -104,7 +104,7 @@ html.duzy .dol a { font-size: 12px; }
 .lista > li + li::before { content: ""; position: absolute; top: 0; right: 0; left: 56px; height: 1px; background: var(--separator); }
 .poz { display: flex; align-items: center; gap: var(--o3); width: 100%; min-height: 56px; padding: 10px var(--o4); color: var(--tekst); text-decoration: none; background: none; border: 0; font: inherit; text-align: left; cursor: pointer; transition: background var(--czas); }
 a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
-.poz > span:not(.plak) { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.poz > span:not(.plak):not(.awatar) { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .poz b { font-weight: 700; }
 .poz small { color: var(--tekst2); font-size: var(--t-objasn); line-height: 1.35; }
 .lista.mala .poz { min-height: 52px; }
@@ -232,8 +232,8 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .kwota { font-size: var(--t-tytul); font-weight: 700; margin: 0 0 6px; font-variant-numeric: tabular-nums; }
 .przebieg li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--separator); font-variant-numeric: tabular-nums; }
 .przebieg .zle { color: var(--zle); font-weight: 700; }
-.foto-radar { height: 132px; border-radius: var(--r-pole); background: linear-gradient(160deg, #3a4150, #1f242e 70%); display: flex; align-items: flex-end; padding: 10px; margin-bottom: var(--o2); }
-.foto-radar span { background: rgb(0 0 0 / .6); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: var(--t-przypis); font-variant-numeric: tabular-nums; }
+.foto-radar { border-radius: var(--r-pole); background: #1f2226; overflow: hidden; margin-bottom: var(--o2); }
+.foto-radar svg { display: block; width: 100%; height: auto; }
 .postep { display: flex; gap: 6px; list-style: none; padding: 0; margin: 0 0 var(--o3); font-size: var(--t-przypis); color: var(--tekst2); }
 .postep li { flex: 1; padding-top: 6px; border-top: 3px solid var(--wypelnienie-2); }
 .postep .ok, .postep .teraz { border-color: var(--gl); }
@@ -458,3 +458,15 @@ html.ramka dialog.skaner .sk-wn { width: 390px; height: 794px; transform: scale(
 .kody-qr li { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: var(--o3); background: var(--pow); border-radius: var(--r-grupa); text-align: center; }
 .kody-qr img { width: 100%; max-width: 132px; height: auto; border-radius: 8px; background: #fff; margin-bottom: var(--o2); }
 .kody-qr small { color: var(--tekst2); font-size: var(--t-objasn); }
+
+/* ---------- Ilustracje: awatary, auto, fotoradar ---------- */
+.awatar { flex: none; display: block; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: var(--wypelnienie); }
+.awatar svg { display: block; width: 100%; height: 100%; }
+.awatar.duzy { width: 64px; height: 64px; }
+.hero-aw { width: 44px; height: 44px; }
+.osoba-nag { display: flex; align-items: center; gap: var(--o4); margin: var(--o1) 0 var(--o4); }
+.osoba-nag h1 { margin: 0; }
+.kd-auto { display: block; margin: auto -6px -10px; }
+.kd-auto svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 6px 8px rgb(0 0 0 / .18)); }
+.auto-hist { margin: 0 -4px var(--o2); }
+.auto-hist svg { display: block; width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
