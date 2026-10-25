@@ -135,24 +135,24 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 96,
+   "performance": 95,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2711,
-   "tbtMs": 7
+   "lcpMs": 2738,
+   "tbtMs": 28
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4355,
-   "tbtMs": 31
+   "lcpMs": 4353,
+   "tbtMs": 70
   }
  },
  "czytelnosc": {
   "nasz": {
    "zdania": 668,
-   "slowa": 3388,
+   "slowa": 3390,
    "sredniaDlugoscZdania": 5.1,
    "procentTrudnych": 12.7,
    "fog": 7.1
