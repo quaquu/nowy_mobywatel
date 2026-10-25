@@ -2,6 +2,7 @@
 // oraz podpisy poparcia bez papierowych list (projekty ustaw, referenda, kandydaci).
 import { ic } from './icons.js';
 import { stan, zapisz, esc, $, $$, arkuszZgody, ogloszenie, toast, cel } from './core.js';
+import { spokojnie } from './ruch.js';
 import { numery, przykladyNumerow, inicjatywy, poparciaPapier, za, fmt } from './data.js';
 
 const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
@@ -89,7 +90,7 @@ export function ktoDzwoni() {
         wynik.innerHTML = wynikNumeru(d);
         stan.sprawdzoneNumery++; zapisz(); cel('kto-dzwoni');
         ogloszenie($('h2', wynik).textContent);
-        wynik.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        wynik.scrollIntoView({ block: 'nearest', behavior: spokojnie() ? 'auto' : 'smooth' });
       };
       $('#f-nr', root).onsubmit = e => { e.preventDefault(); sprawdz(); };
       $$('[data-nr]', root).forEach(b => b.onclick = () => { pole.value = b.dataset.nr; sprawdz(); });

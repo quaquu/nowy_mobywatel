@@ -2,6 +2,7 @@
 // każde działanie kończy się tym samym arkuszem zgody co w aplikacji.
 import { ic } from './icons.js';
 import { stan, esc, $, czytaj, cel } from './core.js';
+import { spokojnie } from './ruch.js';
 import { rozpoznaj } from './intents.js';
 import { fmt, za } from './data.js';
 
@@ -76,7 +77,7 @@ export function asystent(params) {
     `,
     po(root) {
       const czat = $('#czat', root), pole = $('#pytanie', root);
-      const dodaj = m => { historia.push(m); czat.insertAdjacentHTML('beforeend', babelek(m)); const el = czat.lastElementChild; el.classList.add('nowa'); el.scrollIntoView({ block: el.offsetHeight > 280 ? 'start' : 'end', behavior: 'smooth' }); };
+      const dodaj = m => { historia.push(m); czat.insertAdjacentHTML('beforeend', babelek(m)); const el = czat.lastElementChild; el.classList.add('nowa'); el.scrollIntoView({ block: el.offsetHeight > 280 ? 'start' : 'end', behavior: spokojnie() ? 'auto' : 'smooth' }); };
       const zadaj = t => {
         if (!t.trim()) return;
         dodaj({ kto: 'ja', t });

@@ -80,7 +80,8 @@ export function arkuszZgody({ tytul, pozycje, dane = [], cofniecie, przycisk = '
       </form>`;
     document.body.append(d);
     // Zamknięcie z animacją: arkusz zjeżdża w dół, dopiero potem znika.
-    $('form', d).addEventListener('submit', async e => { e.preventDefault(); const v = e.submitter?.value || 'anuluj'; await schowaj(d); if (d.open) d.close(v); });
+    // Po „Podpisz” od razu podpis (bez czekania na arkusz), po „Wróć” arkusz zjeżdża.
+    $('form', d).addEventListener('submit', async e => { e.preventDefault(); const v = e.submitter?.value || 'anuluj'; if (v !== 'ok') await schowaj(d); if (d.open) d.close(v); });
     d.addEventListener('cancel', async e => { e.preventDefault(); await schowaj(d); if (d.open) d.close('anuluj'); });
     d.addEventListener('close', async () => {
       const ok = d.returnValue === 'ok';

@@ -67,7 +67,8 @@ html.bez-ruchu *, html.bez-ruchu *::before, html.bez-ruchu *::after, html.bez-ru
 /* ---------- Powłoka: pasek nawigacji, treść, pasek kart ---------- */
 .aplikacja { max-width: 480px; margin: 0 auto; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; background: var(--tlo); }
 .gora { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: var(--o1); min-height: 52px; padding: var(--o1) var(--o3) var(--o1) var(--o4); background: color-mix(in srgb, var(--tlo) 94%, transparent); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
-.marka { display: flex; align-items: center; gap: var(--o2); color: var(--tekst); text-decoration: none; font-weight: 700; font-size: var(--t-naglowek); }
+.marka { display: flex; min-width: 0; align-items: center; gap: var(--o2); color: var(--tekst); text-decoration: none; font-weight: 700; font-size: var(--t-naglowek); }
+.gora .ib { flex: none; }
 .marka img { border-radius: 7px; }
 .marka small { font-weight: 400; color: var(--tekst2); font-size: var(--t-przypis); }
 .odstep { flex: 1; }

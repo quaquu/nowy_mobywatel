@@ -27,7 +27,7 @@ Państwo, które przychodzi ze sprawą: mObywatel, w którym urodzenie dziecka t
 ```
 Problem: obywatel musi sam wiedzieć, że ma coś do załatwienia, w którym urzędzie i jakim wnioskiem. Prototyp Janusza Cieszyńskiego zastępuje menu rozmową, ale nadal czeka, aż zapytasz, i prowadzi jedną sprawę naraz. Po narodzinach dziecka załatwia w nim 2 sprawy z 2 podpisami.
 
-Moja wersja odwraca kierunek. Państwo przychodzi ze sprawą: szpital zgłosił narodziny, więc na ekranie startowym czeka karta „Urodziła się Twoja córka”. Jedno dotknięcie pokazuje 5 spraw w 4 instytucjach, wypełnionych danymi, które państwo już ma: zgłoszenie urodzenia (akt, PESEL, meldunek), 800+, becikowe (dochód sprawdzony w US), ubezpieczenie dziecka u pracodawcy i urlop rodzicielski. Arkusz zgody pokazuje, co, dokąd i z jakimi danymi wyślemy. Jeden podpis. Zmierzone: 4 dotknięcia, ok. 12 s (model KLM), wobec 6 dotknięć i 24 s za 2 sprawy w prototypie referencyjnym.
+Moja wersja odwraca kierunek. Państwo przychodzi ze sprawą: szpital zgłosił narodziny, więc na ekranie startowym czeka karta „Urodziła się Twoja córka”. Jedno dotknięcie pokazuje 5 spraw w 4 instytucjach, wypełnionych danymi, które państwo już ma: zgłoszenie urodzenia (akt, PESEL, meldunek), 800+, becikowe (dochód sprawdzony w US), ubezpieczenie dziecka u pracodawcy i urlop rodzicielski. Arkusz zgody pokazuje, co, dokąd i z jakimi danymi wyślemy. Jeden podpis. Zmierzone: 4 dotknięcia, ok. 13 s (model KLM), wobec 6 dotknięć i 24 s za 2 sprawy w prototypie referencyjnym.
 
 Co jeszcze jest w prototypie:
 • Przeprowadzka, kupno auta (historia z ostrzeżeniem o cofniętym liczniku, PCC liczony z ceny), utrata dokumentów, nowy dowód, mandat i podatek z BLIK.

@@ -35,7 +35,7 @@ W językach i bazie wiedzy referencja jest od nas bogatsza i tego nie ukrywamy.
 | Narodziny dziecka: sprawy załatwione | 2 (USC, 800+) | 5 (USC z PESEL i meldunkiem, 800+, becikowe, ubezpieczenie, urlop rodzicielski) | `tests/klm.mjs`, Playwright |
 | … podpisy | 2 | 1 | j.w. |
 | … dotknięcia | 6 | 4 | j.w. |
-| … przewidywany czas (KLM + zmierzony czas reakcji) | 24 s | 12 s | j.w. |
+| … przewidywany czas (KLM + zmierzony czas reakcji, z animacjami) | 24 s | 13 s | j.w. |
 | Rozpoznanie sprawy z tekstu, odłożony zbiór testowy (n=87) | 31,0% | 92,0% | `tests/eval-intents.mjs` |
 | … tylko intencje obsługiwane przez oba (n=50) | 40,0% | 92,0% | j.w. |
 | Naruszenia axe (WCAG 2.2 AA i dobre praktyki) | 7 reguł, 26 elementów, w tym 1 krytyczne i 3 poważne | 0 | `tests/audit.mjs` |

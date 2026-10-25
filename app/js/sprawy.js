@@ -2,6 +2,7 @@
 // listą kroków do zaznaczenia i jednym podpisem na końcu.
 import { ic } from './icons.js';
 import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast, cel } from './core.js';
+import { spokojnie } from './ruch.js';
 import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy } from './data.js';
 
 // 1 sprawa, 2–4 sprawy, 5+ spraw (12–14: spraw)
@@ -213,7 +214,7 @@ export function auto() {
               <button class="btn glowny szeroki" id="kupuje">Kupuję to auto</button>
             </section>`;
           $('#kupuje', root).onclick = () => { autoKrok = 'kup'; dispatchEvent(new HashChangeEvent('hashchange')); };
-          $('#wynik h2', root).scrollIntoView({ behavior: 'smooth', block: 'start' });
+          $('#wynik h2', root).scrollIntoView({ behavior: spokojnie() ? 'auto' : 'smooth', block: 'start' });
         };
       },
     };
