@@ -258,15 +258,18 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .kd { --rx: 0deg; --ry: 0deg; --ty: 0px; --mx: 100%; --my: 0%; transform: perspective(900px) translateY(var(--ty)) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .35s var(--krzywa), box-shadow .35s var(--krzywa), filter .2s; will-change: transform; }
 .kd::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at var(--mx) var(--my), rgb(255 255 255 / .24), transparent 55%); transition: background .2s; }
 /* Refleks przesuwany transformacją (karta graficzna), a nie tłem: bez przerysowywania strony. */
-.kd::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 60%; pointer-events: none; background: linear-gradient(105deg, transparent 20%, rgb(255 255 255 / .16) 50%, transparent 80%); transform: translateX(0); animation: polysk 7s 2s ease-in-out infinite; }
-.stos > div:nth-child(2) .kd::after { animation-delay: 3.4s; }
-.stos > div:nth-child(3) .kd::after { animation-delay: 4.8s; }
-@keyframes polysk { 0%, 62% { transform: translateX(0); } 100% { transform: translateX(300%); } }
+.kd::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 60%; pointer-events: none; background: linear-gradient(105deg, transparent 20%, rgb(255 255 255 / .16) 50%, transparent 80%); transform: translateX(0); animation: polysk 1.4s .6s ease-in-out both; }
+.stos > div:nth-child(2) .kd::after { animation-delay: .8s; }
+.stos > div:nth-child(3) .kd::after { animation-delay: 1s; }
+/* Refleks raz, gdy karta się pojawia, i znowu przy każdym najechaniu (bez pętli bez końca). */
+@keyframes polysk { to { transform: translateX(300%); } }
+@keyframes polysk-znowu { to { transform: translateX(300%); } }
 .kd.ruch { transition: transform .08s linear, box-shadow .35s var(--krzywa); }
 .kd:active { filter: brightness(.96); }
 @media (hover: hover) {
   a.kd:hover { --ty: -4px; box-shadow: 0 22px 40px -18px rgb(0 0 0 / .45), 0 2px 6px rgb(0 0 0 / .12); }
   .stos > div:not(:last-child) a.kd:hover { --ty: -12px; }
+  a.kd:hover::after { animation: polysk-znowu 1s ease-in-out both; }
   a.kd:hover .kd-holo { animation: holo 2.4s linear infinite; }
 }
 @keyframes holo { to { filter: hue-rotate(360deg); } }
