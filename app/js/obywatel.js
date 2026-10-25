@@ -174,10 +174,10 @@ export function inicjatywa(id) {
     <p class="wstep">${esc(i.opis)}</p>
     <section class="karta">${pasek(i)}
       ${wiersz('Zbiera', i.komitet)}${wiersz('Koniec zbiórki', fmt(za(i.koniec)))}${wiersz('Podpisy sprawdza', i.sprawdza)}
+      <p class="prawo-stan"><span class="plak ${kolor}">${krotko}</span></p>
+      <p class="uwaga">${ic('info')}<span>${esc(dlugo)}</span></p>
     </section>
     <details class="karta rozw"><summary>Przeczytaj, co popierasz</summary><p>${esc(i.tresc)}</p></details>
-    <p class="prawo-stan"><span class="plak ${kolor}">${krotko}</span></p>
-    <p class="uwaga">${ic('info')}<span>${esc(dlugo)}</span></p>
     <button class="btn glowny szeroki" id="poprzyj">${ic('pen')}Poprzyj podpisem w mObywatelu</button>`,
     po(root) {
       $('#poprzyj', root).onclick = async () => {

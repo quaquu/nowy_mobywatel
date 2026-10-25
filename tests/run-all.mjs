@@ -38,7 +38,7 @@ log('4/6 Dostępność (axe)…');
 const trasy = ['#/start', '#/sprawy', '#/sprawa/narodziny', '#/sprawa/przeprowadzka', '#/sprawa/auto', '#/sprawa/utrata', '#/sprawa/dowod', '#/sprawa/slub', '#/mandat', '#/podatek', '#/asystent', '#/dokumenty', '#/dokument/dowod', '#/pokaz', '#/skrzynka', '#/pismo/us', '#/naleznosci', '#/zlecenia', '#/dane', '#/dane/dostep', '#/dane/rejestry', '#/bliscy', '#/bliscy/mama', '#/kto-dzwoni', '#/poparcie', '#/poparcie/przejscia', '#/poparcie/senat', '#/dostep', '#/konsultant', '#/ustawienia', '#/wiecej', '#/jury', '#/test'];
 const axN = await axeNasz(url, trasy);
 W.axe = { nasz: axN.naruszenia, naszWezly: axN.wezly, naszReguly: axN.reguly };
-prog('axe: 0 naruszeń WCAG 2.2 AA i dobrych praktyk (29 tras + 4 stany, jasny i ciemny, 320 i 390 px, widok komputerowy z telefonem)', axN.naruszenia === 0, `${axN.naruszenia} reguł, ${axN.wezly} elementów ${Object.keys(axN.reguly).join(', ')}`);
+prog(`axe: 0 naruszeń WCAG 2.2 AA i dobrych praktyk (${trasy.length} tras + 4 stany, jasny i ciemny, 320 i 390 px, widok komputerowy z telefonem)`, axN.naruszenia === 0, `${axN.naruszenia} reguł, ${axN.wezly} elementów ${Object.keys(axN.reguly).join(', ')}`);
 if (REF_URL) { const axR = await axeRef(REF_URL); W.axe.ref = axR.naruszenia; W.axe.refWezly = axR.wezly; W.axe.refReguly = axR.reguly; log(`   referencja: ${axR.naruszenia} reguł, ${axR.wezly} elementów: ${Object.entries(axR.reguly).map(([k, v]) => `${k}(${v.impact})`).join(', ')}`); }
 
 log('4b/6 Detektor Impeccable (wzorce „interfejsu z AI”)…');
