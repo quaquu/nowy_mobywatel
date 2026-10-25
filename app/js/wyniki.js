@@ -1,6 +1,6 @@
 // PLIK GENEROWANY przez `npm test` (tests/run-all.mjs). Nie edytuj ręcznie.
 export const WYNIKI = {
- "data": "24 października 2026",
+ "data": "25 października 2026",
  "crawler": {
   "strony": 222,
   "trasy": 37,
@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8,
+   "systemS": 8.3,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -135,26 +135,26 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 97,
+   "performance": 96,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2584,
-   "tbtMs": 0
+   "lcpMs": 2572,
+   "tbtMs": 20
   },
   "ref": {
-   "performance": 82,
+   "performance": 84,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4358,
-   "tbtMs": 31
+   "lcpMs": 4207,
+   "tbtMs": 16
   }
  },
  "czytelnosc": {
   "nasz": {
    "zdania": 579,
-   "slowa": 2872,
+   "slowa": 2883,
    "sredniaDlugoscZdania": 5,
-   "procentTrudnych": 12.5,
+   "procentTrudnych": 12.6,
    "fog": 7
   },
   "ref": {
