@@ -2,26 +2,25 @@
 import { ic } from './icons.js';
 import { stan, $, $$, ogloszenie, resetuj } from './core.js';
 import * as W from './widoki.js';
-import * as S from './sprawy.js';
-import { asystent } from './asystent.js';
-import { jury } from './jury.js';
-import * as B from './obywatel.js';
+// Ekrany spoza startu ładujemy dopiero, gdy są potrzebne: start rysuje się szybciej.
+const S = () => import('./sprawy.js'), B = () => import('./obywatel.js'), K = () => import('./skaner.js');
+const asystent = async q => (await import('./asystent.js')).asystent(q);
+const jury = async () => (await import('./jury.js')).jury();
 import { testWidok, podlacz } from './test.js';
 import { wjazdEkranu, wyskocz, kaskada, spokojnie } from './ruch.js';
-import { otworzSkaner, kodWidok } from './skaner.js';
 
 const TRASY = [
   [/^\/?(start)?$/, () => W.start()],
-  [/^\/sprawy$/, () => S.katalog()],
-  [/^\/sprawa\/narodziny$/, () => S.narodziny()],
-  [/^\/sprawa\/przeprowadzka$/, () => S.przeprowadzka()],
-  [/^\/sprawa\/auto$/, () => S.auto()],
-  [/^\/sprawa\/utrata$/, () => S.utrata()],
-  [/^\/sprawa\/utrata\/znaleziony$/, () => S.znaleziony()],
-  [/^\/sprawa\/dowod$/, () => S.dowod()],
-  [/^\/sprawa\/([a-z]+)$/, m => S.podglad(m[1])],
-  [/^\/mandat$/, () => S.mandat()],
-  [/^\/podatek$/, () => S.podatek()],
+  [/^\/sprawy$/, async () => (await S()).katalog()],
+  [/^\/sprawa\/narodziny$/, async () => (await S()).narodziny()],
+  [/^\/sprawa\/przeprowadzka$/, async () => (await S()).przeprowadzka()],
+  [/^\/sprawa\/auto$/, async () => (await S()).auto()],
+  [/^\/sprawa\/utrata$/, async () => (await S()).utrata()],
+  [/^\/sprawa\/utrata\/znaleziony$/, async () => (await S()).znaleziony()],
+  [/^\/sprawa\/dowod$/, async () => (await S()).dowod()],
+  [/^\/sprawa\/([a-z]+)$/, async m => (await S()).podglad(m[1])],
+  [/^\/mandat$/, async () => (await S()).mandat()],
+  [/^\/podatek$/, async () => (await S()).podatek()],
   [/^\/asystent$/, (m, q) => asystent(q)],
   [/^\/dokumenty$/, () => W.dokumentyWidok()],
   [/^\/dokument\/([a-z]+)$/, m => W.dokument(m[1])],
@@ -33,10 +32,10 @@ const TRASY = [
   [/^\/dane$/, () => W.dane()],
   [/^\/dane\/dostep$/, () => W.dostepWidok()],
   [/^\/dane\/rejestry$/, () => W.rejestry()],
-  [/^\/kod\/([a-z]+)$/, m => kodWidok(m[1])],
-  [/^\/kto-dzwoni$/, () => B.ktoDzwoni()],
-  [/^\/poparcie$/, () => B.poparcieWidok()],
-  [/^\/poparcie\/([a-z]+)$/, m => B.inicjatywa(m[1])],
+  [/^\/kod\/([a-z]+)$/, async m => (await K()).kodWidok(m[1])],
+  [/^\/kto-dzwoni$/, async () => (await B()).ktoDzwoni()],
+  [/^\/poparcie$/, async () => (await B()).poparcieWidok()],
+  [/^\/poparcie\/([a-z]+)$/, async m => (await B()).inicjatywa(m[1])],
   [/^\/bliscy$/, () => W.bliscy()],
   [/^\/bliscy\/mama$/, () => W.blMama()],
   [/^\/dostep$/, () => W.odzyskaj()],
@@ -68,7 +67,7 @@ function naglowek() {
   $('#skrzynka-btn').setAttribute('aria-label', n ? `Pisma i płatności, ${n} nowe` : 'Pisma i płatności');
 }
 
-let pierwszy = true, poprzednia = null, bylGotowy = false;
+let pierwszy = true, poprzednia = null, bylGotowy = false, nrPokazu = 0;
 // Kierunek przejścia: głębiej (dalej), płycej (wstecz) albo między zakładkami.
 const glebokosc = s => s.split('/').filter(Boolean).length;
 const korzen = s => ZAKLADKI.some(z => z[0].slice(1) === s) || s === '' || s === '/';
@@ -80,13 +79,15 @@ function kierunek(z, na) {
   if (korzen(z) && korzen(na)) return 'zakladka';
   return powrot || glebokosc(na) < glebokosc(z) ? 'wstecz' : 'dalej';
 }
-function pokaz() {
+async function pokaz() {
+  const nr = ++nrPokazu;
   // Zmiana ekranu (np. przycisk „wstecz”) zamyka otwarty arkusz zgody i skaner bez wysyłania.
   $$('dialog.arkusz[open], dialog.skaner[open]').forEach(d => d.close('anuluj'));
   const [sciezka, qs] = location.hash.replace(/^#/, '').split('?');
   const q = new URLSearchParams(qs || '');
   let widok = null;
-  for (const [re, f] of TRASY) { const m = sciezka.match(re); if (m) { widok = f(m, q); if (widok) break; } }
+  for (const [re, f] of TRASY) { const m = sciezka.match(re); if (m) { widok = await f(m, q); if (widok) break; } }
+  if (nr !== nrPokazu) return; // w międzyczasie przyszła nowsza nawigacja
   if (!widok) widok = { tytul: 'Nie ma takiej strony', html: `<h1 tabindex="-1">Nie ma takiej strony</h1><p>Wróć na <a href="#/start">start</a>.</p>` };
   const main = $('#tresc');
   main.innerHTML = widok.html;
@@ -165,7 +166,7 @@ function powloka() {
   $('#nawigacja').innerHTML = ZAKLADKI.map(([h, i, t]) => `<a href="${h}">${ic(i)}<span>${t}</span></a>`).join('');
   $('#ustawienia-btn').innerHTML = ic('gear');
   $('#skan-btn').innerHTML = ic('scan');
-  $('#skan-btn').onclick = () => otworzSkaner();
+  $('#skan-btn').onclick = async () => (await K()).otworzSkaner();
   zastosujUstawienia();
   addEventListener('ustawienia', () => { zastosujUstawienia(); pokaz(); });
   addEventListener('hashchange', pokaz);
