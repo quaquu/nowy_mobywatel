@@ -48,7 +48,7 @@ html.duzy { --skala: 1.2; }
 
 /* ---------- Podstawy i powierzchnie przeglądarki ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { font-size: calc(16px * var(--skala)); -webkit-text-size-adjust: 100%; accent-color: var(--gl); scrollbar-color: var(--wypelnienie-2) transparent; }
+html { --dol-wys: calc(60px + env(safe-area-inset-bottom)); font-size: calc(16px * var(--skala)); -webkit-text-size-adjust: 100%; accent-color: var(--gl); scrollbar-color: var(--wypelnienie-2) transparent; }
 body { margin: 0; background: var(--tlo); color: var(--tekst); font-family: var(--f); font-size: var(--t-tresc); line-height: 1.45; -webkit-font-smoothing: antialiased; caret-color: var(--gl); }
 ::selection { background: rgb(200 16 46 / .2); color: inherit; }
 h1, h2, h3 { text-wrap: balance; }
@@ -143,7 +143,10 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .zapytaj input, .pisz input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--tekst); font: inherit; padding: 10px 0; outline: none; }
 .zapytaj input::placeholder, .pisz input::placeholder, .pole::placeholder { color: var(--tekst3); }
 .zapytaj:focus-within, .pisz:focus-within { outline: 3px solid var(--gl); outline-offset: 1px; }
-.pisz { position: sticky; bottom: calc(66px + env(safe-area-inset-bottom)); z-index: 5; box-shadow: 0 0 0 1px var(--separator); }
+/* Pole rozmowy przyklejone nad paskiem kart, na pasie tła: treść czatu chowa się pod nim, a nie prześwituje. */
+.pisz-pasek { position: sticky; bottom: var(--dol-wys); z-index: 5; margin: 0 calc(-1 * var(--o4)); padding: var(--o2) var(--o4); background: var(--tlo); }
+.pisz { box-shadow: 0 0 0 1px var(--separator); }
+.msg { scroll-margin: 64px 0 calc(var(--dol-wys) + 80px); }
 .pisz .wyslij { background: var(--gl); color: var(--gl-tekst); }
 .pisz .wyslij:hover { background: var(--gl-mocny); }
 .pisz .nagrywa { background: var(--zle); color: var(--zle-tekst); animation: puls 1.2s ease-in-out infinite; }
@@ -307,6 +310,7 @@ dialog.arkusz .przyciski { position: sticky; bottom: 0; margin: var(--o3) calc(-
 .diag p:first-of-type { margin-top: 0; }
 #pasek-testu { position: sticky; top: 0; z-index: 30; background: #1c1c1e; color: #fff; padding: 10px var(--o4); display: flex; gap: 10px; align-items: center; font-size: var(--t-objasn); }
 #pasek-testu p { margin: 0; flex: 1; }
+html:not(.ramka) body.testuje .gora { top: var(--pasek-wys, 0px); }
 #pasek-testu .btn.tekst { color: #ffb3bf; }
 .sus { border: 0; padding: var(--o3) 0; margin: 0; border-bottom: 1px solid var(--separator); }
 .sus legend { font-weight: 700; padding: 0; margin-bottom: var(--o2); }
@@ -335,7 +339,8 @@ html.pelny #telefon-btn:not([hidden]) { display: inline-flex; position: fixed; t
 }
 html.ramka body { background: color-mix(in srgb, var(--tlo) 70%, #c9ccd6); min-height: 100vh; }
 @media (prefers-color-scheme: dark) { html.ramka:not([data-theme="light"]) body { background: #141416; } }
-html.ramka .pulpit { display: flex; align-items: center; justify-content: center; gap: 72px; min-height: 100vh; padding: 24px 32px; }
+html.ramka .pulpit { display: flex; align-items: center; justify-content: center; gap: 72px; height: calc(100vh - var(--pasek-wys, 0px)); padding: 24px 32px; }
+html.ramka .panel { max-height: 100%; overflow-y: auto; }
 html.ramka .telefon { --s: var(--skala-tel, 1); display: flex; flex-direction: column; position: relative; flex: none; width: 390px; height: 844px; border-radius: 54px; overflow: hidden; background: var(--tlo);
   box-shadow: 0 0 0 11px #121214, 0 0 0 12px #3a3a3e, 0 40px 80px -24px rgb(0 0 0 / .45);
   transform: scale(var(--s)); margin: calc((var(--s) - 1) * 422px) calc((var(--s) - 1) * 195px); }
@@ -347,6 +352,7 @@ html.ramka .pasek-stanu { display: flex; position: relative; flex: none; height:
 html.ramka .aplikacja { flex: 1; min-height: 0; max-width: none; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
 html.ramka .aplikacja::-webkit-scrollbar { display: none; }
 html.ramka main { padding-bottom: 120px; }
+html.ramka { --dol-wys: 80px; }
 html.ramka .dol { left: 0; right: 0; width: auto; transform: none; padding-bottom: 20px; }
 html.ramka .belka-domowa { display: block; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: var(--tekst); z-index: 40; pointer-events: none; }
 html.ramka .toast { bottom: 110px; }

@@ -97,7 +97,10 @@ function ustawWidok(tryb = trybWidoku()) {
   h.classList.toggle('ramka', szeroki && tryb === 'telefon');
   h.classList.toggle('pelny', szeroki && tryb === 'pelny');
   $('#telefon-btn').hidden = !(szeroki && tryb === 'pelny');
-  h.style.setProperty('--skala-tel', Math.min(1, (innerHeight - 48) / 868).toFixed(3));
+  // Pasek trybu testowego zabiera górę okna: telefon ma się zmieścić pod nim w całości.
+  const pasek = $('#pasek-testu')?.offsetHeight || 0;
+  h.style.setProperty('--pasek-wys', pasek + 'px');
+  h.style.setProperty('--skala-tel', Math.min(1, (innerHeight - 48 - pasek) / 868).toFixed(3));
 }
 function zmienWidok(tryb) {
   try { localStorage.setItem(KLUCZ_WIDOKU, tryb); } catch {}

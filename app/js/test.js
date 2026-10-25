@@ -57,7 +57,7 @@ function rozpocznij(i) {
 
 function pasek(sukces) {
   let p = $('#pasek-testu');
-  if (!aktywny()) { p?.remove(); document.body.classList.remove('testuje'); return; }
+  if (!aktywny()) { p?.remove(); document.body.classList.remove('testuje'); dispatchEvent(new Event('resize')); return; }
   if (!p) { p = document.createElement('aside'); p.id = 'pasek-testu'; p.setAttribute('aria-label', 'Zadanie testowe'); document.body.prepend(p); }
   document.body.classList.add('testuje');
   const i = sesja.biezace, z = ZADANIA[i], w = sesja.wyniki[i];
@@ -65,6 +65,7 @@ function pasek(sukces) {
     ? `<p><b>Zadanie ${i + 1} z ${ZADANIA.length} wykonane.</b> Czas: ${w.czasS} s.</p><button class="btn glowny maly-btn" id="t-dalej">Dalej</button>`
     : `<p><b>Zadanie ${i + 1} z ${ZADANIA.length}:</b> ${esc(z.tekst)}</p><button class="btn tekst maly-btn" id="t-podd">Nie wiem, jak to zrobić</button>`;
   $('#t-dalej', p)?.addEventListener('click', nastepne);
+  dispatchEvent(new Event('resize'));
   $('#t-podd', p)?.addEventListener('click', () => { w.poddane = true; w.czasS = +((Date.now() - w.start) / 1000).toFixed(1); zapiszSesje(); nastepne(); });
 }
 

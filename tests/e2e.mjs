@@ -62,6 +62,20 @@ export async function sprawy(url) {
   const { chromium } = loadPlaywright();
   const b = await chromium.launch();
   const wyniki = {}, problemy = [];
+  // Pole rozmowy nie zasłania ostatniej wiadomości i nie wchodzi pod pasek kart; treść nie prześwituje przez pas pola.
+  const ukladCzatu = async p => {
+    await p.goto(url + '#/asystent'); await p.waitForSelector('#pytanie');
+    await p.fill('#pytanie', 'zgubiłem portfel'); await p.press('#pytanie', 'Enter');
+    await p.waitForFunction(() => document.querySelectorAll('.msg.bot').length >= 2); await p.waitForTimeout(800);
+    const u = await p.evaluate(() => {
+      const r = s => document.querySelector(s).getBoundingClientRect();
+      const pole = document.getElementById('f-pisz'), pasEl = pole.closest('.pisz-pasek') || pole;
+      const pas = pasEl.getBoundingClientRect(), nav = r('#nawigacja'), ost = [...document.querySelectorAll('.msg')].at(-1).getBoundingClientRect();
+      const nadPolem = document.elementFromPoint(pas.left + 4, pas.top + 3);
+      return { ost: ost.bottom, pasGora: pas.top, pasDol: pole.getBoundingClientRect().bottom, nav: nav.top, pelny: !!nadPolem && pasEl.contains(nadPolem) };
+    });
+    if (u.ost > u.pasGora + 1 || u.pasDol > u.nav + 1 || !u.pelny) throw new Error('pole rozmowy zasłania treść: ' + JSON.stringify(u));
+  };
   const krok = async (nazwa, f) => {
     const p = await nowaStrona(b, url);
     try { wyniki[nazwa] = (await f(p)) ?? true; } catch (e) { problemy.push(`${nazwa}: ${e.message.split('\n')[0]}`); wyniki[nazwa] = false; }
@@ -141,6 +155,7 @@ export async function sprawy(url) {
       await p.waitForFunction(t => document.querySelector('#czat').textContent.includes(t), oczek, { timeout: 3000 });
     }
     await p.click('text=Załatw wszystko naraz'); await p.waitForSelector('#f-nar');
+    await ukladCzatu(p);
   });
   await krok('tryb-prosty', async p => {
     await p.goto(url + '#/ustawienia'); await p.check('[data-ust="prosty"]'); await p.goto(url + '#/start');
@@ -186,6 +201,12 @@ export async function sprawy(url) {
       if (!(await p.evaluate(() => document.documentElement.classList.contains('pelny') && !document.documentElement.classList.contains('ramka')))) throw new Error('nie przełączył na pełny ekran');
       await p.click('#telefon-btn');
       if (!(await p.evaluate(() => document.documentElement.classList.contains('ramka')))) throw new Error('nie wrócił do telefonu');
+      await ukladCzatu(p);
+      // Tryb testowy na komputerze: pasek zadania u góry, telefon nadal mieści się w oknie.
+      await p.goto(url + '#/test'); await p.locator('input[name=wiek]').first().check(); await p.locator('input[name=mob]').first().check();
+      await p.click('text=Zacznij test'); await p.waitForSelector('#pasek-testu'); await p.waitForTimeout(300);
+      const tt = await p.evaluate(() => { const t = document.getElementById('telefon').getBoundingClientRect(), b = document.getElementById('pasek-testu').getBoundingClientRect(); return t.top >= b.bottom - 1 && t.bottom <= innerHeight + 1; });
+      if (!tt) throw new Error('telefon wychodzi poza okno przy pasku testu');
       await p.goto(url + '?widok=pelny#/start'); await p.waitForSelector('main h1');
       if (!(await p.evaluate(() => document.documentElement.classList.contains('pelny')))) throw new Error('?widok=pelny nie działa');
       wyniki['widok-komputer'] = true;
