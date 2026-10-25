@@ -48,7 +48,7 @@ export function jury() {
     </ul>
 
     <h2 class="sekcja">Uczciwie: co już jest w mObywatelu</h2>
-    <p>Dokumenty w telefonie, e-Doręczenia, historia pojazdu, punkty karne, zastrzeżenie PESEL, zawieszenie dowodu, mStłuczka i informacja o odbiorcach danych z rejestru PESEL (na wniosek, jako plik) już działają. Nie udajemy, że to nasze. Nowe są: sprawy przychodzące same, pakiety spraw z jednym podpisem, „Należy Ci się”, przypomnienia i zlecenia stałe, bieżący rejestr dostępu do danych ze wszystkich rejestrów, sprawy bliskich, tryb prosty i odzyskiwanie dostępu bez pętli.</p>
+    <p>Dokumenty w telefonie, e-Doręczenia, historia pojazdu, punkty karne, zastrzeżenie PESEL, zawieszenie dowodu, mStłuczka i informacja o odbiorcach danych z rejestru PESEL już działają. W mObywatelu w przeglądarce są też osobne wnioski: zgłoszenie urodzenia, zameldowanie, wniosek o dowód, zbycie pojazdu, ePłatności, historia weryfikacji PESEL i część spraw za dziecko lub inną osobę. Nie udajemy, że to nasze. Nowe są: sprawy przychodzące same, pakiety spraw z kilku urzędów z jednym podpisem, „Należy Ci się”, przypomnienia i zlecenia stałe, bieżący rejestr dostępu do danych ze wszystkich rejestrów, sprawy bliskich w jednym miejscu, tryb prosty i odzyskiwanie dostępu bez pętli.</p>
 
     <h2 class="sekcja">Dokumentacja</h2>
     <ul class="lista mala">

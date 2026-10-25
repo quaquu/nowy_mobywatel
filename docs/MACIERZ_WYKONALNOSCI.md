@@ -12,7 +12,7 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 
 | Element | Status | Podstawa / uwagi |
 |---|:---:|---|
-| Zgłoszenie urodzenia online (akt, PESEL i zameldowanie w jednym) | 🟢 | Prawo o aktach stanu cywilnego. USC przy rejestracji nadaje PESEL i melduje dziecko ([gov.pl](https://www.gov.pl/web/gov/zglos-urodzenie-dziecka)). Od 2026 r. przez e-Doręczenia. |
+| Zgłoszenie urodzenia online (akt, PESEL i zameldowanie w jednym) | 🟢 | Prawo o aktach stanu cywilnego. USC przy rejestracji nadaje PESEL i melduje dziecko ([gov.pl](https://www.gov.pl/web/gov/zglos-urodzenie-dziecka)). Usługa jest już w mObywatelu w przeglądarce ([lista usług](../research/mobywatel-w-przegladarce.md)). |
 | Powiadomienie rodzica, że szpital przekazał kartę urodzenia | 🟡 | Karta urodzenia trafia do USC elektronicznie. Potrzebne zdarzenie z systemu rejestrów stanu cywilnego do powiadomień w mObywatelu (podstawa: zadania ministra cyfryzacji wobec aplikacji). |
 | Jeden podpis pod kilkoma wnioskami | 🟡 | Każdy wniosek pozostaje osobnym dokumentem podpisanym przez obywatela (art. 63 KPA). Jeden gest może podpisać paczkę dokumentów, tak jak w podpisie zbiorczym. Wymaga zmian technicznych po stronie podpisu w mObywatelu. |
 | Wniosek 800+ wypełniony danymi z rejestru PESEL | 🟢 | ZUS przyjmuje wnioski elektronicznie (PUE/eZUS, mZUS, banki, Emp@tia) i uzupełnia dane z rejestrów. Potrzebny kanał z mObywatela do ZUS. |

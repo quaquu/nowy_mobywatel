@@ -46,7 +46,7 @@ Nie podajemy kwot wdrożenia. Bez danych COI byłyby zmyślone.
 
 ## Zarzut 4: „To już jest w mObywatelu”
 
-Zamiast udawać nowość, oznaczamy to wprost w aplikacji (stopki na ekranach „Dokumenty”, „Skrzynka”, „Kto sprawdzał moje dane”), na stronie „Dla jury” i w [ANALIZA.md, sekcja 5](ANALIZA.md#5-co-już-jest-w-mobywatelu-żeby-nie-wymyślać-istniejącego). Istniejące usługi (zastrzeżenie PESEL, historia pojazdu, mStłuczka, e-Doręczenia, informacja o odbiorcach danych PESEL) **wykorzystujemy** jako klocki w nowych przebiegach.
+Zamiast udawać nowość, oznaczamy to wprost w aplikacji (stopki na ekranach „Dokumenty”, „Skrzynka”, „Kto sprawdzał moje dane”), na stronie „Dla jury” i w [ANALIZA.md, sekcja 5](ANALIZA.md#5-co-już-jest-w-mobywatelu-żeby-nie-wymyślać-istniejącego). Istniejące usługi (zastrzeżenie PESEL, historia pojazdu, mStłuczka, e-Doręczenia, informacja o odbiorcach danych PESEL, a w mObywatelu w przeglądarce także zgłoszenie urodzenia, zameldowanie, wniosek o dowód, ePłatności i historia weryfikacji PESEL) **wykorzystujemy** jako klocki w nowych przebiegach. Różnica: tam to 44 osobne wnioski na liście, tu jedna sytuacja życiowa i jeden podpis.
 
 ## Zarzut 5: „Seniorzy sobie nie poradzą”
 

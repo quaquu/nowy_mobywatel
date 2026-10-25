@@ -143,7 +143,7 @@ Wspólny wzór najlepszych: **państwo zaczyna sprawę samo, łączy sprawy wiel
 
 ## 5. Co już jest w mObywatelu (żeby nie „wymyślać” istniejącego)
 
-Na podstawie kart usług gov.pl (kopia w pakiecie referencyjnym) i publikacji z 2026 r. ([android.com.pl](https://android.com.pl/tech/1028140-kpo-mobywatel-plany-2026-rok-nowosci/), [antyweb.pl](https://antyweb.pl/mobywatel-funkcje-uslugi)):
+Na podstawie kart usług gov.pl (kopia w pakiecie referencyjnym), opisu portalu „mObywatel w przeglądarce” ([gov.pl, 25.10.2026](https://www.gov.pl/web/mobywatel/mobywatel-w-przegladarce1); pełna lista usług: [research/mobywatel-w-przegladarce.md](../research/mobywatel-w-przegladarce.md)) i publikacji z 2026 r. ([android.com.pl](https://android.com.pl/tech/1028140-kpo-mobywatel-plany-2026-rok-nowosci/), [antyweb.pl](https://antyweb.pl/mobywatel-funkcje-uslugi)):
 
 | Funkcja | Status dziś | W prototypie |
 |---|---|---|
@@ -153,9 +153,15 @@ Na podstawie kart usług gov.pl (kopia w pakiecie referencyjnym) i publikacji z 
 | mStłuczka | istnieje | asystent odsyła do istniejącej usługi |
 | e-Doręczenia | istnieje (od 2026 główny kanał) | skrzynka + wersja prostym językiem |
 | Informacja o odbiorcach danych z rejestru PESEL i RDO | istnieje (na wniosek, plik) | **rozwinięta** w bieżący rejestr ze wszystkich rejestrów |
-| Zgłoszenie urodzenia | przez gov.pl/e-Doręczenia; w aplikacji zapowiedziane | **nowe:** pakiet 5 spraw z jednym podpisem, zaczęty przez państwo |
-| Płatności podatków lokalnych | pilotaż ePłatności | **nowe:** zlecenie stałe płatności za zgodą |
-| „Należy Ci się”, sprawy bliskich, tryb prosty, odzyskiwanie dostępu | brak | **nowe** |
+| Zgłoszenie urodzenia, zameldowanie i wymeldowanie, wniosek o dowód, zawiadomienie o zbyciu lub nabyciu pojazdu | istnieje w mObywatelu w przeglądarce, każda usługa jako osobny wniosek (44 usługi na liście) | **nowe:** pakiet kilku spraw jednej sytuacji życiowej z jednym podpisem, zaczęty przez państwo |
+| „Twoje sprawy” ze statusem i urzędem | istnieje w przeglądarce | oś czasu po wysłaniu pakietu |
+| ePłatności (opłaty urzędowe, BLIK, karta, historia, potwierdzenia) | istnieje w przeglądarce | **nowe:** zlecenie stałe płatności za zgodą |
+| Historia weryfikacji numeru PESEL przez firmy i instytucje | istnieje w przeglądarce | **rozwinięta** w rejestr wszystkich odczytów z celem i podstawą prawną |
+| Wybrane sprawy za dziecko lub inną osobę (utrata i zawieszenie dowodu, kradzież tożsamości, dowód dla dziecka) | istnieje w przeglądarce, jako osobne formularze | **rozwinięte:** sprawy bliskich w jednym miejscu, z widokiem dla osoby, w której imieniu działasz |
+| Kalendarz (dni wolne, niedziele handlowe) | istnieje; przypomnienie o końcu ważności dowodu i paszportu zapowiedziane „w przyszłości” | przypomnienia o terminach już działają w prototypie |
+| „Należy Ci się”, zlecenia stałe, tryb prosty, odzyskiwanie dostępu | brak | **nowe** |
+
+Najważniejsza różnica: dziś portal ma osobne usługi z kilku urzędów na jednej liście („Załatw sprawę online”), a obywatel sam musi wiedzieć, których potrzebuje. Narodziny dziecka to tam co najmniej 2 osobne miejsca (zgłoszenie urodzenia w mObywatelu, 800+ w ZUS lub banku) i dodatkowe wnioski w innych systemach. Prototyp łączy je w jedną sprawę.
 
 ## 6. Wniosek: koncepcja
 

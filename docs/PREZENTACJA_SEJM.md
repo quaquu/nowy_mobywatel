@@ -44,5 +44,5 @@ Jeden slajd albo strona „Dla jury” w prototypie (`Więcej → Dla jury`):
 | „To inwigilacja.” | Państwo nie zbiera nowych danych. Nic nie wychodzi bez podpisu, a każdy odczyt jest pokazany obywatelowi. | [RED_TEAM.md](RED_TEAM.md), zarzut 1 |
 | „A jak AI się pomyli?” | Asystent nie wysyła niczego, tylko prowadzi do arkusza zgody. Odpowiedzi są sprawdzone, a przy każdej jest źródło. | zarzut 2 |
 | „Ile to kosztuje?” | Rozpoznawanie w telefonie nic nie kosztuje. Bielik jest otwarty. Główny koszt to integracje, z których część już istnieje. Kwot nie podam bez danych COI. | zarzut 3 |
-| „Przecież to już jest.” | Dokumenty i e-Doręczenia tak, i z nich korzystam. Nowe są pakiety z jednym podpisem, sprawy przychodzące same, sprawy bliskich i odzyskiwanie dostępu. | zarzut 4 |
+| „Przecież to już jest.” | Dokumenty, e-Doręczenia i osobne wnioski w mObywatelu w przeglądarce (np. zgłoszenie urodzenia) tak, i z nich korzystam. Nowe są pakiety z jednym podpisem, sprawy przychodzące same, sprawy bliskich i odzyskiwanie dostępu. | zarzut 4 |
 | „Czy były testy z ludźmi?” | Odpowiedz zgodnie z prawdą, wynikami z [SCENARIUSZ_TESTU.md](SCENARIUSZ_TESTU.md). Jeśli testów nie było, powiedz to wprost. | |
