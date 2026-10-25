@@ -11,6 +11,8 @@
   "devDependencies": {
     "axe-core": "4.10.3",
     "impeccable": "4.7.0",
-    "lighthouse": "12.6.1"
+    "jsqr": "1.4.0",
+    "lighthouse": "12.6.1",
+    "qrcode": "1.5.4"
   }
 }

@@ -48,7 +48,7 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 | Dokumenty „tylko do wglądu” przez 30 dni po wygaśnięciu certyfikatu | 🔴 / 🟡 | Ważność mDowodu określają przepisy o aplikacji mObywatel. Wymaga zmiany rozporządzenia lub ustawy. |
 | Asystent: rozpoznawanie sprawy w telefonie, Bielik w chmurze rządowej | 🟢 | AI Act, art. 50: obowiązek informowania, że to AI (jest w interfejsie). Asystent nie decyduje o świadczeniach, tylko kieruje do wniosku, więc nie jest systemem wysokiego ryzyka z załącznika III pkt 5 lit. a. Decyzje zostają u urzędników. |
 
-## Bezpieczeństwo i udział obywatela
+## Bezpieczeństwo, skaner kodów i udział obywatela
 
 Źródła i szczegóły: [research/telefony-i-podpisy.md](../research/telefony-i-podpisy.md).
 
@@ -62,14 +62,19 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 | „Moje poparcia”: sprawdzenie, komu udzieliło się poparcia, także na papierowej liście | 🟢 od 02.2027 | Ta sama ustawa: bezpłatna informacja o dacie poparcia i komitecie; portal sprawdza też podpisy z papierowych list. |
 | Komitet widzi tylko licznik, dane osoby widzi tylko organ sprawdzający | 🟡 | Poparcie ujawnia poglądy polityczne (dane szczególnej kategorii, art. 9 RODO). Minimalizacja danych to wymóg projektowy, do zapisania w rozporządzeniu o portalu. |
 | E-podpisy pod obywatelskimi projektami ustaw | 🔴 | Ustawa z 24.06.1999 o wykonywaniu inicjatywy ustawodawczej przez obywateli: 100 000 podpisów na papierze w 3 miesiące. Projekt poselski z 1.04.2026 (RPW/11430/2026) rozszerza Portal poparcia na projekty ustaw; stanu prac nie zweryfikowano. |
+| Skaner: potwierdzenie danych kodem QR (tożsamość w okienku, sama pełnoletność w sklepie) | 🟢 | Istnieje: weryfikacja mDokumentów kodem QR; pełnoletność bez imienia i PESEL w części kas samoobsługowych ([android.com.pl](https://android.com.pl/tech/1047796-weryfikacja-wieku-mobywatelem-bedzie-prosta/), [instalki.pl](https://www.instalki.pl/news/internet/koniec-z-czekaniem-na-pracownika-sklepu-polacy-stworzyli-bezobslugowa-weryfikacje-wieku/)). |
+| Skaner: logowanie do serwisów kodem QR | 🟢 | Istnieje w mObywatelu ([benchmark.pl](https://www.benchmark.pl/aktualnosci/mobywatel-2-0-jak-sprawdzic-kod-qr-drugiej-osoby.html), [antyweb.pl](https://antyweb.pl/mobywatel-2-0-do-pobrania)). |
+| Każde przekazanie danych kodem QR w „Kto sprawdzał moje dane” | 🟢 / 🟡 | Zapis po stronie aplikacji to zmiana techniczna; wpis po stronie odbiorcy wymaga jego systemu. |
+| „To nie ja” przy logowaniu kodem: blokada sesji i ostrzeżenie | 🟡 | Wymaga połączenia z węzłem logowania (login.gov.pl). |
+| Ostrzeżenie przed kodem QR prowadzącym poza gov.pl (np. naklejki na parkometrach) | 🟢 | Zmiana wyłącznie techniczna; strona nie jest otwierana. |
 | E-podpisy pod wnioskami o referendum ogólnokrajowe i lokalne | 🔴 | Ustawy o referendum ogólnokrajowym i lokalnym przewidują tylko listy papierowe. |
 
 ## Podsumowanie
 
 | Status | Liczba elementów |
 |---|---:|
-| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 21 |
-| 🟡 integracja, rozporządzenie albo zgoda | 11 |
+| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 25 |
+| 🟡 integracja, rozporządzenie albo zgoda | 12 |
 | 🔴 zmiana ustawy (w tym warianty 🔴 / 🟡 i 🟡 / 🔴) | 7 |
 
 **Pierwszy etap (bez zmian ustaw):** pakiet „Narodziny dziecka” bez automatycznego zaświadczenia lekarskiego, odzyskiwanie dostępu, tryb prosty, pisma prostym językiem, rozszerzony rejestr dostępu dla PESEL i RDO, przypomnienia o terminach.

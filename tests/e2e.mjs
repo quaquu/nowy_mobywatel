@@ -1,6 +1,8 @@
 // Testy end-to-end: crawler bez ślepych zaułków (320–430 px), przejście każdej sprawy do końca,
 // tryb offline, tryb testowy z eksportem. Zwraca wyniki i listę błędów.
 import { loadPlaywright } from './lib.mjs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 
 const SZEROKOSCI = [320, 360, 390, 430];
 
@@ -181,6 +183,39 @@ export async function sprawy(url) {
     if (!/Twój podpis/.test(await p.textContent('main'))) throw new Error('brak poparcia na liście „Moje poparcia”');
     await p.click('[data-nie-ja]'); await p.waitForSelector('.toast');
   });
+  await krok('skaner', async p => {
+    const tekst = () => p.textContent('dialog.skaner');
+    await p.click('#skan-btn'); await p.waitForSelector('dialog.skaner [data-kod]');
+    await p.click('[data-kod="parkometr"]'); await p.waitForFunction(() => /poza gov\.pl/.test(document.querySelector('dialog.skaner').textContent));
+    if ((await p.evaluate(() => location.hostname)) !== new URL(url).hostname) throw new Error('obcy kod otworzył stronę');
+    await p.click('dialog.skaner .btn[data-zamknij]'); await p.waitForSelector('dialog.skaner', { state: 'detached' });
+    await p.click('#skan-btn'); await p.click('[data-kod="sklep"]'); await p.click('#sk-tak');
+    await p.waitForFunction(() => /Dane przekazane/.test(document.querySelector('dialog.skaner')?.textContent || ''));
+    if (/imię|PESEL/.test((await tekst()).split('Dane przekazane')[1])) throw new Error('sklep dostał więcej niż pełnoletność');
+    await p.keyboard.press('Escape'); await p.waitForSelector('dialog.skaner', { state: 'detached' });
+    await p.goto(p.url().split('#')[0] + '#/dane/dostep'); await p.waitForSelector('main h1');
+    if (!/Sklep „Przykład”/.test(await p.textContent('main'))) throw new Error('brak wpisu w rejestrze dostępu');
+    await p.click('#skan-btn'); await p.click('[data-kod="logowanie"]'); await p.click('#sk-nie');
+    await p.waitForFunction(() => /Logowanie zablokowane/.test(document.querySelector('dialog.skaner')?.textContent || ''));
+    await p.goto(p.url().split('#')[0] + '#/kod/urzad'); await p.click('#kod-pokaz');
+    await p.waitForFunction(() => /tożsamość w okienku/.test(document.querySelector('dialog.skaner')?.textContent || ''));
+    await p.goto(p.url().split('#')[0] + '#/start'); await p.waitForSelector('dialog.skaner', { state: 'detached' });
+  });
+  // Aparat naprawdę: Chromium dostaje sztuczny obraz z kamery z kodem QR i skaner musi go odczytać.
+  for (const [kod, oczek] of [['https://quaquu.github.io/nowy_mobywatel/#/kod/sklep', 'Potwierdź pełnoletność'], ['https://oplata-parkingu.example/zaplac?strefa=A', 'poza gov.pl']]) {
+    const nazwa = 'skaner-kamera-' + (kod.includes('sklep') ? 'sklep' : 'obcy');
+    const { y4mZKodem } = await import('./kamera-y4m.mjs');
+    const plik = y4mZKodem(kod, join(tmpdir(), nazwa + '.y4m'));
+    const bk = await chromium.launch({ args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream', '--use-file-for-fake-video-capture=' + plik] });
+    const p = await (await bk.newContext({ viewport: { width: 390, height: 800 } })).newPage(); const bledy = []; p.on('pageerror', e => bledy.push(String(e)));
+    try {
+      await p.goto(url + '#/start'); await p.waitForSelector('main h1'); await p.click('#skan-btn');
+      await p.waitForFunction(t => (document.querySelector('dialog.skaner')?.textContent || '').includes(t), oczek, { timeout: 15000 });
+      wyniki[nazwa] = true;
+    } catch (e) { problemy.push(`${nazwa}: ${e.message.split('\n')[0]}`); wyniki[nazwa] = false; }
+    if (bledy.length) problemy.push(`${nazwa}: błędy JS ${bledy.join('; ')}`);
+    await bk.close();
+  }
   await krok('tryb-prosty', async p => {
     await p.goto(url + '#/ustawienia'); await p.check('[data-ust="prosty"]'); await p.goto(url + '#/start');
     if ((await p.locator('.kafle a').count()) !== 4) throw new Error('brak 4 kafli');

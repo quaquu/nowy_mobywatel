@@ -7,6 +7,8 @@ import { asystent } from './asystent.js';
 import { jury } from './jury.js';
 import * as B from './obywatel.js';
 import { testWidok, podlacz } from './test.js';
+import { wjazdEkranu, wyskocz, kaskada } from './ruch.js';
+import { otworzSkaner, kodWidok } from './skaner.js';
 
 const TRASY = [
   [/^\/?(start)?$/, () => W.start()],
@@ -31,6 +33,7 @@ const TRASY = [
   [/^\/dane$/, () => W.dane()],
   [/^\/dane\/dostep$/, () => W.dostepWidok()],
   [/^\/dane\/rejestry$/, () => W.rejestry()],
+  [/^\/kod\/([a-z]+)$/, m => kodWidok(m[1])],
   [/^\/kto-dzwoni$/, () => B.ktoDzwoni()],
   [/^\/poparcie$/, () => B.poparcieWidok()],
   [/^\/poparcie\/([a-z]+)$/, m => B.inicjatywa(m[1])],
@@ -65,10 +68,21 @@ function naglowek() {
   $('#skrzynka-btn').setAttribute('aria-label', n ? `Pisma i płatności, ${n} nowe` : 'Pisma i płatności');
 }
 
-let pierwszy = true;
+let pierwszy = true, poprzednia = null, bylGotowy = false;
+// Kierunek przejścia: głębiej (dalej), płycej (wstecz) albo między zakładkami.
+const glebokosc = s => s.split('/').filter(Boolean).length;
+const korzen = s => ZAKLADKI.some(z => z[0].slice(1) === s) || s === '' || s === '/';
+const odwiedzone = [];
+function kierunek(z, na) {
+  if (z === null || z === na) return null;
+  const powrot = odwiedzone.at(-2) === na;
+  if (powrot) odwiedzone.pop(); else odwiedzone.push(na);
+  if (korzen(z) && korzen(na)) return 'zakladka';
+  return powrot || glebokosc(na) < glebokosc(z) ? 'wstecz' : 'dalej';
+}
 function pokaz() {
-  // Zmiana ekranu (np. przycisk „wstecz”) zamyka otwarty arkusz zgody bez wysyłania.
-  $$('dialog.arkusz[open]').forEach(d => d.close('anuluj'));
+  // Zmiana ekranu (np. przycisk „wstecz”) zamyka otwarty arkusz zgody i skaner bez wysyłania.
+  $$('dialog.arkusz[open], dialog.skaner[open]').forEach(d => d.close('anuluj'));
   const [sciezka, qs] = location.hash.replace(/^#/, '').split('?');
   const q = new URLSearchParams(qs || '');
   let widok = null;
@@ -84,7 +98,13 @@ function pokaz() {
   const apl = $('.aplikacja'); if (apl) apl.scrollTop = 0;
   $$('.panel-kroki a').forEach(a => a.classList.toggle('akt', a.getAttribute('href').slice(1) === sciezka));
   if (!pierwszy) { $('h1', main)?.focus({ preventScroll: true }); ogloszenie(widok.tytul); }
-  pierwszy = false;
+  const kier = kierunek(poprzednia, sciezka), gotowy = !!$('.gotowe', main);
+  // Po podpisie adres się nie zmienia, ale ekran tak: potwierdzenie też ma wejść.
+  if (kier) wjazdEkranu(main, kier); else if (gotowy && !bylGotowy && !pierwszy) wjazdEkranu(main, 'zakladka');
+  if (gotowy && (kier || !bylGotowy) && !pierwszy) { wyskocz($('.gotowe-ik', main)); kaskada($$('.os-czasu li', main)); }
+  bylGotowy = gotowy;
+  if (pierwszy) odwiedzone.push(sciezka);
+  pierwszy = false; poprzednia = sciezka;
 }
 
 // Widok na komputerze: „telefon” (symulacja iPhone'a z panelem opisu) albo „pełny ekran”.
@@ -119,6 +139,7 @@ function zegar() {
 }
 
 function powloka() {
+  if (window.__SZYBKO) document.documentElement.classList.add('bez-ruchu'); // testy: bez animacji
   ustawWidok(); zegar(); setInterval(zegar, 30000);
   addEventListener('resize', () => ustawWidok());
   $('#pelny-btn').onclick = () => zmienWidok('pelny');
@@ -126,6 +147,8 @@ function powloka() {
   $('#od-nowa-btn').onclick = () => { resetuj(); location.hash = '#/start'; dispatchEvent(new Event('ustawienia')); };
   $('#nawigacja').innerHTML = ZAKLADKI.map(([h, i, t]) => `<a href="${h}">${ic(i)}<span>${t}</span></a>`).join('');
   $('#ustawienia-btn').innerHTML = ic('gear');
+  $('#skan-btn').innerHTML = ic('scan');
+  $('#skan-btn').onclick = () => otworzSkaner();
   zastosujUstawienia();
   addEventListener('ustawienia', () => { zastosujUstawienia(); pokaz(); });
   addEventListener('hashchange', pokaz);

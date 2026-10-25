@@ -36,6 +36,7 @@ Co jeszcze jest w prototypie:
 • „Kto sprawdzał moje dane”: każdy odczyt z celem i podstawą prawną, z ostrzeżeniem o podejrzanym odczycie (wzór: Estonia).
 • Sprawy bliskich: córka zamawia wizytę urzędnika u 78-letniej mamy, która widzi, co dzieje się w jej imieniu.
 • „Nie możesz się zalogować?”: odpowiedź na najczęstszą skargę. 33% ocen 1–2★ z 1600 przeanalizowanych recenzji mObywatela dotyczy logowania i „pętli” certyfikatu.
+• Skaner kodów QR: w sklepie przekazuje samą pełnoletność, zapisuje to w rejestrze dostępu, ostrzega przed fałszywymi kodami z parkometrów.
 • „Kto dzwoni?”: sprawdzenie numeru, zanim się coś powie. Numer infolinii banku z wykazu UKE (tylko do odbierania) to pewne oszustwo; dzwoniący urzędnik potwierdza rozmowę w aplikacji. Właścicieli prywatnych numerów aplikacja nie ujawnia.
 • Podpisy poparcia bez papieru: projekty ustaw, referenda i kandydaci. Komitet widzi tylko licznik; „Moje poparcia” pokazują, czy ktoś użył moich danych na papierowej liście. Dla kandydatów to już prawo od lutego 2027 (Portal poparcia), dla ustaw i referendów wymaga zmiany ustaw.
 • Tryb prosty dla seniorów, większy tekst, wysoki kontrast, czytanie na głos.
@@ -51,7 +52,7 @@ Sprawdzone pomiarami, a nie opinią (te same narzędzia na obu prototypach, kod 
 • Lighthouse na telefonie: wydajność 95–97, dostępność 100 (referencja: 82 i 87);
 • 43 ekrany × 4 szerokości (320–430 px) bez błędów i bez ślepych zaułków; w referencji na stronie 6 z 20 podpowiedzi startowych kończy się „Tego w tej wersji jeszcze nie załatwię”; działa offline.
 
-Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i historia pojazdu już istnieją, a w mObywatelu w przeglądarce także zgłoszenie urodzenia, zameldowanie i ePłatności, każde jako osobny wniosek wśród 44 usług. Wykorzystuję je jako klocki i łączę w sprawy życiowe. Macierz wykonalności prawnej pokazuje, co da się wdrożyć bez zmian ustaw (21 z 39 elementów), a co ich wymaga. Na stronie „Dla jury” w prototypie jest instrukcja na 60 sekund i tryb testowy z pomiarem czasu oraz ankietą SUS.
+Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i historia pojazdu już istnieją, a w mObywatelu w przeglądarce także zgłoszenie urodzenia, zameldowanie i ePłatności, każde jako osobny wniosek wśród 44 usług. Wykorzystuję je jako klocki i łączę w sprawy życiowe. Macierz wykonalności prawnej pokazuje, co da się wdrożyć bez zmian ustaw (25 z 44 elementów), a co ich wymaga. Na stronie „Dla jury” w prototypie jest instrukcja na 60 sekund i tryb testowy z pomiarem czasu oraz ankietą SUS.
 ```
 
 **Link do klikalnego prototypu \*** <!-- pole: link -->

@@ -30,6 +30,10 @@ export async function axeNasz(url, trasy) {
     wyniki[`${w}${ciemny ? 'c' : ''} arkusz zgody`] = await runAxe(p);
     await p.goto(url + '#/asystent?q=zgubi%C5%82am%20portfel'); await p.waitForSelector('.msg.bot >> nth=1');
     wyniki[`${w}${ciemny ? 'c' : ''} rozmowa`] = await runAxe(p);
+    await p.goto(url + '#/start'); await p.click('#skan-btn'); await p.waitForSelector('dialog.skaner [data-kod]');
+    wyniki[`${w}${ciemny ? 'c' : ''} skaner`] = await runAxe(p);
+    await p.click('[data-kod="sklep"]'); await p.waitForSelector('#sk-tak');
+    wyniki[`${w}${ciemny ? 'c' : ''} skaner: zgoda`] = await runAxe(p);
     await p.goto(url + '#/ustawienia'); await p.check('[data-ust="prosty"]'); await p.check('[data-ust="kontrast"]'); await p.goto(url + '#/start');
     wyniki[`${w}${ciemny ? 'c' : ''} tryb prosty`] = await runAxe(p);
     await ctx.close();

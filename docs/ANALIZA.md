@@ -160,6 +160,7 @@ Na podstawie kart usług gov.pl (kopia w pakiecie referencyjnym), opisu portalu 
 | Wybrane sprawy za dziecko lub inną osobę (utrata i zawieszenie dowodu, kradzież tożsamości, dowód dla dziecka) | istnieje w przeglądarce, jako osobne formularze | **rozwinięte:** sprawy bliskich w jednym miejscu, z widokiem dla osoby, w której imieniu działasz |
 | Kalendarz (dni wolne, niedziele handlowe) | istnieje; przypomnienie o końcu ważności dowodu i paszportu zapowiedziane „w przyszłości” | przypomnienia o terminach już działają w prototypie |
 | Blokowanie połączeń z podszytym numerem, wykaz UKE numerów tylko do odbierania, SMS 8080 do CERT | istnieje u operatorów i w CERT, poza mObywatelem | **nowe:** „Kto dzwoni?”: sprawdzenie numeru w aplikacji i potwierdzenie rozmowy przez instytucję |
+| Kody QR: potwierdzanie danych, logowanie, pełnoletność w kasie samoobsługowej | istnieje | **rozwinięte:** wpis w „Kto sprawdzał moje dane”, „To nie ja” przy logowaniu, ostrzeżenie przed obcymi kodami |
 | Poparcie kandydatów przez internet (Portal poparcia) | w ustawie, od lutego 2027; projekty ustaw i referenda tylko na papierze | **nowe:** jedno miejsce na wszystkie zbiórki, komitet widzi tylko licznik, „Moje poparcia” |
 | „Możesz skorzystać”, zlecenia stałe, tryb prosty, odzyskiwanie dostępu | brak | **nowe** |
 

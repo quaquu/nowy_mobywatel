@@ -39,7 +39,7 @@ Metoda: zakładamy, że prototyp **odpadł albo został rozbity podczas prezenta
 
 - **Rozpoznawanie sprawy w telefonie:** 0 zł za zapytanie, bez serwera.
 - **Bielik w chmurze rządowej** tylko dla zapytań, których reguły nie są pewne. Na CPU zwykłego serwera Bielik 11B potrzebował ok. 2,8 s na zdanie, bez karty graficznej. Model open source (licencja Apache 2.0 dla Bielika v3), bez opłat licencyjnych za token.
-- **Największy koszt to integracje** (USC → powiadomienie, mObywatel → ZUS, → pracodawca). Wiele z nich już istnieje osobno ([macierz](MACIERZ_WYKONALNOSCI.md): 21 z 39 elementów 🟢).
+- **Największy koszt to integracje** (USC → powiadomienie, mObywatel → ZUS, → pracodawca). Wiele z nich już istnieje osobno ([macierz](MACIERZ_WYKONALNOSCI.md): 25 z 44 elementów 🟢).
 - **Oszczędności:** każdy wniosek wypełniony danymi z rejestru to mniej błędów i wezwań do uzupełnienia. Każda skarga „pętla logowania” to dziś telefon na infolinię.
 
 Nie podajemy kwot wdrożenia. Bez danych COI byłyby zmyślone.

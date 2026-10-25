@@ -23,6 +23,7 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 | Możesz skorzystać | Świadczenia i ulgi wykryte z rejestrów, z uzasadnieniem i źródłem |
 | Prywatność | „Kto sprawdzał moje dane” z celem i podstawą prawną, „Co państwo o mnie wie”, „Pokaż tylko to, co potrzebne” |
 | Bliscy | Sprawy mamy na podstawie upoważnienia (wizyta urzędnika w domu) |
+| Skaner kodów QR | Ikona obok skrzynki: aparat telefonu czyta kod w sklepie (tylko pełnoletność), w okienku urzędu albo przy logowaniu („Czy to Ty?”); obcy kod, np. z parkometru, wywołuje ostrzeżenie, a strona się nie otwiera; bez aparatu: kody pokazowe |
 | Kto dzwoni? | Sprawdzenie numeru: infolinia z wykazu UKE „tylko do odbierania” to oszustwo, numer instytucji z potwierdzeniem rozmowy w aplikacji, prywatnych numerów nie ujawnia |
 | Podpisy i poparcie | Projekty ustaw, referenda i kandydaci bez papierowej listy; komitet widzi tylko licznik; „Moje poparcia” wykrywają użycie danych na papierowej liście |
 | Dostęp | „Nie możesz się zalogować?”: diagnoza i jeden sposób, bez pętli |
