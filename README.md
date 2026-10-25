@@ -23,6 +23,8 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 | Należy Ci się | Świadczenia wykryte z rejestrów, z uzasadnieniem i źródłem |
 | Prywatność | „Kto sprawdzał moje dane” z celem i podstawą prawną, „Co państwo o mnie wie”, „Pokaż tylko to, co potrzebne” |
 | Bliscy | Sprawy mamy na podstawie upoważnienia (wizyta urzędnika w domu) |
+| Kto dzwoni? | Sprawdzenie numeru: infolinia z wykazu UKE „tylko do odbierania” to oszustwo, numer instytucji z potwierdzeniem rozmowy w aplikacji, prywatnych numerów nie ujawnia |
+| Podpisy i poparcie | Projekty ustaw, referenda i kandydaci bez papierowej listy; komitet widzi tylko licznik; „Moje poparcia” wykrywają użycie danych na papierowej liście |
 | Dostęp | „Nie możesz się zalogować?”: diagnoza i jeden sposób, bez pętli |
 | Asystent | Tekst i głos, rozpoznawanie sprawy w telefonie (offline), odmowy dla złośliwych próśb, źródło przy każdej odpowiedzi |
 | Dostępność | Tryb prosty, większy tekst, wysoki kontrast, czytanie na głos, tryb ciemny |
@@ -52,7 +54,7 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | Czytelność FOG-PL | 7,0 | 7,1 |
 | Detektor Impeccable 4.7.0: wzorce „interfejsu z AI” i błędy jakości (kod + ekrany) | 0 | 18 (kod 7, ekran 11) |
 | Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł | 92,0% / 95,4% | – |
-| Crawler: 37 tras × 4 szerokości (320–430 px) | 0 problemów | – |
+| Crawler: wszystkie trasy × 4 szerokości (320–430 px) | 0 problemów | – |
 | Offline po pierwszym otwarciu | tak | – |
 
 Zastrzeżenie do wiersza Impeccable: u nas wyłączona jest jedna reguła dla jednego kroju (Lato jako „nadużywany krój”, świadoma decyzja zapisana w `.impeccable/config.json`); bez tego wyjątku byłoby 1 zgłoszenie. W referencji to samo zgłoszenie liczy się raz (Inter).

@@ -103,3 +103,26 @@ export const sprawy = [
   { id: 'emerytura', tytul: 'Przejście na emeryturę', opis: 'wniosek, wyliczenie, kapitał', ikona: 'sun', kroki: ['Prognoza emerytury z ZUS', 'Wniosek o emeryturę (od 30 dni przed wiekiem)', 'Legitymacja emeryta w telefonie'] },
   { id: 'osiemnastka', tytul: 'Kończę 18 lat', opis: 'dowód, prawo jazdy, wybory', ikona: 'star', kroki: ['Pierwszy dowód dorosłego', 'Wpis do rejestru wyborców: automatycznie', 'Profil kandydata na kierowcę'] },
 ];
+
+// Kto dzwoni? Numery FIKCYJNE. Rodzaje: „tylko-odbior” – numer z jawnego wykazu UKE numerów służących
+// wyłącznie do odbierania połączeń (art. 17 ustawy o zwalczaniu nadużyć w komunikacji elektronicznej);
+// „instytucja” – proponowany rejestr numerów, z których instytucje publiczne dzwonią do obywateli.
+export const numery = [
+  { nr: '800000101', rodzaj: 'tylko-odbior', kto: 'Bank Przykładowy S.A.' },
+  { nr: '420003456', rodzaj: 'instytucja', kto: 'ZUS, Oddział w Łodzi', sprawy: 'świadczenia dla rodzin i zasiłki', osoba: 'Ewa Kamińska' },
+  { nr: '426000600', rodzaj: 'instytucja', kto: 'Urząd Skarbowy Łódź-Polesie', sprawy: 'zwroty i zaległości podatkowe', osoba: 'Marek Zając' },
+];
+export const przykladyNumerow = [['800 000 101', 'infolinia banku'], ['42 000 34 56', 'ZUS'], ['512 000 789', 'nieznany']];
+
+// Podpisy i poparcie. Inicjatywy, komitety i kandydaci są FIKCYJNI.
+// `prawo` mówi uczciwie, czy podpis elektroniczny jest dziś możliwy.
+export const inicjatywy = [
+  { id: 'przejscia', rodzaj: 'ustawa', tytul: 'Bezpieczne przejścia przy szkołach', komitet: 'Komitet „Bezpieczna Droga do Szkoły”', opis: 'Obywatelski projekt ustawy: doświetlone przejście dla pieszych i próg zwalniający przy każdej szkole podstawowej do 2030 r.', tresc: 'Art. 1. Zarządca drogi zapewnia przy każdej szkole podstawowej przejście dla pieszych z oświetleniem i progiem zwalniającym. Art. 2. Koszt pokrywa budżet państwa w 70%. Art. 3. Ustawa wchodzi w życie po 6 miesiącach.', ile: 41230, prog: 100000, koniec: 78, sprawdza: 'Marszałek Sejmu', prawo: 'ustawa' },
+  { id: 'czas', rodzaj: 'referendum', tytul: 'Referendum w sprawie stałego czasu', komitet: 'Komitet „Jeden Czas”', opis: 'Wniosek do Sejmu o referendum ogólnokrajowe: czy Polska ma zrezygnować ze zmiany czasu dwa razy w roku?', tresc: 'Pytanie: „Czy jest Pani/Pan za tym, aby w Polsce obowiązywał przez cały rok ten sam czas?”', ile: 212400, prog: 500000, koniec: 40, sprawdza: 'Marszałek Sejmu', prawo: 'ustawa' },
+  { id: 'zajezdnia', rodzaj: 'lokalne', tytul: 'Park na terenie dawnej zajezdni w Łodzi', komitet: 'Mieszkańcy „Zielona Zajezdnia”', opis: 'Wniosek o referendum lokalne: czy miasto ma przeznaczyć teren dawnej zajezdni na park?', tresc: 'Pytanie: „Czy jest Pani/Pan za przeznaczeniem terenu dawnej zajezdni tramwajowej na park miejski?”', ile: 38900, prog: 52000, koniec: 33, sprawdza: 'komisarz wyborczy w Łodzi', prawo: 'ustawa' },
+  { id: 'senat', rodzaj: 'kandydat', tytul: 'Jan Przykładowy, kandydat na senatora', komitet: 'Komitet Wyborczy Wyborców „Przykład”', opis: 'Poparcie zgłoszenia kandydata w wyborach do Senatu, okręg nr 25 (Łódź).', tresc: 'Zgłoszenie kandydata na senatora wymaga podpisów co najmniej 2 000 wyborców z okręgu.', ile: 1460, prog: 2000, koniec: 20, sprawdza: 'okręgowa komisja wyborcza', prawo: 'portal' },
+];
+// Wpis z papierowej listy poparcia znaleziony w rejestrze (pokaz: ktoś użył Twoich danych).
+export const poparciaPapier = [
+  { id: 'papier', tytul: 'Kandydat na senatora, KWW „Nasz Okręg”', kiedy: za(-12), papier: true, podejrzane: true },
+];

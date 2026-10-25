@@ -378,3 +378,21 @@ html.ramka .panel { display: block; width: 400px; max-width: 40vw; color: var(--
 .kod-qr summary { display: flex; align-items: center; gap: var(--o2); min-height: 44px; font-weight: 700; color: var(--gl); cursor: pointer; list-style: none; }
 .kod-qr summary::-webkit-details-marker { display: none; }
 .karta .qr { border-radius: 0; }
+
+/* ---------- Kto dzwoni? i podpisy poparcia ---------- */
+.sekcja-o { margin: -4px 0 var(--o2); }
+.wynik-plak { margin: 0 0 var(--o2); }
+.wynik-nr > p:not(.ostrz):not(.uwaga):not(.zrodlo) { margin: 0 0 var(--o3); }
+.wynik-nr.zly h2 { color: var(--zle); }
+.wynik-nr .btn.szeroki, .wynik-nr .przyciski { margin-top: var(--o4); }
+.potw { margin-top: var(--o4); padding-top: var(--o3); border-top: 1px solid var(--separator); outline: none; }
+.potw-t { display: flex; align-items: center; gap: var(--o2); color: var(--ok); margin: 0 0 var(--o1); }
+.zbiorka progress { display: block; width: 100%; height: 8px; appearance: none; border: 0; border-radius: 4px; background: var(--wypelnienie-2); overflow: hidden; }
+.zbiorka progress::-webkit-progress-bar { background: var(--wypelnienie-2); border-radius: 4px; }
+.zbiorka progress::-webkit-progress-value { background: var(--gl); border-radius: 4px; }
+.zbiorka progress::-moz-progress-bar { background: var(--gl); border-radius: 4px; }
+.zbiorka .maly { margin: 6px 0 var(--o1); font-variant-numeric: tabular-nums; }
+.mp { display: flex; justify-content: space-between; gap: var(--o3); align-items: flex-start; margin: 0; }
+.mp > span:first-child { display: flex; flex-direction: column; }
+.mp small { color: var(--tekst2); font-size: var(--t-objasn); }
+.prawo-stan { margin: var(--o4) 0 0; }

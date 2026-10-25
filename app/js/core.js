@@ -11,6 +11,8 @@ const POCZATEK = () => ({
   ustawienia: { prosty: false, duzy: false, kontrast: false, czytaj: false },
   przeczytane: {},
   zgloszoneDostepy: {},
+  poparcia: {},          // id inicjatywy -> kiedy poparta
+  sprawdzoneNumery: 0,
 });
 
 function wczytaj() {

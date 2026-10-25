@@ -157,6 +157,30 @@ export async function sprawy(url) {
     await p.click('text=Załatw wszystko naraz'); await p.waitForSelector('#f-nar');
     await ukladCzatu(p);
   });
+  await krok('kto-dzwoni', async p => {
+    await p.goto(url + '#/kto-dzwoni'); await p.waitForSelector('#nr');
+    await p.fill('#nr', '123'); await p.click('#f-nr button.glowny');
+    if (await p.isHidden('#nr-blad')) throw new Error('brak błędu dla złego numeru');
+    await p.fill('#nr', '+48 800 000 101'); await p.press('#nr', 'Enter');
+    await p.waitForSelector('.wynik-nr.zly'); if (!/oszustwo/.test(await p.textContent('#wynik-nr'))) throw new Error('numer banku nie oznaczony jako oszustwo');
+    await p.click('[data-nr="512 000 789"]'); await p.waitForFunction(() => /nie ma w rejestrach/.test(document.querySelector('#wynik-nr').textContent));
+    if (/Bank|ZUS/.test(await p.textContent('#wynik-nr'))) throw new Error('prywatny numer ujawnił właściciela');
+    await p.click('[data-nr="42 000 34 56"]'); await p.click('[data-potwierdz]'); await p.waitForSelector('.potw');
+    if (!/Rozmowa potwierdzona/.test(await p.textContent('.potw'))) throw new Error('brak potwierdzenia rozmowy');
+  });
+  await krok('poparcie', async p => {
+    await p.goto(url + '#/poparcie/senat'); await p.waitForSelector('#poprzyj');
+    const przed = await p.getAttribute('progress', 'value');
+    await p.click('#poprzyj'); await p.waitForSelector('dialog.arkusz');
+    if (!/nie można wycofać/.test(await p.textContent('dialog.arkusz'))) throw new Error('arkusz nie mówi o braku cofnięcia');
+    await podpisz(p); await p.waitForSelector('.gotowe');
+    if (+(await p.getAttribute('progress', 'value')) !== +przed + 1) throw new Error('licznik nie wzrósł');
+    await p.goto(url + '#/dane/dostep'); await p.waitForSelector('main h1');
+    if (!/okręgowa komisja wyborcza/i.test(await p.textContent('main'))) throw new Error('brak wpisu w rejestrze dostępu');
+    await p.goto(url + '#/poparcie'); await p.waitForSelector('[data-nie-ja]');
+    if (!/Twój podpis/.test(await p.textContent('main'))) throw new Error('brak poparcia na liście „Moje poparcia”');
+    await p.click('[data-nie-ja]'); await p.waitForSelector('.toast');
+  });
   await krok('tryb-prosty', async p => {
     await p.goto(url + '#/ustawienia'); await p.check('[data-ust="prosty"]'); await p.goto(url + '#/start');
     if ((await p.locator('.kafle a').count()) !== 4) throw new Error('brak 4 kafli');

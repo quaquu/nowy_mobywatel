@@ -48,12 +48,28 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 | Dokumenty „tylko do wglądu” przez 30 dni po wygaśnięciu certyfikatu | 🔴 / 🟡 | Ważność mDowodu określają przepisy o aplikacji mObywatel. Wymaga zmiany rozporządzenia lub ustawy. |
 | Asystent: rozpoznawanie sprawy w telefonie, Bielik w chmurze rządowej | 🟢 | AI Act, art. 50: obowiązek informowania, że to AI (jest w interfejsie). Asystent nie decyduje o świadczeniach, tylko kieruje do wniosku, więc nie jest systemem wysokiego ryzyka z załącznika III pkt 5 lit. a. Decyzje zostają u urzędników. |
 
+## Bezpieczeństwo i udział obywatela
+
+Źródła i szczegóły: [research/telefony-i-podpisy.md](../research/telefony-i-podpisy.md).
+
+| Element | Status | Podstawa / uwagi |
+|---|:---:|---|
+| „Kto dzwoni?”: sprawdzenie numeru w wykazie UKE numerów tylko do odbierania | 🟢 | Wykaz jest jawny i publikowany w BIP UKE (art. 17 ustawy o zwalczaniu nadużyć w komunikacji elektronicznej, [Dz.U. 2024 poz. 1803](https://eli.gov.pl/eli/DU/2024/1803/ogl)). Wpisują się banki, instytucje finansowe i jednostki sektora finansów publicznych. Operatorzy blokują połączenia z podszytym numerem albo ukrywają numer (art. 16). Wystarczy pobierać wykaz do aplikacji. |
+| Rejestr numerów, z których dzwonią instytucje publiczne | 🟡 / 🔴 | Wzór: wykaz nadpisów SMS podmiotów publicznych prowadzony przez CSIRT NASK (ta sama ustawa). Dobrowolne zgłaszanie numerów przez instytucje to 🟡; obowiązek dla wszystkich wymaga zmiany ustawy. |
+| Potwierdzenie rozmowy w mObywatelu (instytucja potwierdza, że to ona dzwoni) | 🟡 | Dziś działa kierunek odwrotny: bank potwierdza tożsamość klienta na infolinii przez mObywatela ([pilotaż Alior Banku](https://www.cashless.pl/17845-alior-mobywatel-infolinia)). Instytucje musiałyby podłączyć swoje systemy; banki na podstawie umowy. |
+| Zgłoszenie numeru do CERT Polska z aplikacji | 🟢 | CERT Polska przyjmuje zgłoszenia ([incydent.cert.pl](https://incydent.cert.pl/), SMS 8080). |
+| Poparcie kandydatów i list w wyborach do Sejmu, Senatu, PE i na prezydenta przez mObywatela | 🟢 od 02.2027 | Portal poparcia: ustawa z 23.01.2026 o zmianie Kodeksu wyborczego ([Dz.U. 2026 poz. 178](https://pkw.gov.pl/aktualnosci/informacje/udzielanie-poparcia-w-formie-elektronicznej-zmiany-w-kodeksie-wyborczym)), wchodzi w życie 12 miesięcy po ogłoszeniu (17.02.2026). Podpis zaufany, osobisty albo kwalifikowany. Nie obejmuje wyborów samorządowych. |
+| „Moje poparcia”: sprawdzenie, komu udzieliło się poparcia, także na papierowej liście | 🟢 od 02.2027 | Ta sama ustawa: bezpłatna informacja o dacie poparcia i komitecie; portal sprawdza też podpisy z papierowych list. |
+| Komitet widzi tylko licznik, dane osoby widzi tylko organ sprawdzający | 🟡 | Poparcie ujawnia poglądy polityczne (dane szczególnej kategorii, art. 9 RODO). Minimalizacja danych to wymóg projektowy, do zapisania w rozporządzeniu o portalu. |
+| E-podpisy pod obywatelskimi projektami ustaw | 🔴 | Ustawa z 24.06.1999 o wykonywaniu inicjatywy ustawodawczej przez obywateli: 100 000 podpisów na papierze w 3 miesiące. Projekt poselski z 1.04.2026 (RPW/11430/2026) rozszerza Portal poparcia na projekty ustaw; stanu prac nie zweryfikowano. |
+| E-podpisy pod wnioskami o referendum ogólnokrajowe i lokalne | 🔴 | Ustawy o referendum ogólnokrajowym i lokalnym przewidują tylko listy papierowe. |
+
 ## Podsumowanie
 
 | Status | Liczba elementów |
 |---|---:|
-| 🟢 dziś (w tym 🟢 / 🟡) | 17 |
-| 🟡 integracja, rozporządzenie albo zgoda | 9 |
-| 🔴 zmiana ustawy (w tym 🔴 / 🟡) | 4 |
+| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 21 |
+| 🟡 integracja, rozporządzenie albo zgoda | 11 |
+| 🔴 zmiana ustawy (w tym warianty 🔴 / 🟡 i 🟡 / 🔴) | 7 |
 
 **Pierwszy etap (bez zmian ustaw):** pakiet „Narodziny dziecka” bez automatycznego zaświadczenia lekarskiego, odzyskiwanie dostępu, tryb prosty, pisma prostym językiem, rozszerzony rejestr dostępu dla PESEL i RDO, przypomnienia o terminach.

@@ -426,6 +426,8 @@ export function wiecej() {
       ${poz('#/naleznosci', 'gift', 'Należy Ci się', '4 świadczenia')}
       ${poz('#/bliscy', 'users', 'Bliscy', 'mama, córka')}
       ${poz('#/dane', 'eye', 'Twoje dane i prywatność', 'kto sprawdzał moje dane')}
+      ${poz('#/kto-dzwoni', 'callcheck', 'Kto dzwoni?', 'sprawdź numer, zanim cokolwiek powiesz')}
+      ${poz('#/poparcie', 'pen', 'Podpisy i poparcie', 'projekty ustaw, referenda, kandydaci')}
       ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'terminy i sprawy, które robimy za Ciebie')}
       ${poz('#/dostep', 'lock', 'Problem z logowaniem', '')}
       ${poz('#/konsultant', 'phone', 'Pomoc człowieka', '')}

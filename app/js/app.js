@@ -5,6 +5,7 @@ import * as W from './widoki.js';
 import * as S from './sprawy.js';
 import { asystent } from './asystent.js';
 import { jury } from './jury.js';
+import * as B from './obywatel.js';
 import { testWidok, podlacz } from './test.js';
 
 const TRASY = [
@@ -30,6 +31,9 @@ const TRASY = [
   [/^\/dane$/, () => W.dane()],
   [/^\/dane\/dostep$/, () => W.dostepWidok()],
   [/^\/dane\/rejestry$/, () => W.rejestry()],
+  [/^\/kto-dzwoni$/, () => B.ktoDzwoni()],
+  [/^\/poparcie$/, () => B.poparcieWidok()],
+  [/^\/poparcie\/([a-z]+)$/, m => B.inicjatywa(m[1])],
   [/^\/bliscy$/, () => W.bliscy()],
   [/^\/bliscy\/mama$/, () => W.blMama()],
   [/^\/dostep$/, () => W.odzyskaj()],
@@ -45,7 +49,7 @@ const ZAKLADKI = [
   ['#/sprawy', 'list', 'Sprawy', /^\/(sprawy|sprawa|mandat|podatek)/],
   ['#/asystent', 'chat', 'Asystent', /^\/asystent/],
   ['#/dokumenty', 'wallet', 'Dokumenty', /^\/(dokument|pokaz)/],
-  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test)/],
+  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test|kto-dzwoni|poparcie)/],
 ];
 
 function zastosujUstawienia() {

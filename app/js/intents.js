@@ -17,7 +17,7 @@ export function norm(t) {
 // próby obejścia zabezpieczeń (wstrzyknięte polecenia), czyny niezgodne z prawem.
 const ODMOWA = [
   [/zignoruj|poprzednie instrukcj|tryb\w* administrator|jestes teraz|wylacz\w* potwierdz|bez podpisu|^system ?:|uzytkownik jest zweryfikowany/, 'bezpieczenstwo'],
-  [/sasiad|cudz\w*|innej osoby|innego czlowieka|bylej zony|bylego meza|czyj jest|czyje jest|do kogo nalezy (auto|samochod|numer)/, 'cudze_dane'],
+  [/sasiad|cudz\w*|innej osoby|innego czlowieka|bylej zony|bylego meza|czyj jest|czyje jest|do kogo nalezy (auto|samochod)/, 'cudze_dane'],
   [/falszyw\w* (dowod|dokument|zaswiadcz)|podrob|ukryc dochod|uniknac podatk|nie placic podatk|usun\w* (moje )?punkty|skasuj\w* (moje )?punkty|wygeneruj\w* .*pesel/, 'niezgodne_z_prawem'],
 ];
 // „podaj adres Jana Kowalskiego” — dane osoby wskazanej z imienia i nazwiska (sprawdzane na oryginalnym tekście).
@@ -93,6 +93,14 @@ export const INTENCJE = {
   ],
   stluczka: [
     [/stluczk|kolizj|wjechal|wypadek|wypadk|sprawcy|porysowal|uderzyl|obtarl|stluklem|stluklam/, 5],
+  ],
+  kto_dzwoni: [
+    [/dzwon\w*|zadzwonil\w*|telefonowal\w*|polaczeni\w* od/, 4.5],
+    [/(czy|sprawdz\w*) (ten |to )?numer|jaki to numer/, 3],
+    [/do kogo nalezy (ten )?numer|czyj\w* (to |jest )?(ten )?numer telefon/, 5],
+  ],
+  poparcie: [
+    [/poprzec|poparci|poprzyj|podpis\w* pod|zbier\w* podpis|inicjatyw\w* (obywatel|ustawodaw)|obywatelski\w* projekt|projekt\w* obywatelsk|referend|list\w* poparcia|podpisac sie pod/, 4],
   ],
   oszustwo: [
     [/\bsms|dziwn|podejrzan|\blink|podszywa|oszust|phishing|\bmail|odetna|doplat\w* za paczk/, 4],

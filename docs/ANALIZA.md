@@ -159,6 +159,8 @@ Na podstawie kart usług gov.pl (kopia w pakiecie referencyjnym), opisu portalu 
 | Historia weryfikacji numeru PESEL przez firmy i instytucje | istnieje w przeglądarce | **rozwinięta** w rejestr wszystkich odczytów z celem i podstawą prawną |
 | Wybrane sprawy za dziecko lub inną osobę (utrata i zawieszenie dowodu, kradzież tożsamości, dowód dla dziecka) | istnieje w przeglądarce, jako osobne formularze | **rozwinięte:** sprawy bliskich w jednym miejscu, z widokiem dla osoby, w której imieniu działasz |
 | Kalendarz (dni wolne, niedziele handlowe) | istnieje; przypomnienie o końcu ważności dowodu i paszportu zapowiedziane „w przyszłości” | przypomnienia o terminach już działają w prototypie |
+| Blokowanie połączeń z podszytym numerem, wykaz UKE numerów tylko do odbierania, SMS 8080 do CERT | istnieje u operatorów i w CERT, poza mObywatelem | **nowe:** „Kto dzwoni?”: sprawdzenie numeru w aplikacji i potwierdzenie rozmowy przez instytucję |
+| Poparcie kandydatów przez internet (Portal poparcia) | w ustawie, od lutego 2027; projekty ustaw i referenda tylko na papierze | **nowe:** jedno miejsce na wszystkie zbiórki, komitet widzi tylko licznik, „Moje poparcia” |
 | „Należy Ci się”, zlecenia stałe, tryb prosty, odzyskiwanie dostępu | brak | **nowe** |
 
 Najważniejsza różnica: dziś portal ma osobne usługi z kilku urzędów na jednej liście („Załatw sprawę online”), a obywatel sam musi wiedzieć, których potrzebuje. Narodziny dziecka to tam co najmniej 2 osobne miejsca (zgłoszenie urodzenia w mObywatelu, 800+ w ZUS lub banku) i dodatkowe wnioski w innych systemach. Prototyp łączy je w jedną sprawę.
