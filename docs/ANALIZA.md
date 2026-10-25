@@ -39,7 +39,7 @@ W językach i bazie wiedzy referencja jest od nas bogatsza i tego nie ukrywamy.
 | Rozpoznanie sprawy z tekstu, odłożony zbiór testowy (n=87) | 31,0% | 92,0% | `tests/eval-intents.mjs` |
 | … tylko intencje obsługiwane przez oba (n=50) | 40,0% | 92,0% | j.w. |
 | Naruszenia axe (WCAG 2.2 AA i dobre praktyki) | 7 reguł, 26 elementów, w tym 1 krytyczne i 3 poważne | 0 | `tests/audit.mjs` |
-| Lighthouse, telefon: wydajność / dostępność | 82 / 87 (LCP ok. 4,4 s) | 95–97 / 100 (LCP ok. 2,7 s) | Lighthouse 12.6.1 |
+| Lighthouse, telefon: wydajność / dostępność | 82 / 87 (LCP ok. 4,4 s) | 95–98 / 100 (LCP ok. 2,7 s) | Lighthouse 12.6.1 |
 | Czytelność (FOG-PL, mniej = prościej) | 7,1 | 7,1 | `tests/audit.mjs` |
 
 Zastrzeżenia do porównania:

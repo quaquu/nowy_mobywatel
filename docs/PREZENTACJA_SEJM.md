@@ -23,7 +23,7 @@ Jeden slajd albo strona „Dla jury” w prototypie (`Więcej → Dla jury`):
 | Narodziny dziecka | 5 spraw, 1 podpis, ok. 13 s | 2 sprawy, 2 podpisy, ok. 24 s |
 | Asystent rozpoznaje sprawę (87 zdań testowych) | 92% | 31% |
 | Dostępność (axe, WCAG 2.2 AA) | 0 naruszeń | 7 reguł |
-| Lighthouse na telefonie | 95–97 / 100 | 82 / 87 |
+| Lighthouse na telefonie | 95–98 / 100 | 82 / 87 |
 
 > „Te liczby można sprawdzić jednym poleceniem, bo kod i testy są publiczne. W 1 600 recenzjach obecnej aplikacji co trzecia skarga dotyczy logowania i zapętlonego potwierdzania tożsamości. Dlatego w prototypie jest ekran »Nie możesz się zalogować?«, który nie zapętla.”
 

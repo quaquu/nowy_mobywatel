@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8.3,
+   "systemS": 8.1,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -135,26 +135,26 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 97,
+   "performance": 98,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2592,
-   "tbtMs": 26
+   "lcpMs": 2270,
+   "tbtMs": 37
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4365,
-   "tbtMs": 41
+   "lcpMs": 4364,
+   "tbtMs": 52
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 668,
-   "slowa": 3390,
+   "zdania": 660,
+   "slowa": 3345,
    "sredniaDlugoscZdania": 5.1,
-   "procentTrudnych": 12.7,
+   "procentTrudnych": 12.6,
    "fog": 7.1
   },
   "ref": {

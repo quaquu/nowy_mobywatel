@@ -51,7 +51,7 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | Rozpoznanie sprawy, odłożony zbiór testowy (n=87) | 92,0% | 31,0% |
 | Złośliwe prośby odrzucone (test) | 5/5 | – |
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |
-| Lighthouse, telefon: wydajność / dostępność | 95–97 / 100 (kolejne pomiary) | 82 / 87 |
+| Lighthouse, telefon: wydajność / dostępność | 95–98 / 100 (kolejne pomiary) | 82 / 87 |
 | Czytelność FOG-PL | 7,1 | 7,1 |
 | Detektor Impeccable 4.7.0: wzorce „interfejsu z AI” i błędy jakości (kod + ekrany) | 0 | 18 (kod 7, ekran 11) |
 | Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł | 92,0% / 95,4% | – |
