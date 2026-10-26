@@ -6,6 +6,7 @@
 <meta name="description" content="Niezależny prototyp mObywatela: państwo, które przychodzi ze sprawą. Jeden podpis zamiast wielu wniosków. Dane fikcyjne.">
 <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<script>try{var m=localStorage.getItem('mobywatel-motyw');if(m==='light'||m==='dark'){document.documentElement.setAttribute('data-theme',m);}}catch(e){}</script>
 <title>mObywatel (prototyp): państwo, które przychodzi ze sprawą</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
@@ -47,6 +48,8 @@
     <li><a href="#/dostep" data-panel="5"><span><b>Nie możesz się zalogować?</b> Odpowiedź na najczęstszą skargę.</span></a></li>
   </ol>
   <div class="panel-kod"><img src="img/kod-sklep.svg" alt="Kod QR pokazowy: kasa w sklepie prosi o potwierdzenie pełnoletności" width="104" height="104"><p><b>Skaner kodów:</b> otwórz prototyp na telefonie, dotknij ikony skanera obok skrzynki i zeskanuj ten kod. Bez drugiego telefonu: ikona skanera i „Kody pokazowe”.</p></div>
+  <h3 class="panel-sek" id="panel-wyglad-t">Wygląd</h3>
+  <div id="panel-wyglad" role="group" aria-labelledby="panel-wyglad-t"></div>
   <div class="panel-przyciski">
     <button type="button" class="btn glowny" id="pelny-btn">Pełny ekran</button>
     <button type="button" class="btn drugi" id="od-nowa-btn">Zacznij od nowa</button>

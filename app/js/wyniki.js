@@ -7,7 +7,7 @@ export const WYNIKI = {
   "problemy": 0
  },
  "sprawy": {
-  "liczba": 21,
+  "liczba": 22,
   "nieudane": []
  },
  "offline": true,
@@ -24,8 +24,8 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8.2,
-   "sekundy": 24,
+   "systemS": 9.1,
+   "sekundy": 25,
    "podpisy": 2,
    "sprawy": 2,
    "instytucje": 2
@@ -135,26 +135,26 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 96,
+   "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2381,
-   "tbtMs": 149
+   "lcpMs": 2415,
+   "tbtMs": 55
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4357,
-   "tbtMs": 52
+   "lcpMs": 4360,
+   "tbtMs": 101
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 673,
-   "slowa": 3404,
+   "zdania": 635,
+   "slowa": 3236,
    "sredniaDlugoscZdania": 5.1,
-   "procentTrudnych": 12.7,
+   "procentTrudnych": 12.6,
    "fog": 7.1
   },
   "ref": {

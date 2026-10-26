@@ -1,6 +1,6 @@
 // Ekrany poza przebiegami spraw: start, dokumenty, skrzynka, prywatność, bliscy, ustawienia.
 import { ic } from './icons.js';
-import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane } from './core.js';
+import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane, wyborMotywu } from './core.js';
 import { zdjecieAnny, twarzMamy, twarzCorki, autoZBoku } from './grafiki.js';
 import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna } from './data.js';
 
@@ -399,6 +399,9 @@ export function ustawienia() {
   return {
     tytul: 'Ustawienia',
     html: `<h1 tabindex="-1">Ustawienia</h1>
+    <h2 class="grupa-t" id="wyglad-t">Wygląd</h2>
+    <div class="karta" role="group" aria-labelledby="wyglad-t">${wyborMotywu()}<p class="maly">„Automatycznie” zmienia wygląd razem z telefonem.</p></div>
+    <h2 class="grupa-t">Dostępność</h2>
     <ul class="lista-kart">
       ${prz('prosty', 'Tryb prosty', 'Duże przyciski, najważniejsze rzeczy na starcie, krótkie zdania.')}
       ${prz('duzy', 'Większy tekst', 'Tekst o 25% większy.')}

@@ -28,7 +28,7 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 | Podpisy i poparcie | Projekty ustaw, referenda i kandydaci bez papierowej listy; komitet widzi tylko licznik; „Moje poparcia” wykrywają użycie danych na papierowej liście |
 | Dostęp | „Nie możesz się zalogować?”: diagnoza i jeden sposób, bez pętli |
 | Asystent | Tekst i głos, rozpoznawanie sprawy w telefonie (offline), odmowy dla złośliwych próśb, źródło przy każdej odpowiedzi |
-| Dostępność | Tryb prosty, większy tekst, wysoki kontrast, czytanie na głos, tryb ciemny |
+| Dostępność | Tryb prosty, większy tekst, wysoki kontrast, czytanie na głos; wygląd automatyczny (za telefonem), jasny albo ciemny (Ustawienia albo panel obok telefonu) |
 | Testy z ludźmi | Tryb testowy (`#/test`): 5 zadań, pomiar czasu i kliknięć, ankieta SUS, eksport JSON |
 
 Technicznie: czysty HTML, CSS i JavaScript (moduły ES), bez budowania, bez frameworka, bez serwera i bez zewnętrznych zasobów. Service worker zapewnia działanie offline.

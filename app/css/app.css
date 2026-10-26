@@ -39,18 +39,29 @@
     --tekst: #ffffff; --tekst2: #b6b6bd; --tekst3: #9d9da4; --separator: #38383a; --szklo-kraw: rgb(255 255 255 / .12);
     --gl: #3d9bff; --gl-tekst: #00142e; --gl-wyp: rgb(61 155 255 / .16); --gl-wyp-pelny: #10284a; --gl-mocny: #74b6ff; --gl-zakladka: #5aabff; /* na szarej kapsule zakładki 4,5:1 */
     --ok: #4cd37a; --ok-wyp: rgb(76 211 122 / .16); --ostrz: #ffc34d; --ostrz-wyp: rgb(255 195 77 / .16); --zle: #ff6b61; --zle-wyp: rgb(255 107 97 / .16); --zle-tekst: #1f0302;
-    --przel-wl: #32c35a;
+    --przel-wl: #32c35a; --pow-segment: #636366;
     --cien-dok: 0 1px 2px rgb(0 0 0 / .5), 0 10px 24px -12px rgb(0 0 0 / .7);
     color-scheme: dark;
   }
 }
-:root[data-theme="dark"] { color-scheme: dark; }
+/* Ciemny wybrany ręcznie w Ustawieniach: te same wartości co ciemny z systemu. */
+:root[data-theme="dark"] {
+  --tlo: #000000; --pow: #1c1c1e; --wypelnienie: rgb(118 118 128 / .24); --wypelnienie-2: rgb(118 118 128 / .32);
+  --tekst: #ffffff; --tekst2: #b6b6bd; --tekst3: #9d9da4; --separator: #38383a; --szklo-kraw: rgb(255 255 255 / .12);
+  --gl: #3d9bff; --gl-tekst: #00142e; --gl-wyp: rgb(61 155 255 / .16); --gl-wyp-pelny: #10284a; --gl-mocny: #74b6ff; --gl-zakladka: #5aabff; /* na szarej kapsule zakładki 4,5:1 */
+  --ok: #4cd37a; --ok-wyp: rgb(76 211 122 / .16); --ostrz: #ffc34d; --ostrz-wyp: rgb(255 195 77 / .16); --zle: #ff6b61; --zle-wyp: rgb(255 107 97 / .16); --zle-tekst: #1f0302;
+  --przel-wl: #32c35a; --pow-segment: #636366;
+  --cien-dok: 0 1px 2px rgb(0 0 0 / .5), 0 10px 24px -12px rgb(0 0 0 / .7);
+  color-scheme: dark;
+}
 /* Wyższy kontrast: z ustawienia w aplikacji albo z systemu („Zwiększ kontrast”, jak w iOS). */
 html.kontrast { --tekst2: var(--tekst); --tekst3: var(--tekst); --separator: #8a8a90; --gl: #0047a8; --gl-mocny: #003680; }
 @media (prefers-color-scheme: dark) { html.kontrast:not([data-theme="light"]) { --gl: #8cc4ff; --gl-tekst: #00142e; --separator: #8a8a90; } }
+html.kontrast[data-theme="dark"] { --gl: #8cc4ff; --gl-tekst: #00142e; --separator: #8a8a90; }
 @media (prefers-contrast: more) {
   :root { --tekst2: var(--tekst); --tekst3: var(--tekst); --separator: #8a8a90; --gl: #0047a8; --gl-mocny: #003680; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --gl: #8cc4ff; --gl-tekst: #00142e; } }
+  :root[data-theme="dark"] { --gl: #8cc4ff; --gl-tekst: #00142e; }
 }
 html.duzy { --skala: 1.2; }
 /* „Ogranicz przezroczystość” i wysoki kontrast: szkło staje się pełną powierzchnią (HIG, Liquid Glass). */
@@ -223,6 +234,15 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .opcja { display: flex; align-items: center; gap: var(--o3); min-height: 44px; padding: 6px 0; }
 .opcja input, .krok-l input { width: 22px; height: 22px; flex: none; }
 .opcja small { color: var(--tekst2); }
+/* Przełącznik segmentowy (iOS): trzy opcje w szarej kapsule, wybrana na białym „suwaku”. */
+.segment { display: flex; gap: 2px; margin: 0; padding: 2px; border: 0; border-radius: 9px; background: var(--wypelnienie); min-width: 0; }
+.segment label { flex: 1 1 auto; position: relative; display: flex; min-width: 0; }
+.segment input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.segment span { flex: 1; display: grid; place-items: center; min-height: 40px; padding: 0 8px; border-radius: 7px; font-size: var(--t-przypis); font-weight: 600; color: var(--tekst); text-align: center; transition: background var(--czas), box-shadow var(--czas); }
+.segment input:checked + span { background: var(--pow-segment, #fff); box-shadow: 0 1px 3px rgb(0 0 0 / .14), 0 0 0 .5px rgb(0 0 0 / .04); }
+.segment input:focus-visible + span { outline: 3px solid var(--gl); outline-offset: 1px; }
+.panel .segment { max-width: 360px; margin-bottom: var(--o2); }
+.panel-kod + .panel-sek { margin-top: var(--o6); }
 .przel { align-items: flex-start; margin-top: var(--o3); }
 .przel-duzy { display: flex; align-items: center; gap: var(--o3); cursor: pointer; }
 .przel-duzy > span { flex: 1; display: flex; flex-direction: column; }
@@ -398,6 +418,7 @@ html.pelny #telefon-btn:not([hidden]) { display: inline-flex; position: fixed; t
 }
 html.ramka body { background: color-mix(in srgb, var(--tlo) 70%, #c9ccd6); min-height: 100vh; }
 @media (prefers-color-scheme: dark) { html.ramka:not([data-theme="light"]) body { background: #141416; } }
+html.ramka[data-theme="dark"] body { background: #141416; }
 html.ramka .pulpit { display: flex; align-items: center; justify-content: center; gap: 72px; height: calc(100vh - var(--pasek-wys, 0px)); padding: 24px 32px; }
 html.ramka .panel { max-height: 100%; overflow-y: auto; }
 html.ramka .telefon { --s: var(--skala-tel, 1); display: flex; flex-direction: column; position: relative; flex: none; width: 390px; height: 844px; border-radius: 54px; overflow: hidden; background: var(--tlo);

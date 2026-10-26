@@ -23,6 +23,20 @@ export const stan = wczytaj();
 export function zapisz() { try { localStorage.setItem(KLUCZ, JSON.stringify(stan)); } catch {} }
 export function resetuj() { Object.assign(stan, POCZATEK()); zapisz(); }
 
+// Wygląd: automatycznie (za systemem), jasny albo ciemny. Osobny klucz, żeby „Zacznij od nowa” nie zmieniało motywu.
+// Pierwsze ustawienie robi skrypt w <head> (bez mignięcia złego motywu), tu tylko zmiana i odczyt.
+const KLUCZ_MOTYWU = 'mobywatel-motyw';
+export function motyw() { try { const m = localStorage.getItem(KLUCZ_MOTYWU); return m === 'light' || m === 'dark' ? m : 'auto'; } catch { return 'auto'; } }
+export function ustawMotyw(m) {
+  try { m === 'auto' ? localStorage.removeItem(KLUCZ_MOTYWU) : localStorage.setItem(KLUCZ_MOTYWU, m); } catch {}
+  const h = document.documentElement;
+  m === 'auto' ? h.removeAttribute('data-theme') : h.setAttribute('data-theme', m);
+  document.querySelectorAll('meta[name="theme-color"]').forEach(t => t.content = m === 'auto' ? (t.media.includes('dark') ? '#000000' : '#f2f2f7') : (m === 'dark' ? '#000000' : '#f2f2f7'));
+  document.querySelectorAll('input[name^="motyw"]').forEach(i => { i.checked = i.value === m; });
+}
+// Przełącznik segmentowy jak w iOS (Ustawienia → Ekran i jasność). Obsługa zmian: jeden słuchacz w app.js.
+export const wyborMotywu = (nazwa = 'motyw') => `<fieldset class="segment"><legend class="sr">Wygląd</legend>${[['auto', 'Automatycznie'], ['light', 'Jasny'], ['dark', 'Ciemny']].map(([v, t]) => `<label><input type="radio" name="${nazwa}" value="${v}" ${motyw() === v ? 'checked' : ''}><span>${t}</span></label>`).join('')}</fieldset>`;
+
 // Szyna zdarzeń: tryb testowy słucha celów („cel osiągnięty”) i kliknięć.
 const sluchacze = {};
 export const on = (n, f) => (sluchacze[n] ||= []).push(f);

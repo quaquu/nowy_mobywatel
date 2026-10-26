@@ -1,6 +1,6 @@
 // Router i powłoka aplikacji.
 import { ic } from './icons.js';
-import { stan, $, $$, ogloszenie, resetuj } from './core.js';
+import { stan, $, $$, ogloszenie, resetuj, ustawMotyw, wyborMotywu } from './core.js';
 import * as W from './widoki.js';
 // Ekrany spoza startu ładujemy dopiero, gdy są potrzebne: start rysuje się szybciej.
 const S = () => import('./sprawy.js'), B = () => import('./obywatel.js'), K = () => import('./skaner.js');
@@ -169,6 +169,8 @@ function powloka() {
   $('#skan-btn').innerHTML = ic('scan');
   $('#skan-btn').onclick = async () => (await K()).otworzSkaner();
   zastosujUstawienia();
+  $('#panel-wyglad').innerHTML = wyborMotywu('motyw-panel');
+  addEventListener('change', e => { if (e.target.name?.startsWith('motyw')) ustawMotyw(e.target.value); });
   addEventListener('ustawienia', () => { zastosujUstawienia(); pokaz(); });
   addEventListener('hashchange', pokaz);
   podlacz();

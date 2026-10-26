@@ -165,6 +165,7 @@ Na prośbę autora wygląd przestawiono na zasady Apple. Zmiany i powody:
 - **Stany** mają własne kolory: sukces (zielony), ostrzeżenie (bursztyn), błąd (czerwony). Plakietki używają wypełnień 10–16% tych kolorów.
 - **Karty dokumentów** to jedyne gradienty: jednokierunkowe, w barwie dokumentu, z jednym miękkim refleksem.
 - **Przełączniki** włączone na zielono, jak w iOS.
+- **Wygląd**: domyślnie za ustawieniem telefonu; w Ustawieniach (i w panelu obok symulacji telefonu) przełącznik segmentowy Automatycznie / Jasny / Ciemny. Wybór zapamiętany osobno od stanu pokazu i ustawiany przed pierwszym rysowaniem strony, bez mignięcia złego motywu.
 
 ## Typography
 

@@ -274,6 +274,25 @@ export async function sprawy(url) {
     if (bledy.length) problemy.push('widok-komputer: błędy JS ' + bledy.join('; '));
     await ctx.close();
   }
+  // Wygląd: system ciemny, wybór „Jasny” działa od razu i zostaje po przeładowaniu; „Automatycznie” wraca do systemu.
+  {
+    const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'dark', serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { window.__SZYBKO = true; });
+    const p = await ctx.newPage();
+    const tlo = () => p.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    try {
+      await p.goto(url + '#/ustawienia'); await p.waitForSelector('main h1');
+      if (await tlo() !== 'rgb(0, 0, 0)') throw new Error('bez wyboru nie idzie za systemem');
+      await p.locator('main').getByRole('radio', { name: 'Jasny' }).check();
+      if (await tlo() !== 'rgb(242, 242, 247)') throw new Error('„Jasny” nie zmienia wyglądu');
+      await p.reload(); await p.waitForSelector('main h1');
+      if (await tlo() !== 'rgb(242, 242, 247)') throw new Error('wybór nie zostaje po przeładowaniu');
+      await p.locator('main').getByRole('radio', { name: 'Automatycznie' }).check();
+      if (await tlo() !== 'rgb(0, 0, 0)') throw new Error('„Automatycznie” nie wraca do systemu');
+      wyniki['wyglad'] = true;
+    } catch (e) { problemy.push('wyglad: ' + e.message.split('\n')[0]); wyniki['wyglad'] = false; }
+    await ctx.close();
+  }
   await b.close();
   return { wyniki, problemy };
 }
