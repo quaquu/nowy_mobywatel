@@ -2,12 +2,12 @@
 export const WYNIKI = {
  "data": "26 października 2026",
  "crawler": {
-  "strony": 258,
-  "trasy": 43,
+  "strony": 260,
+  "trasy": 44,
   "problemy": 0
  },
  "sprawy": {
-  "liczba": 24,
+  "liczba": 25,
   "nieudane": []
  },
  "offline": true,
@@ -15,8 +15,8 @@ export const WYNIKI = {
   "nasz": {
    "przyciskiNaKoniec": [],
    "akcje": 4,
-   "systemS": 3.2,
-   "sekundy": 14,
+   "systemS": 2.7,
+   "sekundy": 13,
    "podpisy": 1,
    "sprawy": 5,
    "instytucje": 4
@@ -33,9 +33,21 @@ export const WYNIKI = {
   "operatorDotkniecia": 2.6500000000000004
  },
  "axe": {
-  "nasz": 0,
-  "naszWezly": 0,
-  "naszReguly": {},
+  "nasz": 1,
+  "naszWezly": 4,
+  "naszReguly": {
+   "color-contrast": {
+    "impact": "serious",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "wezly": 4,
+    "stany": [
+     "320 #/badanie",
+     "320c #/badanie",
+     "390 #/badanie",
+     "390c #/badanie"
+    ]
+   }
+  },
   "ref": 7,
   "refWezly": 26,
   "refReguly": {
@@ -117,7 +129,7 @@ export const WYNIKI = {
   "ekrany": 0,
   "ramka": 0,
   "razem": 0,
-  "ekranow": 33,
+  "ekranow": 34,
   "szczegoly": [],
   "ref": {
    "kod": 7,
@@ -138,22 +150,22 @@ export const WYNIKI = {
    "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2412,
-   "tbtMs": 9
+   "lcpMs": 2345,
+   "tbtMs": 35
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4356,
-   "tbtMs": 12
+   "lcpMs": 4358,
+   "tbtMs": 47
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 668,
-   "slowa": 3347,
-   "sredniaDlugoscZdania": 5,
+   "zdania": 716,
+   "slowa": 3476,
+   "sredniaDlugoscZdania": 4.9,
    "procentTrudnych": 12.8,
    "fog": 7.1
   },

@@ -21,6 +21,7 @@ const TRASY = [
   [/^\/sprawa\/([a-z]+)$/, async m => (await S()).podglad(m[1])],
   [/^\/mandat$/, async () => (await S()).mandat()],
   [/^\/podatek$/, async () => (await S()).podatek()],
+  [/^\/badanie$/, async () => (await S()).badanie()],
   [/^\/asystent$/, (m, q) => asystent(q)],
   [/^\/dokumenty$/, () => W.dokumentyWidok()],
   [/^\/dokument\/([a-z]+)$/, m => W.dokument(m[1])],
@@ -48,7 +49,7 @@ const TRASY = [
 
 const ZAKLADKI = [
   ['#/start', 'home', 'Start', /^\/?(start)?$/],
-  ['#/sprawy', 'list', 'Sprawy', /^\/(sprawy|sprawa|mandat|podatek)/],
+  ['#/sprawy', 'list', 'Sprawy', /^\/(sprawy|sprawa|mandat|podatek|badanie)/],
   ['#/asystent', 'chat', 'Asystent', /^\/asystent/],
   ['#/dokumenty', 'wallet', 'Dokumenty', /^\/(dokument|pokaz)/],
   ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test|kto-dzwoni|poparcie)/],

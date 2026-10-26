@@ -38,6 +38,7 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 | Utrata dokumentów: zawieszenie dowodu, zastrzeżenie PESEL | 🟢 | Istnieje. W prototypie jest jeden przycisk dla wszystkiego. |
 | Nowy dowód: wniosek ze zdjęciem z telefonu | 🟢 / 🟡 | Wniosek online istnieje. Zdjęcie musi spełniać wymagania; automatyczne sprawdzenie zdjęcia to 🟡. |
 | Wizyta urzędnika u osoby chorej lub niepełnosprawnej, zamówiona przez pełnomocnika | 🟢 / 🟡 | Przyjęcie wniosku w miejscu pobytu przewiduje ustawa o dowodach osobistych. Zamawianie przez aplikację to 🟡. |
+| Badanie techniczne: termin z CEPiK, stacje kontroli na mapie, rezerwacja terminu | 🟢 / 🟡 | Termin ważności badania jest już w mObywatelu („Mój pojazd”), a wynik stacja wpisuje do centralnej ewidencji pojazdów. Wykaz stacji prowadzą starostowie, osobno w każdym powiecie; wspólny wykaz z położeniem to 🟡. Rezerwacja terminu wymaga integracji z prywatnymi stacjami, dobrowolnej dla stacji (🟡). W prototypie stacje i terminy są fikcyjne. |
 | Mandat z fotoradaru: przyjęcie i płatność w aplikacji | 🟡 | Płatność online istnieje. Przyjęcie mandatu i wskazanie kierowcy w aplikacji wymaga zmian w procesie CANARD/GITD. |
 | Zlecenie stałe płatności podatku od nieruchomości | 🟡 | Zapłata przez obywatela na jego zlecenie (polecenie zapłaty). Potrzebna zgoda i powiadomienie przed płatnością (zapisane w prototypie). |
 | „Możesz skorzystać”: świadczenia na podstawie danych z rejestrów | 🟡 / 🔴 | Profilowanie pod kątem świadczeń wymaga podstawy prawnej (RODO, art. 6 ust. 1 lit. e i art. 22). Wariant 🟡: dobrowolne włączenie przez obywatela. Wariant 🔴: obowiązek informowania o świadczeniach w ustawie. |
@@ -73,7 +74,7 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 
 | Status | Liczba elementów |
 |---|---:|
-| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 25 |
+| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 26 |
 | 🟡 integracja, rozporządzenie albo zgoda | 12 |
 | 🔴 zmiana ustawy (w tym warianty 🔴 / 🟡 i 🟡 / 🔴) | 7 |
 

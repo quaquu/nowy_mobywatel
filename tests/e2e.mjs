@@ -293,6 +293,23 @@ export async function sprawy(url) {
     } catch (e) { problemy.push(nazwa + ': ' + e.message.split('\n')[0]); wyniki[nazwa] = false; }
     await ctx.close();
   }
+  // Badanie techniczne: ze Startu na mapę stacji, pinezka wybiera stację, rezerwacja terminu wraca na Start.
+  {
+    const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
+    await ctx.addInitScript(() => { window.__SZYBKO = true; });
+    const p = await ctx.newPage();
+    try {
+      await p.goto(url + '#/start'); await p.waitForSelector('main h1');
+      await p.click('text=Badanie techniczne Yarisa'); await p.waitForSelector('.mapa .m-pin');
+      await p.click('.m-pin[data-st="s2"]');
+      if (!/Widzew/.test(await p.textContent('#st-t'))) throw new Error('pinezka nie wybiera stacji');
+      await p.click('#rez-ok'); await p.waitForSelector('.potw-rez');
+      await p.goto(url + '#/start'); await p.waitForSelector('main h1');
+      if (!/zarezerwowane:.*OSKP Widzew/.test(await p.textContent('main'))) throw new Error('rezerwacja nie widać na Starcie');
+      wyniki['badanie'] = true;
+    } catch (e) { problemy.push('badanie: ' + e.message.split('\n')[0]); wyniki['badanie'] = false; }
+    await ctx.close();
+  }
   // Wygląd: system ciemny, wybór „Jasny” działa od razu i zostaje po przeładowaniu; „Automatycznie” wraca do systemu.
   {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'dark', serviceWorkers: 'block' });

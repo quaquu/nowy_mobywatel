@@ -49,7 +49,7 @@ export const dokumenty = [
 export const zadania = [
   { id: 'mandat', tytul: 'Mandat z fotoradaru', opis: '200 zł · przyjmij i zapłać do ' + fmt(za(6)), termin: za(6), pilne: true, cel: '#/mandat', ikona: 'coin' },
   { id: 'podatek', tytul: 'Podatek od nieruchomości', opis: 'IV rata 186 zł do ' + fmt(za(23)), termin: za(23), cel: '#/podatek', ikona: 'coin' },
-  { id: 'badanie', tytul: 'Badanie techniczne Yarisa', opis: 'do ' + fmt(za(19)) + ' · stacje w pobliżu', termin: za(19), cel: '#/dokument/pojazd', ikona: 'car' },
+  { id: 'badanie', tytul: 'Badanie techniczne Yarisa', opis: 'do ' + fmt(za(19)) + ' · stacje w pobliżu', termin: za(19), cel: '#/badanie', ikona: 'car' },
   { id: 'dowod', tytul: 'Twój dowód traci ważność', opis: 'za 41 dni · wniosek zajmie 2 minuty', termin: za(41), cel: '#/sprawa/dowod', ikona: 'id' },
 ];
 

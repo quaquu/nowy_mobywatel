@@ -19,6 +19,7 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 |---|---|
 | Sprawy życiowe | Narodziny dziecka (historia flagowa), przeprowadzka, kupno używanego auta, utrata dokumentów, nowy dowód; 5 kolejnych w podglądzie planu |
 | Płatności | Mandat z fotoradaru i podatek od nieruchomości (BLIK), zlecenie stałe płatności za zgodą |
+| Badanie techniczne | Termin ważności auta, stacje kontroli na mapie poglądowej (fikcyjne), wolne terminy i rezerwacja, opłata 149 zł z rozporządzenia |
 | Przypomnienia i zlecenia | Przypomnienie tylko daje znać o terminie; zlecenie robi coś za Ciebie (jak zlecenie stałe w banku), zawsze z uprzedzeniem |
 | Możesz skorzystać | Świadczenia i ulgi wykryte z rejestrów, z uzasadnieniem i źródłem |
 | Prywatność | „Kto sprawdzał moje dane” z celem i podstawą prawną, „Co państwo o mnie wie”, „Pokaż tylko to, co potrzebne” |

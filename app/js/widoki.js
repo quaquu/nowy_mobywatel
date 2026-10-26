@@ -8,7 +8,9 @@ const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}
 // `ikona`: nazwa ikony albo gotowy rysunek SVG (awatar osoby).
 const poz = (href, ikona, t, opis, extra = '') => `<li><a class="poz" href="${href}">${ikona.startsWith('<') ? `<span class="awatar">${ikona}</span>` : ic(ikona, 'okr')}<span><b>${esc(t)}</b>${opis ? `<small>${opis}</small>` : ''}</span>${extra}${ic('right', 'strz')}</a></li>`;
 const otwarte = () => zadania.filter(z => !stan.zrobione[z.id]);
-const wierszZad = z => poz(z.cel, z.ikona, z.tytul, esc(z.opis), z.pilne ? '<span class="plak czerwona">pilne</span>' : '');
+// Badanie techniczne po rezerwacji: zamiast „stacje w pobliżu” termin i stacja.
+const rezerwacja = () => { const r = stan.badanie; if (!r) return null; const t = new Date(r.kiedy); return `zarezerwowane: ${fmt(t, { weekday: 'short', day: 'numeric', month: 'long' })}, ${t.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })} · ${r.krotko}`; };
+const wierszZad = z => poz(z.cel, z.ikona, z.tytul, esc(z.id === 'badanie' && rezerwacja() || z.opis), z.pilne ? '<span class="plak czerwona">pilne</span>' : '');
 const nowePisma = () => skrzynka.filter(p => p.nowa && !stan.przeczytane[p.id]).length;
 export const licznikSkrzynki = nowePisma;
 
@@ -137,7 +139,7 @@ export function dokument(id) {
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>
       <button class="btn tekst" id="blad-dan">Te dane są błędne? Zgłoś to</button>
     </section>
-    ${id === 'pojazd' ? `<a class="karta link-karta" href="#/zlecenia">${ic('clock', 'okr')}<span><b>Badanie techniczne za 19 dni</b><small>Przypomnimy 7 dni wcześniej. Stacje kontroli w pobliżu pokażemy na mapie.</small></span>${ic('right', 'strz')}</a>` : ''}
+    ${id === 'pojazd' ? `<a class="karta link-karta" href="#/badanie">${ic('clock', 'okr')}<span><b>Badanie techniczne za 19 dni</b><small>Stacje kontroli w pobliżu na mapie i wolne terminy.</small></span>${ic('right', 'strz')}</a>` : ''}
     ${id === 'dowod' ? `<a class="btn glowny szeroki" href="#/sprawa/dowod">Złóż wniosek o nowy dowód</a>` : ''}`,
     po(root) { $('#blad-dan', root).onclick = () => toast(`Zgłoszenie trafiło do: ${d.zrodlo}. Odpowiedź dostaniesz w skrzynce.`); },
   };

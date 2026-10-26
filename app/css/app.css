@@ -16,6 +16,7 @@
   /* etykiety */
   --tekst: #111216; --tekst2: #5c5c63; --tekst3: #6c6c72; --separator: #dcdce1;
   --szklo-kraw: rgb(255 255 255 / .75); /* krawędź szkła (pasek kart, kapsuła w nagłówku) */
+  --m-lad: #f1eee8; --m-park: #cfe7c3; --m-woda: #aad3f3; --m-ulica: #ffffff; --m-ulica-pod: #dcd8cf; --m-aleja: #fde7a8; --m-aleja-pod: #e7c66d; --m-napis: #7a7568; /* mapa poglądowa */
   /* akcent (tint) i stany */
   --gl: #0a63d8; --gl-tekst: #ffffff; --gl-wyp: rgb(10 99 216 / .1); --gl-wyp-pelny: #e6effb; --gl-mocny: #0850b0;
   --marka: #c8102e; /* czerwień mObywatela: logo, plakietki pilne, znaczek nieprzeczytanych */
@@ -36,7 +37,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --tlo: #000000; --pow: #1c1c1e; --wypelnienie: rgb(118 118 128 / .24); --wypelnienie-2: rgb(118 118 128 / .32);
-    --tekst: #ffffff; --tekst2: #b6b6bd; --tekst3: #9d9da4; --separator: #38383a; --szklo-kraw: rgb(255 255 255 / .12);
+    --tekst: #ffffff; --tekst2: #b6b6bd; --tekst3: #9d9da4; --separator: #38383a; --szklo-kraw: rgb(255 255 255 / .12); --m-lad: #2a2b2f; --m-park: #24382a; --m-woda: #1d3550; --m-ulica: #45474d; --m-ulica-pod: #34363b; --m-aleja: #6b5a32; --m-aleja-pod: #4f4426; --m-napis: #a3a29c;
     --gl: #3d9bff; --gl-tekst: #00142e; --gl-wyp: rgb(61 155 255 / .16); --gl-wyp-pelny: #10284a; --gl-mocny: #74b6ff; --gl-zakladka: #5aabff; /* na szarej kapsule zakładki 4,5:1 */
     --ok: #4cd37a; --ok-wyp: rgb(76 211 122 / .16); --ostrz: #ffc34d; --ostrz-wyp: rgb(255 195 77 / .16); --zle: #ff6b61; --zle-wyp: rgb(255 107 97 / .16); --zle-tekst: #1f0302;
     --przel-wl: #32c35a; --pow-segment: #636366;
@@ -47,7 +48,7 @@
 /* Ciemny wybrany ręcznie w Ustawieniach: te same wartości co ciemny z systemu. */
 :root[data-theme="dark"] {
   --tlo: #000000; --pow: #1c1c1e; --wypelnienie: rgb(118 118 128 / .24); --wypelnienie-2: rgb(118 118 128 / .32);
-  --tekst: #ffffff; --tekst2: #b6b6bd; --tekst3: #9d9da4; --separator: #38383a; --szklo-kraw: rgb(255 255 255 / .12);
+  --tekst: #ffffff; --tekst2: #b6b6bd; --tekst3: #9d9da4; --separator: #38383a; --szklo-kraw: rgb(255 255 255 / .12); --m-lad: #2a2b2f; --m-park: #24382a; --m-woda: #1d3550; --m-ulica: #45474d; --m-ulica-pod: #34363b; --m-aleja: #6b5a32; --m-aleja-pod: #4f4426; --m-napis: #a3a29c;
   --gl: #3d9bff; --gl-tekst: #00142e; --gl-wyp: rgb(61 155 255 / .16); --gl-wyp-pelny: #10284a; --gl-mocny: #74b6ff; --gl-zakladka: #5aabff; /* na szarej kapsule zakładki 4,5:1 */
   --ok: #4cd37a; --ok-wyp: rgb(76 211 122 / .16); --ostrz: #ffc34d; --ostrz-wyp: rgb(255 195 77 / .16); --zle: #ff6b61; --zle-wyp: rgb(255 107 97 / .16); --zle-tekst: #1f0302;
   --przel-wl: #32c35a; --pow-segment: #636366;
@@ -138,7 +139,7 @@ html.duzy .dol a { font-size: 12px; }
 .lista > li + li::before { content: ""; position: absolute; top: 0; right: 0; left: 58px; height: 1px; background: var(--separator); }
 .poz { display: flex; align-items: center; gap: var(--o3); width: 100%; min-height: 56px; padding: 10px var(--o4); color: var(--tekst); text-decoration: none; background: none; border: 0; font: inherit; text-align: left; cursor: pointer; transition: background var(--czas); }
 a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
-.poz > span:not(.plak):not(.awatar) { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.poz > span:not(.plak):not(.awatar):not(.m-nr) { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .poz b { font-weight: 400; } /* tytuł wiersza = Body (regular), jak w iOS */
 .poz small { color: var(--tekst2); font-size: var(--t-objasn); line-height: 1.35; }
 .lista.mala .poz { min-height: 52px; }
@@ -160,7 +161,7 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .lista-kart > li > .karta, .lista-kart > li.karta { margin: 0; }
 .link-karta { display: flex; align-items: center; gap: var(--o3); color: var(--tekst); text-decoration: none; transition: background var(--czas); }
 .link-karta:hover { background: color-mix(in srgb, var(--pow) 92%, var(--tekst)); }
-.link-karta > span { flex: 1; display: flex; flex-direction: column; }
+.link-karta > span:not(.plak) { flex: 1; display: flex; flex-direction: column; }
 .link-karta small { color: var(--tekst2); font-size: var(--t-objasn); }
 .link-karta b { font-weight: 400; } /* tytuł wiersza = Body, jak w listach */
 
@@ -198,6 +199,33 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
    Pozycja „fixed” jak pasek kart, a nie „sticky”: Safari źle liczy „sticky” w przeskalowanej ramce telefonu. */
 .pisz-pasek { position: fixed; left: 0; right: 0; bottom: var(--dol-wys); z-index: 9; padding: var(--o2) var(--o4); background: var(--tlo); }
 .pisz { box-shadow: 0 0 0 1px var(--separator); }
+/* Mapa poglądowa stacji kontroli: rysunek w stylu map systemowych, pinezki to prawdziwe przyciski (44 px). */
+.mapa { position: relative; aspect-ratio: 9 / 5; border-radius: var(--r-grupa); overflow: hidden; background: var(--m-lad); margin: 0 0 var(--o2); }
+.mapa-tlo { display: block; width: 100%; height: 100%; }
+.m-lad { fill: var(--m-lad); } .m-park { fill: var(--m-park); } .m-woda { fill: var(--m-woda); }
+.m-ulica-pod { stroke: var(--m-ulica-pod); stroke-width: 9; fill: none; } .m-ulica { stroke: var(--m-ulica); stroke-width: 7; fill: none; }
+.m-aleja-pod { stroke: var(--m-aleja-pod); stroke-width: 13; fill: none; } .m-aleja { stroke: var(--m-aleja); stroke-width: 11; fill: none; }
+.m-napis { fill: var(--m-napis); font-size: 9px; font-weight: 600; letter-spacing: .02em; }
+.m-ja { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: #0a84ff; border: 3px solid #fff; box-shadow: 0 0 0 10px rgb(10 132 255 / .2), 0 1px 3px rgb(0 0 0 / .3); }
+.m-pin { position: absolute; width: 44px; height: 44px; margin: -40px 0 0 -22px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.m-pin span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #4b5160; color: #fff; font: 600 13px/1 var(--f); box-shadow: 0 2px 6px rgb(0 0 0 / .3); border: 2px solid #fff; transition: transform var(--czas) var(--krzywa), background var(--czas); }
+.m-pin i { font-style: normal; transform: rotate(45deg); } /* pinezka obrócona, cyfra prosto */
+.m-pin[aria-pressed="true"] { z-index: 2; }
+.m-pin[aria-pressed="true"] span { background: var(--gl); color: var(--gl-tekst); transform: rotate(-45deg) scale(1.18); }
+.m-pin:focus-visible { outline: none; } .m-pin:focus-visible span { outline: 3px solid var(--gl); outline-offset: 2px; }
+.m-nr { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #4b5160; color: #fff; font-weight: 600; font-size: 14px; }
+.st-wiersz[aria-pressed="true"] { background: var(--gl-wyp); }
+.st-wiersz[aria-pressed="true"] .m-nr { background: var(--gl); color: var(--gl-tekst); }
+.st-wiersz[aria-pressed="true"] .plak { color: var(--gl-mocny); } /* niebieska plakietka na niebieskim tle wiersza: mocniejszy odcień, 4,5:1 */
+.szczegoly-st .nag { margin-top: 0; }
+.terminy { border: 0; padding: 0; margin: var(--o3) 0 0; }
+.chip-r { position: relative; display: inline-flex; }
+.chip-r input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.chip-r span { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border-radius: 99px; background: var(--wypelnienie); color: var(--tekst); font-size: var(--t-objasn); font-weight: 600; font-variant-numeric: tabular-nums; transition: background var(--czas), color var(--czas); }
+.chip-r input:checked + span { background: var(--gl); color: var(--gl-tekst); }
+.chip-r input:focus-visible + span { outline: 3px solid var(--gl); outline-offset: 2px; }
+.potw-rez { display: flex; gap: var(--o3); align-items: flex-start; margin: var(--o4) 0 0; }
+.potw-rez span { display: flex; flex-direction: column; } .potw-rez small { color: var(--tekst2); font-size: var(--t-objasn); }
 /* Przypięte główne działanie formularza: nad paskiem kart, pojawia się, gdy przycisk formularza jest poza ekranem. */
 .akcja-pasek { position: fixed; left: 0; right: 0; bottom: var(--dol-wys); z-index: 9; padding: var(--o2) var(--o4); pointer-events: none; opacity: 0; transform: translateY(8px); transition: opacity var(--czas), transform var(--czas) var(--krzywa), visibility 0s var(--czas); visibility: hidden; }
 .akcja-pasek.widoczny { pointer-events: auto; opacity: 1; transform: none; visibility: visible; transition-delay: 0s; }
@@ -382,6 +410,12 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 /* Arkusz jak w iOS 26: pływa nad treścią z odstępem od krawędzi, rogi współśrodkowe z rogami ekranu. */
 dialog.arkusz { border: 0; padding: 0; margin: auto auto calc(8px + env(safe-area-inset-bottom)); width: calc(100% - 16px); max-width: 480px; max-height: 92vh; border-radius: var(--r-arkusz); background: var(--pow); color: var(--tekst); box-shadow: var(--cien-arkusz); }
 dialog.arkusz::backdrop { background: rgb(0 0 0 / .4); }
+/* W ramce przewija się treść arkusza, a nie samo okno: przyciski przyklejone do samego dołu, bez odstępu. */
+.arkusz-in.w-ramce { padding-bottom: 0; }
+.arkusz-in.w-ramce .przyciski { margin-bottom: 0; }
+#arkusz-t:focus { outline: none; } /* fokus startowy dla czytnika ekranu, nie cel dotyku */
+/* W symulacji telefonu strona pod otwartym oknem stoi w miejscu: okno jest przypięte do położenia telefonu. */
+html.ramka:has(dialog[open]) { overflow: hidden; }
 .arkusz-in { padding: 8px var(--o5) var(--o6); }
 .arkusz-in h2 { font-size: var(--t-tytul3); margin: var(--o2) 0 var(--o1); }
 .uchwyt { width: 36px; height: 5px; border-radius: 3px; background: var(--wypelnienie-2); margin: 2px auto var(--o3); }

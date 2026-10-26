@@ -441,3 +441,89 @@ export function podglad(id) {
     <a class="btn drugi szeroki" href="#/sprawy">Wszystkie sprawy</a>`,
   };
 }
+
+/* ---------------- Badanie techniczne: stacje kontroli na mapie ---------------- */
+// Stacje, adresy i terminy są fikcyjne. Wykaz stacji prowadzą starostowie; ogólnopolskiej wyszukiwarki z terminami dziś nie ma.
+// x, y: położenie pinezki na mapie poglądowej (w procentach). Godziny terminów: [dzień od dziś, godzina].
+const STACJE = [
+  { id: 's1', nazwa: 'Stacja Kontroli Pojazdów Śródmieście', krotko: 'SKP Śródmieście', adres: 'ul. Kolejowa 12', km: '0,9', auto: 4, godziny: 'pon.–pt. 7–19, sob. 8–14', rodzaj: 'podstawowa', x: 33, y: 33, terminy: [[0, '16:30'], [1, '8:00'], [1, '10:30'], [2, '7:30'], [3, '12:00']] },
+  { id: 's2', nazwa: 'Okręgowa Stacja Kontroli Pojazdów Widzew', krotko: 'OSKP Widzew', adres: 'ul. Wschodnia 41', km: '1,6', auto: 7, godziny: 'pon.–pt. 6–20, sob. 7–15', rodzaj: 'okręgowa', x: 73, y: 45, terminy: [[0, '15:00'], [0, '17:30'], [1, '9:00'], [2, '14:30'], [3, '8:00']] },
+  { id: 's3', nazwa: 'Stacja Kontroli Pojazdów Polesie', krotko: 'SKP Polesie', adres: 'ul. Ogrodowa 5', km: '2,4', auto: 9, godziny: 'pon.–pt. 8–18', rodzaj: 'podstawowa', x: 10, y: 93, terminy: [[1, '12:00'], [1, '15:30'], [2, '9:30'], [3, '11:00']] },
+  { id: 's4', nazwa: 'Stacja Kontroli Pojazdów Bałuty', krotko: 'SKP Bałuty', adres: 'al. Północna 77', km: '3,1', auto: 11, godziny: 'pon.–sob. 7–21', rodzaj: 'podstawowa', x: 84, y: 17, terminy: [[0, '18:00'], [0, '20:00'], [1, '7:00'], [2, '19:00']] },
+];
+const RODZAJ = { podstawowa: 'podstawowa (do 3,5 t)', okręgowa: 'okręgowa (wszystkie pojazdy)' };
+
+// Wolne terminy od teraz: bez godzin, które już minęły, i bez niedziel.
+function wolne(st) {
+  const teraz = new Date();
+  return st.terminy.map(([d, g]) => { const t = za(d), [h, m] = g.split(':'); t.setHours(+h, +m, 0, 0); return t; })
+    .filter(t => t > teraz && t.getDay() !== 0).slice(0, 4);
+}
+const dzien = t => { const d = Math.round((new Date(t).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / 864e5); return d === 0 ? 'dziś' : d === 1 ? 'jutro' : fmt(new Date(t), { weekday: 'short', day: 'numeric', month: 'numeric' }); };
+const godz = t => new Date(t).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+
+// Mapa poglądowa w stylu map systemowych: kwartały, park, rzeka, aleja; kolory z motywu (jasny i ciemny).
+const MAPA = `<svg class="mapa-tlo" viewBox="0 0 360 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <rect width="360" height="200" class="m-lad"/>
+  <rect x="84" y="112" width="58" height="40" rx="8" class="m-park"/><rect x="250" y="120" width="44" height="26" rx="6" class="m-park"/>
+  <path d="M232 200c14-26 44-40 78-46s40-8 50-12v58z" class="m-woda"/>
+  <g class="m-ulica-pod"><path d="M0 52h360M0 104h360M0 158h360M70 0v200M152 0v200M232 0v200M312 0v200"/></g>
+  <g class="m-ulica"><path d="M0 52h360M0 104h360M0 158h360M70 0v200M152 0v200M232 0v200M312 0v200"/></g>
+  <path d="M-10 182 370 22" class="m-aleja-pod"/><path d="M-10 182 370 22" class="m-aleja"/>
+  <g class="m-napis"><text x="157" y="12" transform="rotate(90 157 12)">Kolejowa</text><text x="6" y="100">Ogrodowa</text><text x="240" y="100">Wschodnia</text><text x="70" y="146" transform="rotate(-23 70 146)">al. Północna</text></g>
+</svg>`;
+
+export function badanie() {
+  const auto = dokumenty.find(d => d.id === 'pojazd');
+  let wybrana = stan.badanie ? STACJE.find(s => s.id === stan.badanie.stacja) || STACJE[0] : STACJE[0];
+  const szczegoly = st => {
+    const r = stan.badanie && stan.badanie.stacja === st.id ? stan.badanie : null;
+    const t = wolne(st);
+    return `<h2 class="nag" id="st-t">${esc(st.nazwa)}</h2>
+      ${wiersz('Adres', st.adres + ', Łódź')}${wiersz('Odległość', `${st.km} km · ok. ${st.auto} min autem`)}${wiersz('Godziny', st.godziny)}${wiersz('Rodzaj stacji', RODZAJ[st.rodzaj])}
+      ${r ? `<div class="potw-rez" role="status">${ic('check', 'okr zielona')}<span><b>Zarezerwowano: ${dzien(r.kiedy)}, ${godz(r.kiedy)}</b><small>Przypomnimy dzień wcześniej. Stacja dostała numer rejestracyjny i model auta.</small></span></div>
+      <button type="button" class="btn drugi szeroki" id="rez-odwolaj">Odwołaj rezerwację</button>`
+      : t.length ? `<fieldset class="terminy"><legend class="etyk">Wolne terminy</legend><div class="chipy">${t.map((x, i) => `<label class="chip-r"><input type="radio" name="termin" value="${x.toISOString()}" ${i === 0 ? 'checked' : ''}><span>${dzien(x)} ${godz(x)}</span></label>`).join('')}</div></fieldset>
+      <p class="maly">Stacja dostanie tylko numer rejestracyjny i model auta, żeby przygotować stanowisko. Płacisz na miejscu.</p>
+      <button type="button" class="btn glowny szeroki" id="rez-ok">${ic('clock')}Zarezerwuj termin</button>`
+      : '<p class="pusto">Brak wolnych terminów w najbliższych dniach. Wybierz inną stację.</p>'}`;
+  };
+  return {
+    tytul: 'Badanie techniczne',
+    html: `<h1 tabindex="-1">Badanie techniczne</h1>
+    <div class="karta link-karta">${ic('car', 'okr')}<span><b>${esc(auto.linia)}</b><small>Badanie ważne do ${fmtPelna(za(19))}</small></span><span class="plak pomaranczowa">za 19 dni</span></div>
+    <h2 class="sekcja">Stacje w pobliżu</h2>
+    <div class="mapa" role="group" aria-label="Mapa stacji kontroli pojazdów w pobliżu">
+      ${MAPA}
+      <span class="m-ja" style="left:42%;top:56%" aria-hidden="true"></span>
+      ${STACJE.map((s, i) => `<button type="button" class="m-pin" data-st="${s.id}" style="left:${s.x}%;top:${s.y}%" aria-label="${i + 1}. ${esc(s.krotko)}, ${s.km} km" aria-pressed="${s === wybrana}"><span><i>${i + 1}</i></span></button>`).join('')}
+    </div>
+    <p class="maly">Mapa poglądowa: stacje, adresy i terminy w prototypie są fikcyjne. Niebieska kropka to Twoje położenie.</p>
+    <ul class="lista">${STACJE.map((s, i) => { const t = wolne(s)[0]; return `<li><button type="button" class="poz st-wiersz" data-st="${s.id}" aria-pressed="${s === wybrana}"><span class="m-nr" aria-hidden="true">${i + 1}</span><span><b>${esc(s.krotko)}</b><small>${s.km} km · ${esc(s.adres)}</small></span>${t ? `<span class="plak niebieska">${dzien(t)} ${godz(t)}</span>` : ''}</button></li>`; }).join('')}</ul>
+    <section class="karta szczegoly-st" id="st-szcz" aria-labelledby="st-t" aria-live="polite">${szczegoly(wybrana)}</section>
+    <h2 class="sekcja">Dobrze wiedzieć</h2>
+    <ul class="punkty">
+      <li>Badanie samochodu osobowego kosztuje 149 zł na każdej stacji (stawka z rozporządzenia, od 19 września 2025 r.). Za instalację gazową dochodzi 96 zł.</li>
+      <li>Wynik stacja wpisuje do centralnej ewidencji pojazdów. Nową datę badania zobaczysz w karcie auta.</li>
+      <li>Przypomnimy 7 dni przed końcem ważności.</li>
+    </ul>
+    ${zrodlo('gov.pl: nowe stawki za badania techniczne pojazdów', 'https://samorzad.gov.pl/web/powiat-bielski/nowe-stawki-za-badania-techniczne-pojazdow')}`,
+    po(root) {
+      const pokaz = st => {
+        wybrana = st;
+        $$('[data-st]', root).forEach(b => b.setAttribute('aria-pressed', b.dataset.st === st.id));
+        $('#st-szcz', root).innerHTML = szczegoly(st);
+      };
+      root.addEventListener('click', e => {
+        const b = e.target.closest('[data-st]');
+        if (b) { pokaz(STACJE.find(s => s.id === b.dataset.st)); if (b.classList.contains('m-pin')) $('#st-szcz', root).scrollIntoView({ block: 'nearest', behavior: spokojnie() ? 'auto' : 'smooth' }); return; }
+        if (e.target.closest('#rez-ok')) {
+          const t = $('input[name=termin]:checked', root); if (!t) return;
+          stan.badanie = { stacja: wybrana.id, kiedy: t.value, krotko: wybrana.krotko }; zapisz();
+          pokaz(wybrana); ogloszenie(`Zarezerwowano badanie: ${dzien(t.value)}, ${godz(t.value)}, ${wybrana.krotko}`); cel('badanie:rezerwacja');
+        }
+        if (e.target.closest('#rez-odwolaj')) { stan.badanie = null; zapisz(); pokaz(wybrana); toast('Rezerwacja odwołana.'); }
+      });
+    },
+  };
+}

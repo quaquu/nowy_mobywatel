@@ -14,6 +14,7 @@ const POCZATEK = () => ({
   zgloszoneDostepy: {},
   poparcia: {},          // id inicjatywy -> kiedy poparta
   sprawdzoneNumery: 0,
+  badanie: null,         // rezerwacja na stacji kontroli {stacja, kiedy, krotko}
 });
 
 function wczytaj() {
@@ -96,7 +97,7 @@ export function arkuszZgody({ tytul, pozycje, dane = [], cofniecie, przycisk = '
     d.innerHTML = `
       <form method="dialog" class="arkusz-in">
         <div class="uchwyt" aria-hidden="true"></div>
-        <h2 id="arkusz-t">${esc(tytul)}</h2>
+        <h2 id="arkusz-t" tabindex="-1" autofocus>${esc(tytul)}</h2>
         <p class="maly">Sprawdź przed podpisem. Bez Twojego podpisu nic nie zostanie wysłane.</p>
         <h3 class="nag">Co wyślemy i dokąd</h3>
         <ol class="kontrolna">${pozycje.map(p => `<li>${ic('check', 'ok')}<span><b>${esc(p.co)}</b><small>do: ${esc(p.do)}</small></span></li>`).join('')}</ol>
@@ -123,8 +124,9 @@ export function arkuszZgody({ tytul, pozycje, dane = [], cofniecie, przycisk = '
     d.showModal();
     wTelefonie(d);
     wysun(d);
-    // fokus na przycisku podpisu, ale bez przewijania: najpierw widać tytuł i listę
-    $('#arkusz-ok', d).focus({ preventScroll: true }); d.querySelector('.arkusz-in').scrollTop = 0; d.scrollTop = 0;
+    // Fokus na tytule, nie na przycisku podpisu: Safari przewijał do przycisku całą stronę (arkusz wyjeżdżał
+    // poza telefon) i rysował wokół niego obwódkę. Czytnik ekranu zaczyna od tytułu, przycisk jest o jeden Tab dalej.
+    $('#arkusz-t', d).focus({ preventScroll: true }); d.querySelector('.arkusz-in').scrollTop = 0; d.scrollTop = 0;
   });
 }
 
@@ -139,7 +141,14 @@ export function wTelefonie(d, pelny = false) {
   if (pelny) d.style.setProperty('--sk-skala', s);
   Object.assign(d.style, pelny
     ? { position: 'fixed', margin: '0', left: r.left + 'px', top: (r.top + pasek) + 'px', width: r.width + 'px', height: (r.height - pasek) + 'px', maxWidth: 'none', maxHeight: 'none', borderRadius: `0 0 ${rog}px ${rog}px` }
-    : { position: 'fixed', margin: '0', left: (r.left + 8 * s) + 'px', width: (r.width - 16 * s) + 'px', maxWidth: (r.width - 16 * s) + 'px', top: 'auto', bottom: (innerHeight - r.bottom + 8 * s) + 'px', maxHeight: (r.height * 0.9) + 'px', borderRadius: (rog - 8 * s) + 'px' }); // pływający arkusz, rogi współśrodkowe z ekranem
+    : { position: 'fixed', margin: '0', left: (r.left + 8 * s) + 'px', width: (r.width - 16 * s) + 'px', maxWidth: (r.width - 16 * s) + 'px', top: 'auto', bottom: (innerHeight - r.bottom + 8 * s) + 'px', maxHeight: 'none', overflow: 'hidden', borderRadius: (rog - 8 * s) + 'px' }); // pływający arkusz, rogi współśrodkowe z ekranem
+  // Arkusz leży nad stroną, a nie w telefonie, więc jego treść skalujemy jak telefon (tekst tej samej wielkości co w aplikacji).
+  const tresc = !pelny && d.querySelector('.arkusz-in');
+  if (!tresc) return;
+  tresc.classList.add('w-ramce');
+  Object.assign(tresc.style, { width: (390 - 16) + 'px', maxHeight: Math.round(844 * 0.9) + 'px', overflowY: 'auto', transform: `scale(${s})`, transformOrigin: '0 0' });
+  const dopasuj = () => { d.style.height = tresc.offsetHeight * s + 'px'; };
+  dopasuj(); new ResizeObserver(dopasuj).observe(tresc);
 }
 
 // Symulacja podpisu biometrycznego/PIN-em (w prawdziwej aplikacji: podpis mObywatela).

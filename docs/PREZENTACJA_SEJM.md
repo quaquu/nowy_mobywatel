@@ -29,7 +29,7 @@ Jeden slajd albo strona „Dla jury” w prototypie (`Więcej → Dla jury`):
 
 ## 3:30–4:30 Jak to wdrożyć
 
-> „Nie wszystko wymaga ustaw. Macierz wykonalności pokazuje, że 25 z 44 elementów da się zrobić na obecnym prawie, przez integrację istniejących usług. Siedem wymaga zmiany ustaw. Na przykład becikowe wciąż wymaga papierowego zaświadczenia o opiece w ciąży, choć te dane są w Internetowym Koncie Pacjenta.
+> „Nie wszystko wymaga ustaw. Macierz wykonalności pokazuje, że 26 z 45 elementów da się zrobić na obecnym prawie, przez integrację istniejących usług. Siedem wymaga zmiany ustaw. Na przykład becikowe wciąż wymaga papierowego zaświadczenia o opiece w ciąży, choć te dane są w Internetowym Koncie Pacjenta.
 >
 > Polski model Bielik został zmierzony na tych samych zdaniach. Najlepiej działa w duecie: reguły w telefonie rozpoznają 92% spraw i pilnują bezpieczeństwa, a Bielik pomaga przy reszcie. Razem: 95,4%. Model językowy nie decyduje o niczym. O sprawach decyduje człowiek swoim podpisem.”
 

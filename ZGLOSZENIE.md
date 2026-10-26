@@ -52,7 +52,7 @@ Sprawdzone pomiarami, a nie opinią (te same narzędzia na obu prototypach, kod 
 • Lighthouse na telefonie: wydajność 95–98, dostępność 100 (referencja: 82 i 87);
 • 43 ekrany × 4 szerokości (320–430 px) bez błędów i bez ślepych zaułków; w referencji na stronie 6 z 20 podpowiedzi startowych kończy się „Tego w tej wersji jeszcze nie załatwię”; działa offline.
 
-Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i historia pojazdu już istnieją, a w mObywatelu w przeglądarce także zgłoszenie urodzenia, zameldowanie i ePłatności, każde jako osobny wniosek wśród 44 usług. Wykorzystuję je jako klocki i łączę w sprawy życiowe. Macierz wykonalności prawnej pokazuje, co da się wdrożyć bez zmian ustaw (25 z 44 elementów), a co ich wymaga. Na stronie „Dla jury” w prototypie jest instrukcja na 60 sekund i tryb testowy z pomiarem czasu oraz ankietą SUS.
+Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i historia pojazdu już istnieją, a w mObywatelu w przeglądarce także zgłoszenie urodzenia, zameldowanie i ePłatności, każde jako osobny wniosek wśród 44 usług. Wykorzystuję je jako klocki i łączę w sprawy życiowe. Macierz wykonalności prawnej pokazuje, co da się wdrożyć bez zmian ustaw (26 z 45 elementów), a co ich wymaga. Na stronie „Dla jury” w prototypie jest instrukcja na 60 sekund i tryb testowy z pomiarem czasu oraz ankietą SUS.
 ```
 
 **Link do klikalnego prototypu \*** <!-- pole: link -->
