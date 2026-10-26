@@ -34,6 +34,21 @@ export function ustawMotyw(m) {
   document.querySelectorAll('meta[name="theme-color"]').forEach(t => t.content = m === 'auto' ? (t.media.includes('dark') ? '#000000' : '#f2f2f7') : (m === 'dark' ? '#000000' : '#f2f2f7'));
   document.querySelectorAll('input[name^="motyw"]').forEach(i => { i.checked = i.value === m; });
 }
+// Główne działanie długiego formularza przypięte nad paskiem kart, dopóki właściwy przycisk na końcu formularza
+// jest poza ekranem (jak pasek narzędzi w iOS). Przycisk wysyła ten sam formularz, więc walidacja jest jedna.
+export function przypnijAkcje(root, przycisk) {
+  const pasek = document.createElement('div');
+  pasek.className = 'akcja-pasek';
+  pasek.innerHTML = `<button type="submit" form="${przycisk.form.id}" class="btn glowny szeroki">${przycisk.innerHTML}</button>`;
+  root.append(pasek);
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(([w]) => {
+    if (!pasek.isConnected) return io.disconnect();
+    pasek.classList.toggle('widoczny', !w.isIntersecting && w.boundingClientRect.top > (w.rootBounds?.top ?? 0));
+  }, { root: document.querySelector('html.ramka .aplikacja'), rootMargin: '0px 0px -140px 0px' }); // w ramce przewija się ekran telefonu, nie okno
+  io.observe(przycisk);
+}
+
 // Przełącznik segmentowy jak w iOS (Ustawienia → Ekran i jasność). Obsługa zmian: jeden słuchacz w app.js.
 export const wyborMotywu = (nazwa = 'motyw') => `<fieldset class="segment"><legend class="sr">Wygląd</legend>${[['auto', 'Automatycznie'], ['light', 'Jasny'], ['dark', 'Ciemny']].map(([v, t]) => `<label><input type="radio" name="${nazwa}" value="${v}" ${motyw() === v ? 'checked' : ''}><span>${t}</span></label>`).join('')}</fieldset>`;
 
@@ -87,9 +102,9 @@ export function arkuszZgody({ tytul, pozycje, dane = [], cofniecie, przycisk = '
         <ol class="kontrolna">${pozycje.map(p => `<li>${ic('check', 'ok')}<span><b>${esc(p.co)}</b><small>do: ${esc(p.do)}</small></span></li>`).join('')}</ol>
         ${dane.length ? `<h3 class="nag">Jakie Twoje dane zostaną użyte</h3><p class="maly">${dane.map(esc).join(' · ')}</p>` : ''}
         ${cofniecie ? `<p class="uwaga">${ic('info')}<span>${esc(cofniecie)}</span></p>` : ''}
-        <div class="przyciski">
-          <button value="anuluj" class="btn drugi">Wróć</button>
+        <div class="przyciski pion">
           <button value="ok" class="btn glowny" id="arkusz-ok">${ic('key')}${esc(przycisk)}</button>
+          <button value="anuluj" class="btn tekst">Wróć</button>
         </div>
       </form>`;
     document.body.append(d);

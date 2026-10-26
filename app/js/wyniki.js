@@ -2,12 +2,12 @@
 export const WYNIKI = {
  "data": "26 października 2026",
  "crawler": {
-  "strony": 258,
+  "strony": 250,
   "trasy": 43,
   "problemy": 0
  },
  "sprawy": {
-  "liczba": 22,
+  "liczba": 24,
   "nieudane": []
  },
  "offline": true,
@@ -15,8 +15,8 @@ export const WYNIKI = {
   "nasz": {
    "przyciskiNaKoniec": [],
    "akcje": 4,
-   "systemS": 2.8,
-   "sekundy": 13,
+   "systemS": 3.2,
+   "sekundy": 14,
    "podpisy": 1,
    "sprawy": 5,
    "instytucje": 4
@@ -24,8 +24,8 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 9.1,
-   "sekundy": 25,
+   "systemS": 8.3,
+   "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
    "instytucje": 2
@@ -138,23 +138,23 @@ export const WYNIKI = {
    "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2415,
-   "tbtMs": 55
+   "lcpMs": 2339,
+   "tbtMs": 28
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4360,
-   "tbtMs": 101
+   "lcpMs": 4357,
+   "tbtMs": 40
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 635,
-   "slowa": 3236,
+   "zdania": 666,
+   "slowa": 3365,
    "sredniaDlugoscZdania": 5.1,
-   "procentTrudnych": 12.6,
+   "procentTrudnych": 12.7,
    "fog": 7.1
   },
   "ref": {

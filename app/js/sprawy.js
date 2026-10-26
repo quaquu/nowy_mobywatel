@@ -1,7 +1,7 @@
 // Przebiegi spraw: każda sprawa to jeden ekran z danymi, które państwo już ma,
 // listą kroków do zaznaczenia i jednym podpisem na końcu.
 import { ic } from './icons.js';
-import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast, cel } from './core.js';
+import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast, cel, przypnijAkcje } from './core.js';
 import { spokojnie } from './ruch.js';
 import { autoZBoku, zdjecieFotoradaru } from './grafiki.js';
 import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy } from './data.js';
@@ -80,6 +80,7 @@ export function narodziny() {
     </form>
     ${zrodlo('gov.pl: Zgłoś urodzenie dziecka', 'https://www.gov.pl/web/gov/zglos-urodzenie-dziecka')}`,
     po(root) {
+      przypnijAkcje(root, $('#nar-dalej', root));
       const pole = $('#imie', root);
       $$('[data-imie]', root).forEach(b => b.onclick = () => { pole.value = b.dataset.imie; $('#imie-blad', root).hidden = true; });
       $('#f-nar', root).onsubmit = async e => {

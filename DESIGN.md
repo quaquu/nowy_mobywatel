@@ -190,7 +190,9 @@ Komórki i grupy: 12 px; pola: 10 px; przyciski, plakietki i pasek kart: kapsuł
 - **Sprawa, która przyszła sama**: jedna biała komórka nad portfelem: ikona, tytuł, opis i kapsuła „Załatw”. Bez etykiety nad tytułem i bez paska z boku.
 - **Karta dokumentu**: jeden pomysł, światło na materiale. Drobny gilosz jak na dowodzie; miękki refleks przechodzi powoli (2,4 s), gdy karta się pojawia i gdy najedziesz na nią kursorem; na komputerze karta lekko przechyla się za kursorem (do ok. 3,5°), a odblask i hologram idą za światłem. Bez unoszenia i bez pętli.
 - **Podpis (Face ID)**: w symulacji iPhone'a rozpoznanie twarzy wyrasta z Dynamic Island (odsłanianie przez przycinanie, bez odbicia; zwija się szybciej, niż się rozwinęło); na telefonie ciemne okienko na środku ekranu.
-- **Arkusz zgody**: zawsze ta sama struktura (co, dokąd, jakie dane, co można cofnąć); przyciski „Wróć” i „Podpisz” przyklejone do dołu.
+- **Arkusz zgody**: zawsze ta sama struktura (co, dokąd, jakie dane, co można cofnąć). Na dole przyklejona jedna wyróżniona akcja: „Podpisz” na całą szerokość, pod nią „Wróć” jako przycisk tekstowy.
+- **Przypięte działanie długiego formularza**: gdy przycisk na końcu formularza (np. „Przejrzyj i podpisz raz” w Narodzinach) jest poza ekranem, ta sama akcja wisi nad paskiem kart; znika, gdy właściwy przycisk jest widoczny.
+- **Tytuły wierszy**: zawsze zwykła grubość (Body), także w pojedynczych kartach-linkach; pogrubione są tytuły ekranów, nagłówki i kwoty.
 - **Przyciski**: kapsuły, najwyżej jeden lub dwa wyróżnione na widok; główny (wypełniony akcentem), drugi (jasne wypełnienie akcentem), niszczący (czerwony), tekstowy (sam akcent; podkreślenie po najechaniu). Obszar dotyku ≥ 44×44 px, lekkie wciśnięcie przy dotyku.
 - **Pola**: wypełnione tłem systemowym, bez ramki; fokus 3 px w kolorze akcentu.
 - **Oś czasu po wysłaniu**: kropki sukcesu połączone linią 1 px, w jednej grupie.

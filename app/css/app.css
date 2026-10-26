@@ -162,6 +162,7 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .link-karta:hover { background: color-mix(in srgb, var(--pow) 92%, var(--tekst)); }
 .link-karta > span { flex: 1; display: flex; flex-direction: column; }
 .link-karta small { color: var(--tekst2); font-size: var(--t-objasn); }
+.link-karta b { font-weight: 400; } /* tytuł wiersza = Body, jak w listach */
 
 .plak { flex: none; font-size: var(--t-podpis); font-weight: 600; padding: 3px 9px; border-radius: 99px; background: var(--wypelnienie); color: var(--tekst2); white-space: nowrap; }
 .plak.czerwona { background: var(--zle-wyp); color: var(--zle); }
@@ -192,6 +193,10 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
    Pozycja „fixed” jak pasek kart, a nie „sticky”: Safari źle liczy „sticky” w przeskalowanej ramce telefonu. */
 .pisz-pasek { position: fixed; left: 0; right: 0; bottom: var(--dol-wys); z-index: 9; padding: var(--o2) var(--o4); background: var(--tlo); }
 .pisz { box-shadow: 0 0 0 1px var(--separator); }
+/* Przypięte główne działanie formularza: nad paskiem kart, pojawia się, gdy przycisk formularza jest poza ekranem. */
+.akcja-pasek { position: fixed; left: 0; right: 0; bottom: var(--dol-wys); z-index: 9; padding: var(--o2) var(--o4); pointer-events: none; opacity: 0; transform: translateY(8px); transition: opacity var(--czas), transform var(--czas) var(--krzywa), visibility 0s var(--czas); visibility: hidden; }
+.akcja-pasek.widoczny { pointer-events: auto; opacity: 1; transform: none; visibility: visible; transition-delay: 0s; }
+.akcja-pasek .btn.szeroki { margin: 0; box-shadow: 0 8px 24px -10px rgb(0 0 0 / .45); }
 .msg { scroll-margin: 64px 0 calc(var(--dol-wys) + 80px); }
 .pisz .wyslij { background: var(--gl); color: var(--gl-tekst); }
 .pisz .wyslij:hover { background: var(--gl-mocny); }
@@ -368,7 +373,10 @@ dialog.arkusz::backdrop { background: rgb(0 0 0 / .4); }
 .kontrolna span { display: flex; flex-direction: column; }
 .kontrolna small { color: var(--tekst2); font-size: var(--t-objasn); }
 .kontrolna .ok { color: var(--ok); margin-top: 2px; }
-dialog.arkusz .przyciski { position: sticky; bottom: 0; margin: var(--o3) calc(-1 * var(--o5)) calc(-1 * var(--o6)); padding: var(--o3) var(--o5) var(--o5); background: var(--pow); border-top: 1px solid var(--separator); }
+dialog.arkusz .przyciski { position: sticky; bottom: 0; margin: var(--o3) calc(-1 * var(--o5)) calc(-1 * var(--o6)); padding: var(--o3) var(--o5) var(--o2); background: var(--pow); border-top: 1px solid var(--separator); }
+/* Jedna wyróżniona akcja (HIG): podpis na całą szerokość, „Wróć” jako przycisk tekstowy pod nim. */
+dialog.arkusz .przyciski.pion { gap: 0; }
+dialog.arkusz .przyciski .btn.tekst { align-self: center; padding: 10px 24px; }
 .podpis { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: rgb(0 0 0 / .25); }
 .podpis > div { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--o2); width: 156px; height: 156px; border-radius: 34px; background: rgb(36 37 42 / .88); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); color: #fff; font-weight: 600; box-shadow: 0 10px 30px -10px rgb(0 0 0 / .45); }
 .podpis svg { width: 64px; height: 64px; }
@@ -413,7 +421,7 @@ th[scope="row"] { width: 55%; font-weight: 400; }
 html.pelny #telefon-btn:not([hidden]) { display: inline-flex; position: fixed; top: 12px; right: 16px; z-index: 60; min-height: 40px; padding: 8px 16px; box-shadow: 0 4px 16px -6px rgb(0 0 0 / .3); }
 @media (min-width: 700px) {
   html:not(.ramka) body { background: color-mix(in srgb, var(--tlo) 80%, var(--tekst) 6%); }
-  html:not(.ramka) .pisz-pasek { left: 50%; right: auto; width: 480px; transform: translateX(-50%); }
+  html:not(.ramka) .pisz-pasek, html:not(.ramka) .akcja-pasek { left: 50%; right: auto; width: 480px; transform: translateX(-50%); }
   html:not(.ramka) .dol { left: 50%; right: auto; width: 456px; transform: translateX(-50%); }
 }
 html.ramka body { background: color-mix(in srgb, var(--tlo) 70%, #c9ccd6); min-height: 100vh; }

@@ -77,7 +77,8 @@ export function asystent(params) {
     `,
     po(root) {
       const czat = $('#czat', root), pole = $('#pytanie', root);
-      const dodaj = m => { historia.push(m); czat.insertAdjacentHTML('beforeend', babelek(m)); const el = czat.lastElementChild; el.classList.add('nowa'); el.scrollIntoView({ block: el.offsetHeight > 280 ? 'start' : 'end', behavior: spokojnie() ? 'auto' : 'smooth' }); };
+      const przewin = el => el.scrollIntoView({ block: el.offsetHeight > 280 ? 'start' : 'end', behavior: spokojnie() ? 'auto' : 'smooth' });
+      const dodaj = m => { historia.push(m); czat.insertAdjacentHTML('beforeend', babelek(m)); const el = czat.lastElementChild; el.classList.add('nowa'); przewin(el); };
       const zadaj = t => {
         if (!t.trim()) return;
         dodaj({ kto: 'ja', t });
@@ -104,7 +105,8 @@ export function asystent(params) {
           rec.start();
         };
       }
-      if (params.get('q')) { zadaj(params.get('q')); history.replaceState(null, '', '#/asystent'); }
+      // Pytanie ze Startu: router po narysowaniu ekranu wraca na górę, więc do odpowiedzi przewijamy w następnej klatce.
+      if (params.get('q')) { zadaj(params.get('q')); history.replaceState(null, '', '#/asystent'); requestAnimationFrame(() => przewin(czat.lastElementChild)); }
       if (params.get('mow') && SR) mow.click();
       else if (!params.get('q')) pole.focus({ preventScroll: true });
     },

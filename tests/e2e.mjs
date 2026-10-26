@@ -274,6 +274,25 @@ export async function sprawy(url) {
     if (bledy.length) problemy.push('widok-komputer: błędy JS ' + bledy.join('; '));
     await ctx.close();
   }
+  // Pytanie ze Startu: odpowiedź asystenta widoczna nad polem pisania; Narodziny: podpis przypięty nad paskiem kart,
+  // dopóki przycisk formularza jest poza ekranem (telefon i ramka na komputerze).
+  for (const [nazwa, vp, wid] of [['przypiete-tel', { width: 390, height: 844 }, 'pelny'], ['przypiete-ramka', { width: 1440, height: 900 }, 'telefon']]) {
+    const ctx = await b.newContext({ viewport: vp, serviceWorkers: 'block' });
+    const p = await ctx.newPage();
+    try {
+      const adres = url.replace(/\/?$/, `/?widok=${wid}`);
+      await p.goto(adres + '#/start'); await p.waitForSelector('#zap'); await p.fill('#zap', 'zgubiłam portfel'); await p.press('#zap', 'Enter');
+      await p.waitForSelector('.msg.bot >> nth=1'); await p.waitForTimeout(1200);
+      const a = await p.evaluate(() => { const m = [...document.querySelectorAll('.msg')].pop().getBoundingClientRect(), k = document.querySelector('.pisz-pasek').getBoundingClientRect(); return m.top < k.top - 120; });
+      if (!a) throw new Error('odpowiedź na pytanie ze Startu schowana pod polem pisania');
+      await p.goto(adres + '#/sprawa/narodziny'); await p.waitForSelector('#nar-dalej'); await p.waitForTimeout(500);
+      await p.click('[data-imie="Zofia"]');
+      await p.locator('.akcja-pasek.widoczny button').click({ timeout: 3000 });
+      await p.waitForSelector('dialog.arkusz[open]');
+      wyniki[nazwa] = true;
+    } catch (e) { problemy.push(nazwa + ': ' + e.message.split('\n')[0]); wyniki[nazwa] = false; }
+    await ctx.close();
+  }
   // Wygląd: system ciemny, wybór „Jasny” działa od razu i zostaje po przeładowaniu; „Automatycznie” wraca do systemu.
   {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'dark', serviceWorkers: 'block' });
