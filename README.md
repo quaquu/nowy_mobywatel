@@ -35,7 +35,7 @@ Technicznie: czysty HTML, CSS i JavaScript (moduły ES), bez budowania, bez fram
 
 ## Wygląd (design system)
 
-Wygląd natywnej aplikacji iOS z charakterem mObywatela: listy grupowane, duże tytuły, pasek kart, arkusz zgody, portfel kart dokumentów i czerwony akcent. Krój **Lato** (polski projekt Łukasza Dziedzica, licencja OFL), przycięty do znaków polskich i dołączony do repozytorium (ok. 44 KB).
+Wygląd natywnej aplikacji iOS według [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/): listy grupowane z kolorowymi kafelkami kategorii, duże tytuły, pływający pasek kart ze szkła (Liquid Glass tylko na nawigacji), pływający arkusz zgody, przyciski-kapsuły, portfel kart dokumentów. Niebieski akcent dla działań, czerwień mObywatela tylko w logo i sprawach pilnych. Krój systemowy na iPhonie i Macu; na innych urządzeniach **Lato** (polski projekt Łukasza Dziedzica, licencja OFL), przycięty do znaków polskich (ok. 44 KB). Szczegóły i powody zmian: [DESIGN.md](DESIGN.md).
 
 - [DESIGN.md](DESIGN.md): tokeny (kolory, typografia, odstępy, zaokrąglenia, komponenty) i zasady, w formacie [Impeccable](https://impeccable.style/)
 - [PRODUCT.md](PRODUCT.md): dla kogo, po co i jakie ograniczenia

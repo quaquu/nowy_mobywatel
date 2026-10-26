@@ -422,17 +422,30 @@ export function wiecej() {
   return {
     tytul: 'Więcej',
     html: `<h1 tabindex="-1">Więcej</h1>
+    <h2 class="grupa-t">Twoje sprawy</h2>
     <ul class="lista">
       ${poz('#/skrzynka', 'mail', 'Pisma i płatności', nowePisma() ? nowePisma() + ' nowe' : '')}
       ${poz('#/naleznosci', 'gift', 'Możesz skorzystać', '4 świadczenia i ulgi')}
       ${poz('#/bliscy', 'users', 'Bliscy', 'mama, córka')}
+      ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'terminy i sprawy, które robimy za Ciebie')}
+    </ul>
+    <h2 class="grupa-t">Bezpieczeństwo i dane</h2>
+    <ul class="lista">
       ${poz('#/dane', 'eye', 'Twoje dane i prywatność', 'kto sprawdzał moje dane')}
       ${poz('#/kto-dzwoni', 'callcheck', 'Kto dzwoni?', 'sprawdź numer, zanim cokolwiek powiesz')}
-      ${poz('#/poparcie', 'pen', 'Podpisy i poparcie', 'projekty ustaw, referenda, kandydaci')}
-      ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'terminy i sprawy, które robimy za Ciebie')}
       ${poz('#/dostep', 'lock', 'Problem z logowaniem', '')}
+    </ul>
+    <h2 class="grupa-t">Udział w życiu publicznym</h2>
+    <ul class="lista">
+      ${poz('#/poparcie', 'pen', 'Podpisy i poparcie', 'projekty ustaw, referenda, kandydaci')}
+    </ul>
+    <h2 class="grupa-t">Pomoc i ustawienia</h2>
+    <ul class="lista">
       ${poz('#/konsultant', 'phone', 'Pomoc człowieka', '')}
       ${poz('#/ustawienia', 'gear', 'Ustawienia i dostępność', 'tryb prosty, większy tekst, czytanie na głos')}
+    </ul>
+    <h2 class="grupa-t">O prototypie</h2>
+    <ul class="lista">
       ${poz('#/jury', 'info', 'Dla jury', 'co mierzyliśmy i jak to sprawdzić')}
       ${poz('#/test', 'test', 'Tryb testowy', '')}
     </ul>`,

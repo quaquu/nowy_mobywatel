@@ -110,7 +110,7 @@ export function wTelefonie(d, pelny = false) {
   if (pelny) d.style.setProperty('--sk-skala', s);
   Object.assign(d.style, pelny
     ? { position: 'fixed', margin: '0', left: r.left + 'px', top: (r.top + pasek) + 'px', width: r.width + 'px', height: (r.height - pasek) + 'px', maxWidth: 'none', maxHeight: 'none', borderRadius: `0 0 ${rog}px ${rog}px` }
-    : { position: 'fixed', margin: '0', left: r.left + 'px', width: r.width + 'px', maxWidth: r.width + 'px', top: 'auto', bottom: (innerHeight - r.bottom) + 'px', maxHeight: (r.height * 0.9) + 'px', borderRadius: `24px 24px ${rog}px ${rog}px` });
+    : { position: 'fixed', margin: '0', left: (r.left + 8 * s) + 'px', width: (r.width - 16 * s) + 'px', maxWidth: (r.width - 16 * s) + 'px', top: 'auto', bottom: (innerHeight - r.bottom + 8 * s) + 'px', maxHeight: (r.height * 0.9) + 'px', borderRadius: (rog - 8 * s) + 'px' }); // pływający arkusz, rogi współśrodkowe z ekranem
 }
 
 // Symulacja podpisu biometrycznego/PIN-em (w prawdziwej aplikacji: podpis mObywatela).

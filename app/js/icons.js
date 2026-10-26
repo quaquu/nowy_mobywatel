@@ -40,8 +40,14 @@ const P = {
   scan: '<path d="M4 8.5V6.5a2.5 2.5 0 0 1 2.5-2.5h2M15.5 4h2A2.5 2.5 0 0 1 20 6.5v2M20 15.5v2a2.5 2.5 0 0 1-2.5 2.5h-2M8.5 20h-2A2.5 2.5 0 0 1 4 17.5v-2M4 12h16"/>',
   pen: '<path d="M14.5 5.5l4 4L8 20H4v-4z"/><path d="M12.5 7.5l4 4"/>',
   callcheck: '<path d="M6.5 3.5h3l1.5 4.2-2 1.3a10.5 10.5 0 0 0 6 6l1.3-2 4.2 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4.5 5.5a2 2 0 0 1 2-2z"/><path d="m14 6 2 2 4-4"/>',
+  // Wypełnione wersje do zaznaczonej zakładki (HIG: w pasku kart znaki wypełnione).
+  'home-f': '<path fill="currentColor" d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z"/>',
+  'list-f': '<path stroke-width="2.3" d="M8.5 7H20M8.5 12H20M8.5 17H20"/><circle fill="currentColor" cx="4.5" cy="7" r="1.5"/><circle fill="currentColor" cx="4.5" cy="12" r="1.5"/><circle fill="currentColor" cx="4.5" cy="17" r="1.5"/>',
+  'chat-f': '<path fill="currentColor" d="M5 18.5V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8.5z"/>',
+  'wallet-f': '<path fill="currentColor" stroke="none" d="M6 5.2h12a3.3 3.3 0 0 1 3.3 3.3v.7H2.7v-.7A3.3 3.3 0 0 1 6 5.2zM2.7 10.9h18.6v5.6a3.3 3.3 0 0 1-3.3 3.3H6a3.3 3.3 0 0 1-3.3-3.3z"/>',
+  'more-f': '<circle fill="currentColor" cx="5.5" cy="12" r="1.9"/><circle fill="currentColor" cx="12" cy="12" r="1.9"/><circle fill="currentColor" cx="18.5" cy="12" r="1.9"/>',
   test: '<path d="M9 3.5h6M10 3.5v6L4.8 18a1.6 1.6 0 0 0 1.4 2.5h11.6a1.6 1.6 0 0 0 1.4-2.5L14 9.5v-6"/><path d="M7.5 14.5h9"/>',
 };
 
 export const ic = (name, cls = '') =>
-  `<svg class="ic ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${P[name] || P.info}</svg>`;
+  `<svg class="ic ${cls}" data-i="${name}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${P[name] || P.info}</svg>`;

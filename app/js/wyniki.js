@@ -1,6 +1,6 @@
 // PLIK GENEROWANY przez `npm test` (tests/run-all.mjs). Nie edytuj ręcznie.
 export const WYNIKI = {
- "data": "25 października 2026",
+ "data": "26 października 2026",
  "crawler": {
   "strony": 258,
   "trasy": 43,
@@ -15,8 +15,8 @@ export const WYNIKI = {
   "nasz": {
    "przyciskiNaKoniec": [],
    "akcje": 4,
-   "systemS": 3.2,
-   "sekundy": 14,
+   "systemS": 2.8,
+   "sekundy": 13,
    "podpisy": 1,
    "sprawy": 5,
    "instytucje": 4
@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8.1,
+   "systemS": 8.2,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -135,26 +135,26 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 97,
+   "performance": 96,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2410,
-   "tbtMs": 47
+   "lcpMs": 2381,
+   "tbtMs": 149
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4359,
-   "tbtMs": 91
+   "lcpMs": 4357,
+   "tbtMs": 52
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 660,
-   "slowa": 3345,
+   "zdania": 673,
+   "slowa": 3404,
    "sredniaDlugoscZdania": 5.1,
-   "procentTrudnych": 12.6,
+   "procentTrudnych": 12.7,
    "fog": 7.1
   },
   "ref": {

@@ -1,5 +1,7 @@
 # Propozycje zmian w designie (przegląd 25.10.2026)
 
+> **Stan 26.10.2026:** wdrożone według Apple Human Interface Guidelines: niebieski akcent (czerwień tylko marka i „pilne”), krój systemowy na urządzeniach Apple, kafelki kategorii, „Więcej” w grupach, lżejsze wiersze, pływający pasek kart, pływający arkusz. Nie wdrożono: spokojniejszy Start (P1), nowe kolory kart dokumentów (P1), Kod QR jako zakładka (P2). Opis zmian: [DESIGN.md](../DESIGN.md).
+
 Przegląd całej aplikacji według metody krytyki Impeccable (`critique.md`: ocena heurystyk Nielsena, obciążenie poznawcze, „craft floor”, tryb Operate), porównanie z prototypem referencyjnym i z prawdziwym mObywatelem po zmianie wyglądu z lipca 2025 r. oraz z aktualnym wyglądem iOS. Nic z tego nie jest jeszcze wdrożone; makiety niżej to nakładka CSS na obecną wersję.
 
 ## Skąd wnioski

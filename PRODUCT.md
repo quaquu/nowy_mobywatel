@@ -41,8 +41,8 @@ Prototyp referencyjny odpowiada, gdy zapytasz; ten zaczyna sprawę sam i załatw
 
 ## Brand Commitments
 
-- Wygląd jak natywna aplikacja iOS z charakterem mObywatela: czerwony akcent, portfel kart dokumentów (decyzja autora, 24.10.2026).
-- Krój Lato, polski projekt Łukasza Dziedzica (decyzja autora, 24.10.2026).
+- Wygląd jak natywna aplikacja iOS według Apple Human Interface Guidelines, z charakterem mObywatela: niebieski akcent dla działań, czerwień marki tylko w logo i sprawach pilnych, portfel kart dokumentów (decyzja autora, 26.10.2026; zastępuje czerwony akcent z 24.10).
+- Krój systemowy na urządzeniach Apple (zalecenie HIG), Lato, polski projekt Łukasza Dziedzica, na pozostałych (decyzja autora, 26.10.2026).
 - Język: prosty polski, bez form zależnych od płci użytkownika tam, gdzie się da; zwroty do obywatela na „Ty”.
 
 ## Evidence on Hand
