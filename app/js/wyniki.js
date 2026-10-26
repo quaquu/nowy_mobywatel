@@ -2,7 +2,7 @@
 export const WYNIKI = {
  "data": "26 października 2026",
  "crawler": {
-  "strony": 250,
+  "strony": 258,
   "trasy": 43,
   "problemy": 0
  },
@@ -138,23 +138,23 @@ export const WYNIKI = {
    "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2339,
-   "tbtMs": 28
+   "lcpMs": 2412,
+   "tbtMs": 9
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4357,
-   "tbtMs": 40
+   "lcpMs": 4356,
+   "tbtMs": 12
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 666,
-   "slowa": 3365,
-   "sredniaDlugoscZdania": 5.1,
-   "procentTrudnych": 12.7,
+   "zdania": 668,
+   "slowa": 3347,
+   "sredniaDlugoscZdania": 5,
+   "procentTrudnych": 12.8,
    "fog": 7.1
   },
   "ref": {

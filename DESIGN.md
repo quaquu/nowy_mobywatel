@@ -32,7 +32,7 @@ colors:
   kafel-telefon: "#007d76"
   kafel-pomoc: "#6c6c70"
   dok-dowod: "#1c4fb0"
-  dok-prawo-jazdy: "#861a33"
+  dok-prawo-jazdy: "#722a78"
   dok-pojazdy: "#a8400f"
   dok-bliscy: "#186a32"
 typography:
@@ -163,7 +163,7 @@ Na prośbę autora wygląd przestawiono na zasady Apple. Zmiany i powody:
 - **Marka `#c8102e`**: logo, plakietka nieprzeczytanych, plakietki „pilne”. Nigdy jako kolor działania.
 - **Kafelki kategorii**: biały znak na kwadracie w kolorze kategorii (pieniądze i świadczenia zielony, pojazdy pomarańczowy, rodzina różowy, terminy i podpisy indygo, dane i bezpieczeństwo fiolet, telefon morski, pomoc i ustawienia szary). Odcienie z wersji Apple „zwiększony kontrast”, żeby biały znak miał co najmniej 3:1. Kolor znaczy kategorię, nie stan.
 - **Stany** mają własne kolory: sukces (zielony), ostrzeżenie (bursztyn), błąd (czerwony). Plakietki używają wypełnień 10–16% tych kolorów.
-- **Karty dokumentów** to jedyne gradienty: jednokierunkowe, w barwie dokumentu, z jednym miękkim refleksem.
+- **Karty dokumentów** to jedyne gradienty: jednokierunkowe, w barwie dokumentu jak w mObywatelu (dowód niebieski, prawo jazdy fioletowo-purpurowe, pojazdy pomarańczowe), z jednym miękkim refleksem. Prawo jazdy nie jest czerwone, żeby nie mylić go z marką i „pilne”.
 - **Przełączniki** włączone na zielono, jak w iOS.
 - **Wygląd**: domyślnie za ustawieniem telefonu; w Ustawieniach (i w panelu obok symulacji telefonu) przełącznik segmentowy Automatycznie / Jasny / Ciemny. Wybór zapamiętany osobno od stanu pokazu i ustawiany przed pierwszym rysowaniem strony, bez mignięcia złego motywu.
 
@@ -187,7 +187,12 @@ Komórki i grupy: 12 px; pola: 10 px; przyciski, plakietki i pasek kart: kapsuł
 
 - **Lista grupowana**: biała grupa z zaokrągleniem 12 px, wiersze ≥ 56 px, kafelek kategorii 30 px, tytuł zwykłą grubością, opis w kolorze drugorzędnym, strzałka w kolorze trzeciorzędnym; separator wcięty do tekstu. Długie listy dzielone na grupy z nagłówkiem (Footnote, kolor drugorzędny), np. „Więcej”: Twoje sprawy, Bezpieczeństwo i dane, Udział w życiu publicznym, Pomoc i ustawienia, O prototypie.
 - **Pasek kart**: pływająca kapsuła ze szkła; znaki i podpisy jednobarwne, wybrana zakładka w kolorze akcentu z wypełnionym znakiem na delikatnej kapsule. Plakietki tylko dla ważnych informacji.
-- **Sprawa, która przyszła sama**: jedna biała komórka nad portfelem: ikona, tytuł, opis i kapsuła „Załatw”. Bez etykiety nad tytułem i bez paska z boku.
+- **Sprawa, która przyszła sama**: najważniejsza rzecz na Starcie, większa niż wiersz listy: ilustracja 56 px, tytuł 20 px, opis i przycisk „Załatw wszystko naraz” na całą szerokość. Cała karta to jeden cel dotyku. Bez etykiety nad tytułem i bez paska z boku.
+- **Start**: sprawa, portfel, pole pytania, „Do zrobienia” (najwyżej 3, reszta pod „Pokaż wszystkie”) i jedna grupa „Dla Ciebie” (świadczenia, bliscy, przypomnienia).
+- **Nagłówki sekcji**: na ekranach z treścią (Start) duże (Title 3); nad grupami list i ustawień (Więcej, Ustawienia) małe szare (Footnote), jak w Ustawieniach iOS.
+- **Asystent**: wstęp w jednym zdaniu, szczegóły pod „Jak to działa?”; podpowiedzi na powitanie pod dymkiem, na całą szerokość.
+- **Ustawienia**: przełączniki w jednej liście grupowanej, tytuł zwykłą grubością.
+- **Pasek stanu w symulacji iPhone'a**: Dynamic Island 126 × 37 pt jako pełna pigułka, godzina 17 pt i ikony (zasięg, Wi-Fi, bateria z biegunem) wyśrodkowane po obu stronach wyspy. Face ID wyrasta z wyspy; znak „podpisano” zastępuje twarz bez przerwy, a przy zwijaniu treść gaśnie razem z wyspą.
 - **Karta dokumentu**: jeden pomysł, światło na materiale. Drobny gilosz jak na dowodzie; miękki refleks przechodzi powoli (2,4 s), gdy karta się pojawia i gdy najedziesz na nią kursorem; na komputerze karta lekko przechyla się za kursorem (do ok. 3,5°), a odblask i hologram idą za światłem. Bez unoszenia i bez pętli.
 - **Podpis (Face ID)**: w symulacji iPhone'a rozpoznanie twarzy wyrasta z Dynamic Island (odsłanianie przez przycinanie, bez odbicia; zwija się szybciej, niż się rozwinęło); na telefonie ciemne okienko na środku ekranu.
 - **Arkusz zgody**: zawsze ta sama struktura (co, dokąd, jakie dane, co można cofnąć). Na dole przyklejona jedna wyróżniona akcja: „Podpisz” na całą szerokość, pod nią „Wróć” jako przycisk tekstowy.

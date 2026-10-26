@@ -8,6 +8,7 @@ const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}
 // `ikona`: nazwa ikony albo gotowy rysunek SVG (awatar osoby).
 const poz = (href, ikona, t, opis, extra = '') => `<li><a class="poz" href="${href}">${ikona.startsWith('<') ? `<span class="awatar">${ikona}</span>` : ic(ikona, 'okr')}<span><b>${esc(t)}</b>${opis ? `<small>${opis}</small>` : ''}</span>${extra}${ic('right', 'strz')}</a></li>`;
 const otwarte = () => zadania.filter(z => !stan.zrobione[z.id]);
+const wierszZad = z => poz(z.cel, z.ikona, z.tytul, esc(z.opis), z.pilne ? '<span class="plak czerwona">pilne</span>' : '');
 const nowePisma = () => skrzynka.filter(p => p.nowa && !stan.przeczytane[p.id]).length;
 export const licznikSkrzynki = nowePisma;
 
@@ -58,10 +59,10 @@ export function start() {
     html: `
     <h1 tabindex="-1" class="powitanie">${powitanie}, ${esc(ja.wolacz)}</h1>
     ${narodzinyOtwarte ? `
-    <a class="hero" href="#/sprawa/narodziny" aria-label="Sprawa przyszła do Ciebie: urodziła się Twoja córka. 5 spraw w 4 instytucjach, jeden podpis. Załatw wszystko naraz.">
+    <a class="hero sprawa" href="#/sprawa/narodziny" aria-label="Sprawa przyszła do Ciebie: urodziła się Twoja córka. 5 spraw w 4 instytucjach, jeden podpis. Załatw wszystko naraz.">
       <span class="awatar hero-aw">${twarzCorki()}</span>
       <span class="hero-tr"><b class="hero-t">Urodziła się Twoja córka</b><span class="hero-o">5 spraw w 4 instytucjach, jeden podpis</span></span>
-      <span class="hero-go">Załatw${ic('right')}</span>
+      <span class="hero-go">Załatw wszystko naraz${ic('right')}</span>
     </a>` : ''}
     ${stos(dokumentyDoStosu())}
     <form class="zapytaj" action="#/asystent" role="search" id="f-zap">
@@ -73,25 +74,17 @@ export function start() {
 
     <section aria-labelledby="h-zad">
       <h2 id="h-zad" class="sekcja">Do zrobienia <span class="licz">${zad.length}</span></h2>
-      ${zad.length ? `<ul class="lista">${zad.map(z => poz(z.cel, z.ikona, z.tytul, esc(z.opis), z.pilne ? '<span class="plak czerwona">pilne</span>' : '')).join('')}</ul>` : '<p class="pusto">Nic pilnego. Przypomnimy, gdy coś się zbliży.</p>'}
+      ${zad.length ? `<ul class="lista">${zad.slice(0, 3).map(wierszZad).join('')}</ul>
+      ${zad.length > 3 ? `<details class="rozw reszta"><summary>Pokaż wszystkie (${zad.length})</summary><ul class="lista">${zad.slice(3).map(wierszZad).join('')}</ul></details>` : ''}` : '<p class="pusto">Nic pilnego. Przypomnimy, gdy coś się zbliży.</p>'}
     </section>
 
-    <section aria-labelledby="h-nal">
-      <h2 id="h-nal" class="sekcja">Możesz skorzystać</h2>
-      <a class="karta link-karta" href="#/naleznosci">
-        ${ic('gift', 'okr zielona')}
-        <span><b>${stan.zrobione.narodziny ? '2 świadczenia przyznane, 2 przyjdą same' : '4 świadczenia dla Twojej rodziny'}</b><small>800+, becikowe, ulga w PIT, „Aktywny rodzic”. Sprawdziliśmy je z danych, które państwo już ma.</small></span>${ic('right', 'strz')}
-      </a>
-    </section>
-
-    <section aria-labelledby="h-bl">
-      <h2 id="h-bl" class="sekcja">Bliscy</h2>
-      <ul class="lista">${poz('#/bliscy/mama', twarzMamy(), `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}</ul>
-    </section>
-
-    <section aria-labelledby="h-ap">
-      <h2 id="h-ap" class="sekcja">Przypomnienia i zlecenia</h2>
-      <a class="karta link-karta" href="#/zlecenia">${ic('clock', 'okr')}<span><b>Włączone: ${odm(ileWl('przypomnienie'), 'przypomnienie', 'przypomnienia', 'przypomnień')}, ${odm(ileWl('zlecenie'), 'zlecenie', 'zlecenia', 'zleceń')}</b><small>Przypomnienie tylko daje znać. Zlecenie robi coś za Ciebie, jak zlecenie stałe w banku.</small></span>${ic('right', 'strz')}</a>
+    <section aria-labelledby="h-dla">
+      <h2 id="h-dla" class="sekcja">Dla Ciebie</h2>
+      <ul class="lista">
+        ${poz('#/naleznosci', 'gift', 'Możesz skorzystać', stan.zrobione.narodziny ? '2 świadczenia przyznane, 2 przyjdą same' : '4 świadczenia dla Twojej rodziny')}
+        ${poz('#/bliscy/mama', twarzMamy(), `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}
+        ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', `włączone: ${odm(ileWl('przypomnienie'), 'przypomnienie', 'przypomnienia', 'przypomnień')}, ${odm(ileWl('zlecenie'), 'zlecenie', 'zlecenia', 'zleceń')}`)}
+      </ul>
     </section>
 
     ${stan.wyslane.length ? `<section aria-labelledby="h-wys"><h2 id="h-wys" class="sekcja">Ostatnio wysłane</h2><ul class="lista mala">${stan.wyslane.slice(0, 4).map(w => `<li class="poz">${ic('check', 'okr zielona')}<span><b>${esc(w.tytul)}</b><small>do: ${esc(w.do)}</small></span></li>`).join('')}</ul></section>` : ''}
@@ -395,19 +388,20 @@ export function konsultant() {
 
 export function ustawienia() {
   const U = stan.ustawienia;
-  const prz = (id, t, o) => `<li class="karta"><label class="przel-duzy"><span><b>${t}</b><small>${o}</small></span><input type="checkbox" role="switch" data-ust="${id}" ${U[id] ? 'checked' : ''}></label></li>`;
+  const prz = (id, t, o) => `<li><label class="przel-duzy"><span><b>${t}</b><small>${o}</small></span><input type="checkbox" role="switch" data-ust="${id}" ${U[id] ? 'checked' : ''}></label></li>`;
   return {
     tytul: 'Ustawienia',
     html: `<h1 tabindex="-1">Ustawienia</h1>
     <h2 class="grupa-t" id="wyglad-t">Wygląd</h2>
     <div class="karta" role="group" aria-labelledby="wyglad-t">${wyborMotywu()}<p class="maly">„Automatycznie” zmienia wygląd razem z telefonem.</p></div>
     <h2 class="grupa-t">Dostępność</h2>
-    <ul class="lista-kart">
+    <ul class="lista ustaw">
       ${prz('prosty', 'Tryb prosty', 'Duże przyciski, najważniejsze rzeczy na starcie, krótkie zdania.')}
-      ${prz('duzy', 'Większy tekst', 'Tekst o 25% większy.')}
+      ${prz('duzy', 'Większy tekst', 'Tekst o 20% większy.')}
       ${prz('kontrast', 'Wysoki kontrast', 'Mocniejsze kolory i obramowania.')}
       ${prz('czytaj', 'Czytaj na głos', 'Odpowiedzi asystenta i komunikaty czytane głosem.')}
     </ul>
+    <h2 class="grupa-t">Pomoc i prototyp</h2>
     <ul class="lista">
       ${poz('#/dostep', 'lock', 'Problem z logowaniem', 'pokaz: wygasły certyfikat mDowodu')}
       ${poz('#/test', 'test', 'Tryb testowy', 'zadania dla testerów z pomiarem czasu')}

@@ -135,7 +135,7 @@ export function wTelefonie(d, pelny = false) {
   if (!tel) return;
   const r = tel.getBoundingClientRect(), rog = Math.round(46 * r.width / 390);
   // Okno pełnoekranowe zaczyna się pod paskiem stanu telefonu, a jego wnętrze skalujemy jak telefon.
-  const s = r.width / 390, pasek = 50 * s;
+  const s = r.width / 390, pasek = 54 * s;
   if (pelny) d.style.setProperty('--sk-skala', s);
   Object.assign(d.style, pelny
     ? { position: 'fixed', margin: '0', left: r.left + 'px', top: (r.top + pasek) + 'px', width: r.width + 'px', height: (r.height - pasek) + 'px', maxWidth: 'none', maxHeight: 'none', borderRadius: `0 0 ${rog}px ${rog}px` }
@@ -170,8 +170,10 @@ function podpisWyspa(w) {
     const t = matchMedia('(prefers-reduced-motion: reduce)').matches || window.__SZYBKO ? 50 : 700;
     w.setAttribute('role', 'status');
     w.classList.add('fid-on'); w.innerHTML = `${TWARZ}<span>Face ID</span>`;
-    setTimeout(() => { w.innerHTML = `${ZNAK_OK}<span>Podpisano</span>`; ogloszenie('Podpisano'); }, t);
-    setTimeout(() => { w.innerHTML = ''; w.classList.remove('fid-on'); w.removeAttribute('role'); }, Math.max(t * 1.8 - 120, t * 1.5)); // wyspa zwija się tuż przed końcem
+    // Znak „podpisano” zastępuje twarz od razu (bez opóźnionego wejścia), żeby wyspa nie była przez chwilę pusta.
+    setTimeout(() => { w.classList.add('ok'); w.innerHTML = `${ZNAK_OK}<span>Podpisano</span>`; ogloszenie('Podpisano'); }, t);
+    // Zwijanie: treść gaśnie razem z kurczeniem się wyspy, a znika z drzewa dopiero po animacji.
+    setTimeout(() => { w.classList.remove('fid-on'); w.removeAttribute('role'); setTimeout(() => { if (!w.classList.contains('fid-on')) { w.innerHTML = ''; w.classList.remove('ok'); } }, 340); }, Math.max(t * 1.8 - 120, t * 1.5)); // wyspa zwija się tuż przed końcem
     setTimeout(res, t * 1.8);
   });
 }

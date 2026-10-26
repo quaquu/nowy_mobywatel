@@ -64,9 +64,10 @@ export function asystent(params) {
   return {
     tytul: 'Asystent',
     html: `<h1 tabindex="-1">Asystent</h1>
-    <p class="maly">Rozumie sprawy urzędowe i prowadzi do gotowego wniosku. Niczego nie wysyła bez Twojego podpisu. Działa także bez internetu: rozpoznawanie sprawy działa w telefonie. Docelowo rozmowę wspiera polski model Bielik uruchomiony w chmurze rządowej.</p>
+    <p class="maly">Pisz własnymi słowami. Niczego nie wyślę bez Twojego podpisu.</p>
+    <details class="rozw jak"><summary>Jak to działa?</summary><p class="maly">Rozumie sprawy urzędowe i prowadzi do gotowego wniosku. Działa także bez internetu: rozpoznawanie sprawy działa w telefonie. Docelowo rozmowę wspiera polski model Bielik uruchomiony w chmurze rządowej.</p></details>
     <div class="czat" id="czat" aria-live="polite" aria-relevant="additions">
-      ${historia.length ? historia.map(babelek).join('') : `<div class="msg bot"><p>Dzień dobry! Napisz albo powiedz, co chcesz załatwić, własnymi słowami.</p><div class="chipy">${PODPOWIEDZI.map(c => `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}</div></div>`}
+      ${historia.length ? historia.map(babelek).join('') : `<div class="msg bot"><p>Dzień dobry! Napisz albo powiedz, co chcesz załatwić.</p></div>${params.get('q') ? '' : `<div class="chipy powitalne" role="group" aria-label="Przykładowe sprawy">${PODPOWIEDZI.map(c => `<button class="chip" data-q="${esc(c)}">${esc(c)}</button>`).join('')}</div>`}`}
     </div>
     <div class="pisz-pasek"><form class="pisz" id="f-pisz">
       <label for="pytanie" class="sr">Twoja wiadomość</label>
