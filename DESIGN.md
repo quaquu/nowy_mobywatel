@@ -158,6 +158,8 @@ Na prośbę autora wygląd przestawiono na zasady Apple. Zmiany i powody:
 
 ## Colors
 
+Wszystkie kolory są tokenami w `:root` (w `app/css/app.css` żadna reguła poza blokiem tokenów nie ma koloru wpisanego wprost; sprawdza to Hallmark `sloplint`, stempel w pierwszej linii arkusza). Stałe niezależne od motywu: znak na kolorze (`--biel`), kafelki kategorii (`--k-*`), mapa (`--m-*`), cienie (`--cien-*`), nakładki (`--zaslona*`), materiał kart dokumentów (`--dok-*`, `--kd-*`), ramka telefonu i skaner.
+
 - **Tła**: `tlo` (systemGroupedBackground) i `powierzchnia` (secondarySystemGroupedBackground). W trybie ciemnym czerń i `#1c1c1e`.
 - **Akcent `#0a63d8`** (tint) tylko dla działań: przycisk główny, linki, wybrana zakładka, przyciski tekstowe. Kontrast z bielą 5,6:1. Wysoki kontrast: `#0047a8`; tryb ciemny `#3d9bff`.
 - **Marka `#c8102e`**: logo, plakietka nieprzeczytanych, plakietki „pilne”. Nigdy jako kolor działania.
@@ -169,7 +171,7 @@ Na prośbę autora wygląd przestawiono na zasady Apple. Zmiany i powody:
 
 ## Typography
 
-Krój systemowy na urządzeniach Apple, Lato (400 i 700, przycięte do znaków polskich, ok. 44 KB) na pozostałych. Style tekstu iOS: Large Title 34 px pogrubiony, Title 3 20 px półgruby, Headline 17 px półgruby, Body 17 px, Subheadline 15 px, Footnote 13 px (nagłówki grup list), pasek kart 10 px półgruby; minimum 11 px. Kwoty, daty i liczniki: cyfry tabelaryczne. Nagłówki z `text-wrap: balance`, akapity z `text-wrap: pretty`. Tryb prosty i „Większy tekst” skalują całość o 20%.
+Krój systemowy na urządzeniach Apple, Lato (400 i 700, przycięte do znaków polskich, ok. 44 KB) na pozostałych. Style tekstu iOS: Large Title 34 px pogrubiony, Title 3 20 px półgruby, Headline 17 px półgruby, Body 17 px, Subheadline 15 px, Footnote 13 px (nagłówki grup list), pasek kart 11 px półgruby (10 px tylko na ekranach węższych niż 380 px, jak w iOS); minimum 11 px. Kwoty, daty i liczniki: cyfry tabelaryczne. Nagłówki z `text-wrap: balance`, akapity z `text-wrap: pretty`. Tryb prosty i „Większy tekst” skalują całość o 20%.
 
 ## Layout
 
@@ -199,7 +201,7 @@ Komórki i grupy: 12 px; pola: 10 px; przyciski, plakietki i pasek kart: kapsuł
 - **Przypięte działanie długiego formularza**: gdy przycisk na końcu formularza (np. „Przejrzyj i podpisz raz” w Narodzinach) jest poza ekranem, ta sama akcja wisi nad paskiem kart; znika, gdy właściwy przycisk jest widoczny.
 - **Tytuły wierszy**: zawsze zwykła grubość (Body), także w pojedynczych kartach-linkach; pogrubione są tytuły ekranów, nagłówki i kwoty.
 - **Przyciski**: kapsuły, najwyżej jeden lub dwa wyróżnione na widok; główny (wypełniony akcentem), drugi (jasne wypełnienie akcentem), niszczący (czerwony), tekstowy (sam akcent; podkreślenie po najechaniu). Obszar dotyku ≥ 44×44 px, lekkie wciśnięcie przy dotyku.
-- **Pola**: wypełnione tłem systemowym, bez ramki; fokus 3 px w kolorze akcentu.
+- **Pola**: wypełnione tłem systemowym, z krawędzią 1 px w kolorze `--pole-kraw` (co najmniej 3:1 do tła i powierzchni, WCAG 1.4.11); fokus 3 px w kolorze akcentu.
 - **Oś czasu po wysłaniu**: kropki sukcesu połączone linią 1 px, w jednej grupie.
 - **Tryb prosty**: duże wiersze (76 px, tekst 20 px) zamiast kafli.
 

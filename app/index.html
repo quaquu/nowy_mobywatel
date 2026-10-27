@@ -6,7 +6,7 @@
 <meta name="description" content="Niezależny prototyp mObywatela: państwo, które przychodzi ze sprawą. Jeden podpis zamiast wielu wniosków. Dane fikcyjne.">
 <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<script>try{var m=localStorage.getItem('mobywatel-motyw');if(m==='light'||m==='dark'){document.documentElement.setAttribute('data-theme',m);}}catch(e){}</script>
+<script>document.documentElement.classList.add('js');try{var m=localStorage.getItem('mobywatel-motyw');if(m==='light'||m==='dark'){document.documentElement.setAttribute('data-theme',m);}}catch(e){}</script>
 <title>mObywatel (prototyp): państwo, które przychodzi ze sprawą</title>
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
@@ -54,7 +54,7 @@
     <button type="button" class="btn glowny" id="pelny-btn">Pełny ekran</button>
     <button type="button" class="btn drugi" id="od-nowa-btn">Zacznij od nowa</button>
   </div>
-  <p class="panel-linki"><a href="#/jury">Dla jury: wyniki pomiarów</a> · <a href="#/test">Tryb testowy</a> · <a href="https://github.com/quaquu/nowy_mobywatel" target="_blank" rel="noopener">Kod i dokumentacja</a></p>
+  <ul class="panel-linki"><li><a href="#/jury">Dla jury: wyniki pomiarów</a></li><li><a href="#/test">Tryb testowy</a></li><li><a href="https://github.com/quaquu/nowy_mobywatel" target="_blank" rel="noopener">Kod i dokumentacja</a></li></ul>
   <p class="panel-uw">Niezależny prototyp, dane fikcyjne. To nie jest usługa administracji publicznej. Na komputerze widzisz symulację telefonu; na telefonie aplikacja otwiera się na całym ekranie.</p>
 </aside>
 </div>

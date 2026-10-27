@@ -1,8 +1,8 @@
 // PLIK GENEROWANY przez `npm test` (tests/run-all.mjs). Nie edytuj ręcznie.
 export const WYNIKI = {
- "data": "26 października 2026",
+ "data": "27 października 2026",
  "crawler": {
-  "strony": 260,
+  "strony": 264,
   "trasy": 44,
   "problemy": 0
  },
@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8.3,
+   "systemS": 8.1,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -33,21 +33,9 @@ export const WYNIKI = {
   "operatorDotkniecia": 2.6500000000000004
  },
  "axe": {
-  "nasz": 1,
-  "naszWezly": 4,
-  "naszReguly": {
-   "color-contrast": {
-    "impact": "serious",
-    "help": "Elements must meet minimum color contrast ratio thresholds",
-    "wezly": 4,
-    "stany": [
-     "320 #/badanie",
-     "320c #/badanie",
-     "390 #/badanie",
-     "390c #/badanie"
-    ]
-   }
-  },
+  "nasz": 0,
+  "naszWezly": 0,
+  "naszReguly": {},
   "ref": 7,
   "refWezly": 26,
   "refReguly": {
@@ -150,15 +138,15 @@ export const WYNIKI = {
    "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2345,
-   "tbtMs": 35
+   "lcpMs": 2330,
+   "tbtMs": 55
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4358,
-   "tbtMs": 47
+   "lcpMs": 4360,
+   "tbtMs": 73
   }
  },
  "czytelnosc": {
