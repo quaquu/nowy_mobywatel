@@ -50,7 +50,7 @@ export const zadania = [
   { id: 'mandat', tytul: 'Mandat z fotoradaru', opis: '200 zł · przyjmij i zapłać do ' + fmt(za(6)), termin: za(6), pilne: true, cel: '#/mandat', ikona: 'coin' },
   { id: 'podatek', tytul: 'Podatek od nieruchomości', opis: 'IV rata 186 zł do ' + fmt(za(23)), termin: za(23), cel: '#/podatek', ikona: 'coin' },
   { id: 'badanie', tytul: 'Badanie techniczne Yarisa', opis: 'do ' + fmt(za(19)) + ' · stacje w pobliżu', termin: za(19), cel: '#/badanie', ikona: 'car' },
-  { id: 'dowod', tytul: 'Twój dowód traci ważność', opis: 'za 41 dni · wniosek zajmie 2 minuty', termin: za(41), cel: '#/sprawa/dowod', ikona: 'id' },
+  { id: 'dowod', tytul: 'Twój dowód traci ważność', opis: 'za 41 dni · wniosek gotowy, umów wizytę', termin: za(41), cel: '#/sprawa/dowod', ikona: 'id' },
 ];
 
 export const naleznosci = [
@@ -90,18 +90,18 @@ export const skrzynka = [
     prosto: 'Podatek za mieszkanie na 2026 r. to 744 zł. Płacisz w 4 ratach po 186 zł.' },
 ];
 
-// Katalog zdarzeń życiowych. `pelne` = przebieg do przejścia w prototypie.
+// Katalog zdarzeń życiowych; każde ma pełny przebieg w prototypie.
 export const sprawy = [
-  { id: 'narodziny', tytul: 'Urodziło się dziecko', opis: '5 spraw w 4 instytucjach, jeden podpis', ikona: 'baby', pelne: true },
-  { id: 'przeprowadzka', tytul: 'Przeprowadzka', opis: 'meldunek i nowy adres w urzędach', ikona: 'home', pelne: true },
-  { id: 'auto', tytul: 'Kupno używanego auta', opis: 'historia, umowa, podatek, rejestracja', ikona: 'car', pelne: true },
-  { id: 'utrata', tytul: 'Zgubiłam / ukradli mi dokumenty', opis: 'zastrzeżenie w 1 minutę, nowy dowód', ikona: 'shield', pelne: true },
-  { id: 'dowod', tytul: 'Nowy dowód osobisty', opis: 'wniosek ze zdjęciem z paszportu', ikona: 'id', pelne: true },
-  { id: 'slub', tytul: 'Ślub', opis: 'zapewnienie, nazwisko, dokumenty', ikona: 'ring', kroki: ['Złożenie zapewnienia w USC (osobiście)', 'Wybór nazwiska po ślubie', 'Nowy dowód i paszport: wnioski przygotujemy po ślubie', 'Zmiana nazwiska w banku i u pracodawcy: wyślemy powiadomienie'] },
-  { id: 'smierc', tytul: 'Śmierć bliskiej osoby', opis: 'akt zgonu, zasiłek pogrzebowy, spadek', ikona: 'leaf', kroki: ['Akt zgonu: USC sporządza na podstawie karty zgonu', 'Zasiłek pogrzebowy 7 000 zł: wniosek do ZUS', 'Wyrejestrowanie pojazdu i zamknięcie spraw w urzędach', 'Poświadczenie dziedziczenia: notariusz albo sąd'] },
-  { id: 'firma', tytul: 'Zakładam firmę', opis: 'CEIDG, ZUS, VAT, konto', ikona: 'case', kroki: ['Wpis do CEIDG (formularz z Twoimi danymi)', 'Wybór formy opodatkowania', 'Zgłoszenie do ZUS (ulga na start)', 'Rejestracja VAT, jeśli potrzebna'] },
-  { id: 'emerytura', tytul: 'Przejście na emeryturę', opis: 'wniosek, wyliczenie, kapitał', ikona: 'sun', kroki: ['Prognoza emerytury z ZUS', 'Wniosek o emeryturę (od 30 dni przed wiekiem)', 'Legitymacja emeryta w telefonie'] },
-  { id: 'osiemnastka', tytul: 'Kończę 18 lat', opis: 'dowód, prawo jazdy, wybory', ikona: 'star', kroki: ['Pierwszy dowód dorosłego', 'Wpis do rejestru wyborców: automatycznie', 'Profil kandydata na kierowcę'] },
+  { id: 'narodziny', tytul: 'Urodziło się dziecko', opis: '5 spraw w 4 instytucjach, jeden podpis', ikona: 'baby' },
+  { id: 'przeprowadzka', tytul: 'Przeprowadzka', opis: 'meldunek i nowy adres w urzędach', ikona: 'home' },
+  { id: 'auto', tytul: 'Kupno używanego auta', opis: 'historia, umowa, podatek, rejestracja', ikona: 'car' },
+  { id: 'utrata', tytul: 'Zgubiłam / ukradli mi dokumenty', opis: 'zastrzeżenie w 1 minutę, nowy dowód', ikona: 'shield' },
+  { id: 'dowod', tytul: 'Nowy dowód osobisty', opis: 'wniosek gotowy, wizyta po odciski palców', ikona: 'id' },
+  { id: 'slub', tytul: 'Ślub', opis: 'zapewnienie, termin, nazwisko, dokumenty po ślubie', ikona: 'ring' },
+  { id: 'smierc', tytul: 'Śmierć bliskiej osoby', opis: 'zasiłek pogrzebowy, świadczenia, spadek', ikona: 'leaf' },
+  { id: 'firma', tytul: 'Zakładam firmę', opis: 'CEIDG, podatek, ZUS i VAT w jednym wniosku', ikona: 'case' },
+  { id: 'emerytura', tytul: 'Emerytura', opis: 'kiedy, ile i brakujące okresy składek', ikona: 'sun' },
+  { id: 'osiemnastka', tytul: 'Kończę 18 lat', opis: 'dowód, prawo jazdy, wybory', ikona: 'star' },
 ];
 
 // Kto dzwoni? Numery FIKCYJNE. Rodzaje: „tylko-odbior” – numer z jawnego wykazu UKE numerów służących

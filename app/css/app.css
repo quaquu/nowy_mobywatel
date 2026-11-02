@@ -261,7 +261,7 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .st-wiersz[aria-pressed="true"] { background: var(--gl-wyp); }
 .st-wiersz[aria-pressed="true"] .m-nr { background: var(--gl); color: var(--gl-tekst); }
 .st-wiersz[aria-pressed="true"] .plak { color: var(--gl-mocny); } /* niebieska plakietka na niebieskim tle wiersza: mocniejszy odcień, 4,5:1 */
-.szczegoly-st .nag { margin-top: 0; }
+.szczegoly-st .nag, .karta > .nag:first-child { margin-top: 0; } /* nagłówek na górze karty bez dodatkowego odstępu */
 .terminy { border: 0; padding: 0; margin: var(--o3) 0 0; }
 .chip-r { position: relative; display: inline-flex; }
 .chip-r input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
@@ -317,6 +317,13 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .opcja { display: flex; align-items: center; gap: var(--o3); min-height: 44px; padding: 6px 0; }
 .opcja input, .krok-l input { width: 22px; height: 22px; flex: none; }
 .opcja small { color: var(--tekst2); }
+.opcja > span { display: flex; flex-direction: column; } /* nazwa opcji i jej objaśnienie pod spodem */
+.opcja > span .maly { margin: 2px 0 0; }
+/* Załącznik (zdjęcie dokumentu): przycisk i stan obok; dodany ma znak wypełniony akcentem. */
+.zal { display: flex; flex-wrap: wrap; align-items: center; gap: var(--o2) var(--o3); margin: var(--o3) 0; }
+.zal .btn { margin: 0; }
+.zal .btn[aria-pressed="true"] { background: var(--gl); color: var(--gl-tekst); }
+.zal .maly { margin: 0; }
 /* Przełącznik segmentowy (iOS): trzy opcje w szarej kapsule, wybrana na białym „suwaku”. */
 .segment { display: flex; gap: 2px; margin: 0; padding: 2px; border: 0; border-radius: 9px; background: var(--wypelnienie); min-width: 0; }
 .segment label { flex: 1 1 auto; position: relative; display: flex; min-width: 0; }

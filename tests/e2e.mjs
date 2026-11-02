@@ -121,7 +121,47 @@ export async function sprawy(url) {
   });
   await krok('dowod', async p => {
     await p.goto(url + '#/sprawa/dowod'); await p.click('#f-dow .btn.glowny'); await podpisz(p);
-    if (!/Wniosek złożony/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
+    if (!/Wizyta zarezerwowana/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
+  });
+  // Sprawy z katalogu: każda ma pełny przebieg (walidacja, arkusz zgody, podpis, potwierdzenie).
+  await krok('slub', async p => {
+    await p.goto(url + '#/sprawa/slub'); await p.waitForSelector('#slub-dalej');
+    await p.fill('#slub-data', '2020-01-01'); await p.click('#slub-dalej');
+    if (!(await p.isVisible('#slub-data-blad'))) throw new Error('brak walidacji daty ślubu');
+    await p.fill('#slub-data', await p.getAttribute('#slub-data', 'min')); await p.click('#slub-dalej'); await podpisz(p);
+    if (!/Termin zarezerwowany/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
+  });
+  await krok('smierc', async p => {
+    await p.goto(url + '#/sprawa/smierc'); await p.waitForSelector('#smierc-dalej');
+    await p.fill('#koszt', '5200');
+    if (!/5200 zł/.test(await p.textContent('#koszt-pom'))) throw new Error('zła kwota zasiłku');
+    await p.click('#smierc-dalej');
+    if (!(await p.isVisible('#rachunek-blad'))) throw new Error('zasiłek bez rachunku');
+    await p.click('[data-zal=rachunek]'); await p.click('#smierc-dalej'); await podpisz(p);
+    if (!/Wnioski wysłane/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
+  });
+  await krok('firma', async p => {
+    await p.goto(url + '#/sprawa/firma'); await p.waitForSelector('#firma-dalej');
+    await p.fill('#nazwa-firmy', 'Studio'); await p.click('#firma-dalej');
+    if (!(await p.isVisible('#nazwa-firmy-blad'))) throw new Error('brak walidacji nazwy firmy');
+    await p.fill('#nazwa-firmy', 'Anna Wójcik Studio'); await p.check('input[name=vat][value=czynny]');
+    if (!(await p.isChecked('input[name=krok][value=vat]'))) throw new Error('VAT-R nie zaznaczony');
+    await p.click('#firma-dalej'); await podpisz(p);
+    if (!/Firma zgłoszona/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
+  });
+  await krok('emerytura', async p => {
+    await p.goto(url + '#/sprawa/emerytura'); await p.waitForSelector('#emer-dalej');
+    await p.check('input[name=student][value=nie]'); await p.click('#emer-dalej');
+    if (!(await p.isVisible('#umowa-blad'))) throw new Error('zastrzeżenie bez umowy');
+    await p.click('[data-zal=umowa]'); await p.click('#emer-dalej'); await podpisz(p);
+    if (!/Zastrzeżenie wysłane do ZUS/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
+  });
+  await krok('osiemnastka', async p => {
+    await p.goto(url + '#/sprawa/osiemnastka'); await p.waitForSelector('#dalej-18');
+    await p.click('#dalej-18');
+    if (!(await p.isVisible('#zdjecie-blad'))) throw new Error('profil bez zdjęcia');
+    await p.click('[data-zal=zdjecie]'); await p.click('[data-zal=orzeczenie]'); await p.click('#dalej-18'); await podpisz(p);
+    if (!/profil kandydata na kierowcę/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
   });
   await krok('mandat', async p => {
     await p.goto(url + '#/mandat'); await p.click('#man-ok');
@@ -142,13 +182,13 @@ export async function sprawy(url) {
   });
   await krok('anulowanie', async p => {
     await p.goto(url + '#/sprawa/dowod'); await p.click('#f-dow .btn.glowny'); await p.click('dialog.arkusz button[value=anuluj]');
-    if (/Wniosek złożony/.test(await p.textContent('main'))) throw new Error('anulowanie wysłało wniosek');
+    if (/Wizyta zarezerwowana/.test(await p.textContent('main'))) throw new Error('anulowanie wysłało wniosek');
   });
   await krok('wstecz-zamyka-arkusz', async p => {
     await p.goto(url + '#/sprawa/dowod'); await p.click('#f-dow .btn.glowny'); await p.waitForSelector('dialog.arkusz');
     await p.goBack(); await p.waitForSelector('dialog.arkusz', { state: 'detached', timeout: 2000 });
     await p.goto(url + '#/sprawa/dowod');
-    if (/Wniosek złożony/.test(await p.textContent('main'))) throw new Error('wniosek wysłany mimo wyjścia');
+    if (/Wizyta zarezerwowana/.test(await p.textContent('main'))) throw new Error('wniosek wysłany mimo wyjścia');
   });
   await krok('asystent', async p => {
     await p.goto(url + '#/asystent');

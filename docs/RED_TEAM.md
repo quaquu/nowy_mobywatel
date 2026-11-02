@@ -9,7 +9,7 @@ Metoda: zakładamy, że prototyp **odpadł albo został rozbity podczas prezenta
 | Jury nie zrozumiało pomysłu w 2 minuty | Na starcie jest jedna karta „Przyszła do Ciebie: Urodziła się Twoja córka”; historia flagowa to 4 dotknięcia. Strona „Dla jury” zaczyna się od instrukcji na 60 sekund. |
 | „To samo co prototyp Cieszyńskiego, tylko inaczej narysowane” | Różnica jest mierzalna: 5 spraw jednym podpisem zamiast 2 spraw dwoma podpisami, 92% vs 31% trafień w rozpoznawaniu spraw, 0 vs 7 reguł naruszonych w axe (patrz [ANALIZA.md](ANALIZA.md)). |
 | Link nie działa w dniu oceny | Statyczna strona bez serwera, bez kluczy API i bez zewnętrznych czcionek. Działa offline po pierwszym otwarciu. Test w CI przy każdej zmianie. |
-| „Za mało spraw” | 5 pełnych przebiegów + mandat, podatek, sprawy mamy, odzyskiwanie dostępu; 5 spraw w podglądzie planu. |
+| „Za mało spraw” | 10 pełnych przebiegów spraw życiowych + mandat, podatek, badanie techniczne, sprawy mamy, odzyskiwanie dostępu. |
 | Brak polskich technologii | Bielik 11B (SpeakLeash) zmierzony lokalnie na tym samym zbiorze testowym: jako wsparcie reguł podnosi trafność do 95,4%. |
 
 ## Zarzut 1: „Proaktywne państwo to inwigilacja”
@@ -39,7 +39,7 @@ Metoda: zakładamy, że prototyp **odpadł albo został rozbity podczas prezenta
 
 - **Rozpoznawanie sprawy w telefonie:** 0 zł za zapytanie, bez serwera.
 - **Bielik w chmurze rządowej** tylko dla zapytań, których reguły nie są pewne. Na CPU zwykłego serwera Bielik 11B potrzebował ok. 2,8 s na zdanie, bez karty graficznej. Model open source (licencja Apache 2.0 dla Bielika v3), bez opłat licencyjnych za token.
-- **Największy koszt to integracje** (USC → powiadomienie, mObywatel → ZUS, → pracodawca). Wiele z nich już istnieje osobno ([macierz](MACIERZ_WYKONALNOSCI.md): 26 z 45 elementów 🟢).
+- **Największy koszt to integracje** (USC → powiadomienie, mObywatel → ZUS, → pracodawca). Wiele z nich już istnieje osobno ([macierz](MACIERZ_WYKONALNOSCI.md): 29 z 50 elementów 🟢).
 - **Oszczędności:** każdy wniosek wypełniony danymi z rejestru to mniej błędów i wezwań do uzupełnienia. Każda skarga „pętla logowania” to dziś telefon na infolinię.
 
 Nie podajemy kwot wdrożenia. Bez danych COI byłyby zmyślone.

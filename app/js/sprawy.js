@@ -8,21 +8,21 @@ import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy } from './data.js
 
 // 1 sprawa, 2–4 sprawy, 5+ spraw (12–14: spraw)
 export const ileSpraw = n => `${n} ${n === 1 ? 'sprawa' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'sprawy' : 'spraw'}`;
-const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
-const zrodlo = (t, u) => `<p class="zrodlo">${ic('info')}<span>Na podstawie: <a href="${u}" target="_blank" rel="noopener">${esc(t)}</a></span></p>`;
+export const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
+export const zrodlo = (t, u) => `<p class="zrodlo">${ic('info')}<span>Na podstawie: <a href="${u}" target="_blank" rel="noopener">${esc(t)}</a></span></p>`;
 
-function krok({ id, tytul, opis, doKogo, wymagany, wl = true, plakietka }) {
+export function krok({ id, tytul, opis, doKogo, wymagany, wl = true, plakietka }) {
   return `<li class="krok">
     <label class="krok-l">
       <input type="checkbox" name="krok" value="${id}" ${wl ? 'checked' : ''} ${wymagany ? 'disabled' : ''}>
       <span class="krok-t"><b>${esc(tytul)}</b>${plakietka ? ` <span class="plak ${plakietka[0]}">${esc(plakietka[1])}</span>` : ''}<small>${opis}</small><small class="do">${ic('right')}${esc(doKogo)}</small></span>
     </label></li>`;
 }
-const zaznaczone = (root, wszystkie) => {
+export const zaznaczone = (root, wszystkie) => {
   const ids = new Set($$('input[name=krok]', root).filter(i => i.checked).map(i => i.value));
   return wszystkie.filter(k => ids.has(k.id));
 };
-function gotowe({ tytul, czas, pozycje, dalej = [] }) {
+export function gotowe({ tytul, czas, pozycje, dalej = [] }) {
   return `<div class="gotowe" tabindex="-1">
     <div class="gotowe-ik">${ic('check', 'duza')}</div>
     <h2>${esc(tytul)}</h2>
@@ -31,6 +31,18 @@ function gotowe({ tytul, czas, pozycje, dalej = [] }) {
     <div class="przyciski pion">${dalej.map(d => `<a class="btn ${d[2] || 'drugi'}" href="${d[1]}">${esc(d[0])}</a>`).join('')}<a class="btn drugi" href="#/start">Wróć na start</a></div>
   </div>`;
 }
+
+// Wolne terminy wizyty w urzędzie: najbliższe dni robocze od jutra, po dwie godziny. Daty liczone od dziś.
+export function terminyWizyty(ile = 4) {
+  const godziny = ['9:30', '13:15'], wynik = [];
+  for (let d = 1; wynik.length < ile && d < 30; d++) {
+    const t = za(d); if (t.getDay() === 0 || t.getDay() === 6) continue;
+    for (const g of godziny) { const [h, m] = g.split(':'); const x = new Date(t); x.setHours(+h, +m, 0, 0); if (wynik.length < ile) wynik.push(x); }
+  }
+  return wynik;
+}
+export const dataWizyty = t => `${fmt(new Date(t), { weekday: 'long', day: 'numeric', month: 'long' })}, ${new Date(t).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}`;
+export const wyborTerminu = (nazwa, legenda) => `<fieldset class="terminy"><legend class="etyk">${esc(legenda)}</legend><div class="chipy">${terminyWizyty().map((x, i) => `<label class="chip-r"><input type="radio" name="${nazwa}" value="${x.toISOString()}" ${i === 0 ? 'checked' : ''}><span>${esc(fmt(x, { weekday: 'short', day: 'numeric', month: 'numeric' }))} ${x.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</span></label>`).join('')}</div></fieldset>`;
 
 /* ---------------- Narodziny dziecka (historia flagowa) ---------------- */
 const NARODZINY = () => [
@@ -266,7 +278,7 @@ export function utrata() {
       tytul: 'Dokumenty zastrzeżone',
       czas: 'Banki i operatorzy widzą zastrzeżenie od tej chwili.',
       pozycje: [['Dowód osobisty', 'zawieszony na 14 dni i zastrzeżony w bankach; jeśli się znajdzie, odwiesisz go tutaj'], ['PESEL', 'zastrzeżony; cofniesz jednym przyciskiem, np. przed wzięciem kredytu'], ['mDowód w telefonie', 'działa dalej, możesz nim potwierdzać tożsamość']],
-      dalej: [['Złóż wniosek o nowy dowód', '#/sprawa/dowod', 'glowny'], ['Znalazłam portfel: odwieś dowód', '#/sprawa/utrata/znaleziony', 'drugi']],
+      dalej: [['Przygotuj wniosek o nowy dowód', '#/sprawa/dowod', 'glowny'], ['Znalazłam portfel: odwieś dowód', '#/sprawa/utrata/znaleziony', 'drugi']],
     }) };
   }
   const kroki = [
@@ -307,31 +319,42 @@ export function znaleziony() {
 /* ---------------- Nowy dowód osobisty ---------------- */
 export function dowod() {
   if (stan.zrobione.dowod) {
-    return { tytul: 'Nowy dowód', html: `<h1 tabindex="-1">Wniosek złożony</h1>` + gotowe({ tytul: 'Dowód będzie gotowy za ok. 3 tygodnie', pozycje: [['Urząd', 'Urząd Miasta Łodzi, Delegatura Polesie'], ['Odbiór', 'dostaniesz SMS; przy odbiorze urzędnik pobierze odciski palców'], ['Stary dowód', 'ważny do odbioru nowego']] }) };
+    const w = stan.zrobione.dowod;
+    return { tytul: 'Nowy dowód', html: `<h1 tabindex="-1">Wizyta zarezerwowana</h1>` + gotowe({
+      tytul: 'Wniosek czeka na Ciebie w urzędzie',
+      czas: typeof w === 'object' ? `${w.urzad}: ${dataWizyty(w.kiedy)}` : '',
+      pozycje: [
+        ['W urzędzie, ok. 10 minut', 'urzędnik sprawdzi zdjęcie i pobierze odciski palców, wniosek podpiszesz na tablecie; weź obecny dowód'],
+        ['Nowy dowód', 'urząd ma na wydanie do 30 dni; damy znać, kiedy będzie do odbioru'],
+        ['Obecny dowód', 'używasz go do odbioru nowego'],
+      ],
+    }) };
   }
   const d = dokumenty[0];
   return {
     tytul: 'Nowy dowód osobisty',
     html: `
     <h1 tabindex="-1">Nowy dowód osobisty</h1>
-    <p class="wstep">Twój dowód traci ważność ${fmt(za(41))}. Wniosek jest wypełniony danymi z rejestru.</p>
+    <p class="wstep">Twój dowód traci ważność ${fmt(za(41))}. Wniosek wypełniliśmy danymi z rejestru. Dorosły składa go w urzędzie osobiście, bo urzędnik pobiera odciski palców, więc wybierz urząd i termin wizyty.</p>
     <form id="f-dow" class="karta" novalidate>
       ${d.pola.slice(0, 2).map(p => wiersz(...p)).join('')}${wiersz('Adres do korespondencji', ja.adres)}
       <fieldset class="grupa"><legend class="etyk">Zdjęcie</legend>
         <label class="opcja"><input type="radio" name="foto" checked> zrobię zdjęcie telefonem teraz (sprawdzimy, czy spełnia wymagania)</label>
-        <label class="opcja"><input type="radio" name="foto"> dodam zdjęcie z zakładu fotograficznego (do 6 miesięcy)</label>
+        <label class="opcja"><input type="radio" name="foto"> przyniosę zdjęcie z zakładu fotograficznego (do 6 miesięcy)</label>
       </fieldset>
-      <label class="etyk" for="urzad">Gdzie odbierzesz dowód</label>
+      <label class="etyk" for="urzad">Urząd</label>
       <select id="urzad" class="pole"><option>Urząd Miasta Łodzi, Delegatura Polesie</option><option>Urząd Miasta Łodzi, Delegatura Śródmieście</option><option>Urząd Miasta Zgierza</option></select>
-      <button class="btn glowny szeroki">${ic('key')}Przejrzyj i podpisz</button>
+      ${wyborTerminu('wizyta', 'Termin wizyty')}
+      <button class="btn glowny szeroki">${ic('key')}Przejrzyj i zarezerwuj wizytę</button>
     </form>
     ${zrodlo('gov.pl: Uzyskaj dowód osobisty', 'https://www.gov.pl/web/gov/uzyskaj-dowod-osobisty')}`,
     po(root) {
       $('#f-dow', root).onsubmit = async e => {
         e.preventDefault();
-        const ok = await arkuszZgody({ tytul: 'Wniosek o dowód osobisty', pozycje: [{ co: 'Wniosek o wydanie dowodu', do: $('#urzad', root).value }], dane: ['imię, nazwisko, PESEL', 'zdjęcie', 'adres do korespondencji'], cofniecie: 'Wniosek możesz wycofać, dopóki dowód nie zostanie wydany.', cel: 'dowod' });
+        const urzad = $('#urzad', root).value, kiedy = $('input[name=wizyta]:checked', root).value;
+        const ok = await arkuszZgody({ tytul: 'Wniosek o dowód i wizyta w urzędzie', pozycje: [{ co: 'Wniosek o dowód, wypełniony (podpiszesz go w urzędzie)', do: urzad }, { co: `Wizyta: ${dataWizyty(kiedy)}`, do: urzad }], dane: ['imię, nazwisko, PESEL', 'zdjęcie', 'adres do korespondencji'], cofniecie: 'Wizytę odwołasz albo przełożysz do dnia przed terminem.', przycisk: 'Zarezerwuj wizytę', cel: 'dowod' });
         if (!ok) return;
-        stan.zrobione.dowod = true; dodajWyslane('Wniosek o dowód osobisty', $('#urzad', root).value); zapisz();
+        stan.zrobione.dowod = { urzad, kiedy }; dodajWyslane('Wniosek o dowód i rezerwacja wizyty', urzad); zapisz();
         dispatchEvent(new HashChangeEvent('hashchange'));
       };
     },
@@ -420,25 +443,13 @@ export function podatek() {
   };
 }
 
-/* ---------------- Katalog i sprawy w podglądzie ---------------- */
+/* ---------------- Katalog spraw życiowych ---------------- */
 export function katalog() {
   return {
     tytul: 'Sprawy życiowe',
     html: `<h1 tabindex="-1">Co się u Ciebie dzieje?</h1>
     <p class="wstep">Wybierz sytuację. Pokażemy wszystkie sprawy w różnych urzędach naraz, a nie każdą osobno.</p>
-    <ul class="lista">${sprawy.map(s => `<li><a class="poz" href="#/sprawa/${s.id}">${ic(s.ikona, 'okr')}<span><b>${esc(s.tytul)}</b><small>${esc(s.opis)}</small></span>${s.pelne ? '' : '<span class="plak szara">podgląd</span>'}${ic('right', 'strz')}</a></li>`).join('')}</ul>`,
-  };
-}
-
-export function podglad(id) {
-  const s = sprawy.find(x => x.id === id);
-  if (!s) return null;
-  return {
-    tytul: s.tytul,
-    html: `<h1 tabindex="-1">${esc(s.tytul)}</h1>
-    <p class="wstep">W tym prototypie to podgląd planu sprawy. Pełne przebiegi pokazujemy na przykładach: narodziny, przeprowadzka, kupno auta i utrata dokumentów.</p>
-    <ol class="os-czasu karta">${s.kroki.map(k => `<li><b>${esc(k)}</b></li>`).join('')}</ol>
-    <a class="btn drugi szeroki" href="#/sprawy">Wszystkie sprawy</a>`,
+    <ul class="lista">${sprawy.map(s => `<li><a class="poz" href="#/sprawa/${s.id}">${ic(s.ikona, 'okr')}<span><b>${esc(s.tytul)}</b><small>${esc(s.opis)}</small></span>${ic('right', 'strz')}</a></li>`).join('')}</ul>`,
   };
 }
 

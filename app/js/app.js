@@ -3,7 +3,7 @@ import { ic } from './icons.js';
 import { stan, $, $$, ogloszenie, resetuj, ustawMotyw, wyborMotywu } from './core.js';
 import * as W from './widoki.js';
 // Ekrany spoza startu ładujemy dopiero, gdy są potrzebne: start rysuje się szybciej.
-const S = () => import('./sprawy.js'), B = () => import('./obywatel.js'), K = () => import('./skaner.js');
+const S = () => import('./sprawy.js'), Z = () => import('./zycie.js'), B = () => import('./obywatel.js'), K = () => import('./skaner.js');
 const asystent = async q => (await import('./asystent.js')).asystent(q);
 const jury = async () => (await import('./jury.js')).jury();
 import { testWidok, podlacz } from './test.js';
@@ -18,7 +18,7 @@ const TRASY = [
   [/^\/sprawa\/utrata$/, async () => (await S()).utrata()],
   [/^\/sprawa\/utrata\/znaleziony$/, async () => (await S()).znaleziony()],
   [/^\/sprawa\/dowod$/, async () => (await S()).dowod()],
-  [/^\/sprawa\/([a-z]+)$/, async m => (await S()).podglad(m[1])],
+  [/^\/sprawa\/(slub|smierc|firma|emerytura|osiemnastka)$/, async m => (await Z())[m[1]]()],
   [/^\/mandat$/, async () => (await S()).mandat()],
   [/^\/podatek$/, async () => (await S()).podatek()],
   [/^\/badanie$/, async () => (await S()).badanie()],

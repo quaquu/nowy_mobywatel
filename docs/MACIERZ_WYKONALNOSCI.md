@@ -36,7 +36,12 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 | Kupno auta: PCC-3 i płatność | 🟢 | e-Urząd Skarbowy. |
 | Kupno auta: rejestracja online | 🟢 | Istnieje ([gov.pl](https://www.gov.pl/web/gov/zarejestruj-pojazd)). |
 | Utrata dokumentów: zawieszenie dowodu, zastrzeżenie PESEL | 🟢 | Istnieje. W prototypie jest jeden przycisk dla wszystkiego. |
-| Nowy dowód: wniosek ze zdjęciem z telefonu | 🟢 / 🟡 | Wniosek online istnieje. Zdjęcie musi spełniać wymagania; automatyczne sprawdzenie zdjęcia to 🟡. |
+| Nowy dowód: wniosek wypełniony w aplikacji, rezerwacja wizyty | 🟡 | Od 2021 r. dorosły składa wniosek osobiście, bo urząd pobiera odciski palców; przez internet tylko dla dzieci do 12 lat. Wypełnienie wniosku danymi z rejestru i rezerwacja wizyty w gminie wymagają integracji z systemami rezerwacji urzędów (🟡). |
+| Ślub: zapewnienia, rezerwacja terminu, nazwisko, przypomnienia o dokumentach | 🟢 / 🟡 | Zapewnienia podpisuje się osobiście w USC; opłata za akt małżeństwa 84 zł. Zmiana nazwiska w PESEL następuje z urzędu po sporządzeniu aktu (🟢). Wstępna rezerwacja terminu przez aplikację i potwierdzenie przez drugą osobę wymagają integracji z USC (🟡). |
+| Śmierć bliskiej osoby: zasiłek pogrzebowy, renta wdowia, lista do poświadczenia dziedziczenia | 🟢 / 🟡 | Zasiłek pogrzebowy (7 000 zł po zgonach od 2026 r.) i wniosek ERWD o rentę wdowią składa się elektronicznie przez eZUS (🟢). Wysłanie ich z mObywatela, w tym wniosku za mamę z upoważnienia w ZUS, wymaga integracji z ZUS (🟡). |
+| Zakładanie firmy: CEIDG-1 z ZUS, podatkiem i VAT-R | 🟢 | Wniosek CEIDG-1 online (od 1.11.2026 r. tylko online) obejmuje zgłoszenie do ZUS i wybór opodatkowania; VAT-R można dołączyć. Usługa „Firma” jest już w mObywatelu. |
+| Emerytura: brakujące okresy składek z porównania danych US i ZUS | 🟡 / 🔴 | Zastrzeżenie do informacji o stanie konta składa się dziś w eZUS (🟢). Wykrycie luki przez porównanie przychodów z urzędu skarbowego z kontem w ZUS wymaga podstawy prawnej do łączenia tych danych (🔴) albo zgody obywatela (🟡). |
+| 18. urodziny: wpis do rejestru wyborców, profil kandydata na kierowcę | 🟢 / 🟡 | Wpis do Centralnego Rejestru Wyborców następuje z urzędu (🟢). Wniosek o profil kandydata na kierowcę składa się dziś elektronicznie przez ePUAP albo w starostwie; z mObywatela wymaga integracji (🟡). |
 | Wizyta urzędnika u osoby chorej lub niepełnosprawnej, zamówiona przez pełnomocnika | 🟢 / 🟡 | Przyjęcie wniosku w miejscu pobytu przewiduje ustawa o dowodach osobistych. Zamawianie przez aplikację to 🟡. |
 | Badanie techniczne: termin z CEPiK, stacje kontroli na mapie, rezerwacja terminu | 🟢 / 🟡 | Termin ważności badania jest już w mObywatelu („Mój pojazd”), a wynik stacja wpisuje do centralnej ewidencji pojazdów. Wykaz stacji prowadzą starostowie, osobno w każdym powiecie; wspólny wykaz z położeniem to 🟡. Rezerwacja terminu wymaga integracji z prywatnymi stacjami, dobrowolnej dla stacji (🟡). W prototypie stacje i terminy są fikcyjne. |
 | Mandat z fotoradaru: przyjęcie i płatność w aplikacji | 🟡 | Płatność online istnieje. Przyjęcie mandatu i wskazanie kierowcy w aplikacji wymaga zmian w procesie CANARD/GITD. |
@@ -74,8 +79,8 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 
 | Status | Liczba elementów |
 |---|---:|
-| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 26 |
-| 🟡 integracja, rozporządzenie albo zgoda | 12 |
-| 🔴 zmiana ustawy (w tym warianty 🔴 / 🟡 i 🟡 / 🔴) | 7 |
+| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 29 |
+| 🟡 integracja, rozporządzenie albo zgoda | 13 |
+| 🔴 zmiana ustawy (w tym warianty 🔴 / 🟡 i 🟡 / 🔴) | 8 |
 
 **Pierwszy etap (bez zmian ustaw):** pakiet „Narodziny dziecka” bez automatycznego zaświadczenia lekarskiego, odzyskiwanie dostępu, tryb prosty, pisma prostym językiem, rozszerzony rejestr dostępu dla PESEL i RDO, przypomnienia o terminach.
