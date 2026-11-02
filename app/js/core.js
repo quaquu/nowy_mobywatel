@@ -146,7 +146,11 @@ export function wTelefonie(d, pelny = false) {
   const tresc = !pelny && d.querySelector('.arkusz-in');
   if (!tresc) return;
   tresc.classList.add('w-ramce');
-  Object.assign(tresc.style, { width: (390 - 16) + 'px', maxHeight: Math.round(844 * 0.9) + 'px', overflowY: 'auto', transform: `scale(${s})`, transformOrigin: '0 0' });
+  Object.assign(tresc.style, { width: (390 - 16) + 'px', maxHeight: Math.round(844 * 0.9) + 'px', overflowY: 'auto' });
+  // `zoom` skaluje układ, więc przyciski przyklejone do dołu działają też w Safari
+  // (przy `transform: scale` na przewijanym kontenerze Safari stawiał je w środku arkusza).
+  if (CSS.supports('zoom', '1')) { tresc.style.zoom = s; return; }
+  Object.assign(tresc.style, { transform: `scale(${s})`, transformOrigin: '0 0' });
   const dopasuj = () => { d.style.height = tresc.offsetHeight * s + 'px'; };
   dopasuj(); new ResizeObserver(dopasuj).observe(tresc);
 }

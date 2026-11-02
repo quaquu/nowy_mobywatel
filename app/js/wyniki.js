@@ -2,7 +2,7 @@
 export const WYNIKI = {
  "data": "2 listopada 2026",
  "crawler": {
-  "strony": 260,
+  "strony": 264,
   "trasy": 44,
   "problemy": 0
  },
@@ -138,15 +138,15 @@ export const WYNIKI = {
    "performance": 97,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2413,
-   "tbtMs": 45
+   "lcpMs": 2419,
+   "tbtMs": 79
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4364,
-   "tbtMs": 31
+   "lcpMs": 4356,
+   "tbtMs": 15
   }
  },
  "czytelnosc": {
