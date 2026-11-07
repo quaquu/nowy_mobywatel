@@ -36,8 +36,9 @@ W językach i bazie wiedzy referencja jest od nas bogatsza i tego nie ukrywamy.
 | … podpisy | 2 | 1 | j.w. |
 | … dotknięcia | 6 | 4 | j.w. |
 | … przewidywany czas (KLM + zmierzony czas reakcji, z animacjami) | 24 s | 14 s | j.w. |
-| Rozpoznanie sprawy z tekstu, odłożony zbiór testowy (n=87) | 31,0% | 92,0% | `tests/eval-intents.mjs` |
-| … tylko intencje obsługiwane przez oba (n=50) | 40,0% | 92,0% | j.w. |
+| Rozpoznanie sprawy z tekstu, odłożony zbiór testowy (n=87) | 31,0% | 90,8% (wersja 1 silnika: 92,0%) | `tests/eval-intents.mjs` |
+| Nowe sprawy (ślub, śmierć, firma, emerytura, 18 lat, prawo jazdy), zbiór testowy 2 (n=37) | nie mierzono | 91,9% | j.w. |
+| … tylko intencje obsługiwane przez oba (n=50) | 40,0% | 90,0% (wersja 1: 92,0%) | j.w. |
 | Naruszenia axe (WCAG 2.2 AA i dobre praktyki) | 7 reguł, 26 elementów, w tym 1 krytyczne i 3 poważne | 0 | `tests/audit.mjs` |
 | Lighthouse, telefon: wydajność / dostępność | 82 / 87 (LCP ok. 4,4 s) | 95–98 / 100 (LCP ok. 2,7 s) | Lighthouse 12.6.1 |
 | Czytelność (FOG-PL, mniej = prościej) | 7,1 | 7,1 | `tests/audit.mjs` |
@@ -83,6 +84,22 @@ Silnik zamrożono przed pierwszym uruchomieniem na zbiorze testowym. Błędów p
 | podejrzany link do dopłaty za paczkę | oszustwo | świadczenia |
 
 Fałszywa odmowa jest najpoważniejsza: reguły bezpieczeństwa oparte na pojedynczym słowie są zbyt szerokie. W wersji wdrożeniowej odmowa „cudze dane” powinna wymagać połączenia słowa o osobie z prośbą o dane (PESEL, adres).
+
+### Wersja 2 silnika (07.11.2026): nowe sprawy i nowy zbiór testowy
+
+Do silnika doszło sześć intencji (ślub, śmierć bliskiej osoby, firma, emerytura, 18 lat, prawo jazdy) i stacje kontroli w intencji „pojazd”. Zgodnie z zasadą powyżej najpierw powstał nowy zbiór (`tests/data/intencje2.tsv`, 86 zdań, zapisany w repozytorium przed zmianą silnika), silnik stroiliśmy tylko na jego części „dev” i na części „dev” zbioru 1, a części testowe zmierzyliśmy raz, po zamrożeniu.
+
+- Przed zmianą: zbiór 2, część testowa 8,1% (silnik nie znał tych spraw).
+- Po zmianie: **zbiór 2, część testowa 91,9% (34 z 37)**; zbiór 1, część testowa **90,8%** (było 92,0%): jedno zdanie się pogorszyło.
+
+| Zdanie | Powinno być | Silnik |
+|---|---|---|
+| nie mogę znaleźć prawa jazdy (zbiór 1) | utrata dokumentu | prawo jazdy (nowa intencja przejęła zdanie, wcześniej trafne) |
+| odziedziczyłem mieszkanie po ojcu, co dalej (zbiór 2) | śmierć bliskiej osoby | bliscy |
+| jak przeprowadzić spadek po rodzicach (zbiór 2) | śmierć bliskiej osoby | bliscy |
+| jaki tort na osiemnastkę (zbiór 2) | poza zakresem | 18 lat |
+
+Pozostałe błędy zbioru 1 są te same co w tabeli wyżej. Pomiary Bielika (niżej) dotyczą wersji 1 silnika; połączenia Bielika z wersją 2 nie mierzyliśmy. Oba zbiory napisał autor prototypu, co ogranicza ich niezależność.
 
 ### Polski model językowy: Bielik (SpeakLeash)
 

@@ -17,7 +17,7 @@ export function norm(t) {
 // próby obejścia zabezpieczeń (wstrzyknięte polecenia), czyny niezgodne z prawem.
 const ODMOWA = [
   [/zignoruj|poprzednie instrukcj|tryb\w* administrator|jestes teraz|wylacz\w* potwierdz|bez podpisu|^system ?:|uzytkownik jest zweryfikowany/, 'bezpieczenstwo'],
-  [/sasiad|cudz\w*|innej osoby|innego czlowieka|bylej zony|bylego meza|czyj jest|czyje jest|do kogo nalezy (auto|samochod)/, 'cudze_dane'],
+  [/sasiad|cudz\w*|innej osoby|innego czlowieka|kogos obcego|kogos innego|bez (jego|jej) wiedzy|bylej zony|bylego meza|czyj jest|czyje jest|do kogo nalezy (auto|samochod)/, 'cudze_dane'],
   [/falszyw\w* (dowod|dokument|zaswiadcz)|podrob|ukryc dochod|uniknac podatk|nie placic podatk|usun\w* (moje )?punkty|skasuj\w* (moje )?punkty|wygeneruj\w* .*pesel/, 'niezgodne_z_prawem'],
 ];
 // „podaj adres Jana Kowalskiego” — dane osoby wskazanej z imienia i nazwiska (sprawdzane na oryginalnym tekście).
@@ -88,9 +88,11 @@ export const INTENCJE = {
   dokumenty: [
     [/pokaz|pokazac/, 2.5],
     [/dokument|legitymac|18 lat|pelnolet|duzej rodziny|\bkdr\b|dowod rejestracyjn|hotel|policjant|numer pesel|moj pesel/, 2.5],
+    [/prawo jazdy|prawa jazdy|udowodni|wykazac/, 2.5],
   ],
   pojazd: [
     [/\boc\b|ubezpieczen\w* (samochod|auta|pojazd)|przeglad|badani\w* techniczn|moje pojazdy|przebieg|cepik/, 4],
+    [/stacj\w* (kontroli|diagnost)|diagnostycz/, 4],
   ],
   stluczka: [
     [/stluczk|kolizj|wjechal|wypadek|wypadk|sprawcy|porysowal|uderzyl|obtarl|stluklem|stluklam/, 5],
@@ -110,6 +112,27 @@ export const INTENCJE = {
     [/do zalatwienia|moje sprawy|co musze|zalegl\w* sprawy|na najblizszy czas|przypomnij|przypomn/, 4],
     [/(cos|czy cos) .{0,10}konczy|terminy|termin(ach|ow)/, 3],
   ],
+  // Sprawy z katalogu dodane 07.11.2026 (zbiór testowy 2 napisany wcześniej).
+  slub: [
+    [/slub|malzenst|pobrac|pobieramy|zareczy|wychodze za maz|ozenic|zenie sie|zapewnieni\w* o braku|nazwisk\w* (meza|zony)/, 4.5],
+  ],
+  smierc: [
+    [/zmarl|umarl|smierc|zgon|pogrzeb|spadek|spadku|odziedzicz|dziedzicz|renta wdowi|wdow/, 5],
+  ],
+  firma: [
+    [/firm|dzialalnos|ceidg|\bjdg\b|samozatrudn|na swoim|regon|opodatkowani|ulga na start/, 4],
+    [/\bvat\b/, 2],
+  ],
+  emerytura: [
+    [/emerytur|emeryt|wiek\w* emerytaln|okres\w* sklad|sklad(ek|ki) (w|do) zus|odprowadz\w* sklad|lat pracy|konta? w zus|kapital\w* poczatk/, 4.5],
+  ],
+  osiemnastka: [
+    [/osiemnas|18 lat|18 urodzin|18 ?tk|pelnolet|dorosl|rejestr\w* wyborc|pierwsze wybory/, 4],
+    [/(konczy|koncze|skonczy|skoncze|bede|bedzie)\w* .{0,15}(18|osiemnast|pelnolet|dorosl)/, 2],
+  ],
+  prawo_jazdy: [
+    [/prawo jazdy|prawa jazdy|prawko|prawka|\bpkk\b|profil\w* kandydat|kandydat\w* na kierowc|egzamin\w* na prawo/, 4.5],
+  ],
   konsultant: [
     [/czlowiek|konsultant|infolini|zywy|porozmawiac z kims|z kims porozmawiac|numer\w* telefonu do pomocy|telefon do pomocy/, 5],
   ],
@@ -118,10 +141,15 @@ export const INTENCJE = {
 // Gdy w zdaniu jest bliska osoba, a sprawa dotyczy jej (np. „dowód mamy”), wygrywa „bliscy”.
 const PRIORYTETY = [
   [/zostal(am|em) (mama|tata|mamą|tatą)/, 'narodziny'],
+  // śmierć bliskiej osoby to osobna sprawa, nawet gdy w zdaniu jest „tata” albo „mama”
+  [/\b(zmarl|zmarla|umarl|umarla)\b|\bsmierc|\bzgon|pogrzeb/, 'smierc'],
 ];
 
 // Sprawa starszego członka rodziny (np. „dowód mamy”) to sprawa „bliscy”, nie własna.
 const STARSI = /\bmam(a|ie|e|ą)\b|(dowod|recept\w*|spraw\w*|dane|konto|emerytur\w*|leki|za) mamy\b|\btat(a|y|e|ą|u)\b|\btacie\b|\bojc|rodzic|babci|dziadk/;
+
+// Porównywanie ofert prywatnych firm (ubezpieczenia, banki) to nie sprawa urzędowa.
+const POZA = /najlepsz\w* (ubezpiecz|ofert|bank|kredyt)|ranking|ktor\w* (bank|ubezpieczyciel)|jaka firma ma/;
 
 const PROG = 2.5; // minimalny wynik, poniżej: „nie jestem pewien”
 
@@ -132,6 +160,7 @@ export function rozpoznaj(tekst) {
   for (const [re, powod] of ODMOWA) if (re.test(n)) return { intencja: 'odmowa', powod, pewnosc: 1, wyniki: [] };
   if (OSOBA.test(raw) && !/urzed|skarbow|zus|gmin/i.test(raw)) return { intencja: 'odmowa', powod: 'cudze_dane', pewnosc: 1, wyniki: [] };
   for (const [re, intencja] of PRIORYTETY) if (re.test(n)) return { intencja, pewnosc: 1, wyniki: [] };
+  if (POZA.test(n)) return { intencja: 'poza_zakresem', pewnosc: 0, wyniki: [] };
 
   const wyniki = Object.entries(INTENCJE).map(([id, wz]) => {
     let s = 0;

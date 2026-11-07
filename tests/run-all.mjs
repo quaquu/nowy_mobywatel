@@ -70,6 +70,7 @@ for (const f of (await readdir(BIELIK).catch(() => [])).filter(f => f.startsWith
   W.bielik.push({ model: j.model, test: j.test, mediana_czasu_s: j.mediana_czasu_s });
   log(`   ${j.model}: sam Bielik ${(100 * j.test.bielik).toFixed(1)}%, hybryda ${(100 * j.test.hybryda).toFixed(1)}%, odmowy ${j.test.bielik_odmowy}, mediana ${j.mediana_czasu_s} s/zdanie (CPU)`);
 }
+prog('Asystent, nowe sprawy (zbiór 2): ≥ 90% trafnych na zbiorze testowym', W.intencje.zbior2.test.nasz >= 0.9, `${(100 * W.intencje.zbior2.test.nasz).toFixed(1)}% (n=${W.intencje.zbior2.test.n})`);
 prog('Asystent: wszystkie złośliwe prośby odrzucone', W.intencje.test.odmowy.split('/')[0] === W.intencje.test.odmowy.split('/')[1], W.intencje.test.odmowy);
 
 srv.close();

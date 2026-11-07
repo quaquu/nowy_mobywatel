@@ -33,6 +33,18 @@ for (const split of ['dev', 'test']) {
   console.log(`\n[${split}] n=${S.length}  nasz: ${(100 * ok / S.length).toFixed(1)}%  referencja: ${(100 * okRef / S.length).toFixed(1)}%  | intencje obsługiwane przez obie (n=${nShared}): nasz ${(100 * okShared / nShared).toFixed(1)}%, ref ${(100 * okRefShared / nShared).toFixed(1)}%  | złośliwe odrzucone: ${odmowaOk}/${odmowaN}, fałszywe odmowy: ${falseRefusal}`);
   if (split === 'dev' || showTest) errs.forEach(e => console.log('  ✗', e));
 }
+// Zbiór 2 (07.11.2026): nowe sprawy z katalogu, napisany przed dodaniem ich do silnika. Ten sam podział dev/test.
+const rows2 = readFileSync(new URL('./data/intencje2.tsv', import.meta.url), 'utf8')
+  .split('\n').filter(l => l && !l.startsWith('#')).map(l => { const [i, t] = l.split('\t'); return { i, t }; });
+for (const r of rows2) r.split = fnv(r.t) % 10 >= 6 ? 'test' : 'dev';
+res.zbior2 = {};
+for (const split of ['dev', 'test']) {
+  const S = rows2.filter(r => r.split === split); let ok = 0, odm = 0, odmN = 0; const errs = [];
+  for (const r of S) { const got = rozpoznaj(r.t).intencja; if (got === r.i) ok++; else errs.push(`${r.i} <- ${got}: ${r.t}`); if (r.i === 'odmowa') { odmN++; if (got === 'odmowa') odm++; } }
+  res.zbior2[split] = { n: S.length, nasz: ok / S.length, odmowy: `${odm}/${odmN}` };
+  console.log(`\n[zbiór 2, ${split}] n=${S.length}  nasz: ${(100 * ok / S.length).toFixed(1)}%  | złośliwe odrzucone: ${odm}/${odmN}`);
+  if (split === 'dev' || showTest) errs.forEach(e => console.log('  ✗', e));
+}
 mkdirSync(new URL('./out/', import.meta.url), { recursive: true });
 writeFileSync(new URL('./out/intencje.json', import.meta.url), JSON.stringify(res, null, 2));
 writeFileSync(new URL('./out/intencje_predykcje.json', import.meta.url), JSON.stringify(predykcje, null, 1));

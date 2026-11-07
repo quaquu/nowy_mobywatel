@@ -21,7 +21,7 @@ Jeden slajd albo strona „Dla jury” w prototypie (`Więcej → Dla jury`):
 | | Ten prototyp | Referencyjny |
 |---|---|---|
 | Narodziny dziecka | 5 spraw, 1 podpis, ok. 14 s | 2 sprawy, 2 podpisy, ok. 24 s |
-| Asystent rozpoznaje sprawę (87 zdań testowych) | 92% | 31% |
+| Asystent rozpoznaje sprawę (87 zdań testowych) | 91% | 31% |
 | Dostępność (axe, WCAG 2.2 AA) | 0 naruszeń | 7 reguł |
 | Lighthouse na telefonie | 95–98 / 100 | 82 / 87 |
 
@@ -31,7 +31,7 @@ Jeden slajd albo strona „Dla jury” w prototypie (`Więcej → Dla jury`):
 
 > „Nie wszystko wymaga ustaw. Macierz wykonalności pokazuje, że 29 z 50 elementów da się zrobić na obecnym prawie, przez integrację istniejących usług. Osiem wymaga zmiany ustaw. Na przykład becikowe wciąż wymaga papierowego zaświadczenia o opiece w ciąży, choć te dane są w Internetowym Koncie Pacjenta.
 >
-> Polski model Bielik został zmierzony na tych samych zdaniach. Najlepiej działa w duecie: reguły w telefonie rozpoznają 92% spraw i pilnują bezpieczeństwa, a Bielik pomaga przy reszcie. Razem: 95,4%. Model językowy nie decyduje o niczym. O sprawach decyduje człowiek swoim podpisem.”
+> Polski model Bielik został zmierzony na tych samych zdaniach. Najlepiej działa w duecie: reguły w telefonie rozpoznają ponad 90% spraw i pilnują bezpieczeństwa, a Bielik pomaga przy reszcie. Razem: 95,4% (zmierzone z pierwszą wersją reguł). Model językowy nie decyduje o niczym. O sprawach decyduje człowiek swoim podpisem.”
 
 ## 4:30–5:00 Prośba
 

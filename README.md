@@ -49,13 +49,14 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | Miara | Ten prototyp | Referencyjny |
 |---|---|---|
 | Narodziny dziecka: sprawy / podpisy / dotknięcia / czas (KLM) | 5 / 1 / 4 / 14 s | 2 / 2 / 6 / 24 s |
-| Rozpoznanie sprawy, odłożony zbiór testowy (n=87) | 92,0% | 31,0% |
+| Rozpoznanie sprawy, odłożony zbiór testowy (n=87) | 90,8% (wersja 1: 92,0%) | 31,0% |
+| Nowe sprawy, zbiór testowy 2 (n=37) | 91,9% | nie mierzono |
 | Złośliwe prośby odrzucone (test) | 5/5 | – |
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |
 | Lighthouse, telefon: wydajność / dostępność | 95–98 / 100 (kolejne pomiary) | 82 / 87 |
 | Czytelność FOG-PL | 7,1 | 7,1 |
 | Detektor Impeccable 4.7.0: wzorce „interfejsu z AI” i błędy jakości (kod + ekrany) | 0 | 18 (kod 7, ekran 11) |
-| Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł | 92,0% / 95,4% | – |
+| Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł (wersja 1 silnika) | 92,0% / 95,4% | – |
 | Crawler: 43 trasy × 4 szerokości (320–430 px) | 0 problemów | – |
 | Offline po pierwszym otwarciu | tak | – |
 
