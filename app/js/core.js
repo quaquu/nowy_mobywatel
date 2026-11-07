@@ -14,6 +14,7 @@ const POCZATEK = () => ({
   zgloszoneDostepy: {},
   poparcia: {},          // id inicjatywy -> kiedy poparta
   sprawdzoneNumery: 0,
+  konsultant: null,      // zamówiony telefon od konsultanta {kiedy, temat, kontekst}
   badanie: null,         // rezerwacja na stacji kontroli {stacja, kiedy, krotko}
 });
 

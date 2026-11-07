@@ -111,6 +111,7 @@ export const numery = [
   { nr: '800000101', rodzaj: 'tylko-odbior', kto: 'Bank Przykładowy S.A.' },
   { nr: '420003456', rodzaj: 'instytucja', kto: 'ZUS, Oddział w Łodzi', sprawy: 'świadczenia dla rodzin i zasiłki', osoba: 'Ewa Kamińska' },
   { nr: '426000600', rodzaj: 'instytucja', kto: 'Urząd Skarbowy Łódź-Polesie', sprawy: 'zwroty i zaległości podatkowe', osoba: 'Marek Zając' },
+  { nr: '420001100', rodzaj: 'instytucja', kto: 'Centrum Pomocy mObywatela', sprawy: 'oddzwanianie na prośbę złożoną w aplikacji', osoba: 'Agnieszka Lis' },
 ];
 export const przykladyNumerow = [['800 000 101', 'infolinia banku'], ['42 000 34 56', 'ZUS'], ['512 000 789', 'nieznany']];
 

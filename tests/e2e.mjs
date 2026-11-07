@@ -123,6 +123,12 @@ export async function sprawy(url) {
     await p.goto(url + '#/sprawa/dowod'); await p.click('#f-dow .btn.glowny'); await podpisz(p);
     if (!/Wizyta zarezerwowana/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
   });
+  await krok('konsultant', async p => {
+    await p.goto(url + '#/konsultant'); await p.waitForSelector('#f-kon'); await p.click('#f-kon .btn.glowny');
+    await p.waitForSelector('#kon-odwolaj');
+    if (!/42 000 11 00/.test(await p.textContent('main'))) throw new Error('brak numeru, z którego zadzwoni konsultant');
+    await p.click('#kon-odwolaj'); await p.waitForSelector('#f-kon');
+  });
   // Sprawy z katalogu: każda ma pełny przebieg (walidacja, arkusz zgody, podpis, potwierdzenie).
   await krok('slub', async p => {
     await p.goto(url + '#/sprawa/slub'); await p.waitForSelector('#slub-dalej');

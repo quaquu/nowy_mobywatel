@@ -41,6 +41,7 @@ function wynikNumeru(d) {
       <p class="wynik-plak"><span class="plak zielona">numer instytucji publicznej</span></p>
       <h2 id="wn-t">${esc(n.kto)}</h2>
       <p>Z numeru ${esc(nr)} instytucja dzwoni do obywateli w sprawach: ${esc(n.sprawy)}.</p>
+      ${n.nr === '420001100' && stan.konsultant ? `<p class="uwaga">${ic('check')}<span>Ten telefon zamówiłaś w aplikacji: ${esc(stan.konsultant.kiedy)}, temat: ${esc(stan.konsultant.temat)}.</span></p>` : ''}
       <p class="uwaga">${ic('info')}<span>Numer na ekranie da się podrobić. Pewność daje tylko potwierdzenie rozmowy w mObywatelu: urzędnik wysyła je ze swojego systemu, gdy z Tobą rozmawia.</span></p>
       <button class="btn glowny szeroki" data-potwierdz="${d}">${ic('callcheck')}Poproś o potwierdzenie rozmowy</button>
       <div id="potwierdzenie" aria-live="polite"></div>

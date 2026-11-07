@@ -374,19 +374,55 @@ export function odzyskaj() {
 export function resetDostepu() { dostepKrok = 'diagnoza'; }
 
 /* ---------------- Konsultant, ustawienia, menu ---------------- */
+// Pomoc człowieka: telefon z numeru, który da się sprawdzić w „Kto dzwoni?” (oszuści podszywają się pod urzędy).
+const NR_POMOCY = '42 000 11 00';
 export function konsultant() {
+  const z = stan.konsultant;
+  if (z) return {
+    tytul: 'Pomoc człowieka',
+    html: `<h1 tabindex="-1">Konsultant zadzwoni</h1>
+    <section class="karta">
+      ${wierszK('Kiedy', z.kiedy)}${wierszK('Temat', z.temat)}${wierszK('Zadzwoni z numeru', NR_POMOCY)}
+      <p class="uwaga">${ic('callcheck')}<span>Tylko z tego numeru. Konsultant nie zapyta o hasło, PIN ani kod BLIK. Jeśli ktoś zadzwoni z innego numeru i powie, że jest z mObywatela, rozłącz się.</span></p>
+      ${z.kontekst ? `<p class="maly">Konsultant zobaczy, na czym utknęłaś: ${esc(z.temat.toLowerCase())}. Nie zobaczy reszty Twoich danych.</p>` : ''}
+    </section>
+    <div class="przyciski pion">
+      <a class="btn drugi" href="#/kto-dzwoni">${ic('search')}Sprawdź ten numer w „Kto dzwoni?”</a>
+      <button type="button" class="btn tekst" id="kon-odwolaj">Odwołaj telefon</button>
+    </div>
+    <p class="stopka-info">W prototypie nikt nie zadzwoni.</p>`,
+    po(root) { $('#kon-odwolaj', root).onclick = () => { stan.konsultant = null; zapisz(); toast('Telefon odwołany.'); dispatchEvent(new HashChangeEvent('hashchange')); }; },
+  };
+  const teraz = new Date(), za15 = new Date(teraz.getTime() + 15 * 6e4);
+  const godz = d => d.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+  // Konsultanci pracują od 8 do 20; poza tymi godzinami najbliższy telefon jest rano.
+  const h = teraz.getHours(), wGodzinach = h >= 8 && za15.getHours() < 20;
+  const pory = [...(wGodzinach ? [[`dziś, około ${godz(za15)}`, 'najszybciej, za około 15 minut']] : []), ...(h < 17 ? [['dziś, 17:00–18:00', 'po pracy']] : []), ['jutro, 9:00–10:00', 'rano'], ...(wGodzinach ? [] : [['jutro, 12:00–13:00', 'w południe']])];
+  const ostatnia = stan.wyslane[0]?.tytul;
+  const tematy = [...(ostatnia ? [ostatnia] : []), 'Logowanie i dostęp do aplikacji', 'Pismo z urzędu, którego nie rozumiem', 'Inna sprawa'];
   return {
     tytul: 'Pomoc człowieka',
     html: `<h1 tabindex="-1">Pomoc człowieka</h1>
-    <p class="wstep">Asystent nie wie wszystkiego. Konsultant widzi, na czym utknęłaś, więc nie musisz tłumaczyć od początku (jeśli się zgodzisz).</p>
-    <form id="f-kon" class="karta">
-      <label class="opcja"><input type="checkbox" checked> Pokaż konsultantowi, gdzie utknęłam</label>
+    <p class="wstep">Asystent nie wie wszystkiego. Konsultant oddzwoni i, jeśli się zgodzisz, zobaczy, na czym utknęłaś, więc nie musisz tłumaczyć od początku.</p>
+    <form id="f-kon" class="karta" novalidate>
+      <fieldset class="grupa"><legend class="etyk">W czym pomóc</legend>${tematy.map((t, i) => `<label class="opcja"><input type="radio" name="temat" value="${esc(t)}" ${i === 0 ? 'checked' : ''}> ${esc(t)}</label>`).join('')}</fieldset>
+      <fieldset class="grupa"><legend class="etyk">Kiedy zadzwonić</legend>${pory.map(([t, o], i) => `<label class="opcja"><input type="radio" name="kiedy" value="${esc(t)}" ${i === 0 ? 'checked' : ''}> <span>${esc(t)}<small class="maly">${esc(o)}</small></span></label>`).join('')}</fieldset>
+      ${wierszK('Numer, na który zadzwonimy', '+48 600 ••• 412 (z Twojego profilu)')}
+      <label class="opcja"><input type="checkbox" id="kon-kontekst" checked> Pokaż konsultantowi, gdzie utknęłam</label>
       <button class="btn glowny szeroki">${ic('phone')}Poproś o telefon</button>
     </form>
-    <p class="stopka-info">W prototypie nie łączymy się z nikim.</p>`,
-    po(root) { $('#f-kon', root).onsubmit = e => { e.preventDefault(); cel('konsultant'); toast('Konsultant oddzwoni w ciągu 15 minut (symulacja).'); }; },
+    <p class="stopka-info">Konsultant zadzwoni z numeru ${NR_POMOCY}. W prototypie nikt nie zadzwoni.</p>`,
+    po(root) {
+      $('#f-kon', root).onsubmit = e => {
+        e.preventDefault();
+        stan.konsultant = { kiedy: $('input[name=kiedy]:checked', root).value, temat: $('input[name=temat]:checked', root).value, kontekst: $('#kon-kontekst', root).checked };
+        zapisz(); cel('konsultant'); ogloszenie(`Konsultant zadzwoni ${stan.konsultant.kiedy}.`);
+        dispatchEvent(new HashChangeEvent('hashchange'));
+      };
+    },
   };
 }
+const wierszK = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
 
 export function ustawienia() {
   const U = stan.ustawienia;
