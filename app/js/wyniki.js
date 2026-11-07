@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8,
+   "systemS": 8.3,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -117,7 +117,7 @@ export const WYNIKI = {
   "ekrany": 0,
   "ramka": 0,
   "razem": 0,
-  "ekranow": 38,
+  "ekranow": 39,
   "szczegoly": [],
   "ref": {
    "kod": 7,
@@ -138,24 +138,24 @@ export const WYNIKI = {
    "performance": 96,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2565,
-   "tbtMs": 52
+   "lcpMs": 2708,
+   "tbtMs": 33
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4352,
-   "tbtMs": 26
+   "lcpMs": 4360,
+   "tbtMs": 13
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 902,
-   "slowa": 4541,
+   "zdania": 922,
+   "slowa": 4645,
    "sredniaDlugoscZdania": 5,
-   "procentTrudnych": 11.8,
-   "fog": 6.8
+   "procentTrudnych": 11.7,
+   "fog": 6.7
   },
   "ref": {
    "zdania": 83,
