@@ -1,13 +1,13 @@
 // PLIK GENEROWANY przez `npm test` (tests/run-all.mjs). Nie edytuj ręcznie.
 export const WYNIKI = {
- "data": "2 listopada 2026",
+ "data": "7 listopada 2026",
  "crawler": {
   "strony": 264,
   "trasy": 44,
   "problemy": 0
  },
  "sprawy": {
-  "liczba": 30,
+  "liczba": 31,
   "nieudane": []
  },
  "offline": true,
@@ -135,27 +135,27 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 97,
+   "performance": 98,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2419,
-   "tbtMs": 79
+   "lcpMs": 2345,
+   "tbtMs": 33
   },
   "ref": {
-   "performance": 82,
+   "performance": 84,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4356,
-   "tbtMs": 15
+   "lcpMs": 4211,
+   "tbtMs": 30
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 923,
-   "slowa": 4616,
+   "zdania": 958,
+   "slowa": 4811,
    "sredniaDlugoscZdania": 5,
-   "procentTrudnych": 12.2,
-   "fog": 6.9
+   "procentTrudnych": 12,
+   "fog": 6.8
   },
   "ref": {
    "zdania": 83,
@@ -178,13 +178,25 @@ export const WYNIKI = {
   },
   "test": {
    "n": 87,
-   "nasz": 0.9195402298850575,
+   "nasz": 0.9080459770114943,
    "referencja": 0.3103448275862069,
    "nShared": 50,
-   "naszWspolne": 0.92,
+   "naszWspolne": 0.9,
    "refWspolne": 0.4,
    "odmowy": "5/5",
    "falszyweOdmowy": 1
+  },
+  "zbior2": {
+   "dev": {
+    "n": 49,
+    "nasz": 1,
+    "odmowy": "1/1"
+   },
+   "test": {
+    "n": 37,
+    "nasz": 0.918918918918919,
+    "odmowy": "1/1"
+   }
   }
  },
  "bielik": [
