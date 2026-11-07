@@ -228,6 +228,8 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 /* Sprawa, która przyszła sama: najważniejsza rzecz na Starcie, więc większa niż wiersz listy. Cała karta to jeden cel dotyku. */
 .hero.sprawa { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--o3) var(--o4); padding: var(--o4); }
 .hero.sprawa .hero-aw { width: 56px; height: 56px; }
+.hero-ikona { display: grid; place-items: center; border-radius: 50%; background: var(--gl-wyp); color: var(--gl); }
+.hero-ikona .ic { width: 28px; height: 28px; }
 .hero.sprawa .hero-t { font-size: var(--t-tytul3); font-weight: 600; text-wrap: balance; }
 .hero.sprawa .hero-go { grid-column: 1 / -1; justify-content: center; min-height: 48px; font-size: var(--t-naglowek); }
 .prosty-hero { flex-direction: column; align-items: flex-start; gap: var(--o3); padding: var(--o5); }
@@ -663,6 +665,9 @@ html.ramka dialog.skaner .sk-wn { width: 390px; height: 794px; transform: scale(
 .awatar { flex: none; display: block; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: var(--wypelnienie); }
 .awatar svg { display: block; width: 100%; height: 100%; }
 .awatar.duzy { width: 64px; height: 64px; }
+.osoba-karta { display: flex; align-items: center; gap: var(--o4); }
+.osoba-karta .nag { margin: 0 0 var(--o1); }
+.osoba-karta .maly { margin: 0; }
 .hero-aw { width: 44px; height: 44px; }
 .osoba-nag { display: flex; align-items: center; gap: var(--o4); margin: var(--o1) 0 var(--o4); }
 .osoba-nag h1 { margin: 0; }

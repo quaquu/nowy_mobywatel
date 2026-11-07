@@ -2,6 +2,7 @@
 import { ic } from './icons.js';
 import { stan, $, $$, ogloszenie, resetuj, ustawMotyw, wyborMotywu } from './core.js';
 import * as W from './widoki.js';
+import { OSOBA, OSOBY, WLASCICIEL, adresOsoby } from './data.js';
 // Ekrany spoza startu ładujemy dopiero, gdy są potrzebne: start rysuje się szybciej.
 const S = () => import('./sprawy.js'), Z = () => import('./zycie.js'), B = () => import('./obywatel.js'), K = () => import('./skaner.js');
 const asystent = async q => (await import('./asystent.js')).asystent(q);
@@ -9,19 +10,22 @@ const jury = async () => (await import('./jury.js')).jury();
 import { testWidok, podlacz } from './test.js';
 import { wjazdEkranu, wyskocz, kaskada, spokojnie } from './ruch.js';
 
+// Sprawy osób z pokazu: u innej osoby zamiast przebiegu ekran „Pokaż jako …”.
+const czyja = (id, f) => async (m, q) => WLASCICIEL[id] && WLASCICIEL[id] !== OSOBA ? W.innaOsoba(WLASCICIEL[id]) : f(m, q);
 const TRASY = [
   [/^\/?(start)?$/, () => W.start()],
   [/^\/sprawy$/, async () => (await S()).katalog()],
-  [/^\/sprawa\/narodziny$/, async () => (await S()).narodziny()],
-  [/^\/sprawa\/przeprowadzka$/, async () => (await S()).przeprowadzka()],
-  [/^\/sprawa\/auto$/, async () => (await S()).auto()],
+  [/^\/sprawa\/narodziny$/, czyja('narodziny', async () => (await S()).narodziny())],
+  [/^\/sprawa\/przeprowadzka$/, czyja('przeprowadzka', async () => (await S()).przeprowadzka())],
+  [/^\/sprawa\/auto$/, czyja('auto', async () => (await S()).auto())],
   [/^\/sprawa\/utrata$/, async () => (await S()).utrata()],
   [/^\/sprawa\/utrata\/znaleziony$/, async () => (await S()).znaleziony()],
   [/^\/sprawa\/dowod$/, async () => (await S()).dowod()],
-  [/^\/sprawa\/(slub|smierc|firma|emerytura|osiemnastka)$/, async m => (await Z())[m[1]]()],
-  [/^\/mandat$/, async () => (await S()).mandat()],
-  [/^\/podatek$/, async () => (await S()).podatek()],
-  [/^\/badanie$/, async () => (await S()).badanie()],
+  [/^\/sprawa\/(slub|smierc|firma|emerytura|osiemnastka|renta)$/, async (m, q) => czyja(m[1], async () => (await Z())[m[1]]())(m, q)],
+  [/^\/osoby$/, () => W.osoby()],
+  [/^\/mandat$/, czyja('mandat', async () => (await S()).mandat())],
+  [/^\/podatek$/, czyja('podatek', async () => (await S()).podatek())],
+  [/^\/badanie$/, czyja('badanie', async () => (await S()).badanie())],
   [/^\/asystent$/, (m, q) => asystent(q)],
   [/^\/dokumenty$/, () => W.dokumentyWidok()],
   [/^\/dokument\/([a-z]+)$/, m => W.dokument(m[1])],
@@ -52,7 +56,7 @@ const ZAKLADKI = [
   ['#/sprawy', 'list', 'Sprawy', /^\/(sprawy|sprawa|mandat|podatek|badanie)/],
   ['#/asystent', 'chat', 'Asystent', /^\/asystent/],
   ['#/dokumenty', 'wallet', 'Dokumenty', /^\/(dokument|pokaz)/],
-  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test|kto-dzwoni|poparcie)/],
+  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|osoby|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test|kto-dzwoni|poparcie)/],
 ];
 
 function zastosujUstawienia() {
@@ -98,7 +102,7 @@ async function pokaz() {
   naglowek();
   scrollTo(0, 0);
   const apl = $('.aplikacja'); if (apl) apl.scrollTop = 0;
-  $$('.panel-kroki a').forEach(a => a.classList.toggle('akt', a.getAttribute('href').slice(1) === sciezka));
+  $$('.panel-kroki a[data-panel]').forEach(a => a.classList.toggle('akt', a.getAttribute('href').slice(1) === sciezka));
   if (!pierwszy) { $('h1', main)?.focus({ preventScroll: true }); ogloszenie(widok.tytul); }
   const kier = kierunek(poprzednia, sciezka), gotowy = !!$('.gotowe', main);
   // Po podpisie adres się nie zmienia, ale ekran tak: potwierdzenie też ma wejść.
@@ -171,6 +175,7 @@ function powloka() {
   $('#skan-btn').onclick = async () => (await K()).otworzSkaner();
   zastosujUstawienia();
   $('#panel-wyglad').innerHTML = wyborMotywu('motyw-panel');
+  $('#panel-osoby').innerHTML = Object.entries(OSOBY).map(([id, o]) => `<li><a href="${adresOsoby(id)}"${id === OSOBA ? ' class="akt" aria-current="true"' : ''}><span><b>${o.nazwa}:</b> ${o.krotko}.</span></a></li>`).join('');
   addEventListener('change', e => { if (e.target.name?.startsWith('motyw')) ustawMotyw(e.target.value); });
   addEventListener('ustawienia', () => { zastosujUstawienia(); pokaz(); });
   addEventListener('hashchange', pokaz);

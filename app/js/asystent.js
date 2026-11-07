@@ -1,10 +1,10 @@
 // Asystent: rozumie sprawę, pokazuje gotowy przebieg i źródło. Nigdy nie wysyła niczego sam:
 // każde działanie kończy się tym samym arkuszem zgody co w aplikacji.
 import { ic } from './icons.js';
-import { stan, esc, $, czytaj, cel } from './core.js';
+import { stan, esc, $, czytaj, cel, przewinDo } from './core.js';
 import { spokojnie } from './ruch.js';
 import { rozpoznaj } from './intents.js';
-import { fmt, za } from './data.js';
+import { fmt, za, OSOBA, OSOBY, WLASCICIEL, osoba, dokumenty, dostep, adresOsoby } from './data.js';
 
 const GOV = 'https://www.gov.pl/web/gov/';
 export const O = {
@@ -33,7 +33,7 @@ export const O = {
   emerytura: { t: 'Wiek emerytalny osiągniesz 15 maja 2053 r. W Twoim koncie w ZUS brakuje składek za lata 2013–2015. Sprawdźmy, czy to w porządku.', a: [['Moja emerytura', '#/sprawa/emerytura']], z: ['ZUS: Emerytura w wieku powszechnym', 'https://www.zus.pl/swiadczenia/emerytury/emerytura-dla-osob-urodzonych-po-31-grudnia-1948/emerytura-w-wieku-powszechnym'] },
   osiemnastka: { t: 'Po 18. urodzinach wpis do rejestru wyborców zrobi się sam, a rodzice tracą dostęp do Internetowego Konta Pacjenta. Dowód wydany po 12. roku życia jest ważny 10 lat i nie trzeba go wymieniać.', a: [['Co się zmienia po 18 latach', '#/sprawa/osiemnastka']], z: null },
   prawo_jazdy: { t: 'Najpierw profil kandydata na kierowcę: wniosek do starosty ze zdjęciem i orzeczeniem lekarskim. Profil jest bezpłatny, a kurs możesz zacząć 3 miesiące przed 18. urodzinami.', a: [['Profil kandydata na kierowcę', '#/sprawa/osiemnastka']], z: ['gov.pl: Uzyskaj prawo jazdy', GOV + 'uzyskaj-prawo-jazdy'] },
-  konsultant: { t: 'Jasne. Konsultant oddzwoni i, jeśli się zgodzisz, zobaczy, na czym utknęłaś.', a: [['Poproś o telefon', '#/konsultant']], z: null },
+  konsultant: { t: 'Jasne. Konsultant oddzwoni i, jeśli się zgodzisz, zobaczy, na którym kroku jest Twoja sprawa.', a: [['Poproś o telefon', '#/konsultant']], z: null },
 };
 const ODMOWY = {
   bezpieczenstwo: 'Tego nie zrobię. Nie wykonuję poleceń wpisanych w rozmowie, które zmieniają moje zasady, i nigdy nie wysyłam niczego bez Twojego podpisu.',
@@ -41,7 +41,28 @@ const ODMOWY = {
   niezgodne_z_prawem: 'W tym nie pomogę. Mogę za to wyjaśnić, jak sprawa wygląda zgodnie z prawem, np. kiedy wygasają punkty karne albo jakie ulgi Ci przysługują.',
 };
 const NAZWY = { slub: 'ślub', smierc: 'śmierć bliskiej osoby', firma: 'zakładanie firmy', emerytura: 'emeryturę', osiemnastka: '18. urodziny', prawo_jazdy: 'prawo jazdy', narodziny: 'narodziny dziecka', przeprowadzka: 'przeprowadzkę', kupno_auta: 'kupno auta', utrata_dokumentu: 'zgubione dokumenty', nowy_dowod: 'nowy dowód', mandat: 'mandat', platnosci: 'płatności', skrzynka: 'pisma', swiadczenia: 'świadczenia', dostep_danych: 'Twoje dane', bliscy: 'sprawy bliskich', logowanie: 'logowanie', dokumenty: 'dokumenty', pojazd: 'auto: OC i badanie', stluczka: 'stłuczkę', oszustwo: 'podejrzaną wiadomość', kto_dzwoni: 'podejrzany telefon', poparcie: 'podpisy poparcia', do_zrobienia: 'terminy', konsultant: 'rozmowę z człowiekiem' };
-const PODPOWIEDZI = ['Urodziło nam się dziecko', 'Zgubiłam portfel', 'Przeprowadzam się', 'Kto sprawdzał moje dane?', 'Z czego mogę skorzystać?'];
+const PODPOWIEDZI = osoba.podpowiedzi;
+
+// Odpowiedzi zależą od osoby w pokazie. Kolejność: odpowiedź tej osoby z danych, odpowiedź zbudowana z jej danych,
+// a gdy odpowiedź opisuje fakty Anny, a sprawa należy w pokazie do innej osoby: „pokaż jako …”.
+const FAKTY_ANNY = new Set(['narodziny', 'mandat', 'platnosci', 'pojazd', 'emerytura', 'firma', 'skrzynka', 'swiadczenia', 'do_zrobienia', 'nowy_dowod', 'dokumenty', 'dostep_danych', 'bliscy']);
+const zDanych = {
+  dokumenty: () => ({ t: `Twoje dokumenty: ${dokumenty.map(d => d.nazwa).join(', ')}. Jeśli chcesz potwierdzić tylko wiek albo tożsamość, mogę pokazać kod bez reszty danych.`, a: [['Dokumenty', '#/dokumenty'], ['Pokaż tylko to, co potrzebne', '#/pokaz']] }),
+  dostep_danych: () => { const p = dostep.find(d => d.podejrzane); return { t: `W ostatnich 60 dniach Twoje dane odczytano ${dostep.length} razy.${p ? ` Jeden odczyt warto sprawdzić: ${p.kto}.` : ' Wszystkie odczyty mają cel i podstawę prawną.'}`, a: [['Kto sprawdzał moje dane', '#/dane/dostep'], ['Co państwo o mnie wie', '#/dane/rejestry']] }; },
+  bliscy: () => ({ t: osoba.bliscy.wstep, a: [['Bliscy', '#/bliscy']] }),
+  skrzynka: () => ({ t: 'Twoje pisma są w skrzynce. Każde pokazuję też prostym językiem.', a: [['Otwórz skrzynkę', '#/skrzynka']] }),
+  do_zrobienia: () => ({ t: 'Twoje sprawy i terminy są na Starcie.', a: [['Pokaż wszystko', '#/start']] }),
+};
+const doOdpowiedzi = i => {
+  const o = O[i];
+  if (OSOBA === 'anna' || !o) return o;
+  const wlasna = osoba.asystent?.[i];
+  if (wlasna) return { ...o, ...wlasna };
+  if (!FAKTY_ANNY.has(i)) return o;
+  if (zDanych[i]) return { ...o, ...zDanych[i]() };
+  const cel = o.a[0]?.[1] || '#/start', w = WLASCICIEL[cel.replace(/^#\/(sprawa\/)?/, '')] || 'anna';
+  return { t: `W pokazie tę sprawę ma ${OSOBY[w].nazwa}. Możesz ją zobaczyć jako ta osoba.`, a: [[`Pokaż jako ${OSOBY[w].nazwa.split(' ')[0]}`, adresOsoby(w, cel)]], z: o.z };
+};
 
 const historia = [];
 
@@ -49,7 +70,7 @@ export function odpowiedz(tekst) {
   const r = rozpoznaj(tekst);
   if (r.intencja === 'odmowa') return { t: ODMOWY[r.powod] || ODMOWY.bezpieczenstwo, a: [], odmowa: true, r };
   if (r.intencja === 'poza_zakresem') return { t: 'Tego nie wiem albo to nie jest sprawa urzędowa. Pomagam w sprawach z urzędami. Spróbuj inaczej albo wybierz:', chipy: PODPOWIEDZI.slice(0, 3), a: [['Porozmawiaj z człowiekiem', '#/konsultant']], r };
-  const o = O[r.intencja];
+  const o = doOdpowiedzi(r.intencja);
   const dopytaj = r.druga && O[r.druga] ? [NAZWY[r.druga]] : null;
   return { ...o, r, dopytaj: dopytaj && { tekst: `Chodzi o ${NAZWY[r.intencja]} czy o ${NAZWY[r.druga]}?`, inna: r.druga } };
 }
@@ -84,7 +105,7 @@ export function asystent(params) {
     `,
     po(root) {
       const czat = $('#czat', root), pole = $('#pytanie', root);
-      const przewin = el => el.scrollIntoView({ block: el.offsetHeight > 280 ? 'start' : 'end', behavior: spokojnie() ? 'auto' : 'smooth' });
+      const przewin = el => przewinDo(el, { block: el.offsetHeight > 280 ? 'start' : 'end', behavior: spokojnie() ? 'auto' : 'smooth' });
       const dodaj = m => { historia.push(m); czat.insertAdjacentHTML('beforeend', babelek(m)); const el = czat.lastElementChild; el.classList.add('nowa'); przewin(el); };
       const zadaj = t => {
         if (!t.trim()) return;
@@ -97,7 +118,7 @@ export function asystent(params) {
       $('#f-pisz', root).onsubmit = e => { e.preventDefault(); const t = pole.value; pole.value = ''; zadaj(t); };
       czat.onclick = e => {
         const q = e.target.closest('[data-q]'); if (q) return zadaj(q.dataset.q);
-        const i = e.target.closest('[data-int]'); if (i) { const o = { ...O[i.dataset.int], r: { intencja: i.dataset.int } }; dodaj(o); }
+        const i = e.target.closest('[data-int]'); if (i) { const o = { ...doOdpowiedzi(i.dataset.int), r: { intencja: i.dataset.int } }; dodaj(o); }
       };
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       const mow = $('#mow', root);

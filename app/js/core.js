@@ -1,15 +1,17 @@
 // Stan aplikacji, zdarzenia (dla trybu testowego) i wspólne elementy interfejsu.
 import { ic } from './icons.js';
 import { wysun, schowaj, wyskocz } from './ruch.js';
+import { OSOBA, osoba } from './data.js';
 
-const KLUCZ = 'mobywatel-proto-v1';
+// Każda osoba w pokazie ma własny zapisany stan (Anna zachowuje dotychczasowy klucz).
+const KLUCZ = 'mobywatel-proto-v1' + (OSOBA === 'anna' ? '' : '-' + OSOBA);
 const POCZATEK = () => ({
   zrobione: {},          // id zadania -> true
   wyslane: [],           // historia wysłanych spraw {tytul, kiedy, do}
   noweDostepy: [],       // wpisy do rejestru dostępu powstałe w trakcie pokazu
   imieDziecka: '',
   autopilot: {},
-  ustawienia: { prosty: false, duzy: false, kontrast: false, czytaj: false },
+  ustawienia: { prosty: false, duzy: false, kontrast: false, czytaj: false, ...osoba.ustawienia }, // Halina zaczyna w trybie prostym
   przeczytane: {},
   zgloszoneDostepy: {},
   poparcia: {},          // id inicjatywy -> kiedy poparta
@@ -61,6 +63,17 @@ export const emit = (n, d) => (sluchacze[n] || []).forEach(f => { try { f(d); } 
 export const cel = id => emit('cel', id);
 
 export const $ = (s, r = document) => r.querySelector(s);
+// Jak scrollIntoView, ale w symulacji telefonu przewija tylko ekran telefonu. scrollIntoView przewijało też całą stronę,
+// więc telefon „uciekał” w górę okna. Uwzględnia scroll-margin i skalę telefonu.
+export function przewinDo(el, { block = 'nearest', behavior = 'auto' } = {}) {
+  const sc = document.documentElement.classList.contains('ramka') && el.closest('.aplikacja');
+  if (!sc) return el.scrollIntoView({ block, behavior });
+  const k = sc.getBoundingClientRect(), r = el.getBoundingClientRect(), s = k.height / sc.clientHeight || 1;
+  const st = getComputedStyle(el), mt = parseFloat(st.scrollMarginTop) || 0, mb = parseFloat(st.scrollMarginBottom) || 0;
+  const gora = (r.top - k.top) / s - mt, dol = (r.bottom - k.bottom) / s + mb;
+  const dy = block === 'start' ? gora : block === 'end' ? dol : block === 'center' ? (gora + mt + dol - mb) / 2 : gora < 0 ? gora : dol > 0 ? Math.min(dol, gora) : 0;
+  if (dy) sc.scrollBy({ top: dy, behavior });
+}
 export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 export const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 

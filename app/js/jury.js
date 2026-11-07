@@ -16,7 +16,7 @@ export function jury() {
     <p class="wstep">Prototyp Janusza Cieszyńskiego odpowiada, gdy zapytasz. Nasz zaczyna sprawę sam: zauważa zdarzenie (urodziło się dziecko, kończy się dowód), łączy sprawy z kilku urzędów w jedną listę wypełnioną danymi, które państwo już ma, i prosi o <b>jeden podpis</b>. Asystent jest jednym z wejść, nie całą aplikacją.</p>
 
     <h2 class="sekcja">Spróbuj w 60 sekund</h2>
-    <ol class="punkty"><li>Na starcie dotknij <a href="#/sprawa/narodziny">„Urodziła się Twoja córka”</a>.</li><li>Wybierz imię i dotknij „Przejrzyj i podpisz raz”.</li><li>Zobacz w <a href="#/dane/dostep">„Kto sprawdzał moje dane”</a>, które urzędy użyły Twoich danych i po co.</li></ol>
+    <ol class="punkty"><li>Na starcie dotknij <a href="#/sprawa/narodziny">„Urodziła się Twoja córka”</a>.</li><li>Wybierz imię i dotknij „Przejrzyj i podpisz raz”.</li><li>Zobacz w <a href="#/dane/dostep">„Kto sprawdzał moje dane”</a>, które urzędy użyły Twoich danych i po co.</li><li>Zmień osobę w <a href="#/osoby">„Osoby w pokazie”</a>: Halina (78 lat) ma tryb prosty i gotowy wniosek o rentę wdowią.</li></ol>
 
     <h2 class="sekcja">Co zmierzyliśmy</h2>
     ${W ? `<p class="maly">Pomiar z ${esc(m.data)}. Te same narzędzia uruchomiliśmy na prototypie referencyjnym (kod z mobywatel.ai, tryb przeglądarkowy).</p>

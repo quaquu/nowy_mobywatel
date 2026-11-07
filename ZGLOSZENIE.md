@@ -30,7 +30,8 @@ Problem: obywatel musi sam wiedzieć, że ma coś do załatwienia, w którym urz
 Moja wersja odwraca kierunek. Państwo przychodzi ze sprawą: szpital zgłosił narodziny, więc na starcie czeka karta „Urodziła się Twoja córka”. Jedno dotknięcie pokazuje 5 spraw w 4 instytucjach, wypełnionych danymi, które państwo już ma: zgłoszenie urodzenia (akt, PESEL, meldunek), 800+, becikowe, ubezpieczenie dziecka i urlop rodzicielski. Arkusz zgody pokazuje, co, dokąd i z jakimi danymi wyślemy. Jeden podpis. Zmierzone: 4 dotknięcia i ok. 14 s (model KLM) wobec 6 dotknięć i 24 s za 2 sprawy w referencji.
 
 Co jeszcze da się przejść do końca:
-• 10 spraw życiowych: narodziny, przeprowadzka, kupno auta (historia z ostrzeżeniem o cofniętym liczniku), utrata dokumentów, nowy dowód (wniosek gotowy, wizyta po odciski palców), ślub, śmierć bliskiej osoby (zasiłek pogrzebowy liczony z rachunków, renta wdowia dla mamy z jej upoważnienia), firma (CEIDG z ZUS, podatkiem i VAT), emerytura (luka w składkach wykryta z danych US i ZUS), 18 lat (profil kandydata na kierowcę).
+• 4 osoby do wyboru, jak w referencji, każda z własnymi dokumentami, pismami i sprawami: Anna (33 lata, właśnie urodziła córkę), jej mama Halina (78 lat, tryb prosty), Jakub (17 lat) i Katarzyna (29 lat, planuje ślub).
+• 11 spraw życiowych: narodziny, przeprowadzka, kupno auta (historia z ostrzeżeniem o cofniętym liczniku), utrata dokumentów, nowy dowód (wniosek gotowy, wizyta po odciski palców), ślub (wspólna sprawa narzeczonych), śmierć bliskiej osoby (zasiłek pogrzebowy liczony z rachunków), renta wdowia (wyliczenie obu wariantów), firma (CEIDG z ZUS, podatkiem i VAT), emerytura (luka w składkach wykryta z danych US i ZUS), 18 lat (profil kandydata na kierowcę).
 • Mandat i podatek z BLIK, badanie techniczne ze stacjami na mapie i rezerwacją terminu.
 • „Możesz skorzystać”: świadczenia i ulgi wykryte z rejestrów.
 • Przypomnienia i zlecenia: zlecenie (jak zlecenie stałe w banku) np. opłaci ratę podatku, zawsze z uprzedzeniem.
@@ -62,8 +63,9 @@ https://quaquu.github.io/nowy_mobywatel/
 
 **Dodatkowy link** <!-- pole: link2 -->
 ```
-https://github.com/quaquu/nowy_mobywatel
+https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4
 ```
+Film 67 s z napisami, bez dźwięku, nagrany z prototypu skryptem `tests/film.mjs` (odtwarzalny). Repozytorium idzie w pole „Strona www”.
 
 **Polskie modele i technologie** <!-- pole: technologie, max 300 -->
 ```

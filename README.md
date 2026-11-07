@@ -11,13 +11,15 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 - Prototyp: `https://quaquu.github.io/nowy_mobywatel/` (po włączeniu GitHub Pages, patrz niżej)
 - Na komputerze prototyp otwiera się w symulacji iPhone'a z panelem „Co sprawdzić”; przycisk **Pełny ekran** pokazuje go bez ramki (adres z `?widok=pelny` albo `?widok=telefon` wymusza widok). Na telefonie zawsze pełny ekran.
 - 60 sekund dla jury: w prototypie **Więcej → Dla jury**
+- Film 67 s z napisami: `https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4` (nagrywa go `node tests/film.mjs` z działającego prototypu; napisy i ślady dotknięć dokłada skrypt nagrania)
 - Lokalnie: `node tests/serve.mjs` i otwórz `http://127.0.0.1:8080/`
 
 ## Co jest w środku
 
 | Obszar | Co działa |
 |---|---|
-| Sprawy życiowe | 10 pełnych przebiegów: narodziny dziecka (historia flagowa), przeprowadzka, kupno używanego auta, utrata dokumentów, nowy dowód (wniosek i wizyta po odciski palców), śmierć bliskiej osoby (zasiłek pogrzebowy, renta wdowia dla mamy), zakładanie firmy (CEIDG, podatek, ZUS, VAT), emerytura (brakujące okresy składek), a ślub i 18. urodziny na przykładzie osoby fikcyjnej |
+| Osoby w pokazie | 4 fikcyjne osoby (Więcej → Zmień osobę w pokazie, panel obok telefonu albo adres `?osoba=anna|halina|jakub|kasia`): Anna Wójcik (33 lata, narodziny córki), jej mama Halina Nowicka (78 lat, tryb prosty, renta wdowia), Jakub Lis (17 lat, osiemnastka i prawo jazdy), Katarzyna Lis (29 lat, ślub). Każda ma swoje dokumenty, pisma, świadczenia, odczyty danych i zapisany osobno stan. Sprawa innej osoby otwiera ekran „Pokaż jako …” |
+| Sprawy życiowe | 11 pełnych przebiegów: narodziny dziecka (historia flagowa), przeprowadzka, kupno używanego auta, utrata dokumentów, nowy dowód (wniosek i wizyta po odciski palców), śmierć bliskiej osoby (zasiłek pogrzebowy, renta wdowia dla mamy), zakładanie firmy (CEIDG, podatek, ZUS, VAT), emerytura (brakujące okresy składek) u Anny; renta wdowia u Haliny (dwa warianty wyliczenia, decyzja widoczna dla córki); ślub u Katarzyny; 18. urodziny u Jakuba |
 | Płatności | Mandat z fotoradaru i podatek od nieruchomości (BLIK), zlecenie stałe płatności za zgodą |
 | Badanie techniczne | Termin ważności auta, stacje kontroli na mapie poglądowej (fikcyjne), wolne terminy i rezerwacja, opłata 149 zł z rozporządzenia |
 | Przypomnienia i zlecenia | Przypomnienie tylko daje znać o terminie; zlecenie robi coś za Ciebie (jak zlecenie stałe w banku), zawsze z uprzedzeniem |

@@ -2,6 +2,8 @@
 
 Do nagrania filmu (dodatkowy link w zgłoszeniu) albo pokazu na żywo. Telefon albo okno przeglądarki o szerokości 390 px. Przed startem: **Ustawienia → „Zacznij pokaz od nowa”**.
 
+Gotowy film bez dźwięku, z napisami (67 s): `https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4`. Nagrywa go `node tests/film.mjs` z działającego prototypu, więc po każdej zmianie można go odtworzyć. Poniższy scenariusz jest do pokazu na żywo albo nagrania z głosem.
+
 Tekst mówiony jest pogrubiony. Czas narasta.
 
 | Czas | Ekran i ruch | Mówisz |

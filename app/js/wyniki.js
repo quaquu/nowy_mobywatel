@@ -2,12 +2,12 @@
 export const WYNIKI = {
  "data": "7 listopada 2026",
  "crawler": {
-  "strony": 264,
-  "trasy": 44,
+  "strony": 276,
+  "trasy": 46,
   "problemy": 0
  },
  "sprawy": {
-  "liczba": 31,
+  "liczba": 33,
   "nieudane": []
  },
  "offline": true,
@@ -24,7 +24,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8.3,
+   "systemS": 8,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -135,26 +135,26 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 98,
+   "performance": 96,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2345,
-   "tbtMs": 33
+   "lcpMs": 2565,
+   "tbtMs": 52
   },
   "ref": {
-   "performance": 84,
+   "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4211,
-   "tbtMs": 30
+   "lcpMs": 4352,
+   "tbtMs": 26
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 958,
-   "slowa": 4811,
+   "zdania": 902,
+   "slowa": 4541,
    "sredniaDlugoscZdania": 5,
-   "procentTrudnych": 12,
+   "procentTrudnych": 11.8,
    "fog": 6.8
   },
   "ref": {

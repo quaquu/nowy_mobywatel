@@ -1,12 +1,16 @@
 // Ekrany poza przebiegami spraw: start, dokumenty, skrzynka, prywatność, bliscy, ustawienia.
 import { ic } from './icons.js';
 import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane, wyborMotywu } from './core.js';
-import { zdjecieAnny, twarzMamy, twarzCorki, autoZBoku } from './grafiki.js';
-import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna } from './data.js';
+import { portret, twarzMamy, twarzCorki, autoZBoku } from './grafiki.js';
+import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, OSOBA, OSOBY, osoba, adresOsoby } from './data.js';
+
+// Awatar osoby albo dziecka: klucz z danych („corka”, „mama”, osoba z pokazu) albo nazwa ikony.
+const AWATARY = { corka: () => twarzCorki(), mama: () => twarzMamy(), anna: () => portret('anna', null, 'awatar'), halina: () => twarzMamy(), jakub: () => portret('jakub', null, 'awatar'), kasia: () => portret('kasia', null, 'awatar') };
+const awatar = k => AWATARY[k] ? AWATARY[k]() : k;
 
 const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
 // `ikona`: nazwa ikony albo gotowy rysunek SVG (awatar osoby).
-const poz = (href, ikona, t, opis, extra = '') => `<li><a class="poz" href="${href}">${ikona.startsWith('<') ? `<span class="awatar">${ikona}</span>` : ic(ikona, 'okr')}<span><b>${esc(t)}</b>${opis ? `<small>${opis}</small>` : ''}</span>${extra}${ic('right', 'strz')}</a></li>`;
+const poz = (href, ikona, t, opis, extra = '') => `<li><a class="poz" href="${href}">${(ikona = awatar(ikona)).startsWith('<') ? `<span class="awatar">${ikona}</span>` : ic(ikona, 'okr')}<span><b>${esc(t)}</b>${opis ? `<small>${opis}</small>` : ''}</span>${extra}${ic('right', 'strz')}</a></li>`;
 const otwarte = () => zadania.filter(z => !stan.zrobione[z.id]);
 // Badanie techniczne po rezerwacji: zamiast „stacje w pobliżu” termin i stacja.
 const rezerwacja = () => { const r = stan.badanie; if (!r) return null; const t = new Date(r.kiedy); return `zarezerwowane: ${fmt(t, { weekday: 'short', day: 'numeric', month: 'long' })}, ${t.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })} · ${r.krotko}`; };
@@ -30,7 +34,7 @@ function kodQR(ziarno = 7) {
 }
 function kartaDok(d, przod) {
   const dolna = przod
-    ? `<span class="kd-dol"><span class="kd-foto">${zdjecieAnny()}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill">${ic('eye')}Pokaż dane</span></span>`
+    ? `<span class="kd-dol"><span class="kd-foto">${portret(OSOBA)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill">${ic('eye')}Pokaż dane</span></span>`
     : '';
   return `<a class="kd kd-${d.kolor}${przod ? ' kd-przod' : ''}" href="${d.href || '#/dokument/' + d.id}" aria-label="${esc(d.nazwa)}: ${esc(d.linia)}${d.alert ? ', ' + esc(d.alert) : ''}">
     <span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b>${d.alert && !przod ? '<span class="kd-kropka" aria-hidden="true"></span>' : ''}<span class="kd-holo" aria-hidden="true"></span></span>
@@ -41,16 +45,16 @@ export function stos(lista) {
   return `<div class="stos" role="list">${lista.map((d, i) => `<div role="listitem">${kartaDok(d, i === lista.length - 1)}</div>`).join('')}</div>`;
 }
 const dokumentyDoStosu = () => {
-  const l = [dokumenty[2], dokumenty[1]];
-  if (stan.zrobione.narodziny) l.unshift({ id: 'corka', nazwa: `${stan.imieDziecka} ${ja.nazwisko}`, linia: 'córka · PESEL i odpis aktu w drodze', kolor: 'zielony', href: '#/bliscy' });
+  const l = dokumenty.slice(1).reverse(); // pierwszy dokument (mDowód) jest z przodu
+  if (OSOBA === 'anna' && stan.zrobione.narodziny) l.unshift({ id: 'corka', nazwa: `${stan.imieDziecka} ${ja.nazwisko}`, linia: 'córka · PESEL i odpis aktu w drodze', kolor: 'zielony', href: '#/bliscy' });
   return [...l, dokumenty[0]];
 };
 
 /* ---------------- Start ---------------- */
 export function start() {
   if (stan.ustawienia.prosty) return startProsty();
-  const zad = otwarte();
-  const narodzinyOtwarte = !stan.zrobione.narodziny;
+  const h = osoba.hero, heroOtwarte = h && !stan.zrobione[h.id];
+  const zad = otwarte().filter(z => !(heroOtwarte && z.id === h.id)); // sprawa z karty na górze nie powtarza się na liście
   // 1 zlecenie, 2–4 zlecenia, 0 i 5+ zleceń (12–14: zleceń)
   const odm = (n, j, k, w) => `${n} ${n === 1 ? j : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? k : w}`;
   const ileWl = rodzaj => autopilot.filter(a => a.rodzaj === rodzaj && (stan.autopilot[a.id] ?? a.wl)).length;
@@ -60,11 +64,11 @@ export function start() {
     tytul: 'Start',
     html: `
     <h1 tabindex="-1" class="powitanie">${powitanie}, ${esc(ja.wolacz)}</h1>
-    ${narodzinyOtwarte ? `
-    <a class="hero sprawa" href="#/sprawa/narodziny" aria-label="Sprawa przyszła do Ciebie: urodziła się Twoja córka. 5 spraw w 4 instytucjach, jeden podpis. Załatw wszystko naraz.">
-      <span class="awatar hero-aw">${twarzCorki()}</span>
-      <span class="hero-tr"><b class="hero-t">Urodziła się Twoja córka</b><span class="hero-o">5 spraw w 4 instytucjach, jeden podpis</span></span>
-      <span class="hero-go">Załatw wszystko naraz${ic('right')}</span>
+    ${heroOtwarte ? `
+    <a class="hero sprawa" href="${h.cel}" aria-label="${esc(h.aria)}">
+      ${h.awatar ? `<span class="awatar hero-aw">${awatar(h.awatar)}</span>` : `<span class="hero-aw hero-ikona">${ic(h.ikona)}</span>`}
+      <span class="hero-tr"><b class="hero-t">${esc(h.tytul)}</b><span class="hero-o">${esc(h.opis)}</span></span>
+      <span class="hero-go">${esc(h.przycisk)}${ic('right')}</span>
     </a>` : ''}
     ${stos(dokumentyDoStosu())}
     <form class="zapytaj" action="#/asystent" role="search" id="f-zap">
@@ -83,8 +87,9 @@ export function start() {
     <section aria-labelledby="h-dla">
       <h2 id="h-dla" class="sekcja">Dla Ciebie</h2>
       <ul class="lista">
-        ${poz('#/naleznosci', 'gift', 'Możesz skorzystać', stan.zrobione.narodziny ? '2 świadczenia przyznane, 2 przyjdą same' : '4 świadczenia dla Twojej rodziny')}
-        ${poz('#/bliscy/mama', twarzMamy(), `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}
+        ${OSOBA === 'anna' ? `${poz('#/naleznosci', 'gift', 'Możesz skorzystać', stan.zrobione.narodziny ? '2 świadczenia przyznane, 2 przyjdą same' : '4 świadczenia dla Twojej rodziny')}
+        ${poz('#/bliscy/mama', twarzMamy(), `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}` : `${naleznosci.length ? poz('#/naleznosci', 'gift', 'Możesz skorzystać', naleznosci.map(n => n.tytul).join(', ')) : ''}
+        ${osoba.bliscy.osoby.map(([href, a, t, o]) => poz(href, a, t, esc(o))).join('')}`}
         ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', `włączone: ${odm(ileWl('przypomnienie'), 'przypomnienie', 'przypomnienia', 'przypomnień')}, ${odm(ileWl('zlecenie'), 'zlecenie', 'zlecenia', 'zleceń')}`)}
       </ul>
     </section>
@@ -100,7 +105,8 @@ export function start() {
 
 function startProsty() {
   const zad = otwarte();
-  const najwazniejsza = !stan.zrobione.narodziny ? { t: 'Urodziła się córka: załatw sprawy', h: '#/sprawa/narodziny' } : zad[0] ? { t: zad[0].tytul, h: zad[0].cel } : null;
+  const h = osoba.hero;
+  const najwazniejsza = h && !stan.zrobione[h.id] ? { t: h.tytul, h: h.cel } : zad[0] ? { t: zad[0].tytul, h: zad[0].cel } : null;
   return {
     tytul: 'Start',
     html: `
@@ -133,14 +139,14 @@ export function dokument(id) {
   return {
     tytul: d.nazwa,
     html: `<h1 tabindex="-1">${esc(d.nazwa)}</h1>
-    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span>${id === 'pojazd' ? `<span class="kd-auto">${autoZBoku({ kolor: 'czerwony', opis: 'Toyota Yaris, czerwona' })}</span>` : `<span class="kd-dol"><span class="kd-foto">${zdjecieAnny('Zdjęcie: ' + ja.imie + ' ' + ja.nazwisko)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span>`}</div>
+    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span>${id === 'pojazd' ? `<span class="kd-auto">${autoZBoku({ kolor: 'czerwony', opis: 'Toyota Yaris, czerwona' })}</span>` : `<span class="kd-dol"><span class="kd-foto">${portret(OSOBA, 'Zdjęcie: ' + ja.imie + ' ' + ja.nazwisko)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span>`}</div>
     <details class="karta kod-qr"><summary>${ic('eye')}Pokaż kod do sprawdzenia dokumentu</summary><span class="qr duzy" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span><p class="maly srodek">Kod ważny 2 minuty. Sprawdzający zobaczy go w swojej aplikacji.</p></details>
     <section class="karta">${d.pola.map(p => wiersz(...p)).join('')}
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>
       <button class="btn tekst" id="blad-dan">Te dane są błędne? Zgłoś to</button>
     </section>
     ${id === 'pojazd' ? `<a class="karta link-karta" href="#/badanie">${ic('clock', 'okr')}<span><b>Badanie techniczne za 19 dni</b><small>Stacje kontroli w pobliżu na mapie i wolne terminy.</small></span>${ic('right', 'strz')}</a>` : ''}
-    ${id === 'dowod' ? `<a class="btn glowny szeroki" href="#/sprawa/dowod">Złóż wniosek o nowy dowód</a>` : ''}`,
+    ${d.akcja ? `<a class="btn glowny szeroki" href="${d.akcja[1]}">${esc(d.akcja[0])}</a>` : ''}`,
     po(root) { $('#blad-dan', root).onclick = () => toast(`Zgłoszenie trafiło do: ${d.zrodlo}. Odpowiedź dostaniesz w skrzynce.`); },
   };
 }
@@ -172,7 +178,7 @@ export function pokaz() {
 
 /* ---------------- Skrzynka ---------------- */
 export function skrzynkaWidok() {
-  const doZap = [!stan.zrobione.mandat && ['#/mandat', 'Mandat z fotoradaru', '200 zł do ' + fmt(za(6))], !stan.zrobione.podatek && ['#/podatek', 'Podatek od nieruchomości', '186 zł do ' + fmt(za(23))]].filter(Boolean);
+  const doZap = OSOBA !== 'anna' ? [] : [!stan.zrobione.mandat && ['#/mandat', 'Mandat z fotoradaru', '200 zł do ' + fmt(za(6))], !stan.zrobione.podatek && ['#/podatek', 'Podatek od nieruchomości', '186 zł do ' + fmt(za(23))]].filter(Boolean);
   return {
     tytul: 'Skrzynka',
     html: `<h1 tabindex="-1">Pisma i płatności</h1>
@@ -204,6 +210,7 @@ export function naleznosciWidok() {
     tytul: 'Możesz skorzystać',
     html: `<h1 tabindex="-1">Możesz skorzystać</h1>
     <p class="wstep">Sprawdziliśmy to w rejestrach, do których państwo już ma dostęp. Nic nie musisz wpisywać.</p>
+    ${naleznosci.length ? '' : '<p class="pusto">Na razie nic nowego. Sprawdzamy rejestry co miesiąc i damy znać, gdy coś Ci przysługuje.</p>'}
     <ul class="lista-kart">${naleznosci.map(n => {
       const zalatwione = stan.zrobione.narodziny && (n.id === 'becikowe' || n.id === '800');
       return `<li class="karta"><h2 class="nag">${ic('gift')}${esc(n.tytul)}</h2><p class="kwota">${esc(n.kwota)}</p><p><b>Dlaczego Tobie:</b> ${esc(n.dlaczego)}</p>
@@ -239,8 +246,8 @@ export function dane() {
     tytul: 'Twoje dane',
     html: `<h1 tabindex="-1">Twoje dane i prywatność</h1>
     <ul class="lista">
-      ${poz('#/dane/dostep', 'eye', 'Kto sprawdzał moje dane', `${n} odczytów w ostatnich 60 dniach`, '<span class="plak pomaranczowa">1 do wyjaśnienia</span>')}
-      ${poz('#/dane/rejestry', 'doc', 'Co państwo o mnie wie', '5 rejestrów, źródło i data każdej danej')}
+      ${poz('#/dane/dostep', 'eye', 'Kto sprawdzał moje dane', `odczyty w ostatnich 60 dniach: ${n}`, dostep.some(d => d.podejrzane) ? '<span class="plak pomaranczowa">1 do wyjaśnienia</span>' : '')}
+      ${poz('#/dane/rejestry', 'doc', 'Co państwo o mnie wie', `rejestry: ${osoba.rejestry.length}, źródło i data każdej danej`)}
       ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'co robimy za Ciebie i za jaką zgodą')}
       ${poz('#/pokaz', 'shield', 'Pokaż tylko to, co potrzebne', 'np. pełnoletność bez daty urodzenia')}
     </ul>`,
@@ -256,7 +263,7 @@ export function dostepWidok() {
     <ul class="lista-kart">${wpisy.map((d, i) => `<li><details class="karta wpis${d.podejrzane ? ' podejrzane' : ''}" data-wpis="${d.id || 'n' + i}">
       <summary><span><b>${esc(d.kto)}</b><small>${fmt(d.kiedy)} · ${esc(d.po)}</small></span>${d.podejrzane ? '<span class="plak pomaranczowa">sprawdź</span>' : d.nowy ? '<span class="plak niebieska">nowe</span>' : ''}</summary>
       ${wiersz('Jakie dane', d.co)}${wiersz('Po co', d.po)}${d.podstawa ? wiersz('Podstawa prawna', d.podstawa) : wiersz('Podstawa', 'Twój wniosek')}
-      ${d.podejrzane ? '<p class="ostrz">' + ic('alert') + '<span>Nie kupowałaś karty SIM? Ktoś mógł próbować użyć Twoich danych. Zastrzeżenie PESEL zadziałało i operator odmówił.</span></p>' : ''}
+      ${d.podejrzane ? '<p class="ostrz">' + ic('alert') + `<span>${esc(d.podejrzane)}</span></p>` : ''}
       <button class="btn tekst" data-zglos="${esc(d.kto)}">To nie ja / zgłoś nieuprawniony dostęp</button>
     </details></li>`).join('')}</ul>
     <p class="stopka-info">Już dziś w mObywatelu w przeglądarce sprawdzisz historię weryfikacji numeru PESEL przez firmy i instytucje, a z gov.pl pobierzesz plik z odbiorcami danych z rejestru PESEL i Rejestru Dowodów Osobistych. Tu rozwijamy tę usługę: na bieżąco, ze wszystkich rejestrów, z celem i podstawą prawną oraz z ostrzeżeniem o podejrzanym odczycie. Wzór: estoński „Andmejälgija” (Data Tracker).</p>`,
@@ -268,13 +275,9 @@ export function dostepWidok() {
 }
 
 export function rejestry() {
-  const R = [
-    ['Rejestr PESEL', 'imię, nazwisko, PESEL, adres, stan cywilny, dzieci', 'Ministerstwo Cyfryzacji'],
-    ['Centralna Ewidencja Pojazdów i Kierowców', 'Toyota Yaris EL 4K217, prawo jazdy kat. B, 2 punkty', 'Ministerstwo Cyfryzacji'],
-    ['Krajowa Administracja Skarbowa', 'dochody za 2025 r., nadpłata 214 zł', 'Ministerstwo Finansów'],
-    ['ZUS', 'zatrudnienie: ' + ja.pracodawca + ', zasiłek macierzyński', 'ZUS'],
-    ['NFZ / Internetowe Konto Pacjenta', 'ubezpieczenie, recepty, skierowania', 'NFZ, Ministerstwo Zdrowia'],
-  ];
+  // Administrator każdego rejestru; dane z rejestrów różnią się między osobami w pokazie.
+  const ADMIN = { 'Rejestr PESEL': 'Ministerstwo Cyfryzacji', 'Centralna Ewidencja Pojazdów i Kierowców': 'Ministerstwo Cyfryzacji', 'Centralna Ewidencja Kierowców': 'Ministerstwo Cyfryzacji', 'Rejestr Dowodów Osobistych': 'Ministerstwo Cyfryzacji', 'Krajowa Administracja Skarbowa': 'Ministerstwo Finansów', ZUS: 'ZUS', 'NFZ / Internetowe Konto Pacjenta': 'NFZ, Ministerstwo Zdrowia', 'System Informacji Oświatowej': 'Ministerstwo Edukacji' };
+  const R = osoba.rejestry.map(([n, co]) => [n, co, ADMIN[n] || '']);
   return {
     tytul: 'Co państwo o mnie wie',
     html: `<h1 tabindex="-1">Co państwo o mnie wie</h1>
@@ -285,6 +288,13 @@ export function rejestry() {
 
 /* ---------------- Bliscy ---------------- */
 export function bliscy() {
+  if (OSOBA !== 'anna') return {
+    tytul: 'Bliscy',
+    html: `<h1 tabindex="-1">Bliscy</h1>
+    <p class="wstep">${esc(osoba.bliscy.wstep)}</p>
+    <ul class="lista">${osoba.bliscy.osoby.map(([href, a, t, o]) => poz(href, a, t, esc(o))).join('')}</ul>
+    <details class="rozw"><summary>Jak zmienić albo cofnąć upoważnienie</summary><p>Upoważnienie podpisuje osoba, która go udziela: w swoim mObywatelu albo w urzędzie. Cofnąć je możesz w każdej chwili tutaj; bliska osoba od razu traci dostęp.</p></details>`,
+  };
   return {
     tytul: 'Bliscy',
     html: `<h1 tabindex="-1">Bliscy</h1>
@@ -292,6 +302,7 @@ export function bliscy() {
     <ul class="lista">
       ${poz('#/bliscy/mama', twarzMamy(), `${mama.imie} ${mama.nazwisko}, ${mama.wiek} lat`, `upoważnienie: ${esc(mama.pelnomocnictwo)}`, stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}
       ${stan.zrobione.narodziny ? poz('#/dokumenty', twarzCorki(), `${stan.imieDziecka} ${ja.nazwisko}`, 'córka · PESEL nadawany, odpis aktu w drodze') : poz('#/sprawa/narodziny', twarzCorki(), 'Córka', 'najpierw zgłoś urodzenie')}
+      ${poz('#/sprawa/smierc', 'leaf', 'Tadeusz Nowicki, tata', 'zmarł ' + fmt(za(-42)) + ' · zasiłek pogrzebowy i renta wdowia dla mamy')}
     </ul>
     <button class="btn drugi szeroki" id="dodaj-bl">${ic('users')}Dodaj bliską osobę</button>
     <p class="stopka-info">Upoważnienie podpisuje osoba, która go udziela: w swoim mObywatelu albo w urzędzie, jeśli nie ma telefonu.</p>`,
@@ -311,7 +322,7 @@ export function blMama() {
       <button class="btn glowny szeroki" id="wizyta">Zamów wizytę urzędnika u mamy</button>
     </section>`}
     <section class="karta"><h2 class="nag">${ic('doc')}Recepta gotowa</h2>${wiersz('Lek', 'Metformax 500, 60 tabl.')}${wiersz('Kod', '4821')}<p class="maly">Z Internetowego Konta Pacjenta mamy, na podstawie upoważnienia.</p></section>
-    <section class="karta"><h2 class="nag">${ic('coin')}Emerytura</h2><p>Od marca wyższa o waloryzację. Mama nie musi nic robić.</p></section>`,
+    <section class="karta"><h2 class="nag">${ic('coin')}Renta wdowia</h2><p>Po śmierci taty mama może dostawać całą emeryturę i 15% renty rodzinnej, około 434 zł więcej co miesiąc. Wniosek złożysz w jej imieniu razem z zasiłkiem pogrzebowym.</p><a class="btn drugi szeroki" href="#/sprawa/smierc">Sprawy po śmierci taty</a></section>`,
     po(root) {
       const b = $('#wizyta', root);
       if (b) b.onclick = async () => {
@@ -460,8 +471,8 @@ export function wiecej() {
     <h2 class="grupa-t">Twoje sprawy</h2>
     <ul class="lista">
       ${poz('#/skrzynka', 'mail', 'Pisma i płatności', nowePisma() ? nowePisma() + ' nowe' : '')}
-      ${poz('#/naleznosci', 'gift', 'Możesz skorzystać', '4 świadczenia i ulgi')}
-      ${poz('#/bliscy', 'users', 'Bliscy', 'mama, córka')}
+      ${poz('#/naleznosci', 'gift', 'Możesz skorzystać', naleznosci.length ? naleznosci.map(n => n.tytul.split(':')[0]).join(', ') : 'sprawdzamy co miesiąc')}
+      ${poz('#/bliscy', 'users', 'Bliscy', esc(osoba.bliscyOpis))}
       ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'terminy i sprawy, które robimy za Ciebie')}
     </ul>
     <h2 class="grupa-t">Bezpieczeństwo i dane</h2>
@@ -481,8 +492,31 @@ export function wiecej() {
     </ul>
     <h2 class="grupa-t">O prototypie</h2>
     <ul class="lista">
+      ${poz('#/osoby', 'users', 'Zmień osobę w pokazie', `teraz: ${esc(OSOBY[OSOBA].nazwa)}`)}
       ${poz('#/jury', 'info', 'Dla jury', 'co mierzyliśmy i jak to sprawdzić')}
       ${poz('#/test', 'test', 'Tryb testowy', '')}
     </ul>`,
+  };
+}
+
+/* ---------------- Osoby w pokazie (jak „Wybierz osobę” w prototypie referencyjnym) ---------------- */
+// Zmiana osoby przeładowuje stronę z ?osoba=…; pozostałe parametry adresu (np. widok) zostają.
+export function osoby() {
+  return {
+    tytul: 'Osoby w pokazie',
+    html: `<h1 tabindex="-1">Osoby w pokazie</h1>
+    <p class="wstep">Każda osoba ma swoje dokumenty, sprawy i pisma. Wszystkie są fikcyjne. To, co zrobisz jako jedna osoba, zostaje zapisane osobno.</p>
+    <ul class="lista">${Object.entries(OSOBY).map(([id, o]) => `<li><a class="poz" href="${adresOsoby(id)}"${id === OSOBA ? ' aria-current="true"' : ''}><span class="awatar">${awatar(id)}</span><span><b>${esc(o.nazwa)}</b><small>${esc(o.opis)}</small></span>${id === OSOBA ? '<span class="plak niebieska">teraz</span>' : ''}${ic('right', 'strz')}</a></li>`).join('')}</ul>`,
+  };
+}
+export function innaOsoba(wlasciciel) {
+  const o = OSOBY[wlasciciel];
+  return {
+    tytul: 'Sprawa innej osoby',
+    html: `<h1 tabindex="-1">Ta sprawa dotyczy innej osoby</h1>
+    <section class="karta osoba-karta"><span class="awatar duzy">${awatar(wlasciciel)}</span><div><h2 class="nag">${esc(o.nazwa)}</h2><p class="maly">${esc(o.opis)}</p></div></section>
+    <p class="wstep">W pokazie każda osoba ma swoje sprawy. ${esc(ja.imie)} nie ma tej sprawy, więc pokażemy ją u osoby, której dotyczy.</p>
+    <a class="btn glowny szeroki" href="${adresOsoby(wlasciciel, location.hash)}">Pokaż jako ${esc(o.nazwa.split(' ')[0])}</a>
+    <a class="btn tekst szeroki" href="#/sprawy">Wróć do spraw</a>`,
   };
 }

@@ -131,7 +131,7 @@ export async function sprawy(url) {
   });
   // Sprawy z katalogu: każda ma pełny przebieg (walidacja, arkusz zgody, podpis, potwierdzenie).
   await krok('slub', async p => {
-    await p.goto(url + '#/sprawa/slub'); await p.waitForSelector('#slub-dalej');
+    await p.goto(url + '?osoba=kasia#/sprawa/slub'); await p.waitForSelector('#slub-dalej');
     await p.fill('#slub-data', '2020-01-01'); await p.click('#slub-dalej');
     if (!(await p.isVisible('#slub-data-blad'))) throw new Error('brak walidacji daty ślubu');
     await p.fill('#slub-data', await p.getAttribute('#slub-data', 'min')); await p.click('#slub-dalej'); await podpisz(p);
@@ -163,11 +163,34 @@ export async function sprawy(url) {
     if (!/Zastrzeżenie wysłane do ZUS/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
   });
   await krok('osiemnastka', async p => {
-    await p.goto(url + '#/sprawa/osiemnastka'); await p.waitForSelector('#dalej-18');
+    await p.goto(url + '?osoba=jakub#/sprawa/osiemnastka'); await p.waitForSelector('#dalej-18');
     await p.click('#dalej-18');
     if (!(await p.isVisible('#zdjecie-blad'))) throw new Error('profil bez zdjęcia');
     await p.click('[data-zal=zdjecie]'); await p.click('[data-zal=orzeczenie]'); await p.click('#dalej-18'); await podpisz(p);
     if (!/profil kandydata na kierowcę/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
+  });
+  // Osoby w pokazie: Halina składa rentę wdowią w trybie prostym; sprawa innej osoby prowadzi do „Pokaż jako …”.
+  await krok('renta', async p => {
+    await p.goto(url + '?osoba=halina#/start'); await p.waitForSelector('main h1');
+    if (!/Pani Halino/.test(await p.textContent('main h1'))) throw new Error('nie ta osoba');
+    if (!(await p.evaluate(() => document.documentElement.classList.contains('prosty')))) throw new Error('Halina bez trybu prostego');
+    await p.click('main a[href="#/sprawa/renta"]'); await p.waitForSelector('#renta-dalej');
+    if (!/3333,50 zł/.test(await p.textContent('main'))) throw new Error('złe wyliczenie renty wdowiej');
+    await p.click('#renta-dalej'); await podpisz(p);
+    if (!/Wniosek wysłany/.test(await p.textContent('main'))) throw new Error('brak potwierdzenia');
+    await p.goto(url + '?osoba=anna#/start'); await p.waitForSelector('main h1');
+    if (!(await p.isVisible('a.hero[href="#/sprawa/narodziny"]'))) throw new Error('stan Haliny przeciekł do Anny');
+  });
+  await krok('osoby', async p => {
+    await p.goto(url + '#/osoby'); await p.waitForSelector('main h1');
+    if ((await p.locator('main .lista li').count()) !== 4) throw new Error('nie ma 4 osób');
+    await p.goto(url + '#/sprawa/slub'); await p.waitForSelector('main h1');
+    if (!/innej osoby/.test(await p.textContent('main h1'))) throw new Error('Anna widzi cudzy ślub');
+    await p.click('text=Pokaż jako Katarzyna'); await p.waitForSelector('#slub-dalej');
+    await p.goto(url.split('?')[0] + '#/start'); await p.waitForSelector('main h1');
+    if (!/Katarzyno/.test(await p.textContent('main h1'))) throw new Error('wybór osoby nie został zapamiętany');
+    await p.goto(url + '?osoba=halina#/asystent?q=mandat'); await p.waitForSelector('.msg.bot >> nth=1');
+    if (!/ma Anna Wójcik/.test(await p.locator('.msg.bot').last().textContent())) throw new Error('asystent Haliny mówi o mandacie Anny');
   });
   await krok('mandat', async p => {
     await p.goto(url + '#/mandat'); await p.click('#man-ok');

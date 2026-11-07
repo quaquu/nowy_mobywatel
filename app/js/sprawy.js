@@ -1,10 +1,10 @@
 // Przebiegi spraw: każda sprawa to jeden ekran z danymi, które państwo już ma,
 // listą kroków do zaznaczenia i jednym podpisem na końcu.
 import { ic } from './icons.js';
-import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast, cel, przypnijAkcje } from './core.js';
+import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast, cel, przypnijAkcje, przewinDo } from './core.js';
 import { spokojnie } from './ruch.js';
 import { autoZBoku, zdjecieFotoradaru } from './grafiki.js';
-import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy } from './data.js';
+import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy, OSOBA, OSOBY, WLASCICIEL } from './data.js';
 
 // 1 sprawa, 2–4 sprawy, 5+ spraw (12–14: spraw)
 export const ileSpraw = n => `${n} ${n === 1 ? 'sprawa' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'sprawy' : 'spraw'}`;
@@ -229,7 +229,7 @@ export function auto() {
               <button class="btn glowny szeroki" id="kupuje">Kupuję to auto</button>
             </section>`;
           $('#kupuje', root).onclick = () => { autoKrok = 'kup'; dispatchEvent(new HashChangeEvent('hashchange')); };
-          $('#wynik h2', root).scrollIntoView({ behavior: spokojnie() ? 'auto' : 'smooth', block: 'start' });
+          przewinDo($('#wynik h2', root), { behavior: spokojnie() ? 'auto' : 'smooth', block: 'start' });
         };
       },
     };
@@ -445,11 +445,15 @@ export function podatek() {
 
 /* ---------------- Katalog spraw życiowych ---------------- */
 export function katalog() {
+  const czyja = s => WLASCICIEL[s.id] || OSOBA;
+  const moje = sprawy.filter(s => czyja(s) === OSOBA), inne = sprawy.filter(s => czyja(s) !== OSOBA);
+  const poz = (s, kto) => `<li><a class="poz" href="#/sprawa/${s.id}">${ic(s.ikona, 'okr')}<span><b>${esc(s.tytul)}</b><small>${esc(kto ? kto + ' · ' + s.opis : s.opis)}</small></span>${ic('right', 'strz')}</a></li>`;
   return {
     tytul: 'Sprawy życiowe',
     html: `<h1 tabindex="-1">Co się u Ciebie dzieje?</h1>
     <p class="wstep">Wybierz sytuację. Pokażemy wszystkie sprawy w różnych urzędach naraz, a nie każdą osobno.</p>
-    <ul class="lista">${sprawy.map(s => `<li><a class="poz" href="#/sprawa/${s.id}">${ic(s.ikona, 'okr')}<span><b>${esc(s.tytul)}</b><small>${esc(s.opis)}</small></span>${ic('right', 'strz')}</a></li>`).join('')}</ul>`,
+    <ul class="lista">${moje.map(s => poz(s)).join('')}</ul>
+    ${inne.length ? `<h2 class="grupa-t">Sprawy innych osób w pokazie</h2><ul class="lista">${inne.map(s => poz(s, OSOBY[WLASCICIEL[s.id]].nazwa)).join('')}</ul>` : ''}`,
   };
 }
 
@@ -527,7 +531,7 @@ export function badanie() {
       };
       root.addEventListener('click', e => {
         const b = e.target.closest('[data-st]');
-        if (b) { pokaz(STACJE.find(s => s.id === b.dataset.st)); if (b.classList.contains('m-pin')) $('#st-szcz', root).scrollIntoView({ block: 'nearest', behavior: spokojnie() ? 'auto' : 'smooth' }); return; }
+        if (b) { pokaz(STACJE.find(s => s.id === b.dataset.st)); if (b.classList.contains('m-pin')) przewinDo($('#st-szcz', root), { block: 'nearest', behavior: spokojnie() ? 'auto' : 'smooth' }); return; }
         if (e.target.closest('#rez-ok')) {
           const t = $('input[name=termin]:checked', root); if (!t) return;
           stan.badanie = { stacja: wybrana.id, kiedy: t.value, krotko: wybrana.krotko }; zapisz();

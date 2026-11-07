@@ -2,13 +2,12 @@
 // Ten sam wzór co narodziny: dane, które państwo już ma, wybory, arkusz zgody, jeden podpis, oś czasu.
 // Fakty i kwoty sprawdzone 02.11.2026 (źródła przy każdej sprawie). Osoby, adresy i liczby są fikcyjne.
 import { ic } from './icons.js';
-import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, przypnijAkcje } from './core.js';
-import { ja, mama, za, fmt, fmtPelna, zl } from './data.js';
+import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, przypnijAkcje, przewinDo } from './core.js';
+import { ja, mama, za, fmt, fmtPelna, zl, zmarl } from './data.js';
 import { krok, gotowe, zaznaczone, wiersz, zrodlo, wyborTerminu, dataWizyty, ileSpraw } from './sprawy.js';
 
 const wybor = (nazwa, opcje, legenda) => `<fieldset class="grupa"><legend class="etyk">${esc(legenda)}</legend>${opcje.map(([v, t, opis], i) => `<label class="opcja"><input type="radio" name="${nazwa}" value="${v}" ${i === 0 ? 'checked' : ''}> <span>${esc(t)}${opis ? `<small class="maly">${esc(opis)}</small>` : ''}</span></label>`).join('')}</fieldset>`;
 const wartosc = (root, nazwa) => $(`input[name=${nazwa}]:checked`, root)?.value;
-const przyklad = t => `<p class="uwaga">${ic('info')}<span>${t}</span></p>`;
 const isoDnia = d => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
 // Załącznik w prototypie: zdjęcie dokumentu „dodane” jednym dotknięciem (w aplikacji: aparat albo pliki).
 const zalacznik = (id, etykieta) => `<div class="zal"><button type="button" class="btn drugi maly-btn" data-zal="${id}" aria-pressed="false">${ic('doc')}${esc(etykieta)}</button><span class="maly" id="${id}-st" role="status"></span></div>`;
@@ -21,7 +20,7 @@ function obsluzZalaczniki(root) {
   });
 }
 const dodany = (root, id) => $(`[data-zal="${id}"]`, root)?.getAttribute('aria-pressed') === 'true';
-const blad = (root, id) => { const b = $(`#${id}-blad`, root); b.hidden = false; b.scrollIntoView({ block: 'center' }); };
+const blad = (root, id) => { const b = $(`#${id}-blad`, root); b.hidden = false; przewinDo(b, { block: 'center' }); };
 
 async function wyslij(root, { id, pozycje, dane, cofniecie, przycisk, stan: zapisany, wyslane }) {
   const ok = await arkuszZgody({ tytul: pozycje.tytul, pozycje: pozycje.lista, dane, cofniecie, przycisk, cel: id });
@@ -32,8 +31,8 @@ async function wyslij(root, { id, pozycje, dane, cofniecie, przycisk, stan: zapi
   dispatchEvent(new HashChangeEvent('hashchange'));
 }
 
-/* ---------------- Ślub (przykład: osoba fikcyjna) ---------------- */
-const PARA = { ona: 'Katarzyna Lis', on: 'Tomasz Bąk', usc: 'Urząd Stanu Cywilnego w Łodzi' };
+/* ---------------- Ślub (Katarzyna Lis i Tomasz Bąk) ---------------- */
+const PARA = { ona: `${ja.imie} ${ja.nazwisko}`, on: ja.partner ? `${ja.partner.imie} ${ja.partner.nazwisko}` : 'Tomasz Bąk', usc: 'Urząd Stanu Cywilnego w Łodzi' };
 export function slub() {
   const z = stan.zrobione.slub;
   if (z) return { tytul: 'Ślub', html: `<h1 tabindex="-1">Termin zarezerwowany</h1>` + gotowe({
@@ -57,7 +56,6 @@ export function slub() {
   return {
     tytul: 'Ślub',
     html: `<h1 tabindex="-1">Ślub</h1>
-    ${przyklad(`Twój ślub jest już w rejestrze, więc pokazujemy tę sprawę na przykładzie: ${PARA.ona} i ${PARA.on}, Łódź. Dane fikcyjne.`)}
     <form id="f-slub" class="karta" novalidate>
       ${wybor('rodzaj', [['Ślub cywilny w urzędzie', 'Ślub cywilny w urzędzie'], ['Ślub cywilny poza urzędem', 'Ślub cywilny poza urzędem', 'dodatkowa opłata 1000 zł'], ['Ślub wyznaniowy ze skutkami cywilnymi', 'Ślub wyznaniowy ze skutkami cywilnymi', 'USC wyda zaświadczenie dla duchownego, ważne 6 miesięcy']], 'Rodzaj ślubu')}
       <label class="etyk" for="slub-data">Data ślubu</label>
@@ -95,7 +93,7 @@ export function slub() {
 /* ---------------- Śmierć bliskiej osoby ---------------- */
 // Zasiłek pogrzebowy: 7 000 zł po zgonach od 01.01.2026 r., nie więcej niż koszty z rachunków; wniosek w 12 miesięcy.
 // Renta wdowia: 100% jednego świadczenia + 15% drugiego (od 2027 r. 25%), wniosek ERWD, limit łącznej kwoty.
-const TATA = { imie: 'Tadeusz', nazwisko: 'Nowicki', zmarl: za(-5), usc: 'Urząd Stanu Cywilnego w Zgierzu', auto: 'Opel Astra, EZG 51RT' };
+const TATA = { imie: 'Tadeusz', nazwisko: 'Nowicki', zmarl, usc: 'Urząd Stanu Cywilnego w Zgierzu', auto: 'Opel Astra, EZG 51RT' };
 const ZASILEK = 7000;
 export function smierc() {
   const z = stan.zrobione.smierc;
@@ -297,7 +295,7 @@ export function emerytura() {
 /* ---------------- Kończę 18 lat (przykład: osoba fikcyjna) ---------------- */
 // Wpis do rejestru wyborców z urzędu (adres w PESEL). Dowód osobisty wydany po 12. roku życia jest ważny 10 lat: nie trzeba go wymieniać.
 // Szkolenie na prawo jazdy można zacząć 3 miesiące przed wymaganym wiekiem; do tego potrzebny jest profil kandydata na kierowcę (PKK).
-const KUBA = { imie: 'Jakub Lis', urodziny: za(18), dowodDo: '14.06.2033', urzad: 'Urząd Miasta Łodzi, Wydział Komunikacji' };
+const KUBA = { imie: `${ja.imie} ${ja.nazwisko}`, urodziny: za(18), dowodDo: '14.06.2033', urzad: 'Urząd Miasta Łodzi, Wydział Komunikacji' };
 export function osiemnastka() {
   const z = stan.zrobione.osiemnastka;
   if (z) return { tytul: 'Kończę 18 lat', html: `<h1 tabindex="-1">Gotowe</h1>` + gotowe({
@@ -312,7 +310,7 @@ export function osiemnastka() {
   return {
     tytul: 'Kończę 18 lat',
     html: `<h1 tabindex="-1">Kończę 18 lat</h1>
-    ${przyklad(`Masz to za sobą, więc pokazujemy tę sprawę na przykładzie: ${KUBA.imie}, Łódź, 18 lat skończy ${fmt(KUBA.urodziny)}. Dane fikcyjne.`)}
+    <p class="wstep">18 lat skończysz ${fmt(KUBA.urodziny)}. Część spraw zrobi się sama, o resztę zapytamy teraz.</p>
     <section class="karta">
       <h2 class="nag">Zrobi się samo</h2>
       <ul class="punkty">
@@ -351,6 +349,63 @@ export function osiemnastka() {
           cofniecie: 'Wniosek możesz wycofać, dopóki urząd nie utworzy profilu.',
           stan: { pkk: true, wybory },
           wyslane: [['Wniosek o profil kandydata na kierowcę', KUBA.urzad]],
+        });
+      };
+    },
+  };
+}
+
+/* ---------------- Renta wdowia (Halina Nowicka) ---------------- */
+// Zbieg emerytury i renty rodzinnej (od 1.07.2025): jedno świadczenie w całości i 15% drugiego (od 1.01.2027: 25%),
+// razem nie więcej niż trzykrotność najniższej emerytury. Wniosek ERWD do ZUS. Kwoty fikcyjne.
+const RENTA = { emerytura: 2900, rodzinna: 2890 };
+const zlGr = n => n.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' zł';
+export function renta() {
+  const z = stan.zrobione.renta;
+  const warianty = { emerytura: [RENTA.emerytura, RENTA.rodzinna * 0.15], rodzinna: [RENTA.rodzinna, RENTA.emerytura * 0.15] };
+  if (z) return { tytul: 'Renta wdowia', html: `<h1 tabindex="-1">Wniosek wysłany</h1>` + gotowe({
+    tytul: 'Renta wdowia: wniosek w ZUS',
+    czas: 'ZUS ma na decyzję 30 dni. Dostaniesz ją tutaj i listem.',
+    pozycje: [
+      ['Wybrany wariant', z.wariant === 'emerytura' ? 'emerytura w całości i 15% renty rodzinnej' : 'renta rodzinna w całości i 15% emerytury'],
+      ['Więcej co miesiąc', `ok. ${zlGr(z.wiecej)} brutto, od miesiąca złożenia wniosku`],
+      ...(z.corka ? [['Anna Wójcik, córka', 'zobaczy decyzję u siebie (upoważnienie do spraw w ZUS)']] : []),
+    ],
+  }) };
+  const wiersz2 = (k, v, mocny) => `<div class="wiersz"><span>${esc(k)}</span>${mocny ? `<b>${esc(v)}</b>` : `<span>${esc(v)}</span>`}</div>`;
+  return {
+    tytul: 'Renta wdowia',
+    html: `<h1 tabindex="-1">Renta wdowia</h1>
+    <p class="wstep">Po śmierci męża, Tadeusza Nowickiego (${fmt(zmarl)}), przysługuje Ci renta rodzinna. Masz też własną emeryturę. Nie musisz wybierać jednej: możesz dostawać całą jedną i część drugiej.</p>
+    <section class="karta">
+      <h2 class="nag">${ic('coin')}Twoje świadczenia z ZUS</h2>
+      ${wiersz2('Emerytura', zlGr(RENTA.emerytura))}
+      ${wiersz2('Renta rodzinna po mężu', zlGr(RENTA.rodzinna))}
+      <p class="maly">Kwoty brutto z ZUS. Limit (trzy najniższe emerytury) nie jest przekroczony.</p>
+    </section>
+    <form id="f-renta" class="karta" novalidate>
+      ${wybor('wariant', [
+        ['emerytura', `Emerytura w całości i 15% renty: ${zlGr(warianty.emerytura[0] + warianty.emerytura[1])}`, `o ${zlGr(warianty.emerytura[1])} więcej niż teraz · korzystniej`],
+        ['rodzinna', `Renta w całości i 15% emerytury: ${zlGr(warianty.rodzinna[0] + warianty.rodzinna[1])}`, `o ${zlGr(warianty.rodzinna[0] + warianty.rodzinna[1] - RENTA.emerytura)} więcej niż teraz`],
+      ], 'Co wybierasz')}
+      <p class="maly">Od stycznia 2027 r. druga część wzrośnie z 15% do 25%. ZUS przeliczy to sam.</p>
+      <label class="przel-duzy"><span><b>Pokaż decyzję córce</b><small>Anna Wójcik ma Twoje upoważnienie do spraw w ZUS</small></span><input type="checkbox" role="switch" id="renta-corka" checked></label>
+      <button class="btn glowny szeroki" id="renta-dalej">${ic('key')}Przejrzyj i podpisz</button>
+    </form>
+    <p class="maly">Wolisz z kimś porozmawiać? <a href="#/konsultant">Zadzwonimy do Ciebie</a> albo wniosek złoży za Ciebie córka.</p>
+    ${zrodlo('ZUS: renta wdowia', 'https://www.zus.pl/obsluga-swiadczen/obsluga-wnioskow-o-wyplate-swiadczen-lacznie-z-renta-rodzinna-tzw-renta-wdowia')}`,
+    po(root) {
+      przypnijAkcje(root, $('#renta-dalej', root));
+      $('#f-renta', root).onsubmit = e => {
+        e.preventDefault();
+        const wariant = wartosc(root, 'wariant'), [a, b] = warianty[wariant], corka = $('#renta-corka', root).checked;
+        wyslij(root, {
+          id: 'renta',
+          pozycje: { tytul: 'Wniosek o rentę wdowią', lista: [{ co: `Renta wdowia (ERWD): ${zlGr(a + b)} miesięcznie`, do: 'ZUS' }] },
+          dane: ['imię, nazwisko, PESEL', 'dane męża z aktu zgonu', 'numery Twojej emerytury i renty rodzinnej', 'numer konta do wypłaty'],
+          cofniecie: 'Wniosek możesz wycofać, dopóki ZUS nie wyda decyzji.',
+          stan: { wariant, wiecej: a + b - RENTA.emerytura, corka },
+          wyslane: [['Wniosek o rentę wdowią (ERWD)', 'ZUS']],
         });
       };
     },

@@ -36,6 +36,11 @@ export async function axeNasz(url, trasy) {
     wyniki[`${w}${ciemny ? 'c' : ''} skaner: zgoda`] = await runAxe(p);
     await p.goto(url + '#/ustawienia'); await p.check('[data-ust="prosty"]'); await p.check('[data-ust="kontrast"]'); await p.goto(url + '#/start');
     wyniki[`${w}${ciemny ? 'c' : ''} tryb prosty`] = await runAxe(p);
+    // Pozostałe osoby w pokazie: ich start, renta wdowia, odczyty danych i ekran „Pokaż jako …”.
+    for (const [o, h] of [['halina', '#/start'], ['halina', '#/sprawa/renta'], ['halina', '#/dane/dostep'], ['jakub', '#/start'], ['kasia', '#/start'], ['kasia', '#/mandat']]) {
+      await p.goto(url + '?osoba=' + o + h); await p.waitForSelector('main h1');
+      wyniki[`${w}${ciemny ? 'c' : ''} ${o} ${h}`] = await runAxe(p);
+    }
     await ctx.close();
   }
   // Komputer: symulacja telefonu z panelem opisu (jasny i ciemny motyw)

@@ -10,35 +10,50 @@ const svg = (vb, tresc, opis) => {
 const SKORA = { jasna: ['#f3cdb0', '#e2ad8c', '#c98a6b'], starsza: ['#efcbb4', '#dcae94', '#c4917a'] };
 
 // Zdjęcie do dowodu: przodem, neutralna mina, jasne tło (jak 35 × 45 mm).
-export function zdjecieAnny(opis) {
+// Portret do dokumentu albo awatara. `w`: kolory włosów, `dlugie`: włosy do ramion (inaczej krótkie),
+// `ubranie`: kolor bluzy. Kadr „dowod” 64 × 80 (jak 35 × 45 mm), „awatar” kwadratowy.
+const PORTRETY = {
+  anna: { w: ['#6e4631', '#4a2c1d'], dlugie: true, ubranie: '#2f3b52' },
+  kasia: { w: ['#b98a52', '#8a6234'], dlugie: true, ubranie: '#3d6b5a' },
+  jakub: { w: ['#3a2c25', '#241a15'], dlugie: false, ubranie: '#5b6b8a' },
+};
+export function portret(kto = 'anna', opis, kadr = 'dowod') {
+  if (kto === 'halina') return kadr === 'dowod' ? twarzMamy(opis, '7 1.5 50 62.5') : twarzMamy(opis);
+  const { w: [w1, w2], dlugie, ubranie } = PORTRETY[kto] || PORTRETY.anna;
   const [s, sc, sl] = SKORA.jasna;
-  return svg('0 0 64 80', `
+  const wlosyTyl = dlugie ? '<path d="M14.5 31C13 45 15 57 9.5 71 18 75 46 75 54.5 71 49 57 51 45 49.5 31 48 17 41 10.5 32 10.5S16 17 14.5 31z" fill="url(#za-wl)"/>' : '';
+  const wlosyPrzod = dlugie
+    ? '<path d="M18 34c-1.6-13 4.5-21.5 14-21.5 10.5 0 15.6 8 14.2 20.5-1.8-6.8-6.6-11-14-12.5C28.6 24.9 24 28.6 18 34z" fill="url(#za-wl)"/>'
+    : '<path d="M18.4 31.5c-1.4-11.6 4.6-19 13.6-19 9.4 0 15 7 13.6 19-1.2-5-3.6-8.2-6.8-9.6-2.6 1.4-6 2-9.6 1.6-3.4-.4-5.8-1.4-7.4-2.8-1.8 2.2-2.8 5.6-3.4 10.8z" fill="url(#za-wl)"/>';
+  return svg(kadr === 'dowod' ? '0 0 64 80' : '6 8 52 52', `
     <defs>
       <linearGradient id="za-tlo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f6"/><stop offset="1" stop-color="#dde3ec"/></linearGradient>
-      <linearGradient id="za-wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e4631"/><stop offset="1" stop-color="#4a2c1d"/></linearGradient>
+      <linearGradient id="za-wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${w1}"/><stop offset="1" stop-color="${w2}"/></linearGradient>
       <radialGradient id="za-tw" cx=".45" cy=".38" r=".72"><stop offset="0" stop-color="${s}"/><stop offset="1" stop-color="${sc}"/></radialGradient>
     </defs>
     <rect width="64" height="80" fill="url(#za-tlo)"/>
-    <path d="M14.5 31C13 45 15 57 9.5 71 18 75 46 75 54.5 71 49 57 51 45 49.5 31 48 17 41 10.5 32 10.5S16 17 14.5 31z" fill="url(#za-wl)"/>
-    <path d="M3 80c1.5-8.5 7.5-13 15.5-14.5L27 62h10l8.5 3.5C53.5 67 59.5 71.5 61 80z" fill="#2f3b52"/>
+    ${wlosyTyl}
+    <path d="M3 80c1.5-8.5 7.5-13 15.5-14.5L27 62h10l8.5 3.5C53.5 67 59.5 71.5 61 80z" fill="${ubranie}"/>
     <path d="M27 61.6 32 68l5-6.4z" fill="${sc}"/>
     <path d="M27.6 47.5h8.8v12.5c-1.8 2.4-7 2.4-8.8 0z" fill="${sc}"/>
     <ellipse cx="32" cy="50.6" rx="5" ry="2.4" fill="${sl}" opacity=".45"/>
     <ellipse cx="18.6" cy="35.5" rx="2" ry="3.3" fill="${sc}"/><ellipse cx="45.4" cy="35.5" rx="2" ry="3.3" fill="${sc}"/>
     <path d="M18.8 31.5c0-10 5.8-16.5 13.2-16.5s13.2 6.5 13.2 16.5c0 12.2-5.8 20.5-13.2 20.5S18.8 43.7 18.8 31.5z" fill="url(#za-tw)"/>
-    <path d="M18 34c-1.6-13 4.5-21.5 14-21.5 10.5 0 15.6 8 14.2 20.5-1.8-6.8-6.6-11-14-12.5C28.6 24.9 24 28.6 18 34z" fill="url(#za-wl)"/>
-    <path d="M23.3 31.4c1.6-1 3.6-1.1 5.2-.3M35.5 31.1c1.6-.8 3.6-.7 5.2.3" stroke="#4a2c1d" stroke-width="1.05" stroke-linecap="round" fill="none"/>
+    ${wlosyPrzod}
+    <path d="M23.3 31.4c1.6-1 3.6-1.1 5.2-.3M35.5 31.1c1.6-.8 3.6-.7 5.2.3" stroke="${w2}" stroke-width="1.05" stroke-linecap="round" fill="none"/>
     <ellipse cx="26.2" cy="35.2" rx="1.7" ry="1.2" fill="#3a2a22"/><ellipse cx="37.8" cy="35.2" rx="1.7" ry="1.2" fill="#3a2a22"/>
     <circle cx="26.7" cy="34.8" r=".4" fill="#fff"/><circle cx="38.3" cy="34.8" r=".4" fill="#fff"/>
     <path d="M32 37c-.4 2.8-1 4.7-2 5.7 1 .7 2.9.7 4 0" stroke="${sl}" stroke-width=".85" fill="none" stroke-linecap="round"/>
     <path d="M28.2 46.3c2.5 1 5.1 1 7.6 0" stroke="#b5655a" stroke-width="1.3" fill="none" stroke-linecap="round"/>
     <ellipse cx="23.6" cy="41" rx="2.4" ry="1.4" fill="#e79a8a" opacity=".22"/><ellipse cx="40.4" cy="41" rx="2.4" ry="1.4" fill="#e79a8a" opacity=".22"/>`, opis);
 }
+export const zdjecieAnny = opis => portret('anna', opis);
 
 // Mama, 78 lat: krótkie siwe włosy, okulary, sweter. Kadr kwadratowy (awatar).
-export function twarzMamy(opis) {
+export function twarzMamy(opis, kadr = '7 5 50 50') {
   const [s, sc, sl] = SKORA.starsza;
-  return svg('7 5 50 50', `
+  return svg(kadr, `
+    <rect y="-8" width="64" height="8" fill="#e6e9f2"/>
     <rect width="64" height="64" fill="#e6e9f2"/>
     <path d="M5 64c2-8 9-11.5 17-12.5l10 3 10-3c8 1 15 4.5 17 12.5z" fill="#7a2f3d"/>
     <path d="M27.4 45h9.2v8.2c-1.8 2.6-7.4 2.6-9.2 0z" fill="${sc}"/>
