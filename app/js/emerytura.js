@@ -146,7 +146,7 @@ function osKariery() {
   const od = Math.min(...E.okresy.map(o => kiedy(o.od))), doo = teraz(), zakres = doo - od;
   const KL = { praca: 's1', macierz: 's3', brak: 'brak', nauka: 'nauka' };
   const NAZ = { praca: 'praca, składki płacone', macierz: 'urlop macierzyński, składki z budżetu', brak: 'brak składek', nauka: 'nauka, bez składek' };
-  const segmenty = E.okresy.map(o => `<span class="ok-seg ${KL[o.rodzaj]}" style="left:${((kiedy(o.od) - od) / zakres * 100).toFixed(2)}%;width:${Math.max(0.8, (kiedy(o.do) - kiedy(o.od)) / zakres * 100).toFixed(2)}%"></span>`).join('');
+  const segmenty = E.okresy.map(o => `<span class="ok-seg ${KL[o.rodzaj]}" style="left:${((kiedy(o.od) - od) / zakres * 100).toFixed(2)}%;width:calc(${Math.max(0.8, (kiedy(o.do) - kiedy(o.od)) / zakres * 100).toFixed(2)}% - 2px)"></span>`).join('');
   const rok = x => Math.floor(x);
   return `<div class="os-kariery" role="img" aria-label="Okresy w ZUS od ${rok(od)} do dziś: ${E.okresy.map(o => `${NAZ[o.rodzaj]} od ${rok(kiedy(o.od))}`).join(', ')}">${segmenty}</div>
     <div class="ok-osie" aria-hidden="true"><span>${rok(od)}</span><span>dziś</span></div>

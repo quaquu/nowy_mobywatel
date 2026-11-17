@@ -464,7 +464,9 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .kd::before { content: ""; position: absolute; inset: 0; pointer-events: none;
   background:
     radial-gradient(90% 75% at var(--mx) var(--my), var(--kd-blask), transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='32'%3E%3Cg fill='none' stroke='white' stroke-width='.6' stroke-opacity='.11'%3E%3Cpath d='M0 8C20 0 60 0 80 8S140 16 160 8M0 24C20 16 60 16 80 24S140 32 160 24'/%3E%3Cpath d='M0 8C20 16 60 16 80 8S140 0 160 8M0 24C20 32 60 32 80 24S140 16 160 24' stroke-opacity='.07'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 160px 32px; }
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-130 -130 260 260' width='260' height='260'%3E%3Cg fill='none' stroke='white' stroke-width='.55'%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%280%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%286%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2812%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2818%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2824%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2830%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2836%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2842%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2848%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2854%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2860%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2866%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2872%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2878%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2884%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2890%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%2896%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28102%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28108%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28114%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28120%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28126%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28132%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28138%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28144%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28150%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28156%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28162%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28168%29'/%3E%3Cellipse cx='0' cy='0' rx='118' ry='44' transform='rotate%28174%29'/%3E%3Cellipse cx='0' cy='0' rx='70' ry='70' /%3E%3Cellipse cx='0' cy='0' rx='79' ry='79' /%3E%3Cellipse cx='0' cy='0' rx='88' ry='88' /%3E%3C/g%3E%3C/svg%3E") right -70px top -60px / 300px 300px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='14'%3E%3Cpath d='M0 7C15 1 45 1 60 7S105 13 120 7' fill='none' stroke='white' stroke-width='.45'/%3E%3C/svg%3E") 0 0 / 120px 14px;
+  opacity: .42; mix-blend-mode: soft-light; }
 .kd::after { content: ""; position: absolute; top: -20%; bottom: -20%; left: -70%; width: 70%; pointer-events: none; background: linear-gradient(100deg, transparent 15%, var(--kd-blask-slaby) 35%, var(--kd-blask) 50%, var(--kd-blask-slaby) 65%, transparent 85%); mix-blend-mode: soft-light; transform: translateX(0) skewX(-8deg); animation: polysk 2.4s .5s cubic-bezier(.45, .05, .2, 1) both; }
 .stos > div:nth-child(2) .kd::after { animation-delay: .65s; }
 .stos > div:nth-child(3) .kd::after { animation-delay: .8s; }
@@ -480,11 +482,14 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .kd:focus-visible { outline-offset: 3px; }
 .kd-gora { display: flex; align-items: center; gap: var(--o2); min-height: 22px; }
 .kd-t { flex: 1; font-size: 1.2rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.kd-holo { width: 28px; height: 28px; border-radius: 50%; flex: none; background: conic-gradient(from 30deg, var(--kd-holo-mat)); opacity: .9; }
-.kd-kropka { width: 9px; height: 9px; border-radius: 50%; background: var(--biel); flex: none; }
+.kd-holo { position: relative; width: 36px; height: 26px; border-radius: 5px; flex: none; background: conic-gradient(from 30deg, var(--kd-holo-mat)); opacity: .75; box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .45); overflow: hidden; }
+.kd-holo::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, oklch(100% 0 0 / .35) 0 1px, transparent 1px 4px); }
+.kd-kropka { width: 9px; height: 9px; border-radius: 50%; background: var(--biel); flex: none; box-shadow: 0 0 0 3px oklch(100% 0 0 / .25); }
 .kd-linia { font-size: var(--t-objasn); margin-top: var(--space-3xs); }
 .kd-dol { display: flex; align-items: flex-end; gap: var(--space-md); margin-top: auto; }
-.kd-foto { width: 26%; max-width: 92px; aspect-ratio: 4 / 5; border-radius: 3px; overflow: hidden; flex: none; }
+.kd-foto { position: relative; width: 26%; max-width: 92px; aspect-ratio: 4 / 5; border-radius: 3px; overflow: hidden; flex: none; box-shadow: 0 0 0 1px oklch(100% 0 0 / .35); }
+.kd > .kd-duch { position: absolute; right: var(--space-md); top: 40%; width: 13%; max-width: 44px; aspect-ratio: 4 / 5; opacity: .3; pointer-events: none; border-radius: 2px; overflow: hidden; }
+.kd-duch svg { display: block; width: 100%; height: 100%; filter: grayscale(1) contrast(1.4) brightness(1.15); }
 .kd-foto svg { display: block; width: 100%; height: 100%; }
 .kd-imie { flex: 1; display: flex; flex-direction: column; font-size: 1.35rem; font-weight: 700; letter-spacing: .03em; line-height: 1.1; min-width: 0; }
 .kd-imie small { font-size: var(--t-przypis); font-weight: 700; margin-top: var(--space-2xs); letter-spacing: .02em; } /* Hallmark 67: rozstaw najwyżej .03em */
@@ -722,7 +727,7 @@ html.ramka dialog.skaner .sk-wn { width: 390px; height: 794px; transform: scale(
 .osoba-nag { display: flex; align-items: center; gap: var(--o4); margin: var(--o1) 0 var(--o4); }
 .osoba-nag h1 { margin: 0; }
 .kd-auto { display: block; margin: auto calc(var(--space-xs) * -1) calc(var(--space-sm) * -1); }
-.kd-auto svg { display: block; width: 100%; height: auto; filter: var(--cien-auto); }
+.kd-auto svg { display: block; width: 100%; height: auto; }
 .auto-hist { margin: 0 calc(var(--space-2xs) * -1) var(--o2); }
 .auto-hist svg { display: block; width: 100%; max-width: 320px; height: auto; margin: 0 auto; }
 
@@ -884,7 +889,7 @@ html.kontrast .gora { background: var(--tlo); }
 .staz-liczba { margin: var(--space-xs) 0 0; color: var(--tekst2); }
 .staz-liczba b { font-size: 1.75rem; font-weight: 900; letter-spacing: -.02em; color: var(--tekst); font-variant-numeric: tabular-nums; }
 .os-kariery { position: relative; height: 18px; margin: var(--space-md) 0 var(--space-2xs); border-radius: 99px; background: var(--wypelnienie); overflow: hidden; }
-.ok-seg { position: absolute; top: 0; bottom: 0; border-right: 2px solid var(--pow); }
+.ok-seg { position: absolute; top: 0; bottom: 0; } /* przerwa 2 px między okresami z szerokości segmentu */
 .ok-seg.s1, .ok-s1 { background: var(--s1); } .ok-seg.s3, .ok-s3 { background: var(--s3); }
 .ok-seg.brak, .ok-brak { background: repeating-linear-gradient(135deg, var(--zle) 0 3px, color-mix(in oklab, var(--zle) 30%, var(--pow)) 3px 6px); }
 .ok-seg.nauka, .ok-nauka { background: var(--wypelnienie-2); }

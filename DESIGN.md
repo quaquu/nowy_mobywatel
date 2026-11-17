@@ -82,7 +82,8 @@ Widżety 20 px, grupy i karty 16 px, pola i kafelki dat 12 px, arkusz 24 px u g�
 - **Szybkie akcje**: Pokaż dowód, Skanuj kod, Pisma (z licznikiem), Kto dzwoni?
 - **Widżet**: etykieta ze znakiem, jedna liczba (28 px, 900), jedno zdanie objaśnienia. Wariant szeroki dla emerytury z paskiem udziałów; wariant z pierścieniem dla dni do terminu.
 - **Wiersz listy**: znak kategorii 40 px albo kafelek daty, tytuł 700, objaśnienie 400 w kolorze drugorzędnym.
-- **Awatar**: inicjały na gradientowym kółku w jednej z czterech barw; dziecko ma znak zamiast inicjałów. Rysowane zdjęcie zostaje tylko na karcie dowodu.
+- **Awatar**: kolorowy portret osoby w kółku; dziecko ma znak.
+- **Karta dokumentu**: jak zabezpieczony druk: giloszowa rozeta przy prawej krawędzi i fale mikrodruku (biała kreska, tryb soft-light), prostokątna folia hologramu z prążkami, kolorowe zdjęcie i jego mała jasna kopia („duch”), jak na plastikowym dowodzie. Ilustracje osób: nowoczesne, płaskie i kolorowe, dorosłe proporcje, neutralna mina, pastelowe tło inne dla każdej osoby; ten sam portret jest awatarem w listach. Auto: płaska ilustracja w kolorze z rejestru.
 - **Twoja emerytura**: suma (44 px), zdanie o części dziedziczonej, pasek udziałów z przerwami 2 px; lista filarów z kwotą, udziałem i źródłem danych; karta prognozy z dwoma przełącznikami segmentowymi (wiek, dopłata do IKZE), kwotą miesięczną, rozbiciem, stopą zastąpienia, ulgą IKZE i wykresem kapitału (linia 2 px, pole 16%, podpisany początek i koniec, krzyż i dymek pod kursorem, tabela jako zamiennik). „Jak liczymy” pod spodem.
 - **Arkusz zgody**: co, dokąd, jakie dane, co można cofnąć; jedna wyróżniona akcja na dole.
 - **Przyciski**: kapsuły; główny wypełniony granatem, drugi jasnym granatem, niszczący czerwony, tekstowy sam kolor. Cel dotyku ≥ 44 px.
@@ -94,4 +95,4 @@ Ruch tłumaczy stan: wciśnięcie kafla i akcji (skala 0,94–0,985, 120 ms), pr
 ## Do's and Don'ts
 
 - **Rób**: liczby zamiast akapitów, źródło i datę przy każdej danej, wykres tylko z prawdziwą osią i tabelą obok, stałą kolejność barw serii.
-- **Nie rób**: różu i barw spoza marki, rysowanych twarzy w listach, godła i oznaczeń urzędowych, kart w kartach, etykiet wersalikami, wymyślonych wskaźników bez źródła.
+- **Nie rób**: różu i barw spoza marki, godła i oznaczeń urzędowych, kart w kartach, etykiet wersalikami, wymyślonych wskaźników bez źródła.

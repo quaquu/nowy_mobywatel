@@ -113,12 +113,14 @@ export const WYNIKI = {
   }
  },
  "impeccable": {
-  "kod": 0,
+  "kod": 1,
   "ekrany": 0,
   "ramka": 0,
-  "razem": 0,
+  "razem": 1,
   "ekranow": 40,
-  "szczegoly": [],
+  "szczegoly": [
+   "side-tab @ /home/user/nowy_mobywatel/app/css/app.css border-right: 2px solid var(--pow)"
+  ],
   "ref": {
    "kod": 7,
    "ekrany": 11,
@@ -138,24 +140,24 @@ export const WYNIKI = {
    "performance": 98,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2035,
-   "tbtMs": 60
+   "lcpMs": 2199,
+   "tbtMs": 89
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4356,
-   "tbtMs": 39
+   "lcpMs": 4351,
+   "tbtMs": 44
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 898,
-   "slowa": 4388,
+   "zdania": 976,
+   "slowa": 4798,
    "sredniaDlugoscZdania": 4.9,
-   "procentTrudnych": 11.8,
-   "fog": 6.7
+   "procentTrudnych": 11.5,
+   "fog": 6.6
   },
   "ref": {
    "zdania": 83,

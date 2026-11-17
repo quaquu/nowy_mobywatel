@@ -5,9 +5,8 @@ import { portret, autoZBoku } from './grafiki.js';
 import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, zl, OSOBA, OSOBY, osoba, adresOsoby, emerytalne } from './data.js';
 
 // Awatar osoby albo dziecka: klucz z danych („corka”, „mama”, osoba z pokazu) albo nazwa ikony.
-// Awatar osoby: inicjały na kolorowym kółku, jak kontakty w aplikacji bankowej; dziecko: znak.
-const INICJALY = { anna: ['AW', 1], halina: ['HN', 2], mama: ['HN', 2], jakub: ['JL', 3], kasia: ['KL', 4] };
-const AWATARY = { corka: () => `<span class="inicjaly i4">${ic('baby')}</span>`, ...Object.fromEntries(Object.entries(INICJALY).map(([k, [t, n]]) => [k, () => `<span class="inicjaly i${n}" aria-hidden="true">${t}</span>`])) };
+// Awatar osoby: kolorowy portret w kółku (ten sam rysunek co na dokumencie); dziecko: znak.
+const AWATARY = { corka: () => `<span class="inicjaly i4">${ic('baby')}</span>`, ...Object.fromEntries(['anna', 'halina', 'jakub', 'kasia'].map(k => [k, () => portret(k, null, 'awatar')])), mama: () => portret('halina', null, 'awatar') };
 const awatar = k => AWATARY[k] ? AWATARY[k]() : k;
 
 const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
@@ -38,7 +37,7 @@ function kodQR(ziarno = 7) {
 }
 function kartaDok(d, przod) {
   const dolna = przod
-    ? `<span class="kd-dol"><span class="kd-foto">${portret(OSOBA)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill" aria-hidden="true">${ic('eye')}</span></span>`
+    ? `<span class="kd-duch" aria-hidden="true">${portret(OSOBA)}</span><span class="kd-dol"><span class="kd-foto">${portret(OSOBA)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill" aria-hidden="true">${ic('eye')}</span></span>`
     : '';
   return `<a class="kd kd-${d.kolor}${przod ? ' kd-przod' : ''}" href="${d.href || '#/dokument/' + d.id}" aria-label="${esc(d.nazwa)}: ${esc(d.linia)}${d.alert ? ', ' + esc(d.alert) : ''}">
     <span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b>${d.alert && !przod ? '<span class="kd-kropka" aria-hidden="true"></span>' : ''}<span class="kd-holo" aria-hidden="true"></span></span>
@@ -178,7 +177,7 @@ export function dokument(id) {
   return {
     tytul: d.nazwa,
     html: `<h1 tabindex="-1">${esc(d.nazwa)}</h1>
-    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span>${id === 'pojazd' ? `<span class="kd-auto">${autoZBoku({ kolor: 'czerwony', opis: 'Toyota Yaris, czerwona' })}</span>` : `<span class="kd-dol"><span class="kd-foto">${portret(OSOBA, 'Zdjęcie: ' + ja.imie + ' ' + ja.nazwisko)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span>`}</div>
+    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span>${id === 'pojazd' ? `<span class="kd-auto">${autoZBoku({ kolor: 'czerwony', opis: 'Toyota Yaris, czerwona' })}</span>` : `<span class="kd-duch" aria-hidden="true">${portret(OSOBA)}</span><span class="kd-dol"><span class="kd-foto">${portret(OSOBA, 'Zdjęcie: ' + ja.imie + ' ' + ja.nazwisko)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span>`}</div>
     <details class="karta kod-qr"><summary>${ic('eye')}Pokaż kod do sprawdzenia dokumentu</summary><span class="qr duzy" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span><p class="maly srodek">Kod ważny 2 minuty. Sprawdzający zobaczy go w swojej aplikacji.</p></details>
     <section class="karta">${d.pola.map(p => wiersz(...p)).join('')}
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>

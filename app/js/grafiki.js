@@ -7,94 +7,97 @@ const svg = (vb, tresc, opis) => {
   return `<svg viewBox="${vb}" ${opis ? `role="img" aria-label="${opis}"` : 'aria-hidden="true"'} focusable="false" xmlns="http://www.w3.org/2000/svg">${tresc.replace(/id="([^"]+)"/g, `id="${n}$1"`).replace(/url\(#([^)]+)\)/g, `url(#${n}$1)`)}</svg>`;
 };
 
-const SKORA = { jasna: ['#f3cdb0', '#e2ad8c', '#c98a6b'], starsza: ['#efcbb4', '#dcae94', '#c4917a'] };
-
-// Zdjęcie do dowodu: przodem, neutralna mina, jasne tło (jak 35 × 45 mm).
-// Portret do dokumentu albo awatara. `w`: kolory włosów, `dlugie`: włosy do ramion (inaczej krótkie),
-// `ubranie`: kolor bluzy. Kadr „dowod” 64 × 80 (jak 35 × 45 mm), „awatar” kwadratowy.
+// Zdjęcia do dokumentów: przodem, neutralna mina, jednolite jasne tło, proporcje dorosłej twarzy (jak 35 × 45 mm).
+// Na kartach dokumentów zdjęcie jest w odcieniach szarości z rastrem (CSS), jak grawerowane zdjęcie na dowodzie.
+// `w`: włosy [jasne, ciemne], `fryzura`: dlugie | krotkie | siwe, `stroj`: zakiet | sweter | bluza | kardigan.
 const PORTRETY = {
-  anna: { w: ['#6e4631', '#4a2c1d'], dlugie: true, ubranie: '#2f3b52' },
-  kasia: { w: ['#b98a52', '#8a6234'], dlugie: true, ubranie: '#3d6b5a' },
-  jakub: { w: ['#3a2c25', '#241a15'], dlugie: false, ubranie: '#5b6b8a' },
+  anna: { skora: ['#f1c8a8', '#dea47f', '#c4825f'], w: ['#7b4a2e', '#4e2c1a'], fryzura: 'dlugie', stroj: 'zakiet', ubranie: '#2f5bd3', tlo: ['#dbe8ff', '#c3d6fb'] },
+  kasia: { skora: ['#f6d2b6', '#e4ad8c', '#c98a6a'], w: ['#d29a55', '#a06a32'], fryzura: 'dlugie', stroj: 'sweter', ubranie: '#e0913a', tlo: ['#fde9d2', '#f8d6b0'] },
+  jakub: { skora: ['#e9bf9c', '#d39c76', '#b67a58'], w: ['#3d2b22', '#22170f'], fryzura: 'krotkie', stroj: 'bluza', ubranie: '#169f8a', tlo: ['#d5f3ec', '#b8e8dd'] },
+  halina: { skora: ['#f1cdb6', '#dcab90', '#be8a70'], w: ['#e9e9ee', '#c2c4cd'], fryzura: 'siwe', stroj: 'kardigan', ubranie: '#8e4fb3', tlo: ['#ece2fb', '#dccbf6'], okulary: true, starsza: true },
+};
+const WLOSY_TYL = {
+  dlugie: 'M17.4 30C16 44 16.6 57 12 70.5c8.6 4.4 31.4 4.4 40 0C47.4 57 48 44 46.6 30 45.4 17.6 39.6 11.6 32 11.6S18.6 17.6 17.4 30z',
+  krotkie: '',
+  siwe: 'M15.4 38.4C12.6 24.6 19.6 10.8 32 10.8S51.4 24.6 48.6 38.4c-1.4 4.6-3.6 7.4-6 8.6L41.6 33H22.4l-1 14C19 45.8 16.8 43 15.4 38.4z',
+};
+const WLOSY_PRZOD = {
+  dlugie: 'M18.6 32.4C17.6 20.6 23.2 12.6 32.6 12.6c9.4 0 14.6 7.2 13 19.4-1.4-5.8-3.8-9.6-7.8-11.4-4 2.6-10.4 3.8-16.6 2.8-1.2 2.4-2.1 5.4-2.6 9z',
+  krotkie: 'M19 29.2C18.4 19 24 13.2 32.2 13.2c8.4 0 13.8 5.6 13.2 16-1-4.2-2.8-6.8-5.4-8.2-4.6 1.6-11.6 1.6-16.2.2-2.4 1.4-4 4-4.8 8z',
+  siwe: 'M16.6 34.6C13.6 20.8 21.4 10.4 32.2 10.4c11.2 0 19 10 15.6 24.4-1.2-5.4-3.2-9.2-6-11.2-3.6 2.4-8.4 3.4-13.2 2.8-3.8-.4-6.8-1.6-8.8-3.4-1.8 2.8-2.6 6.2-3.2 11.6z',
+};
+const STROJ = {
+  zakiet: (u, cien) => `<path d="M24 60.8 32 72.6l8-11.8z" fill="#fbfaf7"/>
+    <path d="M1.5 80C3 70.4 9.8 65.8 18.6 63.8l7.6-2.4L32 72.6l5.8-11.2 7.6 2.4C54.2 65.8 61 70.4 62.5 80z" fill="${u}"/>
+    <path d="M26.2 61.4 30 70.8l-4.8 1.8L21 64.2M37.8 61.4 34 70.8l4.8 1.8L43 64.2" fill="${cien}" opacity=".55"/>`,
+  sweter: (u, cien) => `<path d="M2 80C3.6 70.4 10.4 65.8 19.2 63.8c3-.7 5.6-1.6 7.4-2.4 1.4 2.6 3.2 4 5.4 4s4-1.4 5.4-4c1.8.8 4.4 1.7 7.4 2.4C53.6 65.8 60.4 70.4 62 80z" fill="${u}"/>
+    <path d="M26.6 61.4c1.4 3.4 3.2 5.2 5.4 5.2s4-1.8 5.4-5.2" stroke="${cien}" stroke-width="1.6" fill="none" opacity=".7"/>`,
+  bluza: (u, cien) => `<path d="M2 80C3.6 69.4 10.4 63.4 19.2 61.4c3-.7 5.4-1.8 7-3.2 1.4 2.6 3.4 3.8 5.8 3.8s4.4-1.2 5.8-3.8c1.6 1.4 4 2.5 7 3.2C53.6 63.4 60.4 69.4 62 80z" fill="${u}"/>
+    <path d="M26.2 58.2c1.4 3.4 3.4 5 5.8 5s4.4-1.6 5.8-5" stroke="${cien}" stroke-width="1.4" fill="none" opacity=".6"/>
+    <path d="M28.6 65.6v8M35.4 65.6v8" stroke="${cien}" stroke-width=".9" opacity=".7"/>`,
+  kardigan: (u, cien) => `<path d="M25.6 61 32 69.4l6.4-8.4z" fill="#ece6df"/><path d="M27.4 61.8 32 66l4.6-4.2" stroke="#d6cdc3" stroke-width="1.2" fill="none"/>
+    <path d="M2 80C3.6 70.4 10.4 65.8 19.2 63.8l6.6-2.6L32 76l6.2-14.8 6.6 2.6C53.6 65.8 60.4 70.4 62 80z" fill="${u}"/>
+    <circle cx="32" cy="76.6" r=".9" fill="${cien}"/>`,
 };
 export function portret(kto = 'anna', opis, kadr = 'dowod') {
-  if (kto === 'halina') return kadr === 'dowod' ? twarzMamy(opis, '7 1.5 50 62.5') : twarzMamy(opis);
-  const { w: [w1, w2], dlugie, ubranie } = PORTRETY[kto] || PORTRETY.anna;
-  const [s, sc, sl] = SKORA.jasna;
-  const wlosyTyl = dlugie ? '<path d="M14.5 31C13 45 15 57 9.5 71 18 75 46 75 54.5 71 49 57 51 45 49.5 31 48 17 41 10.5 32 10.5S16 17 14.5 31z" fill="url(#za-wl)"/>' : '';
-  const wlosyPrzod = dlugie
-    ? '<path d="M18 34c-1.6-13 4.5-21.5 14-21.5 10.5 0 15.6 8 14.2 20.5-1.8-6.8-6.6-11-14-12.5C28.6 24.9 24 28.6 18 34z" fill="url(#za-wl)"/>'
-    : '<path d="M18.4 31.5c-1.4-11.6 4.6-19 13.6-19 9.4 0 15 7 13.6 19-1.2-5-3.6-8.2-6.8-9.6-2.6 1.4-6 2-9.6 1.6-3.4-.4-5.8-1.4-7.4-2.8-1.8 2.2-2.8 5.6-3.4 10.8z" fill="url(#za-wl)"/>';
-  return svg(kadr === 'dowod' ? '0 0 64 80' : '6 8 52 52', `
+  const P = PORTRETY[kto] || PORTRETY.anna, [s, sc, sl] = P.skora, [w1, w2] = P.w;
+  const cien = '#00000040';
+  const brew = P.fryzura === 'siwe' ? '#8f8a86' : w2;
+  return svg(kadr === 'dowod' ? '0 0 64 80' : '11 12 42 42', `
     <defs>
-      <linearGradient id="za-tlo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f6"/><stop offset="1" stop-color="#dde3ec"/></linearGradient>
-      <linearGradient id="za-wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${w1}"/><stop offset="1" stop-color="${w2}"/></linearGradient>
-      <radialGradient id="za-tw" cx=".45" cy=".38" r=".72"><stop offset="0" stop-color="${s}"/><stop offset="1" stop-color="${sc}"/></radialGradient>
+      <linearGradient id="tlo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${P.tlo[0]}"/><stop offset="1" stop-color="${P.tlo[1]}"/></linearGradient>
+      <linearGradient id="wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${w1}"/><stop offset="1" stop-color="${w2}"/></linearGradient>
+      <radialGradient id="tw" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="${s}"/><stop offset=".72" stop-color="${s}"/><stop offset="1" stop-color="${sc}"/></radialGradient>
+      <linearGradient id="szyja" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sl}"/><stop offset=".45" stop-color="${sc}"/></linearGradient>
     </defs>
-    <rect width="64" height="80" fill="url(#za-tlo)"/>
-    ${wlosyTyl}
-    <path d="M3 80c1.5-8.5 7.5-13 15.5-14.5L27 62h10l8.5 3.5C53.5 67 59.5 71.5 61 80z" fill="${ubranie}"/>
-    <path d="M27 61.6 32 68l5-6.4z" fill="${sc}"/>
-    <path d="M27.6 47.5h8.8v12.5c-1.8 2.4-7 2.4-8.8 0z" fill="${sc}"/>
-    <ellipse cx="32" cy="50.6" rx="5" ry="2.4" fill="${sl}" opacity=".45"/>
-    <ellipse cx="18.6" cy="35.5" rx="2" ry="3.3" fill="${sc}"/><ellipse cx="45.4" cy="35.5" rx="2" ry="3.3" fill="${sc}"/>
-    <path d="M18.8 31.5c0-10 5.8-16.5 13.2-16.5s13.2 6.5 13.2 16.5c0 12.2-5.8 20.5-13.2 20.5S18.8 43.7 18.8 31.5z" fill="url(#za-tw)"/>
-    ${wlosyPrzod}
-    <path d="M23.3 31.4c1.6-1 3.6-1.1 5.2-.3M35.5 31.1c1.6-.8 3.6-.7 5.2.3" stroke="${w2}" stroke-width="1.05" stroke-linecap="round" fill="none"/>
-    <ellipse cx="26.2" cy="35.2" rx="1.7" ry="1.2" fill="#3a2a22"/><ellipse cx="37.8" cy="35.2" rx="1.7" ry="1.2" fill="#3a2a22"/>
-    <circle cx="26.7" cy="34.8" r=".4" fill="#fff"/><circle cx="38.3" cy="34.8" r=".4" fill="#fff"/>
-    <path d="M32 37c-.4 2.8-1 4.7-2 5.7 1 .7 2.9.7 4 0" stroke="${sl}" stroke-width=".85" fill="none" stroke-linecap="round"/>
-    <path d="M28.2 46.3c2.5 1 5.1 1 7.6 0" stroke="#b5655a" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-    <ellipse cx="23.6" cy="41" rx="2.4" ry="1.4" fill="#e79a8a" opacity=".22"/><ellipse cx="40.4" cy="41" rx="2.4" ry="1.4" fill="#e79a8a" opacity=".22"/>`, opis);
+    <rect width="64" height="80" fill="url(#tlo)"/>
+    ${WLOSY_TYL[P.fryzura] ? `<path d="${WLOSY_TYL[P.fryzura]}" fill="url(#wl)"/>` : ''}
+    <path d="M27.2 47.6h9.6v14.6c-2.4 2.6-7.2 2.6-9.6 0z" fill="url(#szyja)"/>
+    ${STROJ[P.stroj](P.ubranie, cien)}
+    <ellipse cx="18.9" cy="33.6" rx="1.7" ry="3.1" fill="${sc}"/><ellipse cx="45.1" cy="33.6" rx="1.7" ry="3.1" fill="${sc}"/>
+    <path d="M32 15.2c8.2 0 12.8 6.4 12.8 15.4 0 8.4-2.4 14.6-6 18.2-2 2-4.3 2.9-6.8 2.9s-4.8-.9-6.8-2.9c-3.6-3.6-6-9.8-6-18.2 0-9 4.6-15.4 12.8-15.4z" fill="url(#tw)"/>
+    <path d="M21.6 41.4c1.4 3.6 3.4 6.2 5.6 7.6M42.4 41.4c-1.4 3.6-3.4 6.2-5.6 7.6" stroke="${sc}" stroke-width="1.2" fill="none" opacity=".55"/>
+    <path d="${WLOSY_PRZOD[P.fryzura]}" fill="url(#wl)"/>
+    <path d="M26 15.6c-3.4 2.4-5.6 6-6.4 10.8M31 14.2c-1.6 3.6-1.6 6.6-.6 8.6M37.4 15c2.6 2 4.6 5.4 5.4 9.6" stroke="${w1}" stroke-width=".7" fill="none" opacity=".55" stroke-linecap="round"/>
+    ${P.fryzura === 'dlugie' ? `<path d="M18.4 40c.4 9-1 18-4 26M45.6 40c-.4 9 1 18 4 26" stroke="${w1}" stroke-width=".7" fill="none" opacity=".45"/>` : ''}
+    <path d="M30.2 31.6c-.6 1.8-.8 4-.7 6.2M24.2 34.4c1.2.8 2.6 1 4 .7M39.8 34.4c-1.2.8-2.6 1-4 .7" stroke="${sc}" stroke-width=".7" fill="none" opacity=".6" stroke-linecap="round"/>
+    <path d="M22.8 28.4c1.8-1.1 4.2-1.4 6.2-.7M35 27.7c2-.7 4.4-.4 6.2.7" stroke="${brew}" stroke-width="1.15" stroke-linecap="round" fill="none"/>
+    <path d="M23.6 32.2c1.6-1.4 3.4-1.6 5-.1-1.6.9-3.4.9-5 .1zM35.4 32.1c1.6-1.5 3.4-1.3 5 .1-1.6.8-3.4.8-5-.1z" fill="#f3efea"/>
+    <circle cx="26.1" cy="31.7" r="1.05" fill="#3a2e28"/><circle cx="37.9" cy="31.7" r="1.05" fill="#3a2e28"/>
+    <path d="M23.4 32.1c1.7-1.8 3.6-2 5.4-.2M35.2 31.9c1.8-1.8 3.7-1.6 5.4.2" stroke="#2d2420" stroke-width=".75" stroke-linecap="round" fill="none"/>
+    <path d="M31.4 32.6c-.2 2.6-.7 4.6-1.5 5.8.8.8 2.5 1 3.9.3" stroke="${sl}" stroke-width=".7" fill="none" stroke-linecap="round" opacity=".9"/>
+    <ellipse cx="23.6" cy="39.6" rx="2.6" ry="1.4" fill="#ff8a7a" opacity=".16"/><ellipse cx="40.4" cy="39.6" rx="2.6" ry="1.4" fill="#ff8a7a" opacity=".16"/>
+    <path d="M28.8 43.6c1.1-.6 2.2-.6 3.2-.2 1-.4 2.1-.4 3.2.2-1 .5-2.1.7-3.2.6-1.1.1-2.2-.1-3.2-.6z" fill="#a5675d"/>
+    <path d="M29.2 43.9c1.8 1.3 3.8 1.3 5.6 0-.8 1.3-1.8 1.9-2.8 1.9s-2-.6-2.8-1.9z" fill="#bf7f73"/>
+    ${P.starsza ? `<path d="M28.2 39.4c-.9 1.2-1.4 2.5-1.4 3.8M35.8 39.4c.9 1.2 1.4 2.5 1.4 3.8M24 35.4c.8.5 1.6.7 2.4.7M40 35.4c-.8.5-1.6.7-2.4.7" stroke="${sc}" stroke-width=".6" fill="none" opacity=".8" stroke-linecap="round"/>` : ''}
+    ${P.okulary ? '<g fill="none" stroke="#5a5f69" stroke-width=".8"><rect x="22.2" y="29.2" width="8.6" height="5.8" rx="2.2"/><rect x="33.2" y="29.2" width="8.6" height="5.8" rx="2.2"/><path d="M30.8 31.6c.8-.5 1.6-.5 2.4 0M22.2 31.2l-2.8-.6M41.8 31.2l2.8-.6"/></g>' : ''}`, opis);
 }
 
-// Mama, 78 lat: krótkie siwe włosy, okulary, sweter. Kadr kwadratowy (awatar).
-export function twarzMamy(opis, kadr = '7 5 50 50') {
-  const [s, sc, sl] = SKORA.starsza;
-  return svg(kadr, `
-    <rect y="-8" width="64" height="8" fill="#e6e9f2"/>
-    <rect width="64" height="64" fill="#e6e9f2"/>
-    <path d="M5 64c2-8 9-11.5 17-12.5l10 3 10-3c8 1 15 4.5 17 12.5z" fill="#7a2f3d"/>
-    <path d="M27.4 45h9.2v8.2c-1.8 2.6-7.4 2.6-9.2 0z" fill="${sc}"/>
-    <ellipse cx="32" cy="47.4" rx="5" ry="2.2" fill="${sl}" opacity=".45"/>
-    <path d="M26 52.5l6 4.5 6-4.5" stroke="#5e2330" stroke-width="2" fill="none"/>
-    <ellipse cx="18.8" cy="31" rx="2" ry="3.2" fill="${sc}"/><ellipse cx="45.2" cy="31" rx="2" ry="3.2" fill="${sc}"/>
-    <path d="M19.2 27.5c0-9.5 5.6-15.5 12.8-15.5s12.8 6 12.8 15.5c0 11.5-5.6 19-12.8 19s-12.8-7.5-12.8-19z" fill="${s}"/>
-    <path d="M17.6 30c-2.4-13 4.4-21 14.4-21 10.4 0 16.6 7.4 14.4 21-1-4.6-2.4-7.6-4.6-9-2.6 2.2-6 3.2-9.8 3.2s-7.6-1-10-3.2c-2.4 1.4-3.6 4.4-4.4 9z" fill="#d3d5dc"/>
-    <path d="M20.5 18.5c2.2-2.4 4.6-3.6 7-3.6M37 11.6c3.4 1 5.8 2.8 7 5.8M25.6 11.8c2.4-1.2 5.6-1.3 8.2-.1" stroke="#b4b7c0" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-    <g fill="none" stroke="#3b3f4a" stroke-width="1.15"><rect x="22.4" y="27" width="8.2" height="6" rx="2.6"/><rect x="33.4" y="27" width="8.2" height="6" rx="2.6"/><path d="M30.6 29.6h2.8M22.4 29.4l-3.2-.8M41.6 29.4l3.2-.8"/></g>
-    <circle cx="26.5" cy="30" r="1.2" fill="#3a2a22"/><circle cx="37.5" cy="30" r="1.2" fill="#3a2a22"/>
-    <path d="M32 32.2c-.3 2.1-.9 3.5-1.7 4.2.9.6 2.3.6 3.2 0" stroke="${sl}" stroke-width=".85" fill="none" stroke-linecap="round"/>
-    <path d="M28.2 40.2c2.3 1.4 5.3 1.4 7.6 0" stroke="#a65d55" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-    <path d="M23.8 37.2c.7.9 1.6 1.5 2.6 1.7M40.2 37.2c-.7.9-1.6 1.5-2.6 1.7M27 24.6c1.2-.5 2.6-.5 3.6 0M33.4 24.6c1-.5 2.4-.5 3.6 0" stroke="${sl}" stroke-width=".65" fill="none" opacity=".7" stroke-linecap="round"/>`, opis);
-}
-
-// Auto z boku (hatchback, bez znaków marki). `kolor`: kolor nadwozia z rejestru.
-const ODCIENIE = { czerwony: ['#d23a44', '#a3202b'], srebrny: ['#d5dae2', '#9aa2ae'], granatowy: ['#3e5f94', '#22385e'] };
+// Auto z boku: płaska, nowoczesna ilustracja w kolorze nadwozia z rejestru, bez znaków marki i bez obrysów.
+const NADWOZIE = { czerwony: ['#e5484d', '#c22f36', '#9e2129'], srebrny: ['#d7dce3', '#b4bcc7', '#8e98a6'], granatowy: ['#3d63c9', '#2a4aa3', '#1f377c'] };
 export function autoZBoku({ kolor = 'czerwony', opis } = {}) {
-  const [jasny, ciemny] = ODCIENIE[kolor] || ODCIENIE.czerwony, id = 'a' + kolor;
-  const kolo = x => `<g transform="translate(${x} 80)"><circle r="15" fill="#1b1d22"/><circle r="9.4" fill="#c9ced6"/><circle r="9.4" fill="none" stroke="#9097a3" stroke-width="1"/>
-    ${[0, 72, 144, 216, 288].map(a => `<path d="M0-2.8L-1.8-8.6h3.6z" fill="#8a919c" transform="rotate(${a})"/>`).join('')}<circle r="2.6" fill="#6d737e"/></g>`;
+  const [j, s1, c] = NADWOZIE[kolor] || NADWOZIE.czerwony;
+  const kolo = x => `<g transform="translate(${x} 79)"><circle r="14.5" fill="#1d2129"/><circle r="9" fill="#e9edf2"/><circle r="9" fill="none" stroke="#c4cbd5" stroke-width="2.2"/>
+    ${[0, 72, 144, 216, 288].map(a => `<path d="M-1.4-2.4L-1-8.4h2l.4 6z" fill="#aab3bf" transform="rotate(${a})"/>`).join('')}<circle r="2.4" fill="#7c8695"/></g>`;
   return svg('0 0 210 104', `
     <defs>
-      <linearGradient id="${id}-n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${jasny}"/><stop offset=".6" stop-color="${jasny}"/><stop offset="1" stop-color="${ciemny}"/></linearGradient>
-      <linearGradient id="${id}-s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b4553"/><stop offset=".55" stop-color="#1e252f"/><stop offset="1" stop-color="#2c3540"/></linearGradient>
+      <linearGradient id="nad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${j}"/><stop offset=".62" stop-color="${s1}"/><stop offset="1" stop-color="${c}"/></linearGradient>
+      <linearGradient id="szyba" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5d7290"/><stop offset=".5" stop-color="#2b3647"/><stop offset="1" stop-color="#3a4a61"/></linearGradient>
     </defs>
-    <ellipse cx="105" cy="97" rx="92" ry="5" fill="#000" opacity=".16"/>
-    <path d="M32 78a20 20 0 0 1 40 0zM146 78a20 20 0 0 1 40 0z" fill="#2a2d33"/>
-    <path d="M18 78V60c0-7 2-12 6-16l12-14c3-3 7-4 13-4.5l54-1.5c9 0 15 2 20 6l22 18 32 5c8 1.5 13 5 14 11l1 14h-7a19 19 0 0 0-38 0H71a19 19 0 0 0-38 0z" fill="url(#${id}-n)"/>
-    <path d="M36 46l6-12c2.5-3 5.5-4.2 9-4.4l50-1.2c7 0 12 1.8 16 5l18 14.6z" fill="url(#${id}-s)"/>
-    <path d="M47 30.6h7V47h-7zM84 29.4h5V47.4h-5z" fill="${ciemny}"/>
-    <path d="M60 33l20-1" stroke="#fff" stroke-width="1.5" opacity=".18" stroke-linecap="round"/>
-    <path d="M22 52c40-1 92-1.5 156 3" stroke="#fff" stroke-width="1.2" opacity=".3" fill="none"/>
-    <path d="M89 49.5v26M133 49v27" stroke="${ciemny}" stroke-width="1" opacity=".65"/>
-    <rect x="70" y="54" width="9" height="2.6" rx="1.3" fill="${ciemny}"/><rect x="114" y="53.6" width="9" height="2.6" rx="1.3" fill="${ciemny}"/>
-    <path d="M133 46c3-2 7-2 9 1l-1 3h-8z" fill="${ciemny}"/>
-    <path d="M177 53.5c5 .4 9.6 1.6 12.4 3.6l-.6 2.6c-3.6-.8-8-1.4-12.4-1.6z" fill="#f4f6fa"/>
-    <path d="M18.6 47h5.4l1 10h-6.4z" fill="#e2414f"/>
-    <path d="M71 77.5h76" stroke="#1d2027" stroke-width="3" opacity=".45"/>
-    ${kolo(52)}${kolo(166)}`, opis);
+    <ellipse cx="108" cy="95" rx="90" ry="4.5" fill="#000" opacity=".18"/>
+    <path d="M17 78V62c0-6.4 2.2-11.2 6.4-14.6L38 33c3.2-3 7.4-4.4 13.2-4.8l53-1.4c9.6 0 16 2.2 21.4 6.6l20.6 16.2 30.6 4.6c8.4 1.4 13.6 5.4 14.6 11.6l.8 12.2h-7.4a19 19 0 0 0-37.6 0H72.4a19 19 0 0 0-37.6 0z" fill="url(#nad)"/>
+    <path d="M40 47.6 46.4 36c2.6-3 5.6-4.2 9.2-4.4l46.8-1.2c7.2 0 12.2 1.8 16.2 5l14.6 12.2z" fill="url(#szyba)"/>
+    <path d="M86.4 30.8 85 47.8" stroke="${c}" stroke-width="3.4"/>
+    <path d="M58 35.6l26-1" stroke="#fff" stroke-width="2" opacity=".22" stroke-linecap="round"/>
+    <path d="M20 55.6c42-1.6 96-1.8 160 2.4" stroke="#fff" stroke-width="1.6" opacity=".35" fill="none" stroke-linecap="round"/>
+    <path d="M88 50v26M134 50.4v26.4" stroke="${c}" stroke-width="1" opacity=".55"/>
+    <rect x="70" y="56.4" width="10" height="2.6" rx="1.3" fill="${c}" opacity=".8"/><rect x="116" y="56.4" width="10" height="2.6" rx="1.3" fill="${c}" opacity=".8"/>
+    <path d="M178 55.6c5 .4 9.4 1.6 12 3.4l-.6 2.6c-3.4-.8-7.6-1.4-11.8-1.6z" fill="#fff4cf"/>
+    <path d="M18.4 50h5.2l.8 8.6h-6.2z" fill="#ff6b6b"/>
+    <path d="M72 78h70" stroke="#00000033" stroke-width="3" stroke-linecap="round"/>
+    ${kolo(53)}${kolo(166)}`, opis);
 }
+
 
 // Zdjęcie z fotoradaru: auto od przodu, tablica w ramce, pasek z danymi pomiaru (jak w CANARD).
 export function zdjecieFotoradaru({ nr = 'EL 4K217', v = 68, vdop = 50, miejsce = 'ZGIERZ, UL. ŁÓDZKA', kiedy = '', opis } = {}) {
