@@ -32,8 +32,8 @@ Moja wersja odwraca kierunek. Państwo przychodzi ze sprawą: szpital zgłosił 
 Co jeszcze da się przejść do końca:
 • 4 osoby do wyboru, jak w referencji, każda z własnymi dokumentami, pismami i sprawami: Anna (33 lata, właśnie urodziła córkę), jej mama Halina (78 lat, tryb prosty), Jakub (17 lat) i Katarzyna (29 lat, planuje ślub).
 • 11 spraw życiowych: narodziny, przeprowadzka, kupno auta (historia z ostrzeżeniem o cofniętym liczniku), utrata dokumentów, nowy dowód (wniosek gotowy, wizyta po odciski palców), ślub (wspólna sprawa narzeczonych), śmierć bliskiej osoby (zasiłek pogrzebowy liczony z rachunków), renta wdowia (wyliczenie obu wariantów), firma (CEIDG z ZUS, podatkiem i VAT), emerytura (luka w składkach wykryta z danych US i ZUS), 18 lat (profil kandydata na kierowcę).
-• Mandat i podatek z BLIK, badanie techniczne ze stacjami na mapie i rezerwacją terminu.
-• Twoja emerytura: ZUS, PPK, IKE i IKZE w jednym miejscu (tak jak przewiduje ustawa z 2025 r.), prognoza z wyborem wieku i dopłat do IKZE, z ulgą w PIT.
+• Mandat i podatek z BLIK, badanie techniczne z rezerwacją terminu.
+• Twoja emerytura: ZUS, PPK, IKE i IKZE w jednym miejscu (jak przewiduje ustawa z 2025 r.), prognoza, cel i luka, ile daje każdy rok pracy dłużej, PIT-0 dla pracujących seniorów, staż do najniższej emerytury.
 • „Możesz skorzystać”: świadczenia i ulgi wykryte z rejestrów. Zlecenia (jak zlecenie stałe w banku) np. opłacą ratę podatku, zawsze z uprzedzeniem.
 • „Kto sprawdzał moje dane”: każdy odczyt z celem i podstawą prawną.
 • Sprawy bliskich: córka zamawia wizytę urzędnika u 78-letniej mamy, która widzi, co dzieje się w jej imieniu.

@@ -201,6 +201,12 @@ export async function sprawy(url) {
     await p.waitForFunction(old => document.querySelector('.pr-liczba')?.textContent !== old, przed);
     if (!/720 zł mniej podatku/.test(await p.textContent('#prog-wynik'))) throw new Error('brak ulgi IKZE');
     await p.click('.wk-tabela summary'); if (!(await p.isVisible('.wk-tabela table'))) throw new Error('brak tabeli wykresu');
+    // cel i luka, schody wieku, PIT-0, staż: działają i reagują na wybór
+    if ((await p.locator('.wykres-schody .sch').count()) !== 8) throw new Error('schody: nie 8 słupków (60–67 lat)');
+    if (!/Pracuj do \d+ lat|przekracza cel/.test(await p.textContent('#cel-wynik'))) throw new Error('cel: brak luki ani sposobu');
+    await p.check('input[name=cel][value="50"]', { force: true }); await p.waitForFunction(() => /przekracza cel/.test(document.querySelector('#cel-wynik').textContent));
+    if (!/85\s528 zł/.test(await p.textContent('.pit0'))) throw new Error('brak ulgi PIT-0');
+    if (!/z 20 lat/.test(await p.textContent('.staz-liczba'))) throw new Error('brak stażu');
     await p.goto(url + '?osoba=halina#/emerytura'); await p.waitForSelector('.emer-suma');
     if (!/2900 zł/.test(await p.textContent('.emer-suma'))) throw new Error('Halina: brak wypłaty');
   });

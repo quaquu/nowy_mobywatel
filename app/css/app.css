@@ -858,3 +858,39 @@ html.kontrast .gora { background: var(--tlo); }
 .siatka-spraw .poz b { font-size: var(--t-naglowek); line-height: 1.2; }
 .siatka-spraw .poz small { margin-top: var(--space-2xs); }
 .siatka-spraw .ic.strz { display: none; }
+
+/* Twoja emerytura: cel, schody, PIT-0, staż i oś kariery, termin IKZE */
+.cel-teza { display: flex; gap: var(--space-xs); align-items: flex-start; margin: var(--space-sm) 0 var(--space-xs); }
+.cel-teza .ic { flex: none; color: var(--ok); margin-top: var(--space-3xs); }
+.cel-teza .ic[data-i=star] { color: var(--gl); }
+.cel-pasek { height: 10px; border-radius: 99px; background: var(--wypelnienie-2); overflow: hidden; margin: var(--space-xs) 0 var(--space-sm); }
+.cel-pasek > span { display: block; height: 100%; border-radius: 99px; background: var(--s1); }
+.cel-pasek.staz > span { background: var(--s3); }
+.cel-sposoby { list-style: none; padding: 0; margin: 0; }
+.cel-sposoby li { display: flex; gap: var(--space-sm); align-items: center; padding: var(--space-sm) 0; border-top: 1px solid var(--separator); }
+.cel-sposoby .ic { flex: none; color: var(--gl); }
+.sch-teza { margin: var(--space-xs) 0 0; }
+.sch-teza b { font-weight: 900; }
+.wykres-schody { margin: var(--space-sm) 0 0; }
+.wykres-schody svg { display: block; width: 100%; height: auto; overflow: visible; }
+.wykres-schody figcaption { margin: var(--space-2xs) 0 0; }
+.sch path { fill: color-mix(in oklab, var(--s1) 35%, var(--pow)); transition: fill var(--czas); }
+.sch.wybrany path { fill: var(--s1); }
+.sch:hover path { fill: color-mix(in oklab, var(--s1) 70%, var(--pow)); }
+.pit0 { background: linear-gradient(180deg, var(--ok-wyp), transparent 70%) var(--pow); }
+.pit0 .nag .ic { color: var(--ok); }
+.pit0-kwota { margin: var(--space-xs) 0; font-size: 2rem; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.pit0-kwota small { font-size: var(--t-objasn); font-weight: 400; letter-spacing: 0; color: var(--tekst2); }
+.staz-liczba { margin: var(--space-xs) 0 0; color: var(--tekst2); }
+.staz-liczba b { font-size: 1.75rem; font-weight: 900; letter-spacing: -.02em; color: var(--tekst); font-variant-numeric: tabular-nums; }
+.os-kariery { position: relative; height: 18px; margin: var(--space-md) 0 var(--space-2xs); border-radius: 99px; background: var(--wypelnienie); overflow: hidden; }
+.ok-seg { position: absolute; top: 0; bottom: 0; border-right: 2px solid var(--pow); }
+.ok-seg.s1, .ok-s1 { background: var(--s1); } .ok-seg.s3, .ok-s3 { background: var(--s3); }
+.ok-seg.brak, .ok-brak { background: repeating-linear-gradient(135deg, var(--zle) 0 3px, color-mix(in oklab, var(--zle) 30%, var(--pow)) 3px 6px); }
+.ok-seg.nauka, .ok-nauka { background: var(--wypelnienie-2); }
+.ok-osie { display: flex; justify-content: space-between; font-size: var(--t-podpis); color: var(--tekst2); font-variant-numeric: tabular-nums; }
+.ok-lista { list-style: none; padding: 0; margin: var(--space-sm) 0; }
+.ok-lista li { display: flex; gap: var(--space-xs); align-items: flex-start; padding: var(--space-2xs) 0; font-size: var(--t-objasn); }
+.ok-lista .kropka-s { margin-top: var(--space-2xs); }
+.ok-lista b { font-weight: 700; font-variant-numeric: tabular-nums; }
+.termin-ikze { box-shadow: var(--cien-widzet), inset 4px 0 0 var(--s4); }

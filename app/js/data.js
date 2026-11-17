@@ -335,7 +335,14 @@ export const { ja, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka }
 const EMERYTURY = {
   anna: {
     pensja: 7400, wiek: 60, ur: [1993, 5], pit: 0.12,
-    stanNa: '31.12.2025',
+    stanNa: '31.12.2025', ikzeWplacone: 2400,
+    // okresy w ZUS: [od rok, od miesiąc], [do rok, do miesiąc] (null = do dziś); rodzaj: praca, macierz, brak, nauka
+    okresy: [
+      { od: [2013, 10], do: [2015, 6], rodzaj: 'brak', opis: 'umowa zlecenia, Kawiarnia „Pod Lipą”: ZUS nie ma składek' },
+      { od: [2015, 7], do: [2019, 2], rodzaj: 'praca', opis: 'umowa o pracę, Agencja Reklamowa „Kadr”' },
+      { od: [2019, 3], do: 'porod', rodzaj: 'praca', opis: 'umowa o pracę, Drukarnia Kolor sp. z o.o.' },
+      { od: 'porod', do: null, rodzaj: 'macierz', opis: 'urlop macierzyński: składki emerytalne opłaca za Ciebie budżet państwa' },
+    ],
     pozycje: [
       { id: 'konto', grupa: 'zus', nazwa: 'Konto w ZUS', opis: 'składki zwaloryzowane', kwota: 168420, zrodlo: 'ZUS', dziedziczne: false },
       { id: 'subkonto', grupa: 'sub', nazwa: 'Subkonto w ZUS', opis: 'dawne OFE, część dziedziczona', kwota: 41260, zrodlo: 'ZUS', dziedziczne: true },
@@ -346,7 +353,11 @@ const EMERYTURY = {
   },
   kasia: {
     pensja: 8200, wiek: 60, ur: [1997, 2], pit: 0.12,
-    stanNa: '31.12.2025',
+    stanNa: '31.12.2025', ikzeWplacone: 0,
+    okresy: [
+      { od: [2016, 10], do: [2021, 6], rodzaj: 'nauka', opis: 'studia: bez składek, nie wliczają się do stażu' },
+      { od: [2021, 7], do: null, rodzaj: 'praca', opis: 'umowa o pracę, Szpital im. M. Kopernika w Łodzi' },
+    ],
     pozycje: [
       { id: 'konto', grupa: 'zus', nazwa: 'Konto w ZUS', opis: 'składki zwaloryzowane', kwota: 61300, zrodlo: 'ZUS', dziedziczne: false },
       { id: 'subkonto', grupa: 'sub', nazwa: 'Subkonto w ZUS', opis: 'część dziedziczona', kwota: 16800, zrodlo: 'ZUS', dziedziczne: true },
