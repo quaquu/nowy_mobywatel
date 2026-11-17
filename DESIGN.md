@@ -53,7 +53,7 @@ Wygląd iOS (HIG) był poprawny, ale wyglądał jak makieta: szare listy, rysowa
 
 ## Colors
 
-- **Tło** `#f4f6fb` z trzema miękkimi plamami barwy u góry ekranu (granat, błękit, fiolet w jasnych odcieniach); niżej czyste tło. W ciemnym: granatowa noc `oklch(15% 0.035 241)`, nie czerń.
+- **Tło** `#f4f6fb` z trzema miękkimi plamami barwy u góry ekranu (granat, błękit, morski w jasnych odcieniach); niżej czyste tło. W ciemnym: granatowa noc `oklch(15% 0.035 241)`, nie czerń.
 - **Powierzchnie**: białe widżety i grupy na tle, z miękkim cieniem (`--cien-widzet`). W ciemnym o stopień jaśniejsze od tła, z jasną krawędzią u góry zamiast cienia.
 - **Akcent `#004a93`** (granat mObywatela) tylko dla działań, wyboru i fokusu. Granatowe pole sprawy jest takie samo w obu motywach.
 - **Kategorie**: znak w kolorze kategorii na jego jasnym odcieniu (pieniądze zielony, pojazdy pomarańczowy, rodzina fiolet, dane indygo, telefon morski, pomoc szary, pilne czerwony). Kolor znaczy rodzaj sprawy, nie stan.

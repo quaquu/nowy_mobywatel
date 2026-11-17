@@ -1,21 +1,23 @@
 // PLIK GENEROWANY przez `npm test` (tests/run-all.mjs). Nie edytuj ręcznie.
 export const WYNIKI = {
- "data": "7 listopada 2026",
+ "data": "17 listopada 2026",
  "crawler": {
-  "strony": 276,
-  "trasy": 46,
+  "strony": 282,
+  "trasy": 47,
   "problemy": 0
  },
  "sprawy": {
   "liczba": 33,
-  "nieudane": []
+  "nieudane": [
+   "wyglad"
+  ]
  },
  "offline": true,
  "klm": {
   "nasz": {
    "przyciskiNaKoniec": [],
    "akcje": 4,
-   "systemS": 3.2,
+   "systemS": 3.3,
    "sekundy": 14,
    "podpisy": 1,
    "sprawy": 5,
@@ -24,7 +26,7 @@ export const WYNIKI = {
   "ref": {
    "przyciskiNaKoniec": [],
    "akcje": 6,
-   "systemS": 8.3,
+   "systemS": 8.1,
    "sekundy": 24,
    "podpisy": 2,
    "sprawy": 2,
@@ -117,7 +119,7 @@ export const WYNIKI = {
   "ekrany": 0,
   "ramka": 0,
   "razem": 0,
-  "ekranow": 39,
+  "ekranow": 40,
   "szczegoly": [],
   "ref": {
    "kod": 7,
@@ -135,24 +137,24 @@ export const WYNIKI = {
  },
  "lighthouse": {
   "nasz": {
-   "performance": 96,
+   "performance": 92,
    "accessibility": 100,
    "bestPractices": 100,
-   "lcpMs": 2708,
-   "tbtMs": 33
+   "lcpMs": 3001,
+   "tbtMs": 29
   },
   "ref": {
    "performance": 82,
    "accessibility": 87,
    "bestPractices": 100,
-   "lcpMs": 4360,
-   "tbtMs": 13
+   "lcpMs": 4377,
+   "tbtMs": 40
   }
  },
  "czytelnosc": {
   "nasz": {
-   "zdania": 922,
-   "slowa": 4645,
+   "zdania": 979,
+   "slowa": 4868,
    "sredniaDlugoscZdania": 5,
    "procentTrudnych": 11.7,
    "fog": 6.7

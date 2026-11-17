@@ -1,3 +1,4 @@
+import { gzipSync } from 'node:zlib';
 // Wspólne narzędzia testów: Playwright (preinstalowany lub z node_modules), axe-core, prosty serwer.
 import { createRequire } from 'node:module';
 import { createServer } from 'node:http';
@@ -28,8 +29,13 @@ export function serve(dir = join(ROOT, 'app'), port = 0) {
       let f = join(dir, p);
       try { if ((await stat(f)).isDirectory()) f = join(f, 'index.html'); } catch {}
       try {
-        const b = await readFile(f);
-        rsp.writeHead(200, { 'content-type': TYPES[extname(f)] || 'application/octet-stream', 'cache-control': 'no-cache' });
+        const b = await readFile(f), typ = TYPES[extname(f)] || 'application/octet-stream';
+        // Kompresja gzip dla tekstu, jak na GitHub Pages, gdzie prototyp jest opublikowany: pomiar odpowiada temu, co dostaje użytkownik.
+        if (/text|javascript|json|svg|manifest/.test(typ) && /gzip/.test(req.headers['accept-encoding'] || '')) {
+          rsp.writeHead(200, { 'content-type': typ, 'cache-control': 'no-cache', 'content-encoding': 'gzip', vary: 'accept-encoding' });
+          return rsp.end(gzipSync(b));
+        }
+        rsp.writeHead(200, { 'content-type': typ, 'cache-control': 'no-cache' });
         rsp.end(b);
       } catch { rsp.writeHead(404); rsp.end('404'); }
     });

@@ -6,6 +6,8 @@
 /* Hallmark · waive 24b · jedyny wyjątek to html.ramka .telefon, margines równy połowie ekranu 390 × 844 pomnożonej przez skalę · ramka telefonu na komputerze ma wymiary sprzętu, a nie siatki odstępów aplikacji */
 /* Hallmark · waive 72 · trzy trafienia, wszystkie w pojemnikach przewijanych albo zwiniętych (ekran telefonu w ramce, szczegóły wpisu, formularz z przypiętym przyciskiem) · w telefonie i w otwartym wpisie tekst ma pełne marginesy karty */
 /* Hallmark · dismissed 40 · napisy na kartach dokumentów stoją na gradiencie, którego linter nie mierzy; najjaśniejszy stopień każdej karty daje białemu tekstowi co najmniej 4,9:1, a axe w przeglądarce nie zgłasza naruszeń (npm test) */
+/* Hallmark · dropped "Dobry wieczór, Anno" · powitanie zależy od pory dnia; za dnia ten sam nagłówek brzmi „Dzień dobry, Anno” */
+/* Hallmark · dropped 27.12 · data ważności dowodu liczona od dnia pokazu (za 41 dni), więc zmienia się codziennie */
 /* Hallmark · dropped 21:07 · godzina zegara w pasku stanu symulowanego telefonu, zmienia się co minutę */
 /* Hallmark · reworded "To nie ja / zgłoś nieuprawniony dostęp" to "To nie ja, zgłoś ten odczyt" · 49a names it */
 /* Hallmark · answered F7 · listy, karty i pola mają jeden wzór pojemnika celowo: biały widżet o promieniu 16 na zabarwionym tle, jak w aplikacjach bankowych, z których korzysta ten sam użytkownik */
@@ -15,8 +17,49 @@
    układ jak w aplikacji neobanku: zabarwione tło, białe widżety o promieniu 16, arkusze 24, przyciski-pigułki,
    okrągłe znaki w wierszach, liczby i nagłówki grubym krojem. Jeden akcent; kolor niosą karty dokumentów.
    Bez godła i oznaczeń urzędowych. Krój: Lato (Łukasz Dziedzic, OFL), przycięty do znaków polskich. */
-@import url("./tokens.css");
-@import url("./base.css");
+/* Skala odstępów, czasy ruchu (dawniej tokens.css) i podstawy z Hallmark (dawniej base.css) w jednym pliku: jedno żądanie mniej na wolnym łączu */
+:root {
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.75rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.2rem; --text-xl: 1.44rem; --text-2xl: 1.728rem; --text-3xl: 2.074rem;
+  --text-display-s: 1.44rem; --text-display: 1.728rem; --text-section: 1.2rem; --text-title: 1rem; --text-lead: 1rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  --color-paper: oklch(97.3% 0.007 269); --color-paper-2: oklch(93.9% 0.017 251); --color-paper-3: oklch(90.6% 0.018 253);
+  --color-ink: oklch(23% 0.012 262); --color-ink-2: oklch(33% 0.012 262); --color-muted: oklch(49.8% 0.009 254);
+  --color-rule: oklch(91.5% 0.008 262);
+  --color-accent: oklch(41.5% 0.136 255); --color-accent-ink: oklch(99.6% 0.003 269); --color-focus: oklch(41.5% 0.136 255);
+  --font-display: "Lato", ui-sans-serif, system-ui, sans-serif; --font-body: "Lato", ui-sans-serif, system-ui, sans-serif; --font-outlier: var(--font-body);
+  --radius-card: 16px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
+  --tracking-display: -0.02em;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scrollbar-color: var(--color-muted) var(--color-paper); scroll-padding-top: var(--space-3xl); }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-md); line-height: 1.55; -webkit-font-smoothing: antialiased; caret-color: var(--color-accent); }
+::selection { background: color-mix(in oklab, var(--color-accent) 22%, transparent); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.16em; }
+h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: var(--display-weight, 700); font-synthesis: none; letter-spacing: var(--tracking-display); line-height: 1.05; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+h1 { max-width: 20ch; font-size: var(--text-display); } h2 { max-width: 30ch; font-size: var(--text-section); } h3 { max-width: 40ch; font-size: var(--text-title); line-height: 1.2; }
+.lead { font-size: var(--text-lead); line-height: 1.45; max-width: 52ch; }
+p { margin: 0; text-wrap: pretty; }
+p:not([class]) { max-width: 65ch; }
+img, video { max-width: 100%; height: auto; display: block; }
+svg { display: block; }
+[hidden] { display: none !important; }
+button, input, select, textarea { font: inherit; }
+.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); box-sizing: border-box; }
+.num, .figure, td.num { font-variant-numeric: tabular-nums; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+[data-slot] { position: relative; overflow: hidden; background: linear-gradient(160deg, var(--color-paper-2, var(--color-paper)), var(--color-paper-3, var(--color-paper))); }
+[data-slot] > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+[data-slot]:has(> img) > :not(img):not([data-keep]) { display: none !important; }
+@media (max-width: 60rem) { :root { --gutter: 24px; --section-gap-s: 80px; --section-gap: 96px; --section-gap-l: 120px; } }
+@media (max-width: 40rem) { :root { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; } }
+@media (prefers-reduced-motion: reduce) { *:not(.keep-motion), *:not(.keep-motion)::before, *:not(.keep-motion)::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
 
 @font-face { font-family: "Lato"; font-weight: 400; font-style: normal; font-display: swap; src: url(../fonts/lato-latin-400.woff2) format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+2190-2193, U+2212; }
 @font-face { font-family: "Lato"; font-weight: 700; font-style: normal; font-display: swap; src: url(../fonts/lato-latin-700.woff2) format("woff2"); unicode-range: U+0000-00FF, U+2000-206F, U+2190-2193, U+2212; }
@@ -689,7 +732,7 @@ html.ramka dialog.skaner .sk-wn { width: 390px; height: 794px; transform: scale(
   --s1: oklch(57.5% 0.155 254); --s2: oklch(65.5% 0.177 40); --s3: oklch(65.5% 0.13 163); --s4: oklch(76% 0.16 75);
   /* kategorie spraw: znak w kolorze kategorii na jej jasnym odcieniu */
   --k-pieniadze: oklch(50% 0.13 155); --k-pojazdy: oklch(54% 0.16 50); --k-rodzina: oklch(50% 0.17 305); --k-dane: oklch(47% 0.17 280); --k-telefon: oklch(50% 0.1 200); --k-pomoc: oklch(48% 0.02 262);
-  --tlo-plama-1: oklch(86% 0.07 258); --tlo-plama-2: oklch(90% 0.06 215); --tlo-plama-3: oklch(92% 0.05 290);
+  --tlo-plama-1: oklch(86% 0.07 258); --tlo-plama-2: oklch(90% 0.06 215); --tlo-plama-3: oklch(93% 0.04 200);
   --cien-widzet: 0 1px 2px oklch(15% 0.03 255 / .06), 0 10px 28px -18px oklch(15% 0.03 255 / .35);
   --cien-szybka: 0 1px 2px oklch(15% 0.03 255 / .08), 0 6px 16px -10px oklch(15% 0.03 255 / .4);
   --awatar-1: linear-gradient(135deg, oklch(62% 0.15 254), oklch(48% 0.16 262)); --awatar-2: linear-gradient(135deg, oklch(68% 0.15 45), oklch(56% 0.16 35));
@@ -699,17 +742,17 @@ html.ramka dialog.skaner .sk-wn { width: 390px; height: 794px; transform: scale(
   :root:not([data-theme="light"]) {
     --s1: oklch(62% 0.15 254); --s2: oklch(61% 0.17 40); --s3: oklch(61% 0.12 163); --s4: oklch(65% 0.14 75);
     --k-pieniadze: oklch(78% 0.13 155); --k-pojazdy: oklch(78% 0.13 55); --k-rodzina: oklch(78% 0.12 305); --k-dane: oklch(78% 0.11 280); --k-telefon: oklch(78% 0.09 200); --k-pomoc: oklch(80% 0.02 262);
-    --tlo-plama-1: oklch(30% 0.1 258); --tlo-plama-2: oklch(26% 0.07 220); --tlo-plama-3: oklch(26% 0.08 290);
+    --tlo-plama-1: oklch(30% 0.1 258); --tlo-plama-2: oklch(26% 0.07 220); --tlo-plama-3: oklch(25% 0.06 205);
     --cien-widzet: 0 1px 0 oklch(97% 0.007 269 / .05) inset; --cien-szybka: 0 1px 0 oklch(97% 0.007 269 / .06) inset;
   }
 }
 :root[data-theme="dark"] {
   --s1: oklch(62% 0.15 254); --s2: oklch(61% 0.17 40); --s3: oklch(61% 0.12 163); --s4: oklch(65% 0.14 75);
   --k-pieniadze: oklch(78% 0.13 155); --k-pojazdy: oklch(78% 0.13 55); --k-rodzina: oklch(78% 0.12 305); --k-dane: oklch(78% 0.11 280); --k-telefon: oklch(78% 0.09 200); --k-pomoc: oklch(80% 0.02 262);
-  --tlo-plama-1: oklch(30% 0.1 258); --tlo-plama-2: oklch(26% 0.07 220); --tlo-plama-3: oklch(26% 0.08 290);
+  --tlo-plama-1: oklch(30% 0.1 258); --tlo-plama-2: oklch(26% 0.07 220); --tlo-plama-3: oklch(25% 0.06 205);
   --cien-widzet: 0 1px 0 oklch(97% 0.007 269 / .05) inset; --cien-szybka: 0 1px 0 oklch(97% 0.007 269 / .06) inset;
 }
-/* Tło górnej części ekranu: trzy miękkie plamy barwy, jak tapeta w aplikacji bankowej; niżej spokojne tło. */
+/* Tło górnej części ekranu: trzy miękkie plamy barwy (granat, błękit, morski), jak tapeta w aplikacji bankowej; niżej spokojne tło. */
 .aplikacja { background:
   radial-gradient(70% 260px at 0% 0%, var(--tlo-plama-1), transparent 70%),
   radial-gradient(60% 240px at 100% 30px, var(--tlo-plama-2), transparent 70%),
@@ -760,7 +803,7 @@ html.kontrast .gora { background: var(--tlo); }
 .w-pierscien small { font-size: .6875rem; font-weight: 700; color: var(--tekst2); }
 
 /* Udział filarów: poziomy pasek z przerwami, zaokrąglone końce. */
-.udzialy { display: flex; gap: 2px; height: 12px; margin: var(--space-md) 0 0; border-radius: 99px; overflow: hidden; }
+.udzialy { display: flex; gap: var(--space-3xs); height: 12px; margin: var(--space-md) 0 0; border-radius: 99px; overflow: hidden; }
 .udzialy.maly-pasek { height: 8px; margin-top: var(--space-sm); }
 .udz { flex-basis: 0; min-width: 4px; }
 .udz.s1, .kropka-s.s1 { background: var(--s1); } .udz.s2, .kropka-s.s2 { background: var(--s2); } .udz.s3, .kropka-s.s3 { background: var(--s3); } .udz.s4, .kropka-s.s4 { background: var(--s4); }
