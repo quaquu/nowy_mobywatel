@@ -65,7 +65,7 @@ https://quaquu.github.io/nowy_mobywatel/
 ```
 https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4
 ```
-Film 67 s z napisami, bez dźwięku, nagrany z prototypu skryptem `tests/film.mjs` (odtwarzalny). Repozytorium idzie w pole „Strona www”.
+Film 80 s z napisami, bez dźwięku, nagrany z prototypu skryptem `tests/film.mjs` (odtwarzalny). Repozytorium idzie w pole „Strona www”.
 
 **Polskie modele i technologie** <!-- pole: technologie, max 300 -->
 ```
