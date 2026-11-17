@@ -8,6 +8,7 @@
 /* Hallmark · dismissed 40 · napisy na kartach dokumentów stoją na gradiencie, którego linter nie mierzy; najjaśniejszy stopień każdej karty daje białemu tekstowi co najmniej 4,9:1, a axe w przeglądarce nie zgłasza naruszeń (npm test) */
 /* Hallmark · dropped "Dobry wieczór, Anno" · powitanie zależy od pory dnia; za dnia ten sam nagłówek brzmi „Dzień dobry, Anno” */
 /* Hallmark · dropped 27.12 · data ważności dowodu liczona od dnia pokazu (za 41 dni), więc zmienia się codziennie */
+/* Hallmark · dropped https://mobywatel.ai/ · autor usunął odnośnik do strony konkursu z panelu obok telefonu */
 /* Hallmark · dropped 21:07 · godzina zegara w pasku stanu symulowanego telefonu, zmienia się co minutę */
 /* Hallmark · reworded "To nie ja / zgłoś nieuprawniony dostęp" to "To nie ja, zgłoś ten odczyt" · 49a names it */
 /* Hallmark · answered F7 · listy, karty i pola mają jeden wzór pojemnika celowo: biały widżet o promieniu 16 na zabarwionym tle, jak w aplikacjach bankowych, z których korzysta ten sam użytkownik */
@@ -610,7 +611,6 @@ html.ramka .dol { left: 0; right: 0; bottom: 0; width: auto; transform: none; pa
 html.ramka .belka-domowa { display: block; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: var(--tekst); z-index: 40; pointer-events: none; }
 html.ramka .toast { bottom: 110px; }
 html.ramka .panel { display: block; width: 400px; max-width: 40vw; color: var(--tekst); }
-.panel-wroc { display: inline-block; font-weight: 700; color: var(--gl); text-decoration: none; padding: var(--space-xs) 0; }
 .panel-t { font-size: var(--t-figura); line-height: 1.04; font-weight: 900; letter-spacing: -.03em; margin: var(--o5) 0 var(--o3); max-width: none; }
 .panel-o { color: var(--tekst2); font-size: 1.0625rem; margin: 0 0 var(--o6); max-width: 38ch; }
 .panel-sek { font-size: var(--t-objasn); font-weight: 700; letter-spacing: 0; color: var(--tekst2); margin: 0 var(--o1) var(--o2); }

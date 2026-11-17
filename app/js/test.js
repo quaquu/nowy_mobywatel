@@ -23,9 +23,13 @@ const SUS = [
   'Czułem/czułam się pewnie, korzystając z aplikacji.',
   'Musiał(a)bym się dużo nauczyć, zanim zacznę z niej korzystać.',
 ];
+// Sesja testu żyje tylko w tej karcie (sessionStorage): przeładowanie strony w trakcie testu jej nie gubi,
+// ale zwykłe wejście na stronę (nowa karta, następny dzień) nigdy nie zaczyna się w środku testu.
 const KLUCZ = 'mobywatel-proto-test';
-let sesja = (() => { try { return JSON.parse(localStorage.getItem(KLUCZ)); } catch { return null; } })();
-const zapiszSesje = () => { try { localStorage.setItem(KLUCZ, JSON.stringify(sesja)); } catch {} };
+try { localStorage.removeItem(KLUCZ); } catch {} // dawniej sesja była zapisana na stałe i wracała przy każdym wejściu
+let sesja = (() => { try { return JSON.parse(sessionStorage.getItem(KLUCZ)); } catch { return null; } })();
+const zapiszSesje = () => { try { sessionStorage.setItem(KLUCZ, JSON.stringify(sesja)); } catch {} };
+function zakoncz() { sesja.biezace = null; sesja.przerwany = true; zapiszSesje(); pasek(); location.hash = '#/start'; toast('Test przerwany. Aplikacja działa normalnie.'); }
 
 export const aktywny = () => sesja && sesja.biezace != null && sesja.biezace < ZADANIA.length;
 
@@ -63,8 +67,9 @@ function pasek(sukces) {
   const i = sesja.biezace, z = ZADANIA[i], w = sesja.wyniki[i];
   p.innerHTML = w.sukces || sukces
     ? `<p><b>Zadanie ${i + 1} z ${ZADANIA.length} wykonane.</b> Czas: ${w.czasS} s.</p><button class="btn glowny maly-btn" id="t-dalej">Dalej</button>`
-    : `<p><b>Zadanie ${i + 1} z ${ZADANIA.length}:</b> ${esc(z.tekst)}</p><button class="btn tekst maly-btn" id="t-podd">Nie wiem, jak to zrobić</button>`;
+    : `<p><b>Zadanie ${i + 1} z ${ZADANIA.length}:</b> ${esc(z.tekst)}</p><button class="btn tekst maly-btn" id="t-podd">Nie wiem, jak to zrobić</button><button class="btn tekst maly-btn" id="t-koniec">Przerwij test</button>`;
   $('#t-dalej', p)?.addEventListener('click', nastepne);
+  $('#t-koniec', p)?.addEventListener('click', zakoncz);
   dispatchEvent(new Event('resize'));
   $('#t-podd', p)?.addEventListener('click', () => { w.poddane = true; w.czasS = +((Date.now() - w.start) / 1000).toFixed(1); zapiszSesje(); nastepne(); });
 }

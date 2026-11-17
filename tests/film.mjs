@@ -115,7 +115,7 @@ await napis('4 osoby do wyboru', 'Halina, 78 lat: tryb prosty i gotowy wniosek o
 await czekaj(4000); await dotknij('main a[href="#/sprawa/renta"]'); await czekaj(2500); await przewin(380); await czekaj(4500);
 
 await p.evaluate(() => { const d = document.createElement('div'); d.id = 'film-koniec'; d.popover = 'manual';
-  d.innerHTML = '<b>Państwo, które przychodzi ze sprawą</b><p>11 spraw życiowych · emerytura w jednym miejscu · 4 osoby · asystent w telefonie</p><code>quaquu.github.io/nowy_mobywatel</code><small>Niezależny prototyp na mObywatel Challenge. Dane fikcyjne. Liczby z filmu odtwarza <i>npm test</i>.</small>';
+  d.innerHTML = '<b>Państwo, które przychodzi ze sprawą</b><p>11 spraw życiowych · emerytura w jednym miejscu · 4 osoby · asystent w telefonie</p><code>quaquu.github.io/nowy_mobywatel</code><small>Niezależny prototyp. Dane fikcyjne. Liczby z filmu odtwarza <i>npm test</i>.</small>';
   document.body.append(d); d.showPopover(); });
 await czekaj(6000);
 await cdp.send('Page.stopScreencast');
