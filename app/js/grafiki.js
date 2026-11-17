@@ -73,6 +73,28 @@ export function portret(kto = 'anna', opis, kadr = 'dowod') {
     ${P.okulary ? '<g fill="none" stroke="#5a5f69" stroke-width=".8"><rect x="22.2" y="29.2" width="8.6" height="5.8" rx="2.2"/><rect x="33.2" y="29.2" width="8.6" height="5.8" rx="2.2"/><path d="M30.8 31.6c.8-.5 1.6-.5 2.4 0M22.2 31.2l-2.8-.6M41.8 31.2l2.8-.6"/></g>' : ''}`, opis);
 }
 
+// Niemowlę zawinięte w kocyk, śpi. Ten sam styl co portrety dorosłych, kadr awatara.
+export function niemowle(opis) {
+  return svg('11 12 42 42', `
+    <defs>
+      <linearGradient id="tlo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9f2e6"/><stop offset="1" stop-color="#bfe6d4"/></linearGradient>
+      <radialGradient id="tw" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#f8d9c4"/><stop offset=".75" stop-color="#f3cbb1"/><stop offset="1" stop-color="#e3ad8f"/></radialGradient>
+      <linearGradient id="koc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7dc8a"/><stop offset="1" stop-color="#eec25a"/></linearGradient>
+    </defs>
+    <rect x="0" y="0" width="64" height="80" fill="url(#tlo)"/>
+    <ellipse cx="19.4" cy="38" rx="1.8" ry="2.6" fill="#e9b596"/><ellipse cx="44.6" cy="38" rx="1.8" ry="2.6" fill="#e9b596"/>
+    <circle cx="32" cy="37" r="12.8" fill="url(#tw)"/>
+    <path d="M19 35.2C19 25.6 24.8 20 32 20s13 5.6 13 15.2c-3.8-2.2-8.2-3.2-13-3.2s-9.2 1-13 3.2z" fill="#3fa592"/>
+    <path d="M19.4 33.4c3.8-2 8-3 12.6-3s8.8 1 12.6 3" stroke="#2f8b7a" stroke-width="1.6" fill="none"/>
+    <circle cx="32" cy="19.4" r="2" fill="#2f8b7a"/>
+    <path d="M25.2 38.6c1.3 1 3 1 4.3 0M34.5 38.6c1.3 1 3 1 4.3 0" stroke="#5a3f33" stroke-width=".9" stroke-linecap="round" fill="none"/>
+    <ellipse cx="25.4" cy="42.4" rx="2.4" ry="1.4" fill="#ff8a7a" opacity=".22"/><ellipse cx="38.6" cy="42.4" rx="2.4" ry="1.4" fill="#ff8a7a" opacity=".22"/>
+    <path d="M31.3 41.6c.5.4 1 .4 1.4 0" stroke="#d29a7c" stroke-width=".8" stroke-linecap="round" fill="none"/>
+    <path d="M30.5 44.6c1 .6 2 .6 3 0" stroke="#b9776a" stroke-width=".9" stroke-linecap="round" fill="none"/>
+    <path d="M8 80C9 62 18 49.6 32 49.6S55 62 56 80z" fill="url(#koc)"/>
+    <path d="M18 55.6c4.6-3.2 9.2-4.6 14-4.6s9.4 1.4 14 4.6M22 66c3-6 6.4-9.6 10-11" stroke="#d9a63e" stroke-width="1" fill="none" stroke-linecap="round"/>`, opis);
+}
+
 // Auto z boku: płaska, nowoczesna ilustracja w kolorze nadwozia z rejestru, bez znaków marki i bez obrysów.
 const NADWOZIE = { czerwony: ['#e5484d', '#c22f36', '#9e2129'], srebrny: ['#d7dce3', '#b4bcc7', '#8e98a6'], granatowy: ['#3d63c9', '#2a4aa3', '#1f377c'] };
 export function autoZBoku({ kolor = 'czerwony', opis } = {}) {

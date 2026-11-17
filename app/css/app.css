@@ -94,6 +94,7 @@ button, input, select, textarea { font: inherit; }
 }
 /* Stałe, niezależne od motywu (Hallmark 48: żadnego koloru poza blokiem tokenów). */
 :root {
+  --kd-krawedz: oklch(100% 0 0 / .45); --kd-prazki: oklch(100% 0 0 / .35); --kd-obwodka: oklch(100% 0 0 / .25);
   --biel: oklch(99.6% 0.003 269); --czern: oklch(13% 0.012 262); --pow-segment: oklch(99.6% 0.003 269);
   --pole-kraw: oklch(62% 0.015 262); /* krawędź pola: 3:1 do tła i do powierzchni (WCAG 1.4.11) */
   --marka-pole: oklch(41.5% 0.136 255); --marka-pole-2: oklch(46% 0.14 255); --marka-pole-tekst: oklch(99.6% 0.003 269); --marka-pole-znak: oklch(99.6% 0.003 269 / .16); /* granatowe pole sprawy, takie samo w obu motywach */
@@ -198,6 +199,8 @@ html.duzy .marka small { display: none; } /* przy dużym tekście nazwa mieści 
 .szklo .ib { color: var(--tekst); background: var(--pow); }
 .szklo .ib:hover { background: color-mix(in srgb, var(--pow) 90%, var(--tekst)); }
 .szklo .ib .ic { width: 22px; height: 22px; }
+.szklo .awatar-btn { overflow: hidden; padding: 0; box-shadow: 0 0 0 2px var(--pow); }
+.szklo .awatar-btn svg { display: block; width: 100%; height: 100%; }
 .grupa-t { font-size: var(--t-objasn); font-weight: 700; color: var(--tekst2); margin: var(--o6) var(--o1) var(--o2); }
 h1 + .grupa-t { margin-top: var(--o2); }
 .kropka { position: absolute; top: 5px; right: 3px; min-width: 18px; height: 18px; padding: 0 var(--space-2xs); border-radius: 9px; background: var(--zle); color: var(--zle-tekst); font-size: 11px; font-weight: 700; line-height: 18px; font-variant-numeric: tabular-nums; }
@@ -452,10 +455,41 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .os-czasu li::before { content: ""; position: absolute; left: 3px; top: 15px; width: 10px; height: 10px; border-radius: 50%; background: var(--ok); }
 .os-czasu li + li::after { content: ""; position: absolute; left: 7.5px; top: -9px; height: 24px; width: 1px; background: var(--separator); }
 .os-czasu small { color: var(--tekst2); font-size: var(--t-objasn); }
+/* stan sprawy jak przesyłki: gotowe (zielona kropka), w toku (granatowy pierścień), później (szary pierścień) */
+.os-czasu li[data-s="tok"]::before { background: var(--pow); box-shadow: inset 0 0 0 2.5px var(--gl); }
+.os-czasu li[data-s="pozniej"]::before { background: var(--pow); box-shadow: inset 0 0 0 2px var(--tekst2); }
+.st { display: inline-block; margin-left: var(--space-2xs); padding: 1px var(--space-xs); border-radius: 99px; font-size: var(--t-przypis); font-weight: 700; vertical-align: 2px; }
+.st-ok { background: color-mix(in srgb, var(--ok) 14%, var(--pow)); color: var(--ok); }
+.st-tok { background: var(--wypelnienie); color: var(--gl); }
+.st-pozniej { background: color-mix(in srgb, var(--tekst2) 12%, var(--pow)); color: var(--tekst2); }
+.etapy { margin-top: var(--o4); }
+.etapy legend { margin-bottom: var(--space-xs); }
+/* obowiązkowy krok: kłódka zamiast wyszarzonego pola */
+.krok-zamek { display: grid; place-items: center; width: 24px; height: 24px; flex: none; color: var(--tekst2); }
+.krok-zamek .ic { width: 20px; height: 20px; }
+.opcja-stala { display: flex; align-items: center; gap: var(--o2); margin: 0; min-height: 44px; }
+/* „Co zyskujesz”: trzy liczby; kafel gaśnie, gdy odznaczysz jego sprawę */
+.zyski { list-style: none; margin: 0 0 var(--o2); padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
+.zyski li:last-child { grid-column: 1 / -1; flex-direction: row; align-items: baseline; gap: var(--space-xs); }
+.zyski li { display: flex; flex-direction: column; gap: var(--space-3xs); padding: var(--o3) var(--space-sm); border-radius: 12px; background: var(--wypelnienie); transition: opacity var(--czas); }
+.zyski b { font-size: 1.25rem; font-weight: 900; letter-spacing: -.01em; font-variant-numeric: tabular-nums; color: var(--gl); white-space: nowrap; }
+.zyski small { font-size: var(--t-przypis); color: var(--tekst2); line-height: 1.3; }
+.zyski li.wyl { opacity: .45; }
+.zyski li.wyl b { text-decoration: line-through; }
+/* Notatka o prototypie: głos autora, nie aplikacji. Wyraźnie oddzielona ramką; ukrywa ją przełącznik w Ustawieniach. */
+.notka { margin: var(--o5) 0 0; padding: var(--o3) var(--o4); border: 1.5px dashed color-mix(in srgb, var(--tekst2) 45%, transparent); border-radius: var(--r-grupa); color: var(--tekst2); font-size: var(--t-objasn); line-height: 1.45; }
+.notka b { color: var(--tekst); }
+html.bez-notek .notka { display: none; }
+.data-sl { display: block; margin: var(--space-2xs) 0 var(--o3); color: var(--tekst2); font-size: var(--t-objasn); }
 
 /* ---------- Portfel kart dokumentów (wyróżnik) ---------- */
 .stos { margin: 0 0 var(--o5); }
 .stos > div + div { margin-top: calc(-66.667% + 56px); }
+/* Start: niższy stos (karty z tyłu wystają mniej, przednia bez pustego pola), żeby liczby były na pierwszym ekranie */
+.stos.kompakt > div + div { margin-top: calc(-48.78% + 46px); }
+.stos.kompakt .kd { aspect-ratio: 2.05 / 1; }
+.stos.kompakt .kd-foto { width: 20%; }
+.stos.kompakt .kd > .kd-duch { top: 34%; width: 11%; }
 .kd { position: relative; display: flex; flex-direction: column; aspect-ratio: 3 / 2; padding: var(--o4) var(--space-md); border-radius: var(--r-karta-dok); overflow: hidden; color: var(--biel); text-decoration: none; box-shadow: var(--cien-dok); }
 /* Karta jak prawdziwy dokument: jeden pomysł, światło na materiale. Drobny gilosz jak na dowodzie,
    miękki refleks przechodzi powoli, gdy karta się pojawia i gdy najedziesz na nią kursorem; na komputerze
@@ -482,12 +516,12 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .kd:focus-visible { outline-offset: 3px; }
 .kd-gora { display: flex; align-items: center; gap: var(--o2); min-height: 22px; }
 .kd-t { flex: 1; font-size: 1.2rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.kd-holo { position: relative; width: 36px; height: 26px; border-radius: 5px; flex: none; background: conic-gradient(from 30deg, var(--kd-holo-mat)); opacity: .75; box-shadow: inset 0 0 0 1px oklch(100% 0 0 / .45); overflow: hidden; }
-.kd-holo::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, oklch(100% 0 0 / .35) 0 1px, transparent 1px 4px); }
-.kd-kropka { width: 9px; height: 9px; border-radius: 50%; background: var(--biel); flex: none; box-shadow: 0 0 0 3px oklch(100% 0 0 / .25); }
+.kd-holo { position: relative; width: 36px; height: 26px; border-radius: 5px; flex: none; background: conic-gradient(from 30deg, var(--kd-holo-mat)); opacity: .75; box-shadow: inset 0 0 0 1px var(--kd-krawedz); overflow: hidden; }
+.kd-holo::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, var(--kd-prazki) 0 1px, transparent 1px 4px); }
+.kd-kropka { width: 9px; height: 9px; border-radius: 50%; background: var(--biel); flex: none; box-shadow: 0 0 0 3px var(--kd-obwodka); }
 .kd-linia { font-size: var(--t-objasn); margin-top: var(--space-3xs); }
 .kd-dol { display: flex; align-items: flex-end; gap: var(--space-md); margin-top: auto; }
-.kd-foto { position: relative; width: 26%; max-width: 92px; aspect-ratio: 4 / 5; border-radius: 3px; overflow: hidden; flex: none; box-shadow: 0 0 0 1px oklch(100% 0 0 / .35); }
+.kd-foto { position: relative; width: 26%; max-width: 92px; aspect-ratio: 4 / 5; border-radius: 3px; overflow: hidden; flex: none; box-shadow: 0 0 0 1px var(--kd-prazki); }
 .kd > .kd-duch { position: absolute; right: var(--space-md); top: 40%; width: 13%; max-width: 44px; aspect-ratio: 4 / 5; opacity: .3; pointer-events: none; border-radius: 2px; overflow: hidden; }
 .kd-duch svg { display: block; width: 100%; height: 100%; filter: grayscale(1) contrast(1.4) brightness(1.15); }
 .kd-foto svg { display: block; width: 100%; height: 100%; }
@@ -569,6 +603,18 @@ html.ramka .gora { top: 0; }
 .skala input:focus-visible + span { outline: 3px solid var(--gl); outline-offset: 2px; }
 .json { white-space: pre-wrap; word-break: break-all; font-size: var(--t-podpis); background: var(--wypelnienie); padding: var(--o3); border-radius: 10px; max-height: 300px; overflow: auto; }
 .tabela { overflow-x: auto; background: var(--pow); border-radius: var(--r-grupa); }
+/* „Dla jury”: trzy liczby na górze, metoda zwinięta */
+.trzy-liczby { list-style: none; padding: 0; margin: 0 0 var(--o3); display: grid; gap: var(--space-xs); }
+.trzy-liczby li { display: flex; flex-direction: column; gap: var(--space-3xs); padding: var(--o4); background: var(--pow); border-radius: var(--r-widzet, 20px); box-shadow: var(--cien-widzet); }
+.trzy-liczby b { font-size: var(--t-tytul); font-weight: 900; letter-spacing: -.02em; line-height: 1.1; color: var(--gl); font-variant-numeric: tabular-nums; }
+.trzy-liczby span { color: var(--tekst2); font-size: var(--t-objasn); }
+.metoda { margin: var(--o5) 0; }
+.metoda .tabela { margin-top: var(--o3); }
+.uczciwie { display: grid; gap: var(--o3); }
+.uczciwie > div { padding: var(--o4); background: var(--pow); border-radius: var(--r-grupa); }
+.uczciwie h3 { margin: 0 0 var(--o2); font-size: var(--t-naglowek); }
+.uczciwie .punkty { padding-left: 1.1em; list-style: disc; }
+.uczciwie .punkty li + li { margin-top: var(--space-2xs); }
 table { width: 100%; border-collapse: collapse; font-size: var(--t-objasn); }
 th, td { padding: var(--space-sm) var(--o3); text-align: left; border-bottom: 1px solid var(--separator); vertical-align: top; }
 thead th { font-size: var(--t-przypis); color: var(--tekst2); font-weight: 400; }
@@ -631,6 +677,22 @@ html.ramka .panel { display: block; width: 400px; max-width: 40vw; color: var(--
 .panel-kroki a.akt { background: var(--gl-wyp-pelny); color: var(--tekst); }
 .panel-kroki a.akt b { color: var(--gl); }
 .panel-przyciski { display: flex; gap: var(--o3); }
+.panel-gora { margin: 0 0 var(--o6); }
+/* trzy liczby z pomiarów: pierwsze, co widzi jury */
+.panel-liczby { list-style: none; padding: 0; margin: 0 0 var(--o5); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xs); }
+.panel-liczby:empty { display: none; }
+.panel-liczby li { display: flex; flex-direction: column; padding: var(--o3); background: var(--pow); color: var(--tekst); border-radius: var(--r-grupa); box-shadow: var(--cien-widzet); }
+.panel-liczby b { font-size: 1.75rem; font-weight: 900; line-height: 1.05; letter-spacing: -.02em; color: var(--gl); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.panel-liczby span { font-size: var(--t-objasn); font-weight: 700; line-height: 1.25; margin-top: var(--space-3xs); }
+.panel-liczby small { font-size: var(--t-przypis); color: var(--tekst2); line-height: 1.3; margin-top: var(--space-2xs); }
+/* osoby w pokazie: portret, imię, jedno zdanie */
+.panel-osoby { list-style: none; padding: 0; margin: 0 0 var(--o6); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xs); }
+.panel-osoby a { display: flex; align-items: center; gap: var(--o2); height: 100%; padding: var(--space-sm); background: var(--pow); border-radius: var(--r-grupa); color: var(--tekst2); text-decoration: none; font-size: var(--t-przypis); line-height: 1.3; box-shadow: 0 0 0 2px transparent; transition: box-shadow var(--czas), background var(--czas); }
+.panel-osoby a:hover { background: var(--wypelnienie); }
+.panel-osoby a.akt { box-shadow: 0 0 0 2px var(--gl); }
+.panel-osoby b { display: block; color: var(--tekst); font-size: var(--t-objasn); }
+.po-aw { flex: none; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; }
+.po-aw svg { display: block; width: 100%; height: 100%; }
 .panel-linki { display: flex; flex-wrap: wrap; gap: var(--o1) var(--o4); list-style: none; padding: 0; font-size: var(--t-objasn); margin: var(--o5) 0 var(--o2); } /* bez łączenia kropkami (Hallmark 63) */
 .panel-uw { font-size: var(--t-przypis); color: var(--tekst2); margin: 0; max-width: 46ch; }
 

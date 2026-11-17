@@ -25,7 +25,7 @@
     <span class="szklo">
     <button type="button" class="ib" id="skan-btn" aria-label="Zeskanuj kod QR"></button>
     <a href="#/skrzynka" class="ib" id="skrzynka-btn" aria-label="Pisma i płatności"></a>
-    <a href="#/ustawienia" class="ib" id="ustawienia-btn" aria-label="Ustawienia i dostępność"></a>
+    <a href="#/ustawienia" class="ib awatar-btn" id="ustawienia-btn" aria-label="Twoje konto i ustawienia"></a>
     </span>
   </header>
   <main id="tresc" tabindex="-1"><noscript><p>Prototyp wymaga włączonego JavaScriptu.</p></noscript></main>
@@ -36,8 +36,13 @@
 <aside class="panel" aria-labelledby="panel-t">
   <h2 id="panel-t" class="panel-t">Państwo, które przychodzi ze sprawą</h2>
   <p class="panel-o">Klikalny prototyp mObywatela. Zamiast czekać, aż zapytasz, aplikacja sama przychodzi ze sprawą, łączy sprawy z kilku urzędów i prosi o jeden podpis.</p>
+  <ul class="panel-liczby" id="panel-liczby" aria-label="Wyniki pomiarów w porównaniu z prototypem referencyjnym"></ul>
+  <div class="panel-przyciski panel-gora">
+    <a class="btn glowny" href="film/pokaz.mp4" target="_blank" rel="noopener">Obejrzyj film (90 s)</a>
+    <a class="btn drugi" href="#/jury">Wyniki i metoda</a>
+  </div>
   <h3 class="panel-sek">Wybierz osobę</h3>
-  <ul class="panel-kroki" id="panel-osoby"></ul>
+  <ul class="panel-osoby" id="panel-osoby"></ul>
   <h3 class="panel-sek">Co sprawdzić</h3>
   <ol class="panel-kroki">
     <li><a href="#/sprawa/narodziny" data-panel="1"><span><b>Narodziny dziecka:</b> 5 spraw w 4 urzędach, jeden podpis.</span></a></li>

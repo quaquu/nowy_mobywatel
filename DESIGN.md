@@ -79,13 +79,18 @@ Widżety 20 px, grupy i karty 16 px, pola i kafelki dat 12 px, arkusz 24 px u g�
 
 ## Components
 
-- **Szybkie akcje**: Pokaż dowód, Skanuj kod, Pisma (z licznikiem), Kto dzwoni?
+- **Nagłówek**: znak, skaner kodów, pisma z licznikiem i portret osoby (prowadzi do konta i ustawień, jak w aplikacji banku). Tryb wyglądu jest w Ustawieniach, nie na górze.
+- **Szybkie akcje**: Pokaż dowód, Zastrzeż dowód, Kto dzwoni?, Zapytaj głosem. Nie powtarzają tego, co jest w nagłówku.
 - **Widżet**: etykieta ze znakiem, jedna liczba (28 px, 900), jedno zdanie objaśnienia. Wariant szeroki dla emerytury z paskiem udziałów; wariant z pierścieniem dla dni do terminu.
 - **Wiersz listy**: znak kategorii 40 px albo kafelek daty, tytuł 700, objaśnienie 400 w kolorze drugorzędnym.
-- **Awatar**: kolorowy portret osoby w kółku; dziecko ma znak.
+- **Awatar**: kolorowy portret osoby w kółku; niemowlę śpi w czapeczce i kocyku, w tym samym stylu.
 - **Karta dokumentu**: jak zabezpieczony druk: giloszowa rozeta przy prawej krawędzi i fale mikrodruku (biała kreska, tryb soft-light), prostokątna folia hologramu z prążkami, kolorowe zdjęcie i jego mała jasna kopia („duch”), jak na plastikowym dowodzie. Ilustracje osób: nowoczesne, płaskie i kolorowe, dorosłe proporcje, neutralna mina, pastelowe tło inne dla każdej osoby; ten sam portret jest awatarem w listach. Auto: płaska ilustracja w kolorze z rejestru.
 - **Twoja emerytura**: suma (44 px), zdanie o części dziedziczonej, pasek udziałów z przerwami 2 px; lista filarów z kwotą, udziałem i źródłem danych; karta prognozy z dwoma przełącznikami segmentowymi (wiek, dopłata do IKZE), kwotą miesięczną, rozbiciem, stopą zastąpienia, ulgą IKZE i wykresem kapitału (linia 2 px, pole 16%, podpisany początek i koniec, krzyż i dymek pod kursorem, tabela jako zamiennik). „Jak liczymy” pod spodem.
 - **Arkusz zgody**: co, dokąd, jakie dane, co można cofnąć; jedna wyróżniona akcja na dole.
+- **Sprawa**: najpierw „Co zyskujesz” (kwoty i liczba wniosków, których nie trzeba składać; kafel gaśnie, gdy odznaczysz jego sprawę), potem lista kroków. Krok obowiązkowy ma kłódkę zamiast wyszarzonego pola.
+- **Po podpisie**: oś czasu ze stanem każdej sprawy (Gotowe, W toku, Później), jak śledzenie przesyłki.
+- **Portfel na Starcie**: niższe karty (2,05 : 1), żeby pod portfelem było widać liczby już na pierwszym ekranie; pełne karty w zakładce Dokumenty.
+- **Notatka o prototypie**: przerywana ramka „O prototypie” dla zdań autora (co już działa, co nowe, skąd wzór). Głos aplikacji zostaje czysty; ramki ukrywa przełącznik w Ustawieniach.
 - **Przyciski**: kapsuły; główny wypełniony granatem, drugi jasnym granatem, niszczący czerwony, tekstowy sam kolor. Cel dotyku ≥ 44 px.
 
 ## Motion

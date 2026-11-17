@@ -11,7 +11,7 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 - Prototyp: `https://quaquu.github.io/nowy_mobywatel/` (po włączeniu GitHub Pages, patrz niżej)
 - Na komputerze prototyp otwiera się w symulacji iPhone'a z panelem „Co sprawdzić”; przycisk **Pełny ekran** pokazuje go bez ramki (adres z `?widok=pelny` albo `?widok=telefon` wymusza widok). Na telefonie zawsze pełny ekran.
 - 60 sekund dla jury: w prototypie **Więcej → Dla jury**
-- Film 84 s z napisami: `https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4` (nagrywa go `node tests/film.mjs` z działającego prototypu; napisy i ślady dotknięć dokłada skrypt nagrania)
+- Film 90 s z napisami: `https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4` (nagrywa go `node tests/film.mjs` z działającego prototypu; napisy i ślady dotknięć dokłada skrypt nagrania)
 - Lokalnie: `node tests/serve.mjs` i otwórz `http://127.0.0.1:8080/`
 
 ## Co jest w środku
@@ -52,7 +52,7 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | Nowe sprawy, zbiór testowy 2 (n=37) | 91,9% | nie mierzono |
 | Złośliwe prośby odrzucone (test) | 5/5 | – |
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |
-| Lighthouse, telefon: wydajność / dostępność | 97–98 / 100 w `npm test` (serwer lokalny z kompresją gzip jak GitHub Pages; bez kompresji 92). Opublikowana strona, 17.11.2026, trzy pomiary: 89–93 / 100, LCP 1,7–1,8 s, blokowanie wątku 300–425 ms (przyczyna jeszcze niewyjaśniona) | 82 / 87 |
+| Lighthouse, telefon: wydajność / dostępność | 97–99 / 100 w `npm test` (serwer lokalny z kompresją gzip jak GitHub Pages; bez kompresji 92). Opublikowana strona, 17.11.2026, trzy pomiary: 89–93 / 100, LCP 1,7–1,8 s, blokowanie wątku 300–425 ms (przyczyna jeszcze niewyjaśniona) | 82 / 87 |
 | Czytelność FOG-PL | 7,1 | 7,1 |
 | Detektor Impeccable 4.7.0: wzorce „interfejsu z AI” i błędy jakości (kod + ekrany) | 0 | 18 (kod 7, ekran 11) |
 | Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł (wersja 1 silnika) | 92,0% / 95,4% | – |

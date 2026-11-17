@@ -80,10 +80,10 @@ await p.goto(url + '?widok=telefon&osoba=anna#/start'); await p.waitForSelector(
 await czekaj(1200);
 await nagrywaj();
 
-await napis('Państwo, które przychodzi ze sprawą', 'Nie musisz pytać. Szpital zgłosił narodziny, więc sprawa czeka na starcie.', 'W prototypie referencyjnym trzeba najpierw zapytać asystenta.');
+await napis('Państwo, które przychodzi ze sprawą', 'Nie musisz pytać. Szpital zgłosił narodziny, więc sprawa czeka na starcie.', 'W prototypie referencyjnym sprawę zaczyna się od pytania do asystenta.');
 await czekaj(6500);
 await dotknij('a.hero');
-await napis('Narodziny dziecka', '5 spraw w 4 instytucjach, wypełnionych danymi, które państwo już ma.', 'Akt urodzenia z PESEL i meldunkiem, 800+, becikowe, ubezpieczenie dziecka, urlop rodzicielski.');
+await napis('Narodziny dziecka', 'Najpierw widać, co rodzina zyska: 800 zł co miesiąc i 1 000 zł becikowego.', '5 spraw w 4 instytucjach, wypełnionych danymi, które państwo już ma.');
 await czekaj(2500); await przewin(420); await czekaj(3000);
 await dotknij('[data-imie="Zofia"]'); await czekaj(900);
 await dotknij('#nar-dalej'); await p.waitForSelector('dialog.arkusz[open]'); await czekaj(500);
@@ -91,7 +91,11 @@ await napis('Arkusz zgody', 'Przed podpisem widać: co, dokąd i z jakimi danymi
 await czekaj(5500);
 await dotknij('#arkusz-ok');
 await napis('Jeden podpis', '4 dotknięcia i ok. 14 sekund.', 'W prototypie referencyjnym: 2 sprawy, 2 podpisy, 24 s (ten sam model pomiaru KLM).');
-await p.waitForSelector('main .gotowe'); await czekaj(6000);
+await p.waitForSelector('main .gotowe'); await czekaj(4500);
+await przewin(260); await czekaj(600);
+await dotknij('fieldset.etapy label:nth-of-type(2)'); await p.waitForSelector('main .os-czasu li[data-s="ok"]');
+await napis('Śledzenie spraw', 'Każdą sprawę śledzisz jak przesyłkę.', 'Podgląd po 3 dniach: akt i PESEL gotowe, becikowe przyznane, 800+ w toku.');
+await czekaj(5000);
 
 await p.evaluate(() => location.hash = '#/dane/dostep'); await p.waitForSelector('details.podejrzane');
 await napis('Kto sprawdzał moje dane', 'Każdy odczyt z celem i podstawą prawną.', 'Podejrzany odczyt jest oznaczony, a zgłoszenie to jedno dotknięcie.');

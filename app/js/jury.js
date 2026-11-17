@@ -6,6 +6,8 @@ import { WYNIKI as W } from './wyniki.js';
 const REPO = 'https://github.com/quaquu/nowy_mobywatel';
 const p = (x, d = 0) => x == null ? '–' : (100 * x).toFixed(d).replace('.', ',') + '%';
 const pl = x => x == null ? '–' : String(x).replace('.', ',');
+// Pomiar opublikowanej strony (GitHub Pages) robimy ręcznie po publikacji: npm test mierzy serwer lokalny.
+const ZYWA = { data: '17.11.2026', wydajnosc: '89–93' };
 const wiersz = (a, b, c) => `<tr><th scope="row">${a}</th><td>${b}</td><td>${c}</td></tr>`;
 
 export function jury() {
@@ -13,29 +15,37 @@ export function jury() {
   return {
     tytul: 'Dla jury',
     html: `<h1 tabindex="-1">Państwo, które przychodzi ze sprawą</h1>
-    <p class="wstep">Prototyp Janusza Cieszyńskiego odpowiada, gdy zapytasz. Nasz zaczyna sprawę sam: zauważa zdarzenie (urodziło się dziecko, kończy się dowód), łączy sprawy z kilku urzędów w jedną listę wypełnioną danymi, które państwo już ma, i prosi o <b>jeden podpis</b>. Asystent jest jednym z wejść, nie całą aplikacją.</p>
+    <p class="wstep">Prototyp referencyjny pokazał, że z państwem można rozmawiać, zamiast szukać usługi w menu. Ten prototyp idzie krok dalej: <b>państwo samo zaczyna sprawę</b>. Zauważa zdarzenie (urodziło się dziecko, kończy się dowód), zbiera sprawy z kilku urzędów w jedną listę wypełnioną danymi, które już ma, i prosi o <b>jeden podpis</b>. Asystent jest jednym z wejść, nie całą aplikacją.</p>
+
+    ${W ? `<h2 class="sekcja">Trzy liczby</h2>
+    <ul class="trzy-liczby">
+      <li><b>${m.klm?.nasz?.akcje ?? '–'} dotknięcia</b><span>i ${m.klm?.nasz?.sprawy ?? '–'} spraw po narodzinach dziecka załatwionych jednym podpisem. W prototypie referencyjnym: ${m.klm?.ref?.akcje ?? '–'} dotknięć, ${m.klm?.ref?.sprawy ?? '–'} sprawy, ${m.klm?.ref?.podpisy ?? '–'} podpisy.</span></li>
+      <li><b>9 na 10</b><span>zdań napisanych własnymi słowami asystent przypisał do właściwej sprawy (${p(m.intencje?.test?.nasz, 1)} z ${m.intencje?.test?.n ?? '–'} zdań, których nie widział przy budowie). Referencja: 3 na 10 (${p(m.intencje?.test?.referencja, 1)}).</span></li>
+      <li><b>0 błędów</b><span>dostępności w automatycznym teście WCAG 2.2 AA (axe) na wszystkich ekranach. Referencja: ${m.axe?.ref ?? '–'} rodzajów błędów.</span></li>
+    </ul>
+    <p class="maly">Te same narzędzia na obu prototypach, pomiar z ${esc(m.data)}. Kod testów jest w repozytorium, a <code>npm test</code> odtwarza każdą liczbę.</p>` : ''}
 
     <h2 class="sekcja">Spróbuj w 60 sekund</h2>
-    <ol class="punkty"><li>Na starcie dotknij <a href="#/sprawa/narodziny">„Urodziła się Twoja córka”</a>.</li><li>Wybierz imię i dotknij „Przejrzyj i podpisz raz”.</li><li>Zobacz w <a href="#/dane/dostep">„Kto sprawdzał moje dane”</a>, które urzędy użyły Twoich danych i po co.</li><li>Zmień osobę w <a href="#/osoby">„Osoby w pokazie”</a>: Halina (78 lat) ma tryb prosty i gotowy wniosek o rentę wdowią.</li></ol>
+    <ol class="punkty"><li>Na starcie dotknij <a href="#/sprawa/narodziny">„Urodziła się Twoja córka”</a>.</li><li>Wybierz imię i dotknij „Przejrzyj i podpisz raz”. Po podpisie przełącz „za 3 dni”: każdą sprawę śledzisz jak przesyłkę.</li><li>Zobacz w <a href="#/dane/dostep">„Kto sprawdzał moje dane”</a>, które urzędy użyły Twoich danych i po co.</li><li>Zmień osobę w <a href="#/osoby">„Osoby w pokazie”</a>: Halina (78 lat) ma tryb prosty i gotowy wniosek o rentę wdowią.</li></ol>
 
-    <h2 class="sekcja">Co zmierzyliśmy</h2>
-    ${W ? `<p class="maly">Pomiar z ${esc(m.data)}. Te same narzędzia uruchomiliśmy na prototypie referencyjnym (kod z mobywatel.ai, tryb przeglądarkowy).</p>
+    ${W ? `<details class="rozw metoda"><summary>Wszystkie pomiary i metoda</summary>
+    <p class="maly">Czas policzony modelem KLM (Keystroke-Level Model): standardowe czasy dotknięcia, czytania i oczekiwania na system, bez udziału ludzi. Rozpoznanie sprawy: zbiór zdań odłożony przed budową asystenta. Wydajność: Lighthouse w trybie telefonu.</p>
     <div class="tabela" tabindex="0" role="region" aria-label="Tabela porównania, przewijana w poziomie"><table><caption class="sr">Porównanie z prototypem referencyjnym</caption>
       <thead><tr><th scope="col">Miara</th><th scope="col">Ten prototyp</th><th scope="col">Referencyjny</th></tr></thead><tbody>
-      ${wiersz('Narodziny dziecka: liczba dotknięć do wysłania wszystkich spraw', m.klm?.nasz?.akcje ?? '–', m.klm?.ref?.akcje ?? '–')}
-      ${wiersz('…liczba podpisów', m.klm?.nasz?.podpisy ?? '–', m.klm?.ref?.podpisy ?? '–')}
+      ${wiersz('Narodziny dziecka: dotknięcia do wysłania wszystkich spraw', m.klm?.nasz?.akcje ?? '–', m.klm?.ref?.akcje ?? '–')}
+      ${wiersz('…podpisy', m.klm?.nasz?.podpisy ?? '–', m.klm?.ref?.podpisy ?? '–')}
       ${wiersz('…sprawy załatwione', m.klm?.nasz?.sprawy ?? '–', m.klm?.ref?.sprawy ?? '–')}
       ${wiersz('…przewidywany czas (model KLM)', (m.klm?.nasz?.sekundy ?? '–') + ' s', (m.klm?.ref?.sekundy ?? '–') + ' s')}
-      ${wiersz('Rozpoznanie sprawy z tekstu (zbiór testowy, n=' + (m.intencje?.test?.n ?? '–') + ')', p(m.intencje?.test?.nasz, 1), p(m.intencje?.test?.referencja, 1))}
+      ${wiersz('Rozpoznanie sprawy z tekstu (' + (m.intencje?.test?.n ?? '–') + ' zdań)', p(m.intencje?.test?.nasz, 1), p(m.intencje?.test?.referencja, 1))}
       ${wiersz('Złośliwe prośby odrzucone', m.intencje?.test?.odmowy ?? '–', '–')}
-      ${(m.bielik || []).map(b => wiersz(`Polski model ${esc(b.model.replace(/-v3\.0-Instruct.*$/, ' v3').replace(/-/g, ' '))} (lokalnie, bez przykładów): sam / jako wsparcie reguł`, `${p(b.test.bielik, 1)} / ${p(b.test.hybryda, 1)}`, '–')).join('')}
-      ${wiersz('Naruszenia dostępności (axe, WCAG 2.2 AA)', m.axe?.nasz ?? '–', m.axe?.ref ?? '–')}
-      ${wiersz('Detektor Impeccable: wzorce „interfejsu z AI” i błędy jakości', m.impeccable?.razem ?? '–', m.impeccable?.ref?.razem ?? '–')}
+      ${wiersz('Błędy dostępności (axe, WCAG 2.2 AA)', m.axe?.nasz ?? '–', m.axe?.ref ?? '–')}
       ${wiersz('Lighthouse: dostępność', m.lighthouse?.nasz?.accessibility ?? '–', m.lighthouse?.ref?.accessibility ?? '–')}
-      ${wiersz('Lighthouse: wydajność (telefon)', m.lighthouse?.nasz?.performance ?? '–', m.lighthouse?.ref?.performance ?? '–')}
-      ${wiersz('Czytelność tekstów (FOG-PL, mniej = prościej)', pl(m.czytelnosc?.nasz?.fog), pl(m.czytelnosc?.ref?.fog))}
+      ${wiersz('Lighthouse: wydajność na telefonie (serwer testowy / ta strona ' + ZYWA.data + ')', (m.lighthouse?.nasz?.performance ?? '–') + ' / ' + ZYWA.wydajnosc, m.lighthouse?.ref?.performance ?? '–')}
+      ${wiersz('Wzorce „interfejsu z generatora” i błędy jakości (detektor Impeccable)', m.impeccable?.razem ?? '–', m.impeccable?.ref?.razem ?? '–')}
+      ${wiersz('Trudność tekstów (indeks FOG-PL, mniej = prościej)', pl(m.czytelnosc?.nasz?.fog), pl(m.czytelnosc?.ref?.fog))}
       ${wiersz('Działa bez internetu po pierwszym otwarciu', m.offline ? 'tak' : '–', '–')}
-      </tbody></table></div>` : '<p class="maly">Wyniki pojawią się po uruchomieniu testów (npm test).</p>'}
+      ${(m.bielik || []).map(b => wiersz(`Próba: polski model ${esc(b.model.replace(/-v3\.0-Instruct.*$/, ' v3').replace(/-/g, ' '))} w telefonie, sam / razem z regułami`, `${p(b.test.bielik, 1)} / ${p(b.test.hybryda, 1)}`, '–')).join('')}
+      </tbody></table></div></details>` : '<p class="maly">Wyniki pojawią się po uruchomieniu testów (npm test).</p>'}
 
     <h2 class="sekcja">Skąd pomysły</h2>
     <ul class="lista mala">
@@ -48,11 +58,15 @@ export function jury() {
     </ul>
 
     <h2 class="sekcja">Skaner: kody do zeskanowania</h2>
-    <p>Otwórz prototyp na telefonie, dotknij ikony skanera obok skrzynki i zeskanuj kod z tego ekranu. Bez drugiego telefonu: w skanerze są „Kody pokazowe”.</p>
+    <p>Otwórz prototyp na telefonie, dotknij ikony skanera u góry ekranu i zeskanuj kod z tego ekranu. Bez drugiego telefonu: w skanerze są „Kody pokazowe”.</p>
     <ul class="kody-qr">${[['sklep', 'Kasa w sklepie', 'tylko pełnoletność'], ['urzad', 'Okienko urzędu', 'tożsamość'], ['logowanie', 'Logowanie na komputerze', '„Czy to Ty?”'], ['parkometr', 'Naklejka na parkometrze', 'fałszywy kod']].map(([id, t, o]) => `<li><img src="img/kod-${id}.svg" alt="Kod QR pokazowy: ${t}" width="132" height="132" loading="lazy"><b>${t}</b><small>${o}</small></li>`).join('')}</ul>
 
-    <h2 class="sekcja">Uczciwie: co już jest w mObywatelu</h2>
-    <p>Dokumenty w telefonie, e-Doręczenia, historia pojazdu, punkty karne, zastrzeżenie PESEL, zawieszenie dowodu, mStłuczka i informacja o odbiorcach danych z rejestru PESEL już działają. W mObywatelu w przeglądarce są też osobne wnioski: zgłoszenie urodzenia, zameldowanie, wniosek o dowód, zbycie pojazdu, ePłatności, historia weryfikacji PESEL i część spraw za dziecko lub inną osobę. Nie udajemy, że to nasze. Kodem QR już dziś potwierdza się dane i loguje do serwisów, a w części kas samoobsługowych potwierdza się samą pełnoletność. Operatorzy blokują już połączenia z podszytym numerem banku, a Kodeks wyborczy od lutego 2027 r. pozwoli poprzeć kandydata przez internet. Nowe są: sprawy przychodzące same, pakiety spraw z kilku urzędów z jednym podpisem, „Możesz skorzystać”, przypomnienia i zlecenia stałe, bieżący rejestr dostępu do danych ze wszystkich rejestrów, sprawy bliskich w jednym miejscu, tryb prosty, odzyskiwanie dostępu bez pętli, sprawdzanie, kto dzwoni, ostrzeżenie przed obcymi kodami QR i „To nie ja” przy logowaniu kodem, oraz podpisy poparcia pod projektami ustaw i referendami.</p>
+    <h2 class="sekcja">Uczciwie: co już jest, a co nowe</h2>
+    <div class="uczciwie">
+      <div><h3>Już działa w mObywatelu</h3><ul class="punkty"><li>dokumenty w telefonie, e-Doręczenia, historia pojazdu, punkty karne</li><li>zastrzeżenie PESEL, zawieszenie dowodu, mStłuczka</li><li>w przeglądarce osobne wnioski: zgłoszenie urodzenia, zameldowanie, dowód, zbycie pojazdu, ePłatności</li><li>potwierdzanie danych i logowanie kodem QR, w części kas samą pełnoletnością</li></ul>
+      <p class="maly">Operatorzy już blokują połączenia z podszytym numerem banku. Kodeks wyborczy od lutego 2027 r. pozwoli poprzeć kandydata przez internet.</p></div>
+      <div><h3>Nowe w tym prototypie</h3><ul class="punkty"><li>sprawy, które przychodzą same, i pakiety spraw z kilku urzędów z jednym podpisem</li><li>śledzenie każdej sprawy jak przesyłki</li><li>„Możesz skorzystać”, przypomnienia i zlecenia stałe</li><li>jeden rejestr: kto i po co sprawdzał moje dane</li><li>Twoja emerytura: ZUS, PPK, IKE i IKZE razem, z prognozą</li><li>sprawy bliskich, tryb prosty, odzyskiwanie dostępu bez pętli</li><li>„Kto dzwoni?”, ostrzeżenie przed obcym kodem QR, podpisy poparcia</li></ul></div>
+    </div>
 
     <h2 class="sekcja">Dokumentacja</h2>
     <ul class="lista mala">

@@ -3,6 +3,7 @@ import { ic } from './icons.js';
 import { stan, $, $$, ogloszenie, resetuj, ustawMotyw, wyborMotywu } from './core.js';
 import * as W from './widoki.js';
 import { OSOBA, OSOBY, WLASCICIEL, adresOsoby } from './data.js';
+import { portret } from './grafiki.js';
 // Ekrany spoza startu ładujemy dopiero, gdy są potrzebne: start rysuje się szybciej.
 const S = () => import('./sprawy.js'), Z = () => import('./zycie.js'), B = () => import('./obywatel.js'), K = () => import('./skaner.js');
 const asystent = async q => (await import('./asystent.js')).asystent(q);
@@ -65,6 +66,7 @@ function zastosujUstawienia() {
   h.classList.toggle('prosty', !!U.prosty);
   h.classList.toggle('duzy', !!U.duzy || !!U.prosty);
   h.classList.toggle('kontrast', !!U.kontrast);
+  h.classList.toggle('bez-notek', !!U.bezNotek);
 }
 
 function naglowek() {
@@ -98,6 +100,12 @@ async function pokaz() {
   const main = $('#tresc');
   main.innerHTML = widok.html;
   widok.po?.(main);
+  // Pole daty wygląda jak w języku przeglądarki (np. 11/17/2026). Pod nim ta sama data słownie, po polsku.
+  $$('input[type=date]', main).forEach(i => {
+    const sl = document.createElement('small'); sl.className = 'data-sl'; sl.setAttribute('aria-hidden', 'true');
+    const ustaw = () => { const d = i.valueAsDate; sl.textContent = d ? d.toLocaleDateString('pl-PL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : ''; };
+    i.after(sl); ustaw(); i.addEventListener('input', ustaw);
+  });
   document.title = `${widok.tytul} · mObywatel (prototyp)`;
   $$('#nawigacja a').forEach((a, i) => { const akt = ZAKLADKI[i][3].test(sciezka); a.classList.toggle('akt', akt); akt ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); });
   naglowek();
@@ -171,12 +179,22 @@ function powloka() {
   $('#telefon-btn').onclick = () => zmienWidok('telefon');
   $('#od-nowa-btn').onclick = () => { resetuj(); location.hash = '#/start'; dispatchEvent(new Event('ustawienia')); };
   $('#nawigacja').innerHTML = ZAKLADKI.map(([h, i, t]) => `<a href="${h}">${ic(i, 'zwykla')}${ic(i + '-f', 'pelna')}<span>${t}</span></a>`).join('');
-  $('#ustawienia-btn').innerHTML = ic('gear');
+  $('#ustawienia-btn').innerHTML = portret(OSOBA, null, 'awatar'); // jak w aplikacji banku: Twoje zdjęcie prowadzi do konta i ustawień
   $('#skan-btn').innerHTML = ic('scan');
   $('#skan-btn').onclick = async () => (await K()).otworzSkaner();
   zastosujUstawienia();
   $('#panel-wyglad').innerHTML = wyborMotywu('motyw-panel');
-  $('#panel-osoby').innerHTML = Object.entries(OSOBY).map(([id, o]) => `<li><a href="${adresOsoby(id)}"${id === OSOBA ? ' class="akt" aria-current="true"' : ''}><span><b>${o.nazwa}:</b> ${o.krotko}.</span></a></li>`).join('');
+  $('#panel-osoby').innerHTML = Object.entries(OSOBY).map(([id, o]) => `<li><a href="${adresOsoby(id)}"${id === OSOBA ? ' class="akt" aria-current="true"' : ''}><span class="po-aw">${portret(id, null, 'awatar')}</span><span><b>${o.nazwa}</b><small>${o.krotko}</small></span></a></li>`).join('');
+  // Trzy liczby z ostatniego `npm test` (ten sam plik co strona „Dla jury”); ładowane po starcie, tylko na komputerze.
+  if (matchMedia('(min-width: 900px)').matches) import('./wyniki.js').then(({ WYNIKI: m }) => {
+    if (!m?.klm) return;
+    const proc = x => Math.round(x * 10);
+    $('#panel-liczby').innerHTML = [
+      [m.klm.nasz.akcje, 'dotknięcia', `${m.klm.nasz.sprawy} spraw, 1 podpis · referencja: ${m.klm.ref.akcje} za ${m.klm.ref.sprawy} sprawy`],
+      [`${proc(m.intencje.test.nasz)} na 10`, 'zdań zrozumiał asystent', `referencja: ${proc(m.intencje.test.referencja)} na 10`],
+      [m.axe.nasz, 'błędów dostępności', `WCAG 2.2 AA · referencja: ${m.axe.ref}`],
+    ].map(([l, t, o]) => `<li><b>${l}</b><span>${t}</span><small>${o}</small></li>`).join('');
+  }).catch(() => {});
   addEventListener('change', e => { if (e.target.name?.startsWith('motyw')) ustawMotyw(e.target.value); });
   addEventListener('ustawienia', () => { zastosujUstawienia(); pokaz(); });
   addEventListener('hashchange', pokaz);

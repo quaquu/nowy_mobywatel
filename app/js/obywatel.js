@@ -81,7 +81,7 @@ export function ktoDzwoni() {
     </form>
     <div id="wynik-nr" aria-live="polite"></div>
     ${NIGDY}
-    <p class="stopka-info">Już dziś operatorzy blokują połączenia, w których ktoś podszywa się pod numer z jawnego wykazu UKE (numery banków i instytucji tylko do odbierania), a podejrzane SMS-y przyjmuje CERT Polska pod numerem 8080. Nowe w prototypie: sprawdzenie numeru w mObywatelu, rejestr numerów, z których dzwonią instytucje publiczne, i potwierdzenie rozmowy w aplikacji.</p>`,
+    <p class="notka"><b>O prototypie.</b> Już dziś operatorzy blokują połączenia, w których ktoś podszywa się pod numer z jawnego wykazu UKE (numery banków i instytucji tylko do odbierania), a podejrzane SMS-y przyjmuje CERT Polska pod numerem 8080. Nowe w prototypie: sprawdzenie numeru w mObywatelu, rejestr numerów, z których dzwonią instytucje publiczne, i potwierdzenie rozmowy w aplikacji.</p>`,
     po(root) {
       const pole = $('#nr', root), wynik = $('#wynik-nr', root);
       const sprawdz = () => {
@@ -148,7 +148,7 @@ export function poparcieWidok() {
       <p class="mp"><span><b>${esc(m.tytul)}</b><small>${m.papier ? 'papierowa lista poparcia' : 'poparcie w mObywatelu'} · ${fmt(m.kiedy)}</small></span>${m.podejrzane ? '<span class="plak pomaranczowa">sprawdź</span>' : '<span class="plak zielona">Twój podpis</span>'}</p>
       ${m.podejrzane ? `<p class="ostrz">${ic('alert')}<span>Twoje dane są na papierowej liście poparcia. Jeśli to nie Twój podpis, zgłoś to. Komisja sprawdzi listę.</span></p><button class="btn tekst" data-nie-ja="${m.id}">To nie ja, zgłoś do komisji wyborczej</button>` : ''}
     </li>`).join('')}</ul>
-    <p class="stopka-info">Od lutego 2027 r. Portal poparcia (Kodeks wyborczy, Dz.U. 2026 poz. 178) pozwoli poprzeć kandydatów w wyborach powszechnych przez internet i sprawdzić, komu udzieliło się poparcia. Nie obejmie wyborów samorządowych, projektów ustaw ani referendów: tu nadal obowiązuje papier. Projekt poselski z 1 kwietnia 2026 r. (RPW/11430/2026) proponuje e-podpisy pod projektami ustaw.</p>`,
+    <p class="notka"><b>O prototypie.</b> Od lutego 2027 r. Portal poparcia (Kodeks wyborczy, Dz.U. 2026 poz. 178) pozwoli poprzeć kandydatów w wyborach powszechnych przez internet i sprawdzić, komu udzieliło się poparcia. Nie obejmie wyborów samorządowych, projektów ustaw ani referendów: tu nadal obowiązuje papier. Projekt poselski z 1 kwietnia 2026 r. (RPW/11430/2026) proponuje e-podpisy pod projektami ustaw.</p>`,
     po(root) {
       $$('[data-nie-ja]', root).forEach(b => b.onclick = () => { b.disabled = true; cel('poparcie-zgloszone'); toast('Zgłoszenie trafi do komisji wyborczej, która sprawdza podpisy.'); });
     },

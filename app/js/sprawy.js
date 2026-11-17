@@ -13,8 +13,8 @@ export const zrodlo = (t, u) => `<p class="zrodlo">${ic('info')}<span>Na podstaw
 
 export function krok({ id, tytul, opis, doKogo, wymagany, wl = true, plakietka }) {
   return `<li class="krok">
-    <label class="krok-l">
-      <input type="checkbox" name="krok" value="${id}" ${wl ? 'checked' : ''} ${wymagany ? 'disabled' : ''}>
+    <label class="krok-l${wymagany ? ' wymagany' : ''}">
+      ${wymagany ? `<input type="checkbox" name="krok" value="${id}" checked hidden><span class="krok-zamek" title="Obowiązkowe">${ic('lock')}</span>` : `<input type="checkbox" name="krok" value="${id}" ${wl ? 'checked' : ''}>`}
       <span class="krok-t"><b>${esc(tytul)}</b>${plakietka ? ` <span class="plak ${plakietka[0]}">${esc(plakietka[1])}</span>` : ''}<small>${opis}</small><small class="do">${ic('right')}${esc(doKogo)}</small></span>
     </label></li>`;
 }
@@ -22,12 +22,14 @@ export const zaznaczone = (root, wszystkie) => {
   const ids = new Set($$('input[name=krok]', root).filter(i => i.checked).map(i => i.value));
   return wszystkie.filter(k => ids.has(k.id));
 };
-export function gotowe({ tytul, czas, pozycje, dalej = [] }) {
+const STANY = { ok: 'Gotowe', tok: 'W toku', pozniej: 'Później' };
+export const osCzasu = pozycje => `<ol class="os-czasu">${pozycje.map(p => `<li${p[2] ? ` data-s="${p[2]}"` : ''}><b>${esc(p[0])}${p[2] ? ` <span class="st st-${p[2]}">${STANY[p[2]]}</span>` : ''}</b><small>${esc(p[1])}</small></li>`).join('')}</ol>`;
+export function gotowe({ tytul, czas, pozycje, dalej = [], extra = '' }) {
   return `<div class="gotowe" tabindex="-1">
     <div class="gotowe-ik">${ic('check', 'duza')}</div>
     <h2>${esc(tytul)}</h2>
     ${czas ? `<p class="maly">${esc(czas)}</p>` : ''}
-    <ol class="os-czasu">${pozycje.map(p => `<li><b>${esc(p[0])}</b><small>${esc(p[1])}</small></li>`).join('')}</ol>
+    ${osCzasu(pozycje)}${extra}
     <div class="przyciski pion">${dalej.map(d => `<a class="btn ${d[2] || 'drugi'}" href="${d[1]}">${esc(d[0])}</a>`).join('')}<a class="btn drugi" href="#/start">Wróć na start</a></div>
   </div>`;
 }
@@ -58,18 +60,35 @@ export function narodziny() {
   const zrob = stan.zrobione.narodziny;
   const imie = stan.imieDziecka;
   if (zrob) {
+    const etap = stan.postep?.narodziny || 0;
+    const PRACA = [ja.pracodawca, `${imie || 'Córka'} jest zgłoszona do ubezpieczenia. Urlop rodzicielski przyznany.`, 'ok'];
+    const USC_OK = ['USC: akt urodzenia i PESEL', 'Akt sporządzony, PESEL nadany. Odpis aktu jest w Twoich pismach.', 'ok'];
+    const SAMO = ['Samo się zrobi', 'Ulga w PIT w lutym. O „Aktywnym rodzicu” przypomnimy za rok.', 'pozniej'];
+    const ETAPY = [
+      [['USC: akt urodzenia i PESEL', 'Przyjęte. Zwykle gotowe następnego dnia roboczego.', 'tok'],
+       ['ZUS: 800+', 'Wniosek przyjęty. Decyzja do 2 miesięcy, wypłata z wyrównaniem od miesiąca urodzenia.', 'tok'],
+       ['Urząd Miasta: becikowe', 'Wniosek przyjęty. Wypłata na konto w ciągu miesiąca.', 'tok'],
+       [ja.pracodawca, 'Przekazane: zgłoszenie do ubezpieczenia i wniosek o urlop rodzicielski.', 'tok'],
+       SAMO],
+      [USC_OK,
+       ['ZUS: 800+', 'ZUS sprawdza wniosek. Nic nie musisz robić.', 'tok'],
+       ['Urząd Miasta: becikowe', `Przyznane. 1 000 zł wpłynie ${fmt(za(10))}.`, 'ok'],
+       PRACA, SAMO],
+      [USC_OK,
+       ['ZUS: 800+', 'Przyznane. Pierwsza wypłata z wyrównaniem, potem 800 zł co miesiąc.', 'ok'],
+       ['Urząd Miasta: becikowe', '1 000 zł wypłacone.', 'ok'],
+       PRACA, SAMO],
+    ];
+    const KIEDY = ['dziś', 'za 3 dni', 'za 6 tygodni'];
     return { tytul: 'Urodziło się dziecko', html: `<h1 tabindex="-1">Witaj na świecie, ${esc(imie || 'córeczko')}!</h1>` + gotowe({
-      tytul: 'Wszystko wysłane jednym podpisem',
-      czas: 'Statusy zobaczysz tutaj i w powiadomieniach.',
-      pozycje: [
-        ['USC: akt urodzenia i PESEL', 'zwykle następnego dnia roboczego, odpis trafi do Twojej skrzynki'],
-        ['ZUS: 800+', 'decyzja do 2 miesięcy, wypłata z wyrównaniem od miesiąca urodzenia'],
-        ['Urząd Miasta: becikowe', 'wypłata na konto w ciągu miesiąca'],
-        [ja.pracodawca, 'zgłoszenie do ubezpieczenia i wniosek o urlop rodzicielski'],
-        ['Samo się zrobi', 'ulga w PIT w lutym; „Aktywny rodzic” przypomnimy za rok'],
-      ],
+      tytul: etap === 2 ? 'Wszystko załatwione' : 'Wszystko wysłane jednym podpisem',
+      czas: 'Każdą sprawę śledzisz tutaj jak przesyłkę. O każdej zmianie dostaniesz powiadomienie.',
+      pozycje: ETAPY[etap],
+      extra: `<fieldset class="segment etapy"><legend class="maly">Podgląd w pokazie: jak to będzie wyglądać</legend>${KIEDY.map((k, i) => `<label><input type="radio" name="etap" value="${i}" ${i === etap ? 'checked' : ''}><span>${k}</span></label>`).join('')}</fieldset>`,
       dalej: [['Zobacz, kto użył Twoich danych', '#/dane/dostep', 'drugi']],
-    }) };
+    }), po(root) {
+      $$('input[name=etap]', root).forEach(i => i.onchange = () => { stan.postep = { ...stan.postep, narodziny: +i.value }; zapisz(); dispatchEvent(new HashChangeEvent('hashchange')); });
+    } };
   }
   return {
     tytul: 'Urodziło się dziecko',
@@ -82,10 +101,16 @@ export function narodziny() {
       <p id="imie-pom" class="maly">Najwyżej dwa imiona, bez zdrobnień. Nazwisko: ${esc(ja.nazwisko)}, jak rodziców.</p>
       <div class="chipy" role="group" aria-label="Podpowiedzi imion">${dziecko.propozycjeImion.filter(n => n !== 'Jan').map(n => `<button type="button" class="chip" data-imie="${n}">${n}</button>`).join('')}</div>
       <p class="blad" id="imie-blad" role="alert" hidden>Wpisz imię córki.</p>
+      <h2 class="nag">Co zyskujesz</h2>
+      <ul class="zyski">
+        <li data-z="800"><b>800 zł</b><small>co miesiąc, z wyrównaniem od listopada</small></li>
+        <li data-z="becikowe"><b>1 000 zł</b><small>becikowe, jednorazowo</small></li>
+        <li><b>1 podpis</b><small>zamiast 5 wniosków w 4 instytucjach</small></li>
+      </ul>
       <h2 class="nag">Co wyślemy</h2>
       <p class="maly">Wszystko jest już wypełnione. Odznacz to, czego nie chcesz.</p>
       <ul class="kroki">${NARODZINY().map(krok).join('')}</ul>
-      <details class="rozw"><summary>Załatwi się samo, bez wniosku</summary>
+      <details class="rozw"><summary>Co zrobimy bez wniosku (3)</summary>
         <ul class="punkty"><li>Ulgę na dziecko dopiszemy do Twojego e-PIT w lutym.</li><li>O programie „Aktywny rodzic” przypomnimy, gdy córka skończy rok.</li><li>${esc(ja.partner.imie)} dostanie powiadomienie i odpis aktu.</li></ul>
       </details>
       <button class="btn glowny szeroki" id="nar-dalej">${ic('key')}Przejrzyj i podpisz raz</button>
@@ -94,6 +119,7 @@ export function narodziny() {
     po(root) {
       przypnijAkcje(root, $('#nar-dalej', root));
       const pole = $('#imie', root);
+      $$('input[name=krok]', root).forEach(i => i.addEventListener('change', () => { const z = $(`[data-z="${i.value}"]`, root); if (z) z.classList.toggle('wyl', !i.checked); }));
       $$('[data-imie]', root).forEach(b => b.onclick = () => { pole.value = b.dataset.imie; $('#imie-blad', root).hidden = true; });
       $('#f-nar', root).onsubmit = async e => {
         e.preventDefault();
@@ -152,7 +178,7 @@ export function przeprowadzka() {
       <label class="etyk" for="data">Od kiedy tam mieszkasz</label>
       <input id="data" type="date" class="pole" value="${za(0).toISOString().slice(0, 10)}">
       <fieldset class="grupa"><legend class="etyk">Kto się przeprowadza</legend>
-        <label class="opcja"><input type="checkbox" checked disabled> Ty</label>
+        <p class="opcja opcja-stala"><span class="krok-zamek">${ic('user')}</span> Ty</p>
         <label class="opcja"><input type="checkbox" checked> ${esc(dzieckoImie)} (zameldujesz jako rodzic)</label>
         <label class="opcja"><input type="checkbox" checked> ${esc(ja.partner.imie)} <small>(dostanie prośbę o podpis w swoim mObywatelu)</small></label>
       </fieldset>

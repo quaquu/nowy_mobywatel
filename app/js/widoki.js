@@ -1,12 +1,12 @@
 // Ekrany poza przebiegami spraw: start, dokumenty, skrzynka, prywatność, bliscy, ustawienia.
 import { ic } from './icons.js';
 import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane, wyborMotywu } from './core.js';
-import { portret, yarisCross } from './grafiki.js';
+import { portret, yarisCross, niemowle } from './grafiki.js';
 import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, zl, OSOBA, OSOBY, osoba, adresOsoby, emerytalne } from './data.js';
 
 // Awatar osoby albo dziecka: klucz z danych („corka”, „mama”, osoba z pokazu) albo nazwa ikony.
 // Awatar osoby: kolorowy portret w kółku (ten sam rysunek co na dokumencie); dziecko: znak.
-const AWATARY = { corka: () => `<span class="inicjaly i4">${ic('baby')}</span>`, ...Object.fromEntries(['anna', 'halina', 'jakub', 'kasia'].map(k => [k, () => portret(k, null, 'awatar')])), mama: () => portret('halina', null, 'awatar') };
+const AWATARY = { corka: () => niemowle(), ...Object.fromEntries(['anna', 'halina', 'jakub', 'kasia'].map(k => [k, () => portret(k, null, 'awatar')])), mama: () => portret('halina', null, 'awatar') };
 const awatar = k => AWATARY[k] ? AWATARY[k]() : k;
 
 const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
@@ -43,9 +43,9 @@ function kartaDok(d, przod) {
     <span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b>${d.alert && !przod ? '<span class="kd-kropka" aria-hidden="true"></span>' : ''}<span class="kd-holo" aria-hidden="true"></span></span>
     ${przod ? `<span class="kd-linia">${esc(d.linia)}</span>` : ''}${dolna}</a>`;
 }
-export function stos(lista) {
-  // ostatnia karta jest z przodu (cała), pozostałe wystają nad nią
-  return `<div class="stos" role="list">${lista.map((d, i) => `<div role="listitem">${kartaDok(d, i === lista.length - 1)}</div>`).join('')}</div>`;
+export function stos(lista, kompakt = false) {
+  // ostatnia karta jest z przodu (cała), pozostałe wystają nad nią; na Starcie niższa, żeby liczby były na pierwszym ekranie
+  return `<div class="stos${kompakt ? ' kompakt' : ''}" role="list">${lista.map((d, i) => `<div role="listitem">${kartaDok(d, i === lista.length - 1)}</div>`).join('')}</div>`;
 }
 const dokumentyDoStosu = () => {
   const l = dokumenty.slice(1).reverse(); // pierwszy dokument (mDowód) jest z przodu
@@ -55,11 +55,12 @@ const dokumentyDoStosu = () => {
 
 /* ---------------- Start ---------------- */
 // Szybkie akcje jak w aplikacji bankowej: cztery najczęstsze czynności jednym dotknięciem.
+// Skaner i pisma są w nagłówku na każdym ekranie, więc tu ich nie powtarzamy.
 const szybkie = () => `<nav class="szybkie" aria-label="Szybkie akcje">
   <a href="#/dokument/dowod"><span class="sz-ik">${ic('id')}</span>Pokaż dowód</a>
-  <button type="button" data-skanuj><span class="sz-ik">${ic('scan')}</span>Skanuj kod</button>
-  <a href="#/skrzynka"><span class="sz-ik">${ic('mail')}${nowePisma() ? `<i class="sz-licz">${nowePisma()}</i>` : ''}</span>Pisma</a>
+  <a href="#/sprawa/utrata"><span class="sz-ik">${ic('shield')}</span>Zastrzeż dowód</a>
   <a href="#/kto-dzwoni"><span class="sz-ik">${ic('callcheck')}</span>Kto dzwoni?</a>
+  <a href="#/asystent?mow=1"><span class="sz-ik">${ic('mic')}</span>Zapytaj głosem</a>
 </nav>`;
 // Widżety z jedną liczbą każdy: emerytura, płatności, auto, świadczenia. Tylko te, które dotyczą tej osoby.
 function widzety() {
@@ -79,7 +80,12 @@ function widzety() {
     const dni = Math.round((badanie.termin - za(0)) / 864e5), proc = Math.max(0, Math.min(1, dni / 365));
     w.push(`<a class="widzet" href="#/badanie"><span class="w-etyk">${ic('car')}Badanie auta</span><span class="w-pierscien" style="--p:${proc}"><b>${dni}</b><small>dni</small></span><span class="w-pod">do ${fmt(badanie.termin)}</span></a>`);
   }
-  if (naleznosci.length) w.push(`<a class="widzet" href="#/naleznosci"><span class="w-etyk">${ic('gift')}Możesz skorzystać</span><span class="w-liczba">${naleznosci.length}</span><span class="w-pod">${naleznosci.length === 1 ? 'świadczenie' : naleznosci.length < 5 ? 'świadczenia i ulgi' : 'świadczeń i ulg'}</span></a>`);
+  // Kwota zamiast liczby pozycji: suma tego, co pewne w ciągu roku (pole `rok`); świadczenia warunkowe się nie liczą.
+  if (naleznosci.length) {
+    const n = naleznosci.length, rok = naleznosci.reduce((a, x) => a + (x.rok || 0), 0);
+    const ile = `${n} ${n === 1 ? 'świadczenie' : n < 5 ? 'świadczenia i ulgi' : 'świadczeń i ulg'}`;
+    w.push(`<a class="widzet" href="#/naleznosci"><span class="w-etyk">${ic('gift')}Możesz skorzystać</span><span class="w-liczba">${rok ? zl(Math.round(rok / 100) * 100) : n}</span><span class="w-pod">${rok ? `w ciągu roku · ${ile}` : ile}</span></a>`);
+  }
   const zwrot = skrzynka.find(p => p.id === 'us' && /zwrot/i.test(p.tytul));
   if (zwrot && OSOBA === 'kasia') w.push(`<a class="widzet" href="#/pismo/us"><span class="w-etyk">${ic('coin')}Zwrot podatku</span><span class="w-liczba">380 zł</span><span class="w-pod">przyjdzie sam w 14 dni</span></a>`);
   // nieparzysta liczba małych kafli: ostatni na całą szerokość, bez dziury w siatce
@@ -107,7 +113,7 @@ export function start() {
       <span class="hero-tr"><b class="hero-t">${esc(h.tytul)}</b><span class="hero-o">${esc(h.opis)}</span></span>
       <span class="hero-go">${esc(h.przycisk)}${ic('right')}</span>
     </a>` : ''}
-    ${stos(dokumentyDoStosu())}
+    ${stos(dokumentyDoStosu(), true)}
     ${widzety()}
     <form class="zapytaj" action="#/asystent" role="search" id="f-zap">
       <label for="zap" class="sr">Co chcesz załatwić?</label>
@@ -135,7 +141,6 @@ export function start() {
 
     <p class="stopka-info">Niezależny prototyp. Dane są fikcyjne. To nie jest usługa administracji publicznej. <a href="#/jury">Dla jury</a></p>`,
     po(root) {
-      $('[data-skanuj]', root).onclick = () => $('#skan-btn').click();
       $('#f-zap', root).onsubmit = e => { e.preventDefault(); const q = $('#zap', root).value.trim(); location.hash = '#/asystent' + (q ? '?q=' + encodeURIComponent(q) : ''); };
     },
   };
@@ -167,7 +172,7 @@ export function dokumentyWidok() {
     html: `<h1 tabindex="-1">Dokumenty</h1>
     ${stos(dokumentyDoStosu())}
     <a class="karta link-karta" href="#/pokaz">${ic('eye', 'okr')}<span><b>Pokaż tylko to, co potrzebne</b><small>Np. że masz 18 lat, bez pokazywania daty urodzenia i adresu.</small></span>${ic('right', 'strz')}</a>
-    <p class="stopka-info">Dokumenty w telefonie działają już w obecnym mObywatelu. Tu dodajemy źródło i datę aktualizacji każdej danej oraz zgłaszanie błędów. Karty są stylizowane: bez godła i bez oznaczeń urzędowych.</p>`,
+    <p class="notka"><b>O prototypie.</b> Dokumenty w telefonie działają już w obecnym mObywatelu. Tu dodajemy źródło i datę aktualizacji każdej danej oraz zgłaszanie błędów. Karty są stylizowane: bez godła i bez oznaczeń urzędowych.</p>`,
   };
 }
 
@@ -223,7 +228,7 @@ export function skrzynkaWidok() {
     ${doZap.length ? `<h2 class="sekcja">Do zapłaty</h2><ul class="lista">${doZap.map(p => poz(p[0], 'coin', p[1], esc(p[2]))).join('')}</ul>` : ''}
     <h2 class="sekcja">Pisma</h2>
     <ul class="lista">${skrzynka.map(p => poz('#/pismo/' + p.id, 'mail', p.tytul, `${esc(p.od)} · ${fmt(p.data)}`, p.nowa && !stan.przeczytane[p.id] ? '<span class="plak niebieska">nowe</span>' : '')).join('')}</ul>
-    <p class="stopka-info">Pisma przychodzą przez e-Doręczenia, które już działają. Nowość: każde pismo ma wersję prostym językiem i przycisk do załatwienia sprawy.</p>`,
+    <p class="notka"><b>O prototypie.</b> Pisma przychodzą przez e-Doręczenia, które już działają. Nowe są: wersja prostym językiem i przycisk, który od razu załatwia sprawę.</p>`,
   };
 }
 
@@ -266,7 +271,8 @@ export function autopilotWidok() {
     <p class="wstep"><b>Przypomnienie</b> tylko daje znać o terminie. <b>Zlecenie</b> robi coś za Ciebie, jak zlecenie stałe w banku. Zlecenie działa tylko wtedy, gdy je włączysz, i zawsze uprzedzamy przed jego wykonaniem.</p>
     ${['przypomnienie', 'zlecenie'].map(r => `<h2 class="sekcja">${r === 'przypomnienie' ? 'Przypomnienia' : 'Zlecenia'}</h2>
     <ul class="lista-kart">${autopilot.filter(a => a.rodzaj === r).map(a => `<li class="karta"><label class="przel-duzy"><span><b>${esc(a.tytul)}</b><small>${esc(a.opis)}</small></span><input type="checkbox" role="switch" data-ap="${a.id}" data-rodzaj="${a.rodzaj}" ${(stan.autopilot[a.id] ?? a.wl) ? 'checked' : ''}></label></li>`).join('')}</ul>`).join('')}
-    <p class="stopka-info">Każde przypomnienie i zlecenie wyłączysz tutaj w każdej chwili. Wzór: usługa AutoGov w Abu Zabi i usługi proaktywne w Estonii.</p>`,
+    <p class="stopka-info">Każde przypomnienie i zlecenie wyłączysz tutaj w każdej chwili.</p>
+    <p class="notka"><b>O prototypie.</b> Wzór: usługa AutoGov w Abu Zabi i usługi proaktywne w Estonii.</p>`,
     po(root) {
       $$('[data-ap]', root).forEach(i => i.onchange = () => {
         stan.autopilot[i.dataset.ap] = i.checked; zapisz();
@@ -304,7 +310,7 @@ export function dostepWidok() {
       ${d.podejrzane ? '<p class="ostrz">' + ic('alert') + `<span>${esc(d.podejrzane)}</span></p>` : ''}
       <button class="btn tekst" data-zglos="${esc(d.kto)}">To nie ja, zgłoś ten odczyt</button>
     </details></li>`).join('')}</ul>
-    <p class="stopka-info">Już dziś w mObywatelu w przeglądarce sprawdzisz historię weryfikacji numeru PESEL przez firmy i instytucje, a z gov.pl pobierzesz plik z odbiorcami danych z rejestru PESEL i Rejestru Dowodów Osobistych. Tu rozwijamy tę usługę: na bieżąco, ze wszystkich rejestrów, z celem i podstawą prawną oraz z ostrzeżeniem o podejrzanym odczycie. Wzór: estoński „Andmejälgija” (Data Tracker).</p>`,
+    <p class="notka"><b>O prototypie.</b> Już dziś w mObywatelu w przeglądarce sprawdzisz historię weryfikacji numeru PESEL przez firmy i instytucje, a z gov.pl pobierzesz plik z odbiorcami danych z rejestru PESEL i Rejestru Dowodów Osobistych. Tu rozwijamy tę usługę: na bieżąco, ze wszystkich rejestrów, z celem i podstawą prawną oraz z ostrzeżeniem o podejrzanym odczycie. Wzór: estoński „Andmejälgija” (Data Tracker).</p>`,
     po(root) {
       $$('details[data-wpis]', root).forEach(d => d.addEventListener('toggle', () => { if (d.open && d.dataset.wpis === 'policja') cel('dostep-policja'); }));
       $$('[data-zglos]', root).forEach(b => b.onclick = () => toast('Zgłoszenie wysłane do inspektora ochrony danych: ' + b.dataset.zglos));
@@ -411,7 +417,7 @@ export function odzyskaj() {
       <li><button class="poz" data-sp="pz">${ic('shield', 'okr')}<span><b>Profilem zaufanym</b><small>ok. 3 minuty</small></span>${ic('right', 'strz')}</button></li>
       <li><a class="poz" href="#/konsultant">${ic('phone', 'okr')}<span><b>Z pomocą człowieka</b><small>oddzwonimy albo umówimy wizytę w urzędzie</small></span>${ic('right', 'strz')}</a></li>
     </ul>
-    <p class="stopka-info">Ten ekran odpowiada na najczęstszą skargę w recenzjach mObywatela: 33% ocen 1–2★ dotyczy logowania i „pętli” przy potwierdzaniu tożsamości.</p>`,
+    <p class="notka"><b>O prototypie.</b> Ten ekran odpowiada na najczęstszą skargę w recenzjach mObywatela: 33% ocen 1–2★ dotyczy logowania i „pętli” przy potwierdzaniu tożsamości.</p>`,
     po(root) {
       $$('[data-sp]', root).forEach(b => b.onclick = () => {
         if (b.dataset.sp === 'bank') { dostepKrok = 'bank'; dispatchEvent(new HashChangeEvent('hashchange')); }
@@ -439,7 +445,7 @@ export function konsultant() {
       <a class="btn drugi" href="#/kto-dzwoni">${ic('search')}Sprawdź ten numer w „Kto dzwoni?”</a>
       <button type="button" class="btn tekst" id="kon-odwolaj">Odwołaj telefon</button>
     </div>
-    <p class="stopka-info">W prototypie nikt nie zadzwoni.</p>`,
+    <p class="notka"><b>O prototypie.</b> Nikt nie zadzwoni: to pokaz.</p>`,
     po(root) { $('#kon-odwolaj', root).onclick = () => { stan.konsultant = null; zapisz(); toast('Telefon odwołany.'); dispatchEvent(new HashChangeEvent('hashchange')); }; },
   };
   const teraz = new Date(), za15 = new Date(teraz.getTime() + 15 * 6e4);
@@ -460,7 +466,8 @@ export function konsultant() {
       <label class="opcja"><input type="checkbox" id="kon-kontekst" checked> Pokaż konsultantowi, gdzie utknęłam</label>
       <button class="btn glowny szeroki">${ic('phone')}Poproś o telefon</button>
     </form>
-    <p class="stopka-info">Konsultant zadzwoni z numeru ${NR_POMOCY}. W prototypie nikt nie zadzwoni.</p>`,
+    <p class="stopka-info">Konsultant zadzwoni z numeru ${NR_POMOCY}.</p>
+    <p class="notka"><b>O prototypie.</b> Nikt nie zadzwoni: to pokaz.</p>`,
     po(root) {
       $('#f-kon', root).onsubmit = e => {
         e.preventDefault();
@@ -479,6 +486,7 @@ export function ustawienia() {
   return {
     tytul: 'Ustawienia',
     html: `<h1 tabindex="-1">Ustawienia</h1>
+    <ul class="lista">${poz('#/osoby', OSOBA, `${ja.imie} ${ja.nazwisko}`, 'Zmień osobę w pokazie')}</ul>
     <h2 class="grupa-t" id="wyglad-t">Wygląd</h2>
     <div class="karta" role="group" aria-labelledby="wyglad-t">${wyborMotywu()}<p class="maly">„Automatycznie” zmienia wygląd razem z telefonem.</p></div>
     <h2 class="grupa-t">Dostępność</h2>
@@ -487,6 +495,10 @@ export function ustawienia() {
       ${prz('duzy', 'Większy tekst', 'Tekst o 20% większy.')}
       ${prz('kontrast', 'Wysoki kontrast', 'Mocniejsze kolory i obramowania.')}
       ${prz('czytaj', 'Czytaj na głos', 'Odpowiedzi asystenta i komunikaty czytane głosem.')}
+    </ul>
+    <h2 class="grupa-t">Pokaz</h2>
+    <ul class="lista ustaw">
+      ${prz('bezNotek', 'Ukryj notatki o prototypie', 'Bez ramek „O prototypie”: co już działa, a co jest nowe. Aplikacja wygląda wtedy jak gotowy produkt.')}
     </ul>
     <h2 class="grupa-t">Pomoc i prototyp</h2>
     <ul class="lista">
