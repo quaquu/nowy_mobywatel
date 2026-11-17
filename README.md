@@ -52,7 +52,7 @@ Odtwarzane poleceniem `npm test` (progi w `tests/run-all.mjs`). Porównanie z pr
 | Nowe sprawy, zbiór testowy 2 (n=37) | 91,9% | nie mierzono |
 | Złośliwe prośby odrzucone (test) | 5/5 | – |
 | axe (WCAG 2.2 AA + dobre praktyki) | 0 naruszeń | 7 reguł, 26 elementów |
-| Lighthouse, telefon: wydajność / dostępność | 97–98 / 100 (kolejne pomiary, pliki skompresowane gzip jak na GitHub Pages; bez kompresji 92) | 82 / 87 |
+| Lighthouse, telefon: wydajność / dostępność | 97–98 / 100 w `npm test` (serwer lokalny z kompresją gzip jak GitHub Pages; bez kompresji 92). Opublikowana strona, 17.11.2026, trzy pomiary: 89–93 / 100, LCP 1,7–1,8 s, blokowanie wątku 300–425 ms (przyczyna jeszcze niewyjaśniona) | 82 / 87 |
 | Czytelność FOG-PL | 7,1 | 7,1 |
 | Detektor Impeccable 4.7.0: wzorce „interfejsu z AI” i błędy jakości (kod + ekrany) | 0 | 18 (kod 7, ekran 11) |
 | Bielik 11B v3 lokalnie, bez przykładów: sam / jako wsparcie reguł (wersja 1 silnika) | 92,0% / 95,4% | – |
