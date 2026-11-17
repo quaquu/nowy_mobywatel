@@ -118,12 +118,14 @@ await p.evaluate(() => { const d = document.createElement('div'); d.id = 'film-k
   d.innerHTML = '<b>Państwo, które przychodzi ze sprawą</b><p>11 spraw życiowych · emerytura w jednym miejscu · 4 osoby · asystent w telefonie</p><code>quaquu.github.io/nowy_mobywatel</code><small>Niezależny prototyp. Dane fikcyjne. Liczby z filmu odtwarza <i>npm test</i>.</small>';
   document.body.append(d); d.showPopover(); });
 await czekaj(6000);
+const koniecNagrania = Date.now() / 1000; // klatki przychodzą tylko przy zmianie obrazu: ostatnia trwa do końca nagrania
 await cdp.send('Page.stopScreencast');
 await czekaj(500);
 await b.close(); srv.close();
 
 // Lista dla ffmpeg (concat): każda klatka trwa do następnej; ostatnia 1 s.
-const lista = klatki.map((k, i) => `file '${k.plik}'\nduration ${((klatki[i + 1]?.t ?? k.t + 1) - k.t).toFixed(4)}`).join('\n') + `\nfile '${klatki.at(-1).plik}'\n`;
+const ostatnia = t => Math.min(10, Math.max(1, koniecNagrania - t));
+const lista = klatki.map((k, i) => `file '${k.plik}'\nduration ${(klatki[i + 1] ? klatki[i + 1].t - k.t : ostatnia(k.t)).toFixed(4)}`).join('\n') + `\nfile '${klatki.at(-1).plik}'\n`;
 await writeFile(join(kat, 'lista.txt'), lista);
 const mp4 = join(wyj, 'pokaz.mp4');
 execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', join(kat, 'lista.txt'), '-vf', 'scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=0xe5e7eb,fps=30,format=yuv420p',

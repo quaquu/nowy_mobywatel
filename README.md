@@ -11,7 +11,7 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 - Prototyp: `https://quaquu.github.io/nowy_mobywatel/` (po włączeniu GitHub Pages, patrz niżej)
 - Na komputerze prototyp otwiera się w symulacji iPhone'a z panelem „Co sprawdzić”; przycisk **Pełny ekran** pokazuje go bez ramki (adres z `?widok=pelny` albo `?widok=telefon` wymusza widok). Na telefonie zawsze pełny ekran.
 - 60 sekund dla jury: w prototypie **Więcej → Dla jury**
-- Film 80 s z napisami: `https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4` (nagrywa go `node tests/film.mjs` z działającego prototypu; napisy i ślady dotknięć dokłada skrypt nagrania)
+- Film 84 s z napisami: `https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4` (nagrywa go `node tests/film.mjs` z działającego prototypu; napisy i ślady dotknięć dokłada skrypt nagrania)
 - Lokalnie: `node tests/serve.mjs` i otwórz `http://127.0.0.1:8080/`
 
 ## Co jest w środku
