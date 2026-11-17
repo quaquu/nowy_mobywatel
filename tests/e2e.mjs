@@ -387,7 +387,7 @@ export async function sprawy(url) {
     const p = await ctx.newPage();
     try {
       await p.goto(url + '#/start'); await p.waitForSelector('main h1');
-      await p.click('text=Badanie techniczne Yarisa'); await p.waitForSelector('.mapa .m-pin');
+      await p.click('text=Badanie techniczne Yarisa Cross'); await p.waitForSelector('.mapa .m-pin');
       await p.click('.m-pin[data-st="s2"]');
       if (!/Widzew/.test(await p.textContent('#st-t'))) throw new Error('pinezka nie wybiera stacji');
       await p.click('#rez-ok'); await p.waitForSelector('.potw-rez');

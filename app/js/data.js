@@ -40,8 +40,8 @@ const anna_dokumenty = [
     pola: [['Kategorie', 'B'], ['Ważne do', '14.03.2033'], ['Punkty karne', '2 (wygasną ' + fmtPelna(za(220)) + ')']],
     zrodlo: 'Centralna Ewidencja Kierowców' },
   { id: 'pojazd', nazwa: 'Moje pojazdy', kolor: 'pomarancz', istnieje: true,
-    linia: 'Toyota Yaris · EL 4K217', alert: 'Badanie techniczne za 19 dni',
-    pola: [['Pojazd', 'Toyota Yaris 1.5, 2019'], ['Kolor', 'czerwony'], ['Nr rejestracyjny', 'EL 4K217'], ['OC', 'do ' + fmtPelna(za(132)) + ' (Link4)'], ['Badanie techniczne', 'do ' + fmtPelna(za(19))]],
+    linia: 'Toyota Yaris Cross · EL 4K217', alert: 'Badanie techniczne za 19 dni',
+    pola: [['Pojazd', 'Toyota Yaris Cross 1.5 Hybrid, 2021'], ['Kolor', 'biały'], ['Nr rejestracyjny', 'EL 4K217'], ['OC', 'do ' + fmtPelna(za(132)) + ' (Link4)'], ['Badanie techniczne', 'do ' + fmtPelna(za(19))]],
     zrodlo: 'CEPiK, Ubezpieczeniowy Fundusz Gwarancyjny' },
 ];
 
@@ -49,7 +49,7 @@ const anna_dokumenty = [
 const anna_zadania = [
   { id: 'mandat', tytul: 'Mandat z fotoradaru', opis: '200 zł · przyjmij i zapłać do ' + fmt(za(6)), termin: za(6), pilne: true, cel: '#/mandat', ikona: 'coin' },
   { id: 'podatek', tytul: 'Podatek od nieruchomości', opis: 'IV rata 186 zł do ' + fmt(za(23)), termin: za(23), cel: '#/podatek', ikona: 'coin' },
-  { id: 'badanie', tytul: 'Badanie techniczne Yarisa', opis: 'do ' + fmt(za(19)) + ' · stacje w pobliżu', termin: za(19), cel: '#/badanie', ikona: 'car' },
+  { id: 'badanie', tytul: 'Badanie techniczne Yarisa Cross', opis: 'do ' + fmt(za(19)) + ' · stacje w pobliżu', termin: za(19), cel: '#/badanie', ikona: 'car' },
   { id: 'dowod', tytul: 'Twój dowód traci ważność', opis: 'za 41 dni · wniosek gotowy, umów wizytę', termin: za(41), cel: '#/sprawa/dowod', ikona: 'id' },
   { id: 'smierc', tytul: 'Zasiłek pogrzebowy po tacie', opis: 'wniosek do ' + fmt(za(323)) + ' · potrzebny rachunek', termin: za(323), cel: '#/sprawa/smierc', ikona: 'leaf' },
 ];
@@ -165,7 +165,7 @@ const DANE = {
     bliscyOpis: 'mama, córka',
     rejestry: [
       ['Rejestr PESEL', 'imię, nazwisko, PESEL, adres, stan cywilny, dzieci'],
-      ['Centralna Ewidencja Pojazdów i Kierowców', 'Toyota Yaris EL 4K217, prawo jazdy kat. B, 2 punkty'],
+      ['Centralna Ewidencja Pojazdów i Kierowców', 'Toyota Yaris Cross EL 4K217, prawo jazdy kat. B, 2 punkty'],
       ['Krajowa Administracja Skarbowa', 'dochody za 2025 r., nadpłata 214 zł'],
       ['ZUS', 'zatrudnienie: Drukarnia Kolor sp. z o.o., zasiłek macierzyński'],
       ['NFZ / Internetowe Konto Pacjenta', 'ubezpieczenie, recepty, skierowania'],

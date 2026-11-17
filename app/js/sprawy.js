@@ -135,7 +135,7 @@ export function przeprowadzka() {
   const kroki = [
     { id: 'meld', tytul: 'Zameldowanie na pobyt stały', opis: 'Wymeldowanie ze starego adresu zrobi się samo.', doKogo: 'urząd gminy właściwy dla nowego adresu', wymagany: true },
     { id: 'urzedy', tytul: 'Nowy adres w urzędach', opis: 'Urząd skarbowy, ZUS i NFZ dostaną adres z rejestru. Nie musisz pisać do każdego z osobna.', doKogo: 'US, ZUS, NFZ', plakietka: ['niebieska', 'zlecenie'] },
-    { id: 'pojazd', tytul: 'Nowy adres właściciela pojazdu', opis: 'Zgłoszenie zmiany adresu dla Yarisa. Masz na to 30 dni.', doKogo: 'wydział komunikacji' },
+    { id: 'pojazd', tytul: 'Nowy adres właściciela pojazdu', opis: 'Zgłoszenie zmiany adresu dla Yarisa Cross. Masz na to 30 dni.', doKogo: 'wydział komunikacji' },
     { id: 'smieci', tytul: 'Deklaracja opłaty za śmieci', opis: 'Obowiązkowa w nowej gminie w ciągu 14 dni. Liczba osób: 3.', doKogo: 'nowa gmina' },
   ];
   return {
@@ -379,7 +379,7 @@ export function mandat() {
     html: `
     <h1 tabindex="-1">Mandat z fotoradaru</h1>
     <section class="karta">
-      <div class="foto-radar">${zdjecieFotoradaru({ kiedy: fmtPelna(za(-9)) + ' 17:42:08', opis: 'Zdjęcie z fotoradaru: Toyota Yaris EL 4K217, 68 km/h przy limicie 50 km/h' })}</div>
+      <div class="foto-radar">${zdjecieFotoradaru({ kiedy: fmtPelna(za(-9)) + ' 17:42:08', opis: 'Zdjęcie z fotoradaru: Toyota Yaris Cross EL 4K217, 68 km/h przy limicie 50 km/h' })}</div>
       ${wiersz('Gdzie', 'Zgierz, ul. Łódzka, obszar zabudowany')}${wiersz('Kiedy', fmtPelna(za(-9)) + ', 17:42')}${wiersz('Prędkość', '68 km/h przy limicie 50 km/h')}${wiersz('Mandat', '200 zł i 3 punkty karne')}${wiersz('Termin', 'do ' + fmt(za(6)))}
     </section>
     <form id="f-man" class="karta" novalidate>

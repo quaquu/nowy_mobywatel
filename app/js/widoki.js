@@ -1,7 +1,7 @@
 // Ekrany poza przebiegami spraw: start, dokumenty, skrzynka, prywatność, bliscy, ustawienia.
 import { ic } from './icons.js';
 import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane, wyborMotywu } from './core.js';
-import { portret, autoZBoku } from './grafiki.js';
+import { portret, yarisCross } from './grafiki.js';
 import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, zl, OSOBA, OSOBY, osoba, adresOsoby, emerytalne } from './data.js';
 
 // Awatar osoby albo dziecka: klucz z danych („corka”, „mama”, osoba z pokazu) albo nazwa ikony.
@@ -177,7 +177,7 @@ export function dokument(id) {
   return {
     tytul: d.nazwa,
     html: `<h1 tabindex="-1">${esc(d.nazwa)}</h1>
-    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span>${id === 'pojazd' ? `<span class="kd-auto">${autoZBoku({ kolor: 'czerwony', opis: 'Toyota Yaris, czerwona' })}</span>` : `<span class="kd-duch" aria-hidden="true">${portret(OSOBA)}</span><span class="kd-dol"><span class="kd-foto">${portret(OSOBA, 'Zdjęcie: ' + ja.imie + ' ' + ja.nazwisko)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span>`}</div>
+    <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span>${id === 'pojazd' ? `<span class="kd-auto">${yarisCross({ kolor: 'bialy', opis: 'Toyota Yaris Cross, biała, czarny dach' })}</span>` : `<span class="kd-duch" aria-hidden="true">${portret(OSOBA)}</span><span class="kd-dol"><span class="kd-foto">${portret(OSOBA, 'Zdjęcie: ' + ja.imie + ' ' + ja.nazwisko)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span>`}</div>
     <details class="karta kod-qr"><summary>${ic('eye')}Pokaż kod do sprawdzenia dokumentu</summary><span class="qr duzy" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span><p class="maly srodek">Kod ważny 2 minuty. Sprawdzający zobaczy go w swojej aplikacji.</p></details>
     <section class="karta">${d.pola.map(p => wiersz(...p)).join('')}
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>

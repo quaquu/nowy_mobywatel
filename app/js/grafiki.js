@@ -99,6 +99,45 @@ export function autoZBoku({ kolor = 'czerwony', opis } = {}) {
 }
 
 
+// Toyota Yaris Cross z boku, w proporcjach prawdziwego auta: długość 4180, wysokość 1560, rozstaw osi 2560 mm,
+// koło 18" (skala 1 px ≈ 22,5 mm; ziemia y 94, osie x 46 i 160). Podwyższone zawieszenie, poszerzone czarne
+// nadkola i progi, opadający dach z relingami, pochylona tylna szyba, linia okien rosnąca ku tyłowi, czarny dach.
+// Bez znaków marki. Przód po prawej.
+const LAKIER = { bialy: ['#ffffff', '#eceef1', '#c5cad2'], czerwony: ['#e1424a', '#c0262f', '#8f1a22'], szary: ['#a7aeb8', '#868e9a', '#5f6773'] };
+export function yarisCross({ kolor = 'bialy', opis } = {}) {
+  const [j, s1, c] = LAKIER[kolor] || LAKIER.bialy;
+  const czern = '#1b1f26', plastik = '#262b33';
+  const kolo = x => `<g transform="translate(${x} 78.7)">
+      <circle r="15.3" fill="${czern}"/><circle r="10.6" fill="#cfd5dd"/>
+      ${Array.from({ length: 10 }, (_, i) => `<path d="M-1-3.2L-1.8-10.1h3.6L1-3.2z" fill="#39404a" transform="rotate(${i * 36})"/>`).join('')}
+      <circle r="10.6" fill="none" stroke="#eef1f5" stroke-width=".9"/><circle r="3.1" fill="#59626e"/><circle r="1.1" fill="#cfd5dd"/></g>`;
+  return svg('0 0 210 104', `
+    <defs>
+      <linearGradient id="lak" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${j}"/><stop offset=".5" stop-color="${s1}"/><stop offset="1" stop-color="${c}"/></linearGradient>
+      <linearGradient id="szk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#71849e"/><stop offset=".45" stop-color="#29323f"/><stop offset="1" stop-color="#3a4960"/></linearGradient>
+    </defs>
+    <ellipse cx="106" cy="95" rx="92" ry="3.8" fill="#000" opacity=".2"/>
+    <path d="M15.4 84.2c-1.6 0-2.6-1-2.6-2.6V60.4c0-3 .6-5.6 1.8-7.8L20 44 34 30.2c1.4-1.2 3.2-1.9 5.2-2l55.4-2.6c9.8-.3 18.6.2 24.4 1.2 2.4.4 4.6 1.4 6.6 3l23.6 15.4c13.4 1.4 25.4 3.6 33.6 6.4 4.4 1.6 7.6 4.6 9.2 8.8l2.4 7.4-.4 9.4c-.2 1.8-1.4 3-3.2 3.2l-11.8-.2a19.6 19.6 0 0 0-37.6 0H65a19.6 19.6 0 0 0-37.6 0z" fill="url(#lak)"/>
+    <path d="M34 30.2c1.4-1.2 3.2-1.9 5.2-2l55.4-2.6c9.8-.3 18.6.2 24.4 1.2 2.4.4 4.6 1.4 6.6 3l1.8 1.4-2 1.4-1.6-1c-2-1.3-4.2-2-6.6-2.2l-20.6-.1-3 .1-32.4 1.1-2.8.2-21.8 1.1c-1.4.1-2.6.6-3.6 1.6l-1.2 1.3-3.4.6z" fill="${czern}"/>
+    <path d="M44.2 26.8l68.6-2.4" stroke="${czern}" stroke-width="1.9" stroke-linecap="round"/><path d="M48 26.6v1.6M64 26v1.6M92 25v1.6M108 24.4v1.8" stroke="${czern}" stroke-width="1.6"/>
+    <path d="M100.8 31.2l20.6.1c2.4 0 4.4.7 6.4 2.1l14.4 11.2-41.4-1.6z" fill="url(#szk)"/>
+    <path d="M65.4 32.4l32.4-1.1v12.4l-27.6-1.1z" fill="url(#szk)"/>
+    <path d="M62.6 32.6l-21.8 1.1c-1.4.1-2.6.6-3.6 1.6l-6.4 6.8 34.8-.8z" fill="url(#szk)"/>
+    <path d="M97.8 31.2h3v12.6h-3zM62.6 32.6l2.8-.2 4.8 10-4.6.1z" fill="${czern}"/>
+    <path d="M141.8 44.6l-14-10.8c-2.2-1.6-4.6-2.4-7.2-2.5" stroke="${czern}" stroke-width="2.4" fill="none" stroke-linejoin="round"/>
+    <path d="M30.8 42.2c34.2-.9 77.6-.1 111 2.4" stroke="${czern}" stroke-width="1.1" opacity=".6" fill="none"/>
+    <path d="M18 57.8c34-2.6 96-3 156 .8" stroke="#fff" stroke-width="1.3" opacity=".7" fill="none"/>
+    <path d="M99.6 44.8v28.6M66.8 43.4v25.4" stroke="${c}" stroke-width=".9" opacity=".75" fill="none"/>
+    <rect x="84" y="49.2" width="9" height="2.2" rx="1.1" fill="${c}"/><rect x="121.4" y="50" width="9" height="2.2" rx="1.1" fill="${c}"/>
+    <path d="M136 42c2.4-1.8 6-1.8 7.8.4l-.4 3.4h-7.6z" fill="${czern}"/>
+    <path d="M25.2 80.6a21.6 21.6 0 0 1 41.6 0H63a17.6 17.6 0 0 0-34 0zM139.2 80.6a21.6 21.6 0 0 1 41.6 0H177a17.6 17.6 0 0 0-34 0z" fill="${plastik}"/>
+    <path d="M66.4 79.6h72.8l.4 5.6H65.8zM12.8 72.6h12.8l.2 8.6-1.8 3H15.4c-1.6 0-2.6-1-2.6-2.6zM180.4 79.6h14.8c1.4 0 2.6-1 2.8-2.4l.4 5c-.2 1.6-1.4 2.8-3.2 2.8h-14.4z" fill="${plastik}"/>
+    <path d="M176.4 52.8c5 .4 9.6 1.4 13.6 3l1.6 2.6c-4.6-1.4-10-2.2-15.4-2.4z" fill="#eef4ff"/><path d="M177 55.6c4.8.2 9.6.8 14 2" stroke="#8fc9ff" stroke-width=".7"/>
+    <path d="M190.8 63.4l5.8.6.6 6.6-6.4-.4z" fill="${czern}" opacity=".9"/>
+    <path d="M13.2 52l8-1.2.8 3.6-8.8.8z" fill="#d6252d"/><path d="M13.4 53.8l8.2-.7" stroke="#ff9096" stroke-width=".6"/>
+    ${kolo(46)}${kolo(160)}`, opis);
+}
+
 // Zdjęcie z fotoradaru: auto od przodu, tablica w ramce, pasek z danymi pomiaru (jak w CANARD).
 export function zdjecieFotoradaru({ nr = 'EL 4K217', v = 68, vdop = 50, miejsce = 'ZGIERZ, UL. ŁÓDZKA', kiedy = '', opis } = {}) {
   return svg('0 0 320 200', `
