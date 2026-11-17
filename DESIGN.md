@@ -79,6 +79,7 @@ Widżety 20 px, grupy i karty 16 px, pola i kafelki dat 12 px, arkusz 24 px u g�
 
 ## Components
 
+- **Znak**: „Sprawa domknięta”. Biały łuk (państwo) obejmuje błękitną kropkę (obywatela), a koło domyka morski znak zgody. Granatowy kwadrat z zaokrągleniem 16/64. Bez litery, bez czerwieni i bieli flagi, bez godła; nie naśladuje znaku aplikacji mObywatel. Źródło: `app/icon.svg`; PNG dla iPhone'a i manifestu robi `node tests/ikony.mjs`.
 - **Nagłówek**: znak, skaner kodów, pisma z licznikiem i portret osoby (prowadzi do konta i ustawień, jak w aplikacji banku). Tryb wyglądu jest w Ustawieniach, nie na górze.
 - **Szybkie akcje**: Pokaż dowód, Zastrzeż dowód, Kto dzwoni?, Zapytaj głosem. Nie powtarzają tego, co jest w nagłówku.
 - **Widżet**: etykieta ze znakiem, jedna liczba (28 px, 900), jedno zdanie objaśnienia. Wariant szeroki dla emerytury z paskiem udziałów; wariant z pierścieniem dla dni do terminu.

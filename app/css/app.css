@@ -199,11 +199,14 @@ html.duzy .marka small { display: none; } /* przy dużym tekście nazwa mieści 
 .szklo .ib { color: var(--tekst); background: var(--pow); }
 .szklo .ib:hover { background: color-mix(in srgb, var(--pow) 90%, var(--tekst)); }
 .szklo .ib .ic { width: 22px; height: 22px; }
-.szklo .awatar-btn { overflow: hidden; padding: 0; box-shadow: 0 0 0 2px var(--pow); }
-.szklo .awatar-btn svg { display: block; width: 100%; height: 100%; }
+/* portret 30 px w polu dotyku 44 px: tej samej wagi co ikony obok, nie większy */
+.szklo .awatar-btn { padding: 0; background: transparent; }
+.szklo .awatar-btn:hover { background: var(--wypelnienie); }
+.szklo .awatar-btn svg { display: block; width: 30px; height: 30px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--pow), 0 0 0 2.5px var(--separator); }
 .grupa-t { font-size: var(--t-objasn); font-weight: 700; color: var(--tekst2); margin: var(--o6) var(--o1) var(--o2); }
 h1 + .grupa-t { margin-top: var(--o2); }
-.kropka { position: absolute; top: 5px; right: 3px; min-width: 18px; height: 18px; padding: 0 var(--space-2xs); border-radius: 9px; background: var(--zle); color: var(--zle-tekst); font-size: 11px; font-weight: 700; line-height: 18px; font-variant-numeric: tabular-nums; }
+/* licznik na brzegu okrągłego przycisku (jak plakietka ikony aplikacji), nie na rysunku koperty */
+.kropka { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--zle); color: var(--zle-tekst); font-size: 11px; font-weight: 900; line-height: 18px; text-align: center; font-variant-numeric: tabular-nums; box-shadow: 0 0 0 2px var(--tlo-gora); }
 
 main { flex: 1; padding: var(--o1) var(--o4) 112px; outline: none; }
 h1 { font-family: var(--f); font-size: var(--t-duzy); line-height: 1.1; font-weight: 900; letter-spacing: -.022em; margin: var(--o2) 0 var(--o4); outline: none; max-width: none; }
