@@ -104,6 +104,7 @@ export const INTENCJE = {
   ],
   poparcie: [
     [/poprzec|poparci|poprzyj|podpis\w* pod|zbier\w* podpis|inicjatyw\w* (obywatel|ustawodaw)|obywatelski\w* projekt|projekt\w* obywatelsk|referend|list\w* poparcia|podpisac sie pod/, 4],
+    [/zbiork\w* podpis|petycj|podpis\w* (elektroniczn\w* )?(pod|dla|na) (ustaw|inicjatyw|referend|kandydat|projekt)|wybor\w* .*poprzec/, 4],
   ],
   oszustwo: [
     [/\bsms|dziwn|podejrzan|\blink|podszywa|oszust|phishing|\bmail|odetna|doplat\w* za paczk/, 4],

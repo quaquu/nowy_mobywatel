@@ -170,7 +170,7 @@ const DANE = {
       ['ZUS', 'zatrudnienie: Drukarnia Kolor sp. z o.o., zasiłek macierzyński'],
       ['NFZ / Internetowe Konto Pacjenta', 'ubezpieczenie, recepty, skierowania'],
     ],
-    podpowiedzi: ['Urodziło nam się dziecko', 'Zgubiłam portfel', 'Przeprowadzam się', 'Kto sprawdzał moje dane?', 'Z czego mogę skorzystać?'],
+    podpowiedzi: ['Urodziło nam się dziecko', 'Zgubiłam portfel', 'Przeprowadzam się', 'Kto sprawdzał moje dane?', 'Z czego mogę skorzystać?', 'Chcę poprzeć projekt ustawy'],
   },
   halina: {
     ja: { imie: 'Halina', nazwisko: 'Nowicka', wolacz: 'Pani Halino', pesel: '48031207461', urodzona: '12.03.1948', adres: 'ul. Lipowa 3 m. 5, 95-100 Zgierz', konto: 'PL 27 1020 •••• •••• 9083' },
@@ -266,7 +266,7 @@ const DANE = {
       ['NFZ / Internetowe Konto Pacjenta', 'ubezpieczenie przez rodzica, szczepienia'],
       ['Rejestr Dowodów Osobistych', 'dowód ważny do 14.06.2033'],
     ],
-    podpowiedzi: ['Kończę 18 lat', 'Jak zrobić prawo jazdy?', 'Pierwsze wybory', 'Pokaż legitymację'],
+    podpowiedzi: ['Kończę 18 lat', 'Jak zrobić prawo jazdy?', 'Pierwsze wybory', 'Poparcie kandydata', 'Pokaż legitymację'],
     asystent: {
       dokumenty: { t: 'Masz mDowód (ważny do 14.06.2033) i mLegitymację szkolną. Jeśli chcesz potwierdzić tylko wiek, pokażę kod bez reszty danych.', a: [['Dokumenty', '#/dokumenty']] },
       nowy_dowod: { t: 'Twój dowód jest ważny do 14.06.2033. Po 18. urodzinach nie musisz go wymieniać.', a: [['Dokumenty', '#/dokumenty']] },
@@ -313,7 +313,7 @@ const DANE = {
       ['Krajowa Administracja Skarbowa', 'dochody za 2025 r., nadpłata 380 zł'],
       ['ZUS', 'zatrudnienie: Szpital im. M. Kopernika w Łodzi'],
     ],
-    podpowiedzi: ['Bierzemy ślub', 'Zmiana nazwiska po ślubie', 'Kto sprawdzał moje dane?', 'Pokaż dokumenty'],
+    podpowiedzi: ['Bierzemy ślub', 'Zmiana nazwiska po ślubie', 'Kto sprawdzał moje dane?', 'Podpisy i poparcie', 'Pokaż dokumenty'],
     asystent: {
       skrzynka: { t: 'Masz jedno nowe pismo: zwrot 380 zł nadpłaconego podatku. Pieniądze przyjdą same.', a: [['Otwórz pismo', '#/pismo/us']] },
       do_zrobienia: { t: 'Tomasz zaprosił Cię do wspólnej sprawy „Ślub”. Do tego zwrot podatku, który przyjdzie sam.', a: [['Zaplanuj ślub', '#/sprawa/slub']] },
