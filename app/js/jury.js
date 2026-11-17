@@ -7,7 +7,7 @@ const REPO = 'https://github.com/quaquu/nowy_mobywatel';
 const p = (x, d = 0) => x == null ? '–' : (100 * x).toFixed(d).replace('.', ',') + '%';
 const pl = x => x == null ? '–' : String(x).replace('.', ',');
 // Pomiar opublikowanej strony (GitHub Pages) robimy ręcznie po publikacji: npm test mierzy serwer lokalny.
-const ZYWA = { data: '17.11.2026', wydajnosc: '89–93' };
+const ZYWA = { data: '17.11.2026', wydajnosc: '89–92' };
 const wiersz = (a, b, c) => `<tr><th scope="row">${a}</th><td>${b}</td><td>${c}</td></tr>`;
 
 export function jury() {
