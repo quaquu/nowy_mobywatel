@@ -452,7 +452,7 @@ export function katalog() {
     tytul: 'Sprawy życiowe',
     html: `<h1 tabindex="-1">Co się u Ciebie dzieje?</h1>
     <p class="wstep">Wybierz sytuację. Pokażemy wszystkie sprawy w różnych urzędach naraz, a nie każdą osobno.</p>
-    <ul class="lista">${moje.map(s => poz(s)).join('')}</ul>
+    <ul class="siatka-spraw">${moje.map(s => poz(s)).join('')}</ul>
     ${inne.length ? `<h2 class="grupa-t">Sprawy innych osób w pokazie</h2><ul class="lista">${inne.map(s => poz(s, OSOBY[WLASCICIEL[s.id]].nazwa)).join('')}</ul>` : ''}`,
   };
 }

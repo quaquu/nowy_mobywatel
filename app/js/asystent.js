@@ -30,7 +30,7 @@ export const O = {
   slub: { t: 'Gratulacje! Przygotuję zapewnienia o braku przeszkód z danymi z rejestru; podpiszecie je oboje osobiście w urzędzie stanu cywilnego. Ślub może być najwcześniej miesiąc później, a akt małżeństwa kosztuje 84 zł. Wybierzecie też nazwisko.', a: [['Zaplanuj ślub', '#/sprawa/slub']], z: ['gov.pl: Weź ślub cywilny', GOV + 'wez-slub-cywilny'] },
   smierc: { t: 'Przykro mi. Część spraw urzędy zrobią same. Pomogę z zasiłkiem pogrzebowym (do 7 000 zł, nie więcej niż koszty z rachunków), z rentą wdowią i z listą dokumentów do spadku.', a: [['Co trzeba załatwić', '#/sprawa/smierc']], z: ['ZUS: zasiłek pogrzebowy', 'https://www.zus.pl/swiadczenia/zasilki/zasilek-pogrzebowy'] },
   firma: { t: 'Jeden wniosek do CEIDG trafi też do urzędu skarbowego, ZUS i GUS. Wpis jest bezpłatny. Masz umowę o pracę, więc z firmy zapłacisz tylko składkę zdrowotną.', a: [['Załóż firmę', '#/sprawa/firma']], z: ['biznes.gov.pl: Wpis do CEIDG', 'https://www.biznes.gov.pl/pl/portal/ou736'] },
-  emerytura: { t: 'Wiek emerytalny osiągniesz 15 maja 2053 r. W Twoim koncie w ZUS brakuje składek za lata 2013–2015. Sprawdźmy, czy to w porządku.', a: [['Moja emerytura', '#/sprawa/emerytura']], z: ['ZUS: Emerytura w wieku powszechnym', 'https://www.zus.pl/swiadczenia/emerytury/emerytura-dla-osob-urodzonych-po-31-grudnia-1948/emerytura-w-wieku-powszechnym'] },
+  emerytura: { t: 'Na emeryturę zgromadziłaś 250 890 zł w ZUS, PPK, IKZE i IKE. Wiek emerytalny osiągniesz 15 maja 2053 r. W koncie w ZUS brakuje składek za lata 2013–2015: sprawdźmy, czy to w porządku.', a: [['Twoja emerytura', '#/emerytura'], ['Brakujące składki', '#/sprawa/emerytura']], z: ['ZUS: Emerytura w wieku powszechnym', 'https://www.zus.pl/swiadczenia/emerytury/emerytura-dla-osob-urodzonych-po-31-grudnia-1948/emerytura-w-wieku-powszechnym'] },
   osiemnastka: { t: 'Po 18. urodzinach wpis do rejestru wyborców zrobi się sam, a rodzice tracą dostęp do Internetowego Konta Pacjenta. Dowód wydany po 12. roku życia jest ważny 10 lat i nie trzeba go wymieniać.', a: [['Co się zmienia po 18 latach', '#/sprawa/osiemnastka']], z: null },
   prawo_jazdy: { t: 'Najpierw profil kandydata na kierowcę: wniosek do starosty ze zdjęciem i orzeczeniem lekarskim. Profil jest bezpłatny, a kurs możesz zacząć 3 miesiące przed 18. urodzinami.', a: [['Profil kandydata na kierowcę', '#/sprawa/osiemnastka']], z: ['gov.pl: Uzyskaj prawo jazdy', GOV + 'uzyskaj-prawo-jazdy'] },
   konsultant: { t: 'Jasne. Konsultant oddzwoni i, jeśli się zgodzisz, zobaczy, na którym kroku jest Twoja sprawa.', a: [['Poproś o telefon', '#/konsultant']], z: null },
@@ -52,6 +52,7 @@ const zDanych = {
   bliscy: () => ({ t: osoba.bliscy.wstep, a: [['Bliscy', '#/bliscy']] }),
   skrzynka: () => ({ t: 'Twoje pisma są w skrzynce. Każde pokazuję też prostym językiem.', a: [['Otwórz skrzynkę', '#/skrzynka']] }),
   do_zrobienia: () => ({ t: 'Twoje sprawy i terminy są na Starcie.', a: [['Pokaż wszystko', '#/start']] }),
+  emerytura: () => ({ t: 'Stan oszczędności emerytalnych z ZUS, PPK, IKE i IKZE oraz prognozę zobaczysz w jednym miejscu.', a: [['Twoja emerytura', '#/emerytura']] }),
 };
 const doOdpowiedzi = i => {
   const o = O[i];

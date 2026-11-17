@@ -327,3 +327,33 @@ const DANE = {
 };
 export const osoba = DANE[OSOBA];
 export const { ja, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka } = osoba;
+
+// Oszczędności emerytalne (dane FIKCYJNE). Od 2026 r. ZUS ma pokazywać w mObywatelu kapitał z systemu powszechnego
+// i z programów dobrowolnych (PPK, PPE, IKE, IKZE); udział instytucji prowadzących IKE i IKZE jest dobrowolny.
+// grupa: kategoria na wykresie (stała kolejność barw): zus, sub, ppk, dobr.
+// pensja: podstawa składek brutto miesięcznie; wiek: ustawowy wiek emerytalny; ur: rok i miesiąc urodzenia.
+const EMERYTURY = {
+  anna: {
+    pensja: 7400, wiek: 60, ur: [1993, 5], pit: 0.12,
+    stanNa: '31.12.2025',
+    pozycje: [
+      { id: 'konto', grupa: 'zus', nazwa: 'Konto w ZUS', opis: 'składki zwaloryzowane', kwota: 168420, zrodlo: 'ZUS', dziedziczne: false },
+      { id: 'subkonto', grupa: 'sub', nazwa: 'Subkonto w ZUS', opis: 'dawne OFE, część dziedziczona', kwota: 41260, zrodlo: 'ZUS', dziedziczne: true },
+      { id: 'ppk', grupa: 'ppk', nazwa: 'PPK', opis: 'Drukarnia Kolor: 2% Twoje, 1,5% pracodawcy, dopłaty państwa', kwota: 18940, zrodlo: 'mojePPK', dziedziczne: true, wplata: 259 },
+      { id: 'ikze', grupa: 'dobr', nazwa: 'IKZE', opis: 'fundusz akcji, odliczasz wpłaty od dochodu', kwota: 9870, zrodlo: 'Bank Przykładowy S.A.', dziedziczne: true },
+      { id: 'ike', grupa: 'dobr', nazwa: 'IKE-Obligacje', opis: '10-letnie obligacje skarbowe EDO', kwota: 12400, zrodlo: 'agent emisji obligacji skarbowych', dziedziczne: true },
+    ],
+  },
+  kasia: {
+    pensja: 8200, wiek: 60, ur: [1997, 2], pit: 0.12,
+    stanNa: '31.12.2025',
+    pozycje: [
+      { id: 'konto', grupa: 'zus', nazwa: 'Konto w ZUS', opis: 'składki zwaloryzowane', kwota: 61300, zrodlo: 'ZUS', dziedziczne: false },
+      { id: 'subkonto', grupa: 'sub', nazwa: 'Subkonto w ZUS', opis: 'część dziedziczona', kwota: 16800, zrodlo: 'ZUS', dziedziczne: true },
+      { id: 'ppk', grupa: 'ppk', nazwa: 'PPK', opis: 'Szpital im. M. Kopernika: 2% Twoje, 1,5% pracodawcy', kwota: 9450, zrodlo: 'mojePPK', dziedziczne: true, wplata: 287 },
+    ],
+  },
+  halina: { wyplata: { kwota: 2900, dzien: 10, waloryzacja: '1 marca 2027' } },
+  jakub: null,
+};
+export const emerytalne = EMERYTURY[OSOBA];

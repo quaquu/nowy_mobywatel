@@ -47,7 +47,6 @@ export function portret(kto = 'anna', opis, kadr = 'dowod') {
     <path d="M28.2 46.3c2.5 1 5.1 1 7.6 0" stroke="#b5655a" stroke-width="1.3" fill="none" stroke-linecap="round"/>
     <ellipse cx="23.6" cy="41" rx="2.4" ry="1.4" fill="#e79a8a" opacity=".22"/><ellipse cx="40.4" cy="41" rx="2.4" ry="1.4" fill="#e79a8a" opacity=".22"/>`, opis);
 }
-export const zdjecieAnny = opis => portret('anna', opis);
 
 // Mama, 78 lat: krótkie siwe włosy, okulary, sweter. Kadr kwadratowy (awatar).
 export function twarzMamy(opis, kadr = '7 5 50 50') {
@@ -68,19 +67,6 @@ export function twarzMamy(opis, kadr = '7 5 50 50') {
     <path d="M32 32.2c-.3 2.1-.9 3.5-1.7 4.2.9.6 2.3.6 3.2 0" stroke="${sl}" stroke-width=".85" fill="none" stroke-linecap="round"/>
     <path d="M28.2 40.2c2.3 1.4 5.3 1.4 7.6 0" stroke="#a65d55" stroke-width="1.2" fill="none" stroke-linecap="round"/>
     <path d="M23.8 37.2c.7.9 1.6 1.5 2.6 1.7M40.2 37.2c-.7.9-1.6 1.5-2.6 1.7M27 24.6c1.2-.5 2.6-.5 3.6 0M33.4 24.6c1-.5 2.4-.5 3.6 0" stroke="${sl}" stroke-width=".65" fill="none" opacity=".7" stroke-linecap="round"/>`, opis);
-}
-
-// Córka, kilka dni: śpiąca buzia w różowym kocyku.
-export function twarzCorki(opis) {
-  return svg('0 0 64 64', `
-    <rect width="64" height="64" fill="#fbe9ee"/>
-    <path d="M10 64c0-16 9-27 22-27s22 11 22 27z" fill="#f4b8c8"/>
-    <path d="M14 38c2-14 10-22 18-22s16 8 18 22c-4 6-10 9-18 9s-14-3-18-9z" fill="#f7c9d6"/>
-    <circle cx="32" cy="33" r="12.5" fill="#f6d2bd"/>
-    <path d="M29 21.5c1.5-1.8 4.5-1.8 5.5.3" stroke="#a87a5e" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-    <path d="M25.5 33c1.2 1 2.8 1 4 0M34.5 33c1.2 1 2.8 1 4 0" stroke="#6b4a3a" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-    <path d="M30.6 39c.9.7 1.9.7 2.8 0" stroke="#c4776c" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-    <ellipse cx="25" cy="37" rx="2.4" ry="1.4" fill="#f09a9a" opacity=".35"/><ellipse cx="39" cy="37" rx="2.4" ry="1.4" fill="#f09a9a" opacity=".35"/>`, opis);
 }
 
 // Auto z boku (hatchback, bez znaków marki). `kolor`: kolor nadwozia z rejestru.

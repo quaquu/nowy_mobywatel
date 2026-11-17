@@ -1,11 +1,13 @@
 // Ekrany poza przebiegami spraw: start, dokumenty, skrzynka, prywatność, bliscy, ustawienia.
 import { ic } from './icons.js';
 import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane, wyborMotywu } from './core.js';
-import { portret, twarzMamy, twarzCorki, autoZBoku } from './grafiki.js';
-import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, OSOBA, OSOBY, osoba, adresOsoby } from './data.js';
+import { portret, autoZBoku } from './grafiki.js';
+import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, zl, OSOBA, OSOBY, osoba, adresOsoby, emerytalne } from './data.js';
 
 // Awatar osoby albo dziecka: klucz z danych („corka”, „mama”, osoba z pokazu) albo nazwa ikony.
-const AWATARY = { corka: () => twarzCorki(), mama: () => twarzMamy(), anna: () => portret('anna', null, 'awatar'), halina: () => twarzMamy(), jakub: () => portret('jakub', null, 'awatar'), kasia: () => portret('kasia', null, 'awatar') };
+// Awatar osoby: inicjały na kolorowym kółku, jak kontakty w aplikacji bankowej; dziecko: znak.
+const INICJALY = { anna: ['AW', 1], halina: ['HN', 2], mama: ['HN', 2], jakub: ['JL', 3], kasia: ['KL', 4] };
+const AWATARY = { corka: () => `<span class="inicjaly i4">${ic('baby')}</span>`, ...Object.fromEntries(Object.entries(INICJALY).map(([k, [t, n]]) => [k, () => `<span class="inicjaly i${n}" aria-hidden="true">${t}</span>`])) };
 const awatar = k => AWATARY[k] ? AWATARY[k]() : k;
 
 const wiersz = (k, v) => `<div class="wiersz"><span>${esc(k)}</span><b>${esc(v)}</b></div>`;
@@ -14,7 +16,9 @@ const poz = (href, ikona, t, opis, extra = '') => `<li><a class="poz" href="${hr
 const otwarte = () => zadania.filter(z => !stan.zrobione[z.id]);
 // Badanie techniczne po rezerwacji: zamiast „stacje w pobliżu” termin i stacja.
 const rezerwacja = () => { const r = stan.badanie; if (!r) return null; const t = new Date(r.kiedy); return `zarezerwowane: ${fmt(t, { weekday: 'short', day: 'numeric', month: 'long' })}, ${t.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })} · ${r.krotko}`; };
-const wierszZad = z => poz(z.cel, z.ikona, z.tytul, esc(z.id === 'badanie' && rezerwacja() || z.opis), z.pilne ? '<span class="plak czerwona">pilne</span>' : '');
+// Do zrobienia jak księga terminów: z lewej data w kroju nagłówków (dzień i miesiąc), potem sprawa.
+const dataZad = d => { const dni = Math.round((d - za(0)) / 864e5); return dni <= 0 ? '<b>dziś</b>' : `<b>${d.getDate()}</b><small>${fmt(d, { month: 'short' })}</small>`; };
+const wierszZad = z => `<li><a class="poz zad" href="${z.cel}"><span class="zad-data">${dataZad(z.termin)}</span><span><b>${esc(z.tytul)}</b><small>${esc(z.id === 'badanie' && rezerwacja() || z.opis)}</small></span>${z.pilne ? '<span class="plak czerwona">pilne</span>' : ''}${ic('right', 'strz')}</a></li>`;
 const nowePisma = () => skrzynka.filter(p => p.nowa && !stan.przeczytane[p.id]).length;
 export const licznikSkrzynki = nowePisma;
 
@@ -34,7 +38,7 @@ function kodQR(ziarno = 7) {
 }
 function kartaDok(d, przod) {
   const dolna = przod
-    ? `<span class="kd-dol"><span class="kd-foto">${portret(OSOBA)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill">${ic('eye')}Pokaż dane</span></span>`
+    ? `<span class="kd-dol"><span class="kd-foto">${portret(OSOBA)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span><span class="kd-pill" aria-hidden="true">${ic('eye')}</span></span>`
     : '';
   return `<a class="kd kd-${d.kolor}${przod ? ' kd-przod' : ''}" href="${d.href || '#/dokument/' + d.id}" aria-label="${esc(d.nazwa)}: ${esc(d.linia)}${d.alert ? ', ' + esc(d.alert) : ''}">
     <span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b>${d.alert && !przod ? '<span class="kd-kropka" aria-hidden="true"></span>' : ''}<span class="kd-holo" aria-hidden="true"></span></span>
@@ -51,10 +55,43 @@ const dokumentyDoStosu = () => {
 };
 
 /* ---------------- Start ---------------- */
+// Szybkie akcje jak w aplikacji bankowej: cztery najczęstsze czynności jednym dotknięciem.
+const szybkie = () => `<nav class="szybkie" aria-label="Szybkie akcje">
+  <a href="#/dokument/dowod"><span class="sz-ik">${ic('id')}</span>Pokaż dowód</a>
+  <button type="button" data-skanuj><span class="sz-ik">${ic('scan')}</span>Skanuj kod</button>
+  <a href="#/skrzynka"><span class="sz-ik">${ic('mail')}${nowePisma() ? `<i class="sz-licz">${nowePisma()}</i>` : ''}</span>Pisma</a>
+  <a href="#/kto-dzwoni"><span class="sz-ik">${ic('callcheck')}</span>Kto dzwoni?</a>
+</nav>`;
+// Widżety z jedną liczbą każdy: emerytura, płatności, auto, świadczenia. Tylko te, które dotyczą tej osoby.
+function widzety() {
+  const w = [];
+  const E = emerytalne;
+  if (E?.pozycje) {
+    const s = E.pozycje.reduce((a, p) => a + p.kwota, 0);
+    const grupy = ['zus', 'sub', 'ppk', 'dobr'].map((g, i) => [i + 1, E.pozycje.filter(p => p.grupa === g).reduce((a, p) => a + p.kwota, 0)]).filter(x => x[1]);
+    w.push(`<a class="widzet szeroki-w" href="#/emerytura"><span class="w-etyk">${ic('sun')}Twoja emerytura</span><span class="w-liczba">${zl(s)}</span><span class="w-pod">ZUS, PPK, IKE i IKZE w jednym miejscu</span><span class="udzialy maly-pasek" aria-hidden="true">${grupy.map(([i, v]) => `<span class="udz s${i}" style="flex-grow:${v}"></span>`).join('')}</span></a>`);
+  } else if (E?.wyplata) {
+    w.push(`<a class="widzet szeroki-w" href="#/emerytura"><span class="w-etyk">${ic('sun')}Twoja emerytura</span><span class="w-liczba">${zl(E.wyplata.kwota)}</span><span class="w-pod">brutto, ${E.wyplata.dzien}. dnia miesiąca</span></a>`);
+  }
+  const doZap = OSOBA === 'anna' ? [!stan.zrobione.mandat && 200, !stan.zrobione.podatek && 186].filter(Boolean) : [];
+  if (doZap.length) w.push(`<a class="widzet" href="#/skrzynka"><span class="w-etyk">${ic('coin')}Do zapłaty</span><span class="w-liczba">${zl(doZap.reduce((a, b) => a + b, 0))}</span><span class="w-pod">${doZap.length === 2 ? 'mandat i podatek' : 'jedna płatność'}, BLIK</span></a>`);
+  const badanie = zadania.find(z => z.id === 'badanie');
+  if (badanie && !stan.badanie) {
+    const dni = Math.round((badanie.termin - za(0)) / 864e5), proc = Math.max(0, Math.min(1, dni / 365));
+    w.push(`<a class="widzet" href="#/badanie"><span class="w-etyk">${ic('car')}Badanie auta</span><span class="w-pierscien" style="--p:${proc}"><b>${dni}</b><small>dni</small></span><span class="w-pod">do ${fmt(badanie.termin)}</span></a>`);
+  }
+  if (naleznosci.length) w.push(`<a class="widzet" href="#/naleznosci"><span class="w-etyk">${ic('gift')}Możesz skorzystać</span><span class="w-liczba">${naleznosci.length}</span><span class="w-pod">${naleznosci.length === 1 ? 'świadczenie' : naleznosci.length < 5 ? 'świadczenia i ulgi' : 'świadczeń i ulg'}</span></a>`);
+  const zwrot = skrzynka.find(p => p.id === 'us' && /zwrot/i.test(p.tytul));
+  if (zwrot && OSOBA === 'kasia') w.push(`<a class="widzet" href="#/pismo/us"><span class="w-etyk">${ic('coin')}Zwrot podatku</span><span class="w-liczba">380 zł</span><span class="w-pod">przyjdzie sam w 14 dni</span></a>`);
+  // nieparzysta liczba małych kafli: ostatni na całą szerokość, bez dziury w siatce
+  const male = w.filter(x => !x.includes('szeroki-w'));
+  if (male.length % 2) w[w.lastIndexOf(male.at(-1))] = male.at(-1).replace('class="widzet"', 'class="widzet szeroki-w"');
+  return w.length ? `<section aria-label="W liczbach" class="widzety">${w.join('')}</section>` : '';
+}
 export function start() {
   if (stan.ustawienia.prosty) return startProsty();
   const h = osoba.hero, heroOtwarte = h && !stan.zrobione[h.id];
-  const zad = otwarte().filter(z => !(heroOtwarte && z.id === h.id)); // sprawa z karty na górze nie powtarza się na liście
+  const zad = otwarte().filter(z => !(heroOtwarte && z.id === h.id)).sort((a, b) => a.termin - b.termin); // sprawa z karty na górze nie powtarza się; najbliższy termin pierwszy
   // 1 zlecenie, 2–4 zlecenia, 0 i 5+ zleceń (12–14: zleceń)
   const odm = (n, j, k, w) => `${n} ${n === 1 ? j : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? k : w}`;
   const ileWl = rodzaj => autopilot.filter(a => a.rodzaj === rodzaj && (stan.autopilot[a.id] ?? a.wl)).length;
@@ -64,6 +101,7 @@ export function start() {
     tytul: 'Start',
     html: `
     <h1 tabindex="-1" class="powitanie">${powitanie}, ${esc(ja.wolacz)}</h1>
+    ${szybkie()}
     ${heroOtwarte ? `
     <a class="hero sprawa" href="${h.cel}" aria-label="${esc(h.aria)}">
       ${h.awatar ? `<span class="awatar hero-aw">${awatar(h.awatar)}</span>` : `<span class="hero-aw hero-ikona">${ic(h.ikona)}</span>`}
@@ -71,6 +109,7 @@ export function start() {
       <span class="hero-go">${esc(h.przycisk)}${ic('right')}</span>
     </a>` : ''}
     ${stos(dokumentyDoStosu())}
+    ${widzety()}
     <form class="zapytaj" action="#/asystent" role="search" id="f-zap">
       <label for="zap" class="sr">Co chcesz załatwić?</label>
       <input id="zap" name="q" placeholder="Co chcesz załatwić?" autocomplete="off" enterkeyhint="send">
@@ -87,9 +126,8 @@ export function start() {
     <section aria-labelledby="h-dla">
       <h2 id="h-dla" class="sekcja">Dla Ciebie</h2>
       <ul class="lista">
-        ${OSOBA === 'anna' ? `${poz('#/naleznosci', 'gift', 'Możesz skorzystać', stan.zrobione.narodziny ? '2 świadczenia przyznane, 2 przyjdą same' : '4 świadczenia dla Twojej rodziny')}
-        ${poz('#/bliscy/mama', twarzMamy(), `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}` : `${naleznosci.length ? poz('#/naleznosci', 'gift', 'Możesz skorzystać', naleznosci.map(n => n.tytul).join(', ')) : ''}
-        ${osoba.bliscy.osoby.map(([href, a, t, o]) => poz(href, a, t, esc(o))).join('')}`}
+        ${OSOBA === 'anna' ? `${poz('#/bliscy/mama', 'mama', `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}` : ``}
+        ${OSOBA === 'anna' ? '' : osoba.bliscy.osoby.map(([href, a, t, o]) => poz(href, a, t, esc(o))).join('')}
         ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', `włączone: ${odm(ileWl('przypomnienie'), 'przypomnienie', 'przypomnienia', 'przypomnień')}, ${odm(ileWl('zlecenie'), 'zlecenie', 'zlecenia', 'zleceń')}`)}
       </ul>
     </section>
@@ -98,6 +136,7 @@ export function start() {
 
     <p class="stopka-info">Niezależny prototyp na mObywatel Challenge. Dane są fikcyjne. To nie jest usługa administracji publicznej. <a href="#/jury">Dla jury</a></p>`,
     po(root) {
+      $('[data-skanuj]', root).onclick = () => $('#skan-btn').click();
       $('#f-zap', root).onsubmit = e => { e.preventDefault(); const q = $('#zap', root).value.trim(); location.hash = '#/asystent' + (q ? '?q=' + encodeURIComponent(q) : ''); };
     },
   };
@@ -264,7 +303,7 @@ export function dostepWidok() {
       <summary><span><b>${esc(d.kto)}</b><small>${fmt(d.kiedy)} · ${esc(d.po)}</small></span>${d.podejrzane ? '<span class="plak pomaranczowa">sprawdź</span>' : d.nowy ? '<span class="plak niebieska">nowe</span>' : ''}</summary>
       ${wiersz('Jakie dane', d.co)}${wiersz('Po co', d.po)}${d.podstawa ? wiersz('Podstawa prawna', d.podstawa) : wiersz('Podstawa', 'Twój wniosek')}
       ${d.podejrzane ? '<p class="ostrz">' + ic('alert') + `<span>${esc(d.podejrzane)}</span></p>` : ''}
-      <button class="btn tekst" data-zglos="${esc(d.kto)}">To nie ja / zgłoś nieuprawniony dostęp</button>
+      <button class="btn tekst" data-zglos="${esc(d.kto)}">To nie ja, zgłoś ten odczyt</button>
     </details></li>`).join('')}</ul>
     <p class="stopka-info">Już dziś w mObywatelu w przeglądarce sprawdzisz historię weryfikacji numeru PESEL przez firmy i instytucje, a z gov.pl pobierzesz plik z odbiorcami danych z rejestru PESEL i Rejestru Dowodów Osobistych. Tu rozwijamy tę usługę: na bieżąco, ze wszystkich rejestrów, z celem i podstawą prawną oraz z ostrzeżeniem o podejrzanym odczycie. Wzór: estoński „Andmejälgija” (Data Tracker).</p>`,
     po(root) {
@@ -300,8 +339,8 @@ export function bliscy() {
     html: `<h1 tabindex="-1">Bliscy</h1>
     <p class="wstep">Załatwiaj sprawy w imieniu osób, które Cię upoważniły, i dzieci. One widzą wszystko, co robisz w ich imieniu.</p>
     <ul class="lista">
-      ${poz('#/bliscy/mama', twarzMamy(), `${mama.imie} ${mama.nazwisko}, ${mama.wiek} lat`, `upoważnienie: ${esc(mama.pelnomocnictwo)}`, stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}
-      ${stan.zrobione.narodziny ? poz('#/dokumenty', twarzCorki(), `${stan.imieDziecka} ${ja.nazwisko}`, 'córka · PESEL nadawany, odpis aktu w drodze') : poz('#/sprawa/narodziny', twarzCorki(), 'Córka', 'najpierw zgłoś urodzenie')}
+      ${poz('#/bliscy/mama', 'mama', `${mama.imie} ${mama.nazwisko}, ${mama.wiek} lat`, `upoważnienie: ${esc(mama.pelnomocnictwo)}`, stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}
+      ${stan.zrobione.narodziny ? poz('#/dokumenty', 'corka', `${stan.imieDziecka} ${ja.nazwisko}`, 'córka · PESEL nadawany, odpis aktu w drodze') : poz('#/sprawa/narodziny', 'corka', 'Córka', 'najpierw zgłoś urodzenie')}
       ${poz('#/sprawa/smierc', 'leaf', 'Tadeusz Nowicki, tata', 'zmarł ' + fmt(za(-42)) + ' · zasiłek pogrzebowy i renta wdowia dla mamy')}
     </ul>
     <button class="btn drugi szeroki" id="dodaj-bl">${ic('users')}Dodaj bliską osobę</button>
@@ -313,7 +352,7 @@ export function bliscy() {
 export function blMama() {
   return {
     tytul: 'Mama',
-    html: `<div class="osoba-nag"><span class="awatar duzy">${twarzMamy()}</span><h1 tabindex="-1">${esc(mama.imie)} ${esc(mama.nazwisko)}</h1></div>
+    html: `<div class="osoba-nag"><span class="awatar duzy">${awatar('mama')}</span><h1 tabindex="-1">${esc(mama.imie)} ${esc(mama.nazwisko)}</h1></div>
     <p class="maly">Działasz z upoważnienia mamy (${esc(mama.pelnomocnictwo)}) do ${fmtPelna(mama.pelnomocnictwoDo)}. Mama widzi w swojej aplikacji albo w liście z urzędu, co robisz w jej imieniu.</p>
     ${stan.zrobione.mama ? `<div class="karta">${ic('check', 'okr zielona')} <b>Urzędnik przyjedzie do mamy ${fmt(za(12))}</b><p class="maly">Przyjmie wniosek o dowód i pobierze odciski palców w domu.</p></div>` : `
     <section class="karta">
@@ -471,6 +510,7 @@ export function wiecej() {
     <h2 class="grupa-t">Twoje sprawy</h2>
     <ul class="lista">
       ${poz('#/skrzynka', 'mail', 'Pisma i płatności', nowePisma() ? nowePisma() + ' nowe' : '')}
+      ${emerytalne ? poz('#/emerytura', 'sun', 'Twoja emerytura', emerytalne.wyplata ? 'wypłata, waloryzacja, renta wdowia' : 'ZUS, PPK, IKE i IKZE, prognoza') : ''}
       ${poz('#/naleznosci', 'gift', 'Możesz skorzystać', naleznosci.length ? naleznosci.map(n => n.tytul.split(':')[0]).join(', ') : 'sprawdzamy co miesiąc')}
       ${poz('#/bliscy', 'users', 'Bliscy', esc(osoba.bliscyOpis))}
       ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'terminy i sprawy, które robimy za Ciebie')}

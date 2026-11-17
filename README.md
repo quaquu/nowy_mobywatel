@@ -23,6 +23,7 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 | Płatności | Mandat z fotoradaru i podatek od nieruchomości (BLIK), zlecenie stałe płatności za zgodą |
 | Badanie techniczne | Termin ważności auta, stacje kontroli na mapie poglądowej (fikcyjne), wolne terminy i rezerwacja, opłata 149 zł z rozporządzenia |
 | Przypomnienia i zlecenia | Przypomnienie tylko daje znać o terminie; zlecenie robi coś za Ciebie (jak zlecenie stałe w banku), zawsze z uprzedzeniem |
+| Twoja emerytura | Kapitał z ZUS (konto i subkonto), PPK, IKZE i IKE-Obligacje w jednym miejscu, z udziałem każdego filaru i źródłem danych; prognoza miesięczna z wyborem wieku (60, 62, 65) i dopłaty do IKZE, ulga w PIT, wykres kapitału z tabelą. Model poglądowy opisany na ekranie („Jak liczymy”). Od 2026 r. ZUS ma pokazywać te dane w mObywatelu (money.pl, 11.08.2025) |
 | Możesz skorzystać | Świadczenia i ulgi wykryte z rejestrów, z uzasadnieniem i źródłem |
 | Prywatność | „Kto sprawdzał moje dane” z celem i podstawą prawną, „Co państwo o mnie wie”, „Pokaż tylko to, co potrzebne” |
 | Bliscy | Sprawy mamy na podstawie upoważnienia (wizyta urzędnika w domu) |
@@ -38,11 +39,7 @@ Technicznie: czysty HTML, CSS i JavaScript (moduły ES), bez budowania, bez fram
 
 ## Wygląd (design system)
 
-Wygląd natywnej aplikacji iOS według [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/): listy grupowane z kolorowymi kafelkami kategorii, duże tytuły, pływający pasek kart ze szkła (Liquid Glass tylko na nawigacji), pływający arkusz zgody, przyciski-kapsuły, portfel kart dokumentów. Niebieski akcent dla działań, czerwień mObywatela tylko w logo i sprawach pilnych. Krój systemowy na iPhonie i Macu; na innych urządzeniach **Lato** (polski projekt Łukasza Dziedzica, licencja OFL), przycięty do znaków polskich (ok. 44 KB). Szczegóły i powody zmian: [DESIGN.md](DESIGN.md).
-
-- [DESIGN.md](DESIGN.md): tokeny (kolory, typografia, odstępy, zaokrąglenia, komponenty) i zasady, w formacie [Impeccable](https://impeccable.style/)
-- [PRODUCT.md](PRODUCT.md): dla kogo, po co i jakie ograniczenia
-- Zasady sprawdza detektor Impeccable w `npm test` (próg: 0 zgłoszeń, kod i ekrany). Jedyny zapisany wyjątek: krój Lato, który detektor uznaje za „nadużywany” (`.impeccable/config.json`).
+Barwy i krój z serwisu mObywatela (granat `#004a93`, Lato; pobrane ze strony, nie z pamięci: `.hallmark/brand-spec.md`) w układzie aplikacji bankowej: zabarwione tło, białe widżety z jedną liczbą, okrągłe szybkie akcje, portfel dokumentów, wykresy z danymi. Opis i tokeny: [DESIGN.md](DESIGN.md). Arkusz przechodzi czyszczenie Hallmark (`sloplint`, 0 FAIL) i test palety wykresów (walidator dataviz: rozróżnialność dla daltonistów w obu motywach).
 
 ## Wyniki pomiarów
 

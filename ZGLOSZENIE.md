@@ -33,13 +33,13 @@ Co jeszcze da się przejść do końca:
 • 4 osoby do wyboru, jak w referencji, każda z własnymi dokumentami, pismami i sprawami: Anna (33 lata, właśnie urodziła córkę), jej mama Halina (78 lat, tryb prosty), Jakub (17 lat) i Katarzyna (29 lat, planuje ślub).
 • 11 spraw życiowych: narodziny, przeprowadzka, kupno auta (historia z ostrzeżeniem o cofniętym liczniku), utrata dokumentów, nowy dowód (wniosek gotowy, wizyta po odciski palców), ślub (wspólna sprawa narzeczonych), śmierć bliskiej osoby (zasiłek pogrzebowy liczony z rachunków), renta wdowia (wyliczenie obu wariantów), firma (CEIDG z ZUS, podatkiem i VAT), emerytura (luka w składkach wykryta z danych US i ZUS), 18 lat (profil kandydata na kierowcę).
 • Mandat i podatek z BLIK, badanie techniczne ze stacjami na mapie i rezerwacją terminu.
-• „Możesz skorzystać”: świadczenia i ulgi wykryte z rejestrów.
-• Przypomnienia i zlecenia: zlecenie (jak zlecenie stałe w banku) np. opłaci ratę podatku, zawsze z uprzedzeniem.
+• Twoja emerytura: ZUS, PPK, IKE i IKZE w jednym miejscu (tak jak przewiduje ustawa z 2025 r.), prognoza z wyborem wieku i dopłat do IKZE, z ulgą w PIT.
+• „Możesz skorzystać”: świadczenia i ulgi wykryte z rejestrów. Zlecenia (jak zlecenie stałe w banku) np. opłacą ratę podatku, zawsze z uprzedzeniem.
 • „Kto sprawdzał moje dane”: każdy odczyt z celem i podstawą prawną.
 • Sprawy bliskich: córka zamawia wizytę urzędnika u 78-letniej mamy, która widzi, co dzieje się w jej imieniu.
 • „Nie możesz się zalogować?”: 33% ocen 1–2★ z 1600 recenzji mObywatela dotyczy logowania.
 • „Kto dzwoni?”: sprawdzenie numeru przed rozmową; konsultant mObywatela oddzwania z numeru, który da się tu sprawdzić.
-• Skaner QR: w sklepie przekazuje samą pełnoletność, ostrzega przed fałszywymi kodami z parkometrów.
+• Skaner QR: w sklepie przekazuje samą pełnoletność, ostrzega przed fałszywymi kodami.
 • Podpisy poparcia bez papieru: projekty ustaw, referenda, kandydaci.
 • Tryb prosty dla seniorów, większy tekst, wysoki kontrast, czytanie na głos, tryb ciemny.
 • Asystent (tekst i głos) rozpoznaje sprawę w telefonie, bez internetu, i prowadzi do tego samego arkusza zgody. Nie wysyła niczego sam, podaje źródło z gov.pl, odrzuca złośliwe prośby.

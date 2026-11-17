@@ -192,6 +192,18 @@ export async function sprawy(url) {
     await p.goto(url + '?osoba=halina#/asystent?q=mandat'); await p.waitForSelector('.msg.bot >> nth=1');
     if (!/ma Anna Wójcik/.test(await p.locator('.msg.bot').last().textContent())) throw new Error('asystent Haliny mówi o mandacie Anny');
   });
+  // Twoja emerytura: suma ze wszystkich filarów, scenariusz zmienia prognozę i liczy ulgę IKZE.
+  await krok('twoja-emerytura', async p => {
+    await p.goto(url + '?osoba=anna#/emerytura'); await p.waitForSelector('#f-prog');
+    if (!/250\s890 zł/.test(await p.textContent('.emer-suma'))) throw new Error('zła suma oszczędności');
+    const przed = await p.textContent('.pr-liczba');
+    await p.check('input[name=wiek][value="65"]', { force: true }); await p.check('input[name=ikze][value="500"]', { force: true });
+    await p.waitForFunction(old => document.querySelector('.pr-liczba')?.textContent !== old, przed);
+    if (!/720 zł mniej podatku/.test(await p.textContent('#prog-wynik'))) throw new Error('brak ulgi IKZE');
+    await p.click('.wk-tabela summary'); if (!(await p.isVisible('.wk-tabela table'))) throw new Error('brak tabeli wykresu');
+    await p.goto(url + '?osoba=halina#/emerytura'); await p.waitForSelector('.emer-suma');
+    if (!/2900 zł/.test(await p.textContent('.emer-suma'))) throw new Error('Halina: brak wypłaty');
+  });
   await krok('mandat', async p => {
     await p.goto(url + '#/mandat'); await p.click('#man-ok');
     if (!(await p.isVisible('#blik-m-blad'))) throw new Error('brak walidacji BLIK');
@@ -384,16 +396,17 @@ export async function sprawy(url) {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, colorScheme: 'dark', serviceWorkers: 'block' });
     await ctx.addInitScript(() => { window.__SZYBKO = true; });
     const p = await ctx.newPage();
-    const tlo = () => p.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    // motyw czytamy z color-scheme korzenia (ustawiają go bloki tokenów jasnych i ciemnych), a nie z konkretnej barwy tła
+    const tlo = () => p.evaluate(() => getComputedStyle(document.documentElement).colorScheme.includes('dark') ? 'ciemny' : 'jasny');
     try {
       await p.goto(url + '#/ustawienia'); await p.waitForSelector('main h1');
-      if (await tlo() !== 'rgb(0, 0, 0)') throw new Error('bez wyboru nie idzie za systemem');
+      if (await tlo() !== 'ciemny') throw new Error('bez wyboru nie idzie za systemem');
       await p.locator('main').getByRole('radio', { name: 'Jasny' }).check();
-      if (await tlo() !== 'rgb(242, 242, 247)') throw new Error('„Jasny” nie zmienia wyglądu');
+      if (await tlo() !== 'jasny') throw new Error('„Jasny” nie zmienia wyglądu');
       await p.reload(); await p.waitForSelector('main h1');
-      if (await tlo() !== 'rgb(242, 242, 247)') throw new Error('wybór nie zostaje po przeładowaniu');
+      if (await tlo() !== 'jasny') throw new Error('wybór nie zostaje po przeładowaniu');
       await p.locator('main').getByRole('radio', { name: 'Automatycznie' }).check();
-      if (await tlo() !== 'rgb(0, 0, 0)') throw new Error('„Automatycznie” nie wraca do systemu');
+      if (await tlo() !== 'ciemny') throw new Error('„Automatycznie” nie wraca do systemu');
       wyniki['wyglad'] = true;
     } catch (e) { problemy.push('wyglad: ' + e.message.split('\n')[0]); wyniki['wyglad'] = false; }
     await ctx.close();

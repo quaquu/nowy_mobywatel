@@ -1,224 +1,97 @@
 ---
 name: mObywatel (prototyp) – państwo, które przychodzi ze sprawą
-description: Natywny wygląd iOS według Apple Human Interface Guidelines z charakterem mObywatela; niebieski akcent, czerwień marki, krój systemowy (Lato poza Apple), listy grupowane z kafelkami kategorii, pływający pasek kart i portfel kart dokumentów.
+description: Barwy i krój serwisu mObywatela (granat, Lato) w układzie aplikacji bankowej - zabarwione tło z miękkimi plamami barwy, białe widżety z jedną liczbą, okrągłe szybkie akcje, portfel kart dokumentów, wykresy z danymi zamiast list.
 colors:
-  tlo: "#f2f2f7"
-  powierzchnia: "#ffffff"
-  wypelnienie: "rgb(118 118 128 / .12)"
-  tekst: "#111216"
-  tekst-drugorzedny: "#5c5c63"
-  tekst-trzeciorzedny: "#6c6c72"
-  separator: "#dcdce1"
-  akcent: "#0a63d8"
-  akcent-tekst: "#ffffff"
-  akcent-wypelnienie: "#e6effb"
-  akcent-mocny: "#0850b0"
-  akcent-wysoki-kontrast: "#0047a8"
-  marka: "#c8102e"
-  sukces: "#1d7a3a"
-  ostrzezenie: "#8f5300"
-  blad: "#b3261e"
-  przelacznik-wlaczony: "#2f9e4d"
-  ciemny-tlo: "#000000"
-  ciemny-powierzchnia: "#1c1c1e"
-  ciemny-tekst: "#ffffff"
-  ciemny-akcent: "#3d9bff"
-  szklo-krawedz: "rgb(255 255 255 / .75)"
-  kafel-pieniadze: "#248a3d"
-  kafel-pojazdy: "#c93400"
-  kafel-rodzina: "#d30f45"
-  kafel-terminy: "#3634a3"
-  kafel-dane: "#8944ab"
-  kafel-telefon: "#007d76"
-  kafel-pomoc: "#6c6c70"
-  dok-dowod: "#1c4fb0"
-  dok-prawo-jazdy: "#722a78"
-  dok-pojazdy: "#a8400f"
-  dok-bliscy: "#186a32"
+  tlo: "oklch(97.3% 0.007 269)"        # #f4f6fb, powierzchnia serwisu mObywatela
+  tlo-gora: "oklch(93.9% 0.017 251)"
+  powierzchnia: "oklch(99.6% 0.003 269)"
+  tekst: "oklch(23% 0.012 262)"
+  tekst-drugorzedny: "oklch(49.8% 0.009 254)"
+  separator: "oklch(91.5% 0.008 262)"
+  akcent: "oklch(41.5% 0.136 255)"     # #004a93, granat mObywatela
+  akcent-wypelnienie: "oklch(93.9% 0.017 251)"
+  sukces: "oklch(49.5% 0.1 168)"
+  ostrzezenie: "oklch(50.5% 0.14 47)"   # pomarańcz serwisu #c25400, przyciemniony do 4,5:1
+  blad: "oklch(52% 0.2 24)"
+  seria-1: "oklch(57.5% 0.155 254)"
+  seria-2: "oklch(65.5% 0.177 40)"
+  seria-3: "oklch(65.5% 0.13 163)"
+  seria-4: "oklch(76% 0.16 75)"
 typography:
-  tytul-duzy:
-    fontFamily: "-apple-system, BlinkMacSystemFont, Lato, Segoe UI, Roboto, sans-serif"
-    fontSize: "2.125rem"
-    fontWeight: 700
-    lineHeight: 1.15
-    letterSpacing: "-0.01em"
-  tytul-sekcji:
-    fontFamily: "-apple-system, BlinkMacSystemFont, Lato, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.25rem"
-    fontWeight: 600
-    lineHeight: 1.25
-  naglowek:
-    fontFamily: "-apple-system, BlinkMacSystemFont, Lato, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.0625rem"
-    fontWeight: 600
-    lineHeight: 1.3
-  tresc:
-    fontFamily: "-apple-system, BlinkMacSystemFont, Lato, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.0625rem"
-    fontWeight: 400
-    lineHeight: 1.45
-  objasnienie:
-    fontFamily: "-apple-system, BlinkMacSystemFont, Lato, Segoe UI, Roboto, sans-serif"
-    fontSize: "0.9375rem"
-    fontWeight: 400
-    lineHeight: 1.35
-  przypis:
-    fontFamily: "-apple-system, BlinkMacSystemFont, Lato, Segoe UI, Roboto, sans-serif"
-    fontSize: "0.8125rem"
-    fontWeight: 400
-    lineHeight: 1.35
+  font: "Lato 400, 700, 900 (OFL), przycięte do znaków polskich"
+  tytul-ekranu: "32px / 900 / -0.022em"
+  liczba-glowna: "44px / 900, cyfry tabelaryczne"
+  liczba-widzetu: "28px / 900"
+  tytul-wiersza: "17px / 700"
+  tekst: "17px / 400"
+  objasnienie: "15px / 400"
 rounded:
-  pole: "10px"
-  grupa: "12px"
+  widzet: "20px"
+  grupa: "16px"
+  pole: "12px"
+  arkusz: "24px"
   przycisk: "999px"
-  arkusz: "32px"
-  kafel: "8px"
-  pasek-kart: "34px"
-  karta-dokumentu: "16px"
-  kapsula: "999px"
-spacing:
-  o1: "4px"
-  o2: "8px"
-  o3: "12px"
-  o4: "16px"
-  o5: "20px"
-  o6: "24px"
-  o8: "32px"
-components:
-  przycisk-glowny:
-    backgroundColor: "{colors.akcent}"
-    textColor: "{colors.akcent-tekst}"
-    typography: "{typography.naglowek}"
-    rounded: "{rounded.przycisk}"
-    height: "50px"
-    padding: "12px 20px"
-  przycisk-glowny-hover:
-    backgroundColor: "{colors.akcent-mocny}"
-  przycisk-drugi:
-    backgroundColor: "{colors.akcent-wypelnienie}"
-    textColor: "{colors.akcent}"
-    rounded: "{rounded.przycisk}"
-    height: "50px"
-  lista-grupowana:
-    backgroundColor: "{colors.powierzchnia}"
-    rounded: "{rounded.grupa}"
-  wiersz-listy:
-    typography: "{typography.tresc}"
-    height: "56px"
-    padding: "10px 16px"
-  pole-tekstowe:
-    backgroundColor: "{colors.wypelnienie}"
-    textColor: "{colors.tekst}"
-    rounded: "{rounded.pole}"
-    height: "48px"
-  plakietka:
-    typography: "{typography.przypis}"
-    rounded: "{rounded.kapsula}"
-    padding: "3px 9px"
-  karta-dokumentu:
-    textColor: "#ffffff"
-    rounded: "{rounded.karta-dokumentu}"
-    padding: "16px 18px"
-  arkusz-zgody:
-    backgroundColor: "{colors.powierzchnia}"
-    rounded: "{rounded.arkusz}"
-  kafel-kategorii:
-    textColor: "#ffffff"
-    rounded: "{rounded.kafel}"
-    size: "30px"
-  pasek-kart:
-    backgroundColor: "color-mix(in srgb, {colors.powierzchnia} 84%, transparent)"
-    rounded: "{rounded.pasek-kart}"
-    height: "62px"
 ---
 
 # DESIGN.md
 
-Źródło prawdy dla wyglądu prototypu. Tokeny w nagłówku odpowiadają zmiennym w `app/css/app.css` (`--tlo`, `--pow`, `--gl`…). Zasady sprawdza detektor Impeccable w `npm test` (próg: 0 zgłoszeń).
+Źródło prawdy dla wyglądu prototypu. Tokeny są w `app/css/app.css` (role: `--tlo`, `--pow`, `--gl`, `--s1`…) i w `app/css/tokens.css` (skala odstępów `--space-*`, czasy ruchu). Skąd barwy: `.hallmark/brand-spec.md` (pobrane 16.11.2026 z info.mobywatel.gov.pl, nie z pamięci). Pierwsza linia arkusza to stempel Hallmark; `sloplint` i `npm test` sprawdzają zasady poniżej.
 
 ## Overview
 
-Tryb „Operate”: obywatel przychodzi coś załatwić, więc aplikacja ma wyglądać jak dobrze zrobiona, natywna aplikacja z iPhone'a, którą umie obsłużyć bez zastanowienia. Podstawą są [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/) (iOS 26, Liquid Glass). Charakter dają cztery rzeczy:
+Obywatel korzysta na co dzień z aplikacji banku. Jeśli mObywatel wygląda jak formularz, przegrywa z nimi już na pierwszym ekranie. Dlatego układ i rzemiosło biorą z aplikacji bankowych to, co działa (liczba zamiast akapitu, widżety, szybkie akcje, wykres z danymi), a tożsamość zostaje państwowa: granat i krój Lato z serwisu mObywatela, karty dokumentów w ich prawdziwych barwach, bez godła.
 
-1. **paleta**: niebieski akcent dla działań, czerwień marki mObywatela tylko w logo i sprawach pilnych, kolorowe kafelki kategorii;
-2. **gęstość**: listy grupowane jak w Ustawieniach iOS;
-3. **jeden wyróżnik**: portfel kart dokumentów na starcie, stos kart z wystającymi paskami nazw;
-4. **sprawa, która przychodzi sama**: jedna komórka nad portfelem.
+Cztery rzeczy niosą charakter:
+1. **Sprawa, która przychodzi sama**: granatowe pole na górze Startu, jedna akcja na białej pigułce.
+2. **Portfel dokumentów**: stos kart w barwach mObywatela.
+3. **Widżety z jedną liczbą**: emerytura, do zapłaty, dni do badania auta, świadczenia. Każdy prowadzi do sprawy.
+4. **Twoja emerytura**: suma ze wszystkich filarów, pasek udziałów i wykres prognozy, którą zmieniasz dwoma przełącznikami.
 
-Wszystko inne to standardowe wzorce: duże tytuły, pływający pasek kart, arkusz (sheet) do zgody, systemowe przełączniki.
+### Decyzja z 16–17.11.2026 (redesign Hallmark, pełny)
 
-### Decyzja z 26.10.2026 (przegląd według HIG)
-
-Na prośbę autora wygląd przestawiono na zasady Apple. Zmiany i powody:
-- **Akcent niebieski zamiast czerwonego.** HIG: „nie używaj tego samego koloru do różnych znaczeń”. Czerwień była naraz działaniem i ostrzeżeniem; teraz działanie jest niebieskie (jak linki w prawdziwym mObywatelu), czerwień to marka, plakietka nieprzeczytanych i „pilne”. Przycisk niszczący (np. zastrzeżenie) pozostaje czerwony, jak w iOS.
-- **Krój systemowy.** HIG zaleca krój systemowy (SF Pro), którego nie wolno osadzać na stronie. Na iPhonie i Macu używamy go przez `-apple-system`; na innych urządzeniach dalej Lato.
-- **Grubości jak w stylach tekstu iOS**: Large Title pogrubiony, nagłówki i przyciski półgrube (600), tytuł wiersza zwykły (Body). Bez cienkich odmian.
-- **Liquid Glass tylko na warstwie nawigacji**: pasek kart i kapsuła przycisków w nagłówku; treść nieprzezroczysta. „Ogranicz przezroczystość” i wysoki kontrast zamieniają szkło w pełną powierzchnię.
-- **Zwiększony kontrast z systemu** (`prefers-contrast: more`) działa jak przełącznik w aplikacji.
+Wygląd iOS (HIG) był poprawny, ale wyglądał jak makieta: szare listy, rysowane twarze, mało liczb. Próbowany motyw Riso (róż i niebieski z druku) odrzucony: nie pasuje do aplikacji państwowej. Wybrano barwy marki z serwisu mObywatela i układ aplikacji bankowej. Zmiany: tło z plamami barwy, szybkie akcje, widżety, kolorowe znaki kategorii, awatary z inicjałami, terminy z kafelkiem daty, wykresy w „Twojej emeryturze”, jeden krój w trzech grubościach.
 
 ## Colors
 
-Wszystkie kolory są tokenami w `:root` (w `app/css/app.css` żadna reguła poza blokiem tokenów nie ma koloru wpisanego wprost; sprawdza to Hallmark `sloplint`, stempel w pierwszej linii arkusza). Stałe niezależne od motywu: znak na kolorze (`--biel`), kafelki kategorii (`--k-*`), mapa (`--m-*`), cienie (`--cien-*`), nakładki (`--zaslona*`), materiał kart dokumentów (`--dok-*`, `--kd-*`), ramka telefonu i skaner.
-
-- **Tła**: `tlo` (systemGroupedBackground) i `powierzchnia` (secondarySystemGroupedBackground). W trybie ciemnym czerń i `#1c1c1e`.
-- **Akcent `#0a63d8`** (tint) tylko dla działań: przycisk główny, linki, wybrana zakładka, przyciski tekstowe. Kontrast z bielą 5,6:1. Wysoki kontrast: `#0047a8`; tryb ciemny `#3d9bff`.
-- **Marka `#c8102e`**: logo, plakietka nieprzeczytanych, plakietki „pilne”. Nigdy jako kolor działania.
-- **Kafelki kategorii**: biały znak na kwadracie w kolorze kategorii (pieniądze i świadczenia zielony, pojazdy pomarańczowy, rodzina różowy, terminy i podpisy indygo, dane i bezpieczeństwo fiolet, telefon morski, pomoc i ustawienia szary). Odcienie z wersji Apple „zwiększony kontrast”, żeby biały znak miał co najmniej 3:1. Kolor znaczy kategorię, nie stan.
-- **Stany** mają własne kolory: sukces (zielony), ostrzeżenie (bursztyn), błąd (czerwony). Plakietki używają wypełnień 10–16% tych kolorów.
-- **Karty dokumentów** to jedyne gradienty: jednokierunkowe, w barwie dokumentu jak w mObywatelu (dowód niebieski, prawo jazdy fioletowo-purpurowe, pojazdy pomarańczowe), z jednym miękkim refleksem. Prawo jazdy nie jest czerwone, żeby nie mylić go z marką i „pilne”.
-- **Przełączniki** włączone na zielono, jak w iOS.
-- **Wygląd**: domyślnie za ustawieniem telefonu; w Ustawieniach (i w panelu obok symulacji telefonu) przełącznik segmentowy Automatycznie / Jasny / Ciemny. Wybór zapamiętany osobno od stanu pokazu i ustawiany przed pierwszym rysowaniem strony, bez mignięcia złego motywu.
+- **Tło** `#f4f6fb` z trzema miękkimi plamami barwy u góry ekranu (granat, błękit, fiolet w jasnych odcieniach); niżej czyste tło. W ciemnym: granatowa noc `oklch(15% 0.035 241)`, nie czerń.
+- **Powierzchnie**: białe widżety i grupy na tle, z miękkim cieniem (`--cien-widzet`). W ciemnym o stopień jaśniejsze od tła, z jasną krawędzią u góry zamiast cienia.
+- **Akcent `#004a93`** (granat mObywatela) tylko dla działań, wyboru i fokusu. Granatowe pole sprawy jest takie samo w obu motywach.
+- **Kategorie**: znak w kolorze kategorii na jego jasnym odcieniu (pieniądze zielony, pojazdy pomarańczowy, rodzina fiolet, dane indygo, telefon morski, pomoc szary, pilne czerwony). Kolor znaczy rodzaj sprawy, nie stan.
+- **Stany**: sukces, ostrzeżenie, błąd, każdy co najmniej 4,5:1 do powierzchni, zawsze z ikoną albo słowem.
+- **Serie wykresów**: cztery barwy w stałej kolejności (konto w ZUS, subkonto, PPK, IKE i IKZE), sprawdzone walidatorem palet dataviz (CVD ΔE ≥ 9 na jasnym, 8,4 na ciemnym). Na jasnym tle dwie serie mają kontrast poniżej 3:1, dlatego obok paska zawsze jest lista z nazwami i kwotami.
+- **Karty dokumentów**: gradienty w barwach dokumentu (niebieski dowód, purpurowe prawo jazdy, pomarańczowe pojazdy); najjaśniejszy stopień daje białemu tekstowi co najmniej 4,5:1.
 
 ## Typography
 
-Krój systemowy na urządzeniach Apple, Lato (400 i 700, przycięte do znaków polskich, ok. 44 KB) na pozostałych. Style tekstu iOS: Large Title 34 px pogrubiony, Title 3 20 px półgruby, Headline 17 px półgruby, Body 17 px, Subheadline 15 px, Footnote 13 px (nagłówki grup list), pasek kart 11 px półgruby (10 px tylko na ekranach węższych niż 380 px, jak w iOS); minimum 11 px. Kwoty, daty i liczniki: cyfry tabelaryczne. Nagłówki z `text-wrap: balance`, akapity z `text-wrap: pretty`. Tryb prosty i „Większy tekst” skalują całość o 20%.
+Jeden krój: Lato (Łukasz Dziedzic, OFL), krój serwisu mObywatela, w trzech grubościach: 400 tekst, 700 tytuły wierszy, przyciski i etykiety, 900 tytuły ekranów i liczby. Liczby (kwoty, daty, dni) są największym tekstem na kafelku, zawsze cyframi tabelarycznymi. Bez rozstrzelonych wersalików i etykiet nad nagłówkami.
 
 ## Layout
 
-Kolumna o szerokości telefonu (maks. 480 px), marginesy boczne 16 px, odstępy z siatki 4/8/12/16/20/24/32 px. Pasek nawigacji u góry (lepki, z rozmyciem; przyciski w szklanej kapsule), pływający pasek kart u dołu (5 sekcji, 12 px od krawędzi, nad wskaźnikiem ekranu domowego). Na komputerze: symulacja iPhone'a 390×844 obok panelu opisu albo pełny ekran.
+Kolumna telefonu (maks. 480 px), marginesy 16 px, odstępy ze skali 4 px (`--space-*`). Start: powitanie, szybkie akcje (4 okrągłe przyciski 56 px z podpisem), sprawa, portfel, siatka widżetów (2 kolumny, odstęp 12 px; nieparzysty ostatni na całą szerokość), pole pytania, „Do zrobienia” (kafelek daty z lewej, najbliższy termin pierwszy), „Dla Ciebie”. Pasek kart na całą szerokość u dołu, półprzezroczysty.
 
 ## Elevation & Depth
 
-Głębia tylko tam, gdzie ma znaczenie: karty dokumentów (cień z przesunięciem i rozmyciem, neutralny), arkusz zgody i warstwa nawigacji ze szkła (pasek kart, kapsuła w nagłówku). Listy i komórki są płaskie, bez cieni; hierarchię robią tła, odstępy i separatory 1 px. Żadnych kolorowych poświat.
+Głębia robi hierarchię: widżety i grupy unoszą się nad zabarwionym tłem miękkim cieniem, karty dokumentów mają cień z przesunięciem, arkusz zgody wysuwa się od dołu. Żadnych kolorowych poświat.
 
 ## Shapes
 
-Komórki i grupy: 12 px; pola: 10 px; przyciski, plakietki i pasek kart: kapsuła; kafelki kategorii: 8 px; arkusz: pływający, 8 px od krawędzi, rogi współśrodkowe z rogami ekranu (32 px); karty dokumentów: 16 px; zdjęcie na dokumencie: 3 px (jak na plastikowym dowodzie).
+Widżety 20 px, grupy i karty 16 px, pola i kafelki dat 12 px, arkusz 24 px u góry, przyciski i segmenty jako kapsuły, znaki kategorii i awatary w kółku.
 
 ## Components
 
-- **Lista grupowana**: biała grupa z zaokrągleniem 12 px, wiersze ≥ 56 px, kafelek kategorii 30 px, tytuł zwykłą grubością, opis w kolorze drugorzędnym, strzałka w kolorze trzeciorzędnym; separator wcięty do tekstu. Długie listy dzielone na grupy z nagłówkiem (Footnote, kolor drugorzędny), np. „Więcej”: Twoje sprawy, Bezpieczeństwo i dane, Udział w życiu publicznym, Pomoc i ustawienia, O prototypie.
-- **Pasek kart**: pływająca kapsuła ze szkła; znaki i podpisy jednobarwne, wybrana zakładka w kolorze akcentu z wypełnionym znakiem na delikatnej kapsule. Plakietki tylko dla ważnych informacji.
-- **Sprawa, która przyszła sama**: najważniejsza rzecz na Starcie, większa niż wiersz listy: ilustracja 56 px, tytuł 20 px, opis i przycisk „Załatw wszystko naraz” na całą szerokość. Cała karta to jeden cel dotyku. Bez etykiety nad tytułem i bez paska z boku.
-- **Start**: sprawa, portfel, pole pytania, „Do zrobienia” (najwyżej 3, reszta pod „Pokaż wszystkie”) i jedna grupa „Dla Ciebie” (świadczenia, bliscy, przypomnienia).
-- **Nagłówki sekcji**: na ekranach z treścią (Start) duże (Title 3); nad grupami list i ustawień (Więcej, Ustawienia) małe szare (Footnote), jak w Ustawieniach iOS.
-- **Asystent**: wstęp w jednym zdaniu, szczegóły pod „Jak to działa?”; podpowiedzi na powitanie pod dymkiem, na całą szerokość.
-- **Ustawienia**: przełączniki w jednej liście grupowanej, tytuł zwykłą grubością.
-- **Pasek stanu w symulacji iPhone'a**: Dynamic Island 126 × 37 pt jako pełna pigułka, godzina 17 pt i ikony (zasięg, Wi-Fi, bateria z biegunem) wyśrodkowane po obu stronach wyspy. Face ID wyrasta z wyspy; znak „podpisano” zastępuje twarz bez przerwy, a przy zwijaniu treść gaśnie razem z wyspą.
-- **Karta dokumentu**: jeden pomysł, światło na materiale. Drobny gilosz jak na dowodzie; miękki refleks przechodzi powoli (2,4 s), gdy karta się pojawia i gdy najedziesz na nią kursorem; na komputerze karta lekko przechyla się za kursorem (do ok. 3,5°), a odblask i hologram idą za światłem. Bez unoszenia i bez pętli.
-- **Podpis (Face ID)**: w symulacji iPhone'a rozpoznanie twarzy wyrasta z Dynamic Island (odsłanianie przez przycinanie, bez odbicia; zwija się szybciej, niż się rozwinęło); na telefonie ciemne okienko na środku ekranu.
-- **Arkusz zgody**: zawsze ta sama struktura (co, dokąd, jakie dane, co można cofnąć). Na dole przyklejona jedna wyróżniona akcja: „Podpisz” na całą szerokość, pod nią „Wróć” jako przycisk tekstowy.
-- **Przypięte działanie długiego formularza**: gdy przycisk na końcu formularza (np. „Przejrzyj i podpisz raz” w Narodzinach) jest poza ekranem, ta sama akcja wisi nad paskiem kart; znika, gdy właściwy przycisk jest widoczny.
-- **Tytuły wierszy**: zawsze zwykła grubość (Body), także w pojedynczych kartach-linkach; pogrubione są tytuły ekranów, nagłówki i kwoty.
-- **Przyciski**: kapsuły, najwyżej jeden lub dwa wyróżnione na widok; główny (wypełniony akcentem), drugi (jasne wypełnienie akcentem), niszczący (czerwony), tekstowy (sam akcent; podkreślenie po najechaniu). Obszar dotyku ≥ 44×44 px, lekkie wciśnięcie przy dotyku.
-- **Pola**: wypełnione tłem systemowym, z krawędzią 1 px w kolorze `--pole-kraw` (co najmniej 3:1 do tła i powierzchni, WCAG 1.4.11); fokus 3 px w kolorze akcentu.
-- **Oś czasu po wysłaniu**: kropki sukcesu połączone linią 1 px, w jednej grupie.
-- **Tryb prosty**: duże wiersze (76 px, tekst 20 px) zamiast kafli.
+- **Szybkie akcje**: Pokaż dowód, Skanuj kod, Pisma (z licznikiem), Kto dzwoni?
+- **Widżet**: etykieta ze znakiem, jedna liczba (28 px, 900), jedno zdanie objaśnienia. Wariant szeroki dla emerytury z paskiem udziałów; wariant z pierścieniem dla dni do terminu.
+- **Wiersz listy**: znak kategorii 40 px albo kafelek daty, tytuł 700, objaśnienie 400 w kolorze drugorzędnym.
+- **Awatar**: inicjały na gradientowym kółku w jednej z czterech barw; dziecko ma znak zamiast inicjałów. Rysowane zdjęcie zostaje tylko na karcie dowodu.
+- **Twoja emerytura**: suma (44 px), zdanie o części dziedziczonej, pasek udziałów z przerwami 2 px; lista filarów z kwotą, udziałem i źródłem danych; karta prognozy z dwoma przełącznikami segmentowymi (wiek, dopłata do IKZE), kwotą miesięczną, rozbiciem, stopą zastąpienia, ulgą IKZE i wykresem kapitału (linia 2 px, pole 16%, podpisany początek i koniec, krzyż i dymek pod kursorem, tabela jako zamiennik). „Jak liczymy” pod spodem.
+- **Arkusz zgody**: co, dokąd, jakie dane, co można cofnąć; jedna wyróżniona akcja na dole.
+- **Przyciski**: kapsuły; główny wypełniony granatem, drugi jasnym granatem, niszczący czerwony, tekstowy sam kolor. Cel dotyku ≥ 44 px.
 
 ## Motion
 
-Według `animate.md` z pakietu Impeccable i zasad iOS: ruch tłumaczy stan i kierunek, nie zdobi.
-- Czasy: odpowiedź 100–150 ms, zmiana stanu 150–300 ms, przejście widoku 300–500 ms (ekran 380 ms, arkusz 420 ms), wyjście szybsze niż wejście (arkusz 240 ms).
-- Krzywa: wyhamowanie `cubic-bezier(.16, 1, .3, 1)`, arkusz jak w iOS `cubic-bezier(.32, .72, 0, 1)`. Bez odbić i sprężyn.
-- Animujemy transformację, przezroczystość i przycinanie, nie szerokość ani wysokość; `will-change` tylko w trakcie ruchu.
-- „Ogranicz ruch”: bez przesuwania i skalowania, zostają krótkie przenikania i zmiany koloru (informacja o zmianie nie znika).
-
-## Illustrations
-
-Własne ilustracje wektorowe (`app/js/grafiki.js`), bez zdjęć prawdziwych ludzi: zdjęcie do dowodu (przodem, neutralna mina, jasne tło), awatary bliskich w kółku 40 px, auto z boku w kolorze z rejestru (bez znaków marki), zdjęcie z fotoradaru w odcieniach szarości z paskami danych pomiaru. Płaskie kolory z jednym gradientem na bryłę, bez obrysów. Każdy rysunek ma opis dla czytnika ekranu albo jest ukryty, gdy obok jest ten sam tekst.
+Ruch tłumaczy stan: wciśnięcie kafla i akcji (skala 0,94–0,985, 120 ms), przejścia ekranów, arkusz od dołu, Face ID z Dynamic Island w symulacji telefonu. Tylko transformacja i przezroczystość. „Ogranicz ruch” zostawia przenikania.
 
 ## Do's and Don'ts
 
-- **Rób**: standardowe kontrolki i wzorce iOS według HIG; jeden akcent dla działań, osobny kolor marki; płaskie grupy z separatorami; prawdziwe treści i stany (pusty, błąd, ładowanie, sukces).
-- **Nie rób**: etykiet nad nagłówkami („PRZYSZŁA DO CIEBIE”), kolorowych pasków z boku kart, kart w kartach, fioletowych i turkusowych gradientów, kolorowych poświat, szkła na treści, powtarzalnych pasków jako ozdoby, znaków Unicode zamiast ikon, godła i oznaczeń urzędowych.
-- **Wyjątek zapisany w `.impeccable/config.json`**: krój Lato jako zapas poza urządzeniami Apple (świadoma decyzja autora; detektor uznaje go za popularny).
+- **Rób**: liczby zamiast akapitów, źródło i datę przy każdej danej, wykres tylko z prawdziwą osią i tabelą obok, stałą kolejność barw serii.
+- **Nie rób**: różu i barw spoza marki, rysowanych twarzy w listach, godła i oznaczeń urzędowych, kart w kartach, etykiet wersalikami, wymyślonych wskaźników bez źródła.

@@ -35,7 +35,7 @@ export function ustawMotyw(m) {
   try { m === 'auto' ? localStorage.removeItem(KLUCZ_MOTYWU) : localStorage.setItem(KLUCZ_MOTYWU, m); } catch {}
   const h = document.documentElement;
   m === 'auto' ? h.removeAttribute('data-theme') : h.setAttribute('data-theme', m);
-  document.querySelectorAll('meta[name="theme-color"]').forEach(t => t.content = m === 'auto' ? (t.media.includes('dark') ? '#000000' : '#f2f2f7') : (m === 'dark' ? '#000000' : '#f2f2f7'));
+  document.querySelectorAll('meta[name="theme-color"]').forEach(t => t.content = m === 'auto' ? (t.media.includes('dark') ? '#0b1c2c' : '#e3ecf6') : (m === 'dark' ? '#0b1c2c' : '#e3ecf6'));
   document.querySelectorAll('input[name^="motyw"]').forEach(i => { i.checked = i.value === m; });
 }
 // Główne działanie długiego formularza przypięte nad paskiem kart, dopóki właściwy przycisk na końcu formularza
