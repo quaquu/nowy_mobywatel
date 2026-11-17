@@ -101,3 +101,5 @@ Bielik (lokalnie na CPU, ok. 1–4 s na zdanie): `pip install llama-cpp-python==
 ## Licencja
 
 Kod: MIT. Prototyp referencyjny (J. Cieszyński, MIT) służył wyłącznie do pomiarów i nie jest częścią tego repozytorium. Router trybu skryptowego skopiowany do `tests/reference-router.mjs` w celu porównania (MIT).
+
+Portrety osób (`app/img/osoby/`) przedstawiają osoby fikcyjne. Wygenerowane lokalnie skryptem `narzedzia/portrety.py` modelami Stable Diffusion 1.5 (Realistic Vision 5.1 i DreamShaper 8, licencja CreativeML OpenRAIL-M) z LCM-LoRA; nie są to zdjęcia prawdziwych ludzi.

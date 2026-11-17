@@ -1,5 +1,5 @@
-// Ilustracje wektorowe: twarze osób z historii pokazowej, auto z boku i zdjęcie z fotoradaru.
-// Wszystkie rysunki są własne i przedstawiają osoby FIKCYJNE (bez zdjęć prawdziwych ludzi).
+// Ilustracje: portrety osób z pokazu (raster), auto z boku i zdjęcie z fotoradaru (wektor).
+// Wszystkie przedstawiają osoby FIKCYJNE (bez zdjęć prawdziwych ludzi).
 // Każde wywołanie dostaje własne identyfikatory gradientów (ten sam rysunek może być dwa razy na ekranie).
 let licznik = 0;
 const svg = (vb, tresc, opis) => {
@@ -7,92 +7,17 @@ const svg = (vb, tresc, opis) => {
   return `<svg viewBox="${vb}" ${opis ? `role="img" aria-label="${opis}"` : 'aria-hidden="true"'} focusable="false" xmlns="http://www.w3.org/2000/svg">${tresc.replace(/id="([^"]+)"/g, `id="${n}$1"`).replace(/url\(#([^)]+)\)/g, `url(#${n}$1)`)}</svg>`;
 };
 
-// Zdjęcia do dokumentów: przodem, neutralna mina, jednolite jasne tło, proporcje dorosłej twarzy (jak 35 × 45 mm).
-// Na kartach dokumentów zdjęcie jest w odcieniach szarości z rastrem (CSS), jak grawerowane zdjęcie na dowodzie.
-// `w`: włosy [jasne, ciemne], `fryzura`: dlugie | krotkie | siwe, `stroj`: zakiet | sweter | bluza | kardigan.
-const PORTRETY = {
-  anna: { skora: ['#f1c8a8', '#dea47f', '#c4825f'], w: ['#7b4a2e', '#4e2c1a'], fryzura: 'dlugie', stroj: 'zakiet', ubranie: '#2f5bd3', tlo: ['#dbe8ff', '#c3d6fb'] },
-  kasia: { skora: ['#f6d2b6', '#e4ad8c', '#c98a6a'], w: ['#d29a55', '#a06a32'], fryzura: 'dlugie', stroj: 'sweter', ubranie: '#e0913a', tlo: ['#fde9d2', '#f8d6b0'] },
-  jakub: { skora: ['#e9bf9c', '#d39c76', '#b67a58'], w: ['#3d2b22', '#22170f'], fryzura: 'krotkie', stroj: 'bluza', ubranie: '#169f8a', tlo: ['#d5f3ec', '#b8e8dd'] },
-  halina: { skora: ['#f1cdb6', '#dcab90', '#be8a70'], w: ['#e9e9ee', '#c2c4cd'], fryzura: 'siwe', stroj: 'kardigan', ubranie: '#8e4fb3', tlo: ['#ece2fb', '#dccbf6'], okulary: true, starsza: true },
-};
-const WLOSY_TYL = {
-  dlugie: 'M17.4 30C16 44 16.6 57 12 70.5c8.6 4.4 31.4 4.4 40 0C47.4 57 48 44 46.6 30 45.4 17.6 39.6 11.6 32 11.6S18.6 17.6 17.4 30z',
-  krotkie: '',
-  siwe: 'M15.4 38.4C12.6 24.6 19.6 10.8 32 10.8S51.4 24.6 48.6 38.4c-1.4 4.6-3.6 7.4-6 8.6L41.6 33H22.4l-1 14C19 45.8 16.8 43 15.4 38.4z',
-};
-const WLOSY_PRZOD = {
-  dlugie: 'M18.6 32.4C17.6 20.6 23.2 12.6 32.6 12.6c9.4 0 14.6 7.2 13 19.4-1.4-5.8-3.8-9.6-7.8-11.4-4 2.6-10.4 3.8-16.6 2.8-1.2 2.4-2.1 5.4-2.6 9z',
-  krotkie: 'M19 29.2C18.4 19 24 13.2 32.2 13.2c8.4 0 13.8 5.6 13.2 16-1-4.2-2.8-6.8-5.4-8.2-4.6 1.6-11.6 1.6-16.2.2-2.4 1.4-4 4-4.8 8z',
-  siwe: 'M16.6 34.6C13.6 20.8 21.4 10.4 32.2 10.4c11.2 0 19 10 15.6 24.4-1.2-5.4-3.2-9.2-6-11.2-3.6 2.4-8.4 3.4-13.2 2.8-3.8-.4-6.8-1.6-8.8-3.4-1.8 2.8-2.6 6.2-3.2 11.6z',
-};
-const STROJ = {
-  zakiet: (u, cien) => `<path d="M24 60.8 32 72.6l8-11.8z" fill="#fbfaf7"/>
-    <path d="M1.5 80C3 70.4 9.8 65.8 18.6 63.8l7.6-2.4L32 72.6l5.8-11.2 7.6 2.4C54.2 65.8 61 70.4 62.5 80z" fill="${u}"/>
-    <path d="M26.2 61.4 30 70.8l-4.8 1.8L21 64.2M37.8 61.4 34 70.8l4.8 1.8L43 64.2" fill="${cien}" opacity=".55"/>`,
-  sweter: (u, cien) => `<path d="M2 80C3.6 70.4 10.4 65.8 19.2 63.8c3-.7 5.6-1.6 7.4-2.4 1.4 2.6 3.2 4 5.4 4s4-1.4 5.4-4c1.8.8 4.4 1.7 7.4 2.4C53.6 65.8 60.4 70.4 62 80z" fill="${u}"/>
-    <path d="M26.6 61.4c1.4 3.4 3.2 5.2 5.4 5.2s4-1.8 5.4-5.2" stroke="${cien}" stroke-width="1.6" fill="none" opacity=".7"/>`,
-  bluza: (u, cien) => `<path d="M2 80C3.6 69.4 10.4 63.4 19.2 61.4c3-.7 5.4-1.8 7-3.2 1.4 2.6 3.4 3.8 5.8 3.8s4.4-1.2 5.8-3.8c1.6 1.4 4 2.5 7 3.2C53.6 63.4 60.4 69.4 62 80z" fill="${u}"/>
-    <path d="M26.2 58.2c1.4 3.4 3.4 5 5.8 5s4.4-1.6 5.8-5" stroke="${cien}" stroke-width="1.4" fill="none" opacity=".6"/>
-    <path d="M28.6 65.6v8M35.4 65.6v8" stroke="${cien}" stroke-width=".9" opacity=".7"/>`,
-  kardigan: (u, cien) => `<path d="M25.6 61 32 69.4l6.4-8.4z" fill="#ece6df"/><path d="M27.4 61.8 32 66l4.6-4.2" stroke="#d6cdc3" stroke-width="1.2" fill="none"/>
-    <path d="M2 80C3.6 70.4 10.4 65.8 19.2 63.8l6.6-2.6L32 76l6.2-14.8 6.6 2.6C53.6 65.8 60.4 70.4 62 80z" fill="${u}"/>
-    <circle cx="32" cy="76.6" r=".9" fill="${cien}"/>`,
-};
+// Portrety osób z pokazu: rastrowe ilustracje osób FIKCYJNYCH (img/osoby/*.webp). Wygenerowane lokalnie modelami
+// Stable Diffusion 1.5 (Realistic Vision 5.1, potem DreamShaper 8; licencja CreativeML OpenRAIL-M), skrypt i ziarna:
+// narzedzia/portrety.py. Kadr „dowod” to całe zdjęcie 4:5, „awatar” przybliża twarz w kółku (CSS).
+const PODPIS = { anna: 'Anna Wójcik', halina: 'Halina Nowicka', jakub: 'Jakub Lis', kasia: 'Katarzyna Lis', niemowle: 'córka' };
+const obraz = (plik, opis, kadr, w, h) => `<img class="portret portret-${kadr}" src="img/osoby/${plik}.webp" width="${w}" height="${h}" alt="${opis ? opis.replace(/"/g, '&quot;') : ''}" decoding="async"${opis ? '' : ' aria-hidden="true"'}>`;
 export function portret(kto = 'anna', opis, kadr = 'dowod') {
-  const P = PORTRETY[kto] || PORTRETY.anna, [s, sc, sl] = P.skora, [w1, w2] = P.w;
-  const cien = '#00000040';
-  const brew = P.fryzura === 'siwe' ? '#8f8a86' : w2;
-  return svg(kadr === 'dowod' ? '0 0 64 80' : '11 12 42 42', `
-    <defs>
-      <linearGradient id="tlo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${P.tlo[0]}"/><stop offset="1" stop-color="${P.tlo[1]}"/></linearGradient>
-      <linearGradient id="wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${w1}"/><stop offset="1" stop-color="${w2}"/></linearGradient>
-      <radialGradient id="tw" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="${s}"/><stop offset=".72" stop-color="${s}"/><stop offset="1" stop-color="${sc}"/></radialGradient>
-      <linearGradient id="szyja" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sl}"/><stop offset=".45" stop-color="${sc}"/></linearGradient>
-    </defs>
-    <rect width="64" height="80" fill="url(#tlo)"/>
-    ${WLOSY_TYL[P.fryzura] ? `<path d="${WLOSY_TYL[P.fryzura]}" fill="url(#wl)"/>` : ''}
-    <path d="M27.2 47.6h9.6v14.6c-2.4 2.6-7.2 2.6-9.6 0z" fill="url(#szyja)"/>
-    ${STROJ[P.stroj](P.ubranie, cien)}
-    <ellipse cx="18.9" cy="33.6" rx="1.7" ry="3.1" fill="${sc}"/><ellipse cx="45.1" cy="33.6" rx="1.7" ry="3.1" fill="${sc}"/>
-    <path d="M32 15.2c8.2 0 12.8 6.4 12.8 15.4 0 8.4-2.4 14.6-6 18.2-2 2-4.3 2.9-6.8 2.9s-4.8-.9-6.8-2.9c-3.6-3.6-6-9.8-6-18.2 0-9 4.6-15.4 12.8-15.4z" fill="url(#tw)"/>
-    <path d="M21.6 41.4c1.4 3.6 3.4 6.2 5.6 7.6M42.4 41.4c-1.4 3.6-3.4 6.2-5.6 7.6" stroke="${sc}" stroke-width="1.2" fill="none" opacity=".55"/>
-    <path d="${WLOSY_PRZOD[P.fryzura]}" fill="url(#wl)"/>
-    <path d="M26 15.6c-3.4 2.4-5.6 6-6.4 10.8M31 14.2c-1.6 3.6-1.6 6.6-.6 8.6M37.4 15c2.6 2 4.6 5.4 5.4 9.6" stroke="${w1}" stroke-width=".7" fill="none" opacity=".55" stroke-linecap="round"/>
-    ${P.fryzura === 'dlugie' ? `<path d="M18.4 40c.4 9-1 18-4 26M45.6 40c-.4 9 1 18 4 26" stroke="${w1}" stroke-width=".7" fill="none" opacity=".45"/>` : ''}
-    <path d="M30.2 31.6c-.6 1.8-.8 4-.7 6.2M24.2 34.4c1.2.8 2.6 1 4 .7M39.8 34.4c-1.2.8-2.6 1-4 .7" stroke="${sc}" stroke-width=".7" fill="none" opacity=".6" stroke-linecap="round"/>
-    <path d="M22.8 28.4c1.8-1.1 4.2-1.4 6.2-.7M35 27.7c2-.7 4.4-.4 6.2.7" stroke="${brew}" stroke-width="1.15" stroke-linecap="round" fill="none"/>
-    <path d="M23.6 32.2c1.6-1.4 3.4-1.6 5-.1-1.6.9-3.4.9-5 .1zM35.4 32.1c1.6-1.5 3.4-1.3 5 .1-1.6.8-3.4.8-5-.1z" fill="#f3efea"/>
-    <circle cx="26.1" cy="31.7" r="1.05" fill="#3a2e28"/><circle cx="37.9" cy="31.7" r="1.05" fill="#3a2e28"/>
-    <path d="M23.4 32.1c1.7-1.8 3.6-2 5.4-.2M35.2 31.9c1.8-1.8 3.7-1.6 5.4.2" stroke="#2d2420" stroke-width=".75" stroke-linecap="round" fill="none"/>
-    <path d="M31.4 32.6c-.2 2.6-.7 4.6-1.5 5.8.8.8 2.5 1 3.9.3" stroke="${sl}" stroke-width=".7" fill="none" stroke-linecap="round" opacity=".9"/>
-    <ellipse cx="23.6" cy="39.6" rx="2.6" ry="1.4" fill="#ff8a7a" opacity=".16"/><ellipse cx="40.4" cy="39.6" rx="2.6" ry="1.4" fill="#ff8a7a" opacity=".16"/>
-    <path d="M28.8 43.6c1.1-.6 2.2-.6 3.2-.2 1-.4 2.1-.4 3.2.2-1 .5-2.1.7-3.2.6-1.1.1-2.2-.1-3.2-.6z" fill="#a5675d"/>
-    <path d="M29.2 43.9c1.8 1.3 3.8 1.3 5.6 0-.8 1.3-1.8 1.9-2.8 1.9s-2-.6-2.8-1.9z" fill="#bf7f73"/>
-    ${P.starsza ? `<path d="M28.2 39.4c-.9 1.2-1.4 2.5-1.4 3.8M35.8 39.4c.9 1.2 1.4 2.5 1.4 3.8M24 35.4c.8.5 1.6.7 2.4.7M40 35.4c-.8.5-1.6.7-2.4.7" stroke="${sc}" stroke-width=".6" fill="none" opacity=".8" stroke-linecap="round"/>` : ''}
-    ${P.okulary ? '<g fill="none" stroke="#5a5f69" stroke-width=".8"><rect x="22.2" y="29.2" width="8.6" height="5.8" rx="2.2"/><rect x="33.2" y="29.2" width="8.6" height="5.8" rx="2.2"/><path d="M30.8 31.6c.8-.5 1.6-.5 2.4 0M22.2 31.2l-2.8-.6M41.8 31.2l2.8-.6"/></g>' : ''}`, opis);
+  return obraz(PODPIS[kto] ? kto : 'anna', opis, kadr, 320, 400);
 }
-
-// Niemowlę zawinięte w kocyk, śpi. Ten sam styl co portrety dorosłych, kadr awatara.
+// Niemowlę zawinięte w kocyk, śpi. Ten sam styl co portrety dorosłych.
 export function niemowle(opis) {
-  return svg('11 12 42 42', `
-    <defs>
-      <linearGradient id="tlo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9f2e6"/><stop offset="1" stop-color="#bfe6d4"/></linearGradient>
-      <radialGradient id="tw" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#f8d9c4"/><stop offset=".75" stop-color="#f3cbb1"/><stop offset="1" stop-color="#e3ad8f"/></radialGradient>
-      <linearGradient id="koc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7dc8a"/><stop offset="1" stop-color="#eec25a"/></linearGradient>
-    </defs>
-    <rect x="0" y="0" width="64" height="80" fill="url(#tlo)"/>
-    <ellipse cx="19.4" cy="38" rx="1.8" ry="2.6" fill="#e9b596"/><ellipse cx="44.6" cy="38" rx="1.8" ry="2.6" fill="#e9b596"/>
-    <circle cx="32" cy="37" r="12.8" fill="url(#tw)"/>
-    <path d="M19 35.2C19 25.6 24.8 20 32 20s13 5.6 13 15.2c-3.8-2.2-8.2-3.2-13-3.2s-9.2 1-13 3.2z" fill="#3fa592"/>
-    <path d="M19.4 33.4c3.8-2 8-3 12.6-3s8.8 1 12.6 3" stroke="#2f8b7a" stroke-width="1.6" fill="none"/>
-    <circle cx="32" cy="19.4" r="2" fill="#2f8b7a"/>
-    <path d="M25.2 38.6c1.3 1 3 1 4.3 0M34.5 38.6c1.3 1 3 1 4.3 0" stroke="#5a3f33" stroke-width=".9" stroke-linecap="round" fill="none"/>
-    <ellipse cx="25.4" cy="42.4" rx="2.4" ry="1.4" fill="#ff8a7a" opacity=".22"/><ellipse cx="38.6" cy="42.4" rx="2.4" ry="1.4" fill="#ff8a7a" opacity=".22"/>
-    <path d="M31.3 41.6c.5.4 1 .4 1.4 0" stroke="#d29a7c" stroke-width=".8" stroke-linecap="round" fill="none"/>
-    <path d="M30.5 44.6c1 .6 2 .6 3 0" stroke="#b9776a" stroke-width=".9" stroke-linecap="round" fill="none"/>
-    <path d="M8 80C9 62 18 49.6 32 49.6S55 62 56 80z" fill="url(#koc)"/>
-    <path d="M18 55.6c4.6-3.2 9.2-4.6 14-4.6s9.4 1.4 14 4.6M22 66c3-6 6.4-9.6 10-11" stroke="#d9a63e" stroke-width="1" fill="none" stroke-linecap="round"/>`, opis);
+  return obraz('niemowle', opis, 'dziecko', 256, 256);
 }
 
 // Auto z boku: płaska, nowoczesna ilustracja w kolorze nadwozia z rejestru, bez znaków marki i bez obrysów.

@@ -18,7 +18,7 @@ export function loadPlaywright() {
 
 export const AXE_SOURCE = () => readFile(require.resolve('axe-core/axe.min.js'), 'utf8');
 
-const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webmanifest': 'application/manifest+json', '.md': 'text/markdown; charset=utf-8' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.webmanifest': 'application/manifest+json', '.md': 'text/markdown; charset=utf-8' };
 
 // Serwuje katalog app/ tak jak GitHub Pages (statycznie, bez logowania).
 export function serve(dir = join(ROOT, 'app'), port = 0) {

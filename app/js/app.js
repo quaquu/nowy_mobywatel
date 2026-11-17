@@ -179,7 +179,7 @@ function powloka() {
   $('#telefon-btn').onclick = () => zmienWidok('telefon');
   $('#od-nowa-btn').onclick = () => { resetuj(); location.hash = '#/start'; dispatchEvent(new Event('ustawienia')); };
   $('#nawigacja').innerHTML = ZAKLADKI.map(([h, i, t]) => `<a href="${h}">${ic(i, 'zwykla')}${ic(i + '-f', 'pelna')}<span>${t}</span></a>`).join('');
-  $('#ustawienia-btn').innerHTML = portret(OSOBA, null, 'awatar'); // jak w aplikacji banku: Twoje zdjęcie prowadzi do konta i ustawień
+  $('#ustawienia-btn').innerHTML = `<span class="glowa-aw">${portret(OSOBA, null, 'awatar')}</span>`; // jak w aplikacji banku: Twoje zdjęcie prowadzi do konta i ustawień
   $('#skan-btn').innerHTML = ic('scan');
   $('#skan-btn').onclick = async () => (await K()).otworzSkaner();
   zastosujUstawienia();

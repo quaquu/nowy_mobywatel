@@ -202,7 +202,7 @@ html.duzy .marka small { display: none; } /* przy dużym tekście nazwa mieści 
 /* portret 30 px w polu dotyku 44 px: tej samej wagi co ikony obok, nie większy */
 .szklo .awatar-btn { padding: 0; background: transparent; }
 .szklo .awatar-btn:hover { background: var(--wypelnienie); }
-.szklo .awatar-btn svg { display: block; width: 30px; height: 30px; border-radius: 50%; box-shadow: 0 0 0 1.5px var(--pow), 0 0 0 2.5px var(--separator); }
+.glowa-aw { display: block; width: 30px; height: 30px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 1.5px var(--pow), 0 0 0 2.5px var(--separator); }
 .grupa-t { font-size: var(--t-objasn); font-weight: 700; color: var(--tekst2); margin: var(--o6) var(--o1) var(--o2); }
 h1 + .grupa-t { margin-top: var(--o2); }
 /* licznik na brzegu okrągłego przycisku (jak plakietka ikony aplikacji), nie na rysunku koperty */
@@ -526,8 +526,8 @@ html.bez-notek .notka { display: none; }
 .kd-dol { display: flex; align-items: flex-end; gap: var(--space-md); margin-top: auto; }
 .kd-foto { position: relative; width: 26%; max-width: 92px; aspect-ratio: 4 / 5; border-radius: 3px; overflow: hidden; flex: none; box-shadow: 0 0 0 1px var(--kd-prazki); }
 .kd > .kd-duch { position: absolute; right: var(--space-md); top: 40%; width: 13%; max-width: 44px; aspect-ratio: 4 / 5; opacity: .3; pointer-events: none; border-radius: 2px; overflow: hidden; }
-.kd-duch svg { display: block; width: 100%; height: 100%; filter: grayscale(1) contrast(1.4) brightness(1.15); }
-.kd-foto svg { display: block; width: 100%; height: 100%; }
+.kd-duch :is(svg, img) { display: block; width: 100%; height: 100%; filter: grayscale(1) contrast(1.4) brightness(1.15); }
+.kd-foto :is(svg, img) { display: block; width: 100%; height: 100%; }
 .kd-imie { flex: 1; display: flex; flex-direction: column; font-size: 1.35rem; font-weight: 700; letter-spacing: .03em; line-height: 1.1; min-width: 0; }
 .kd-imie small { font-size: var(--t-przypis); font-weight: 700; margin-top: var(--space-2xs); letter-spacing: .02em; } /* Hallmark 67: rozstaw najwyżej .03em */
 .kd-pill { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--kd-pill); } /* sam znak: cała karta jest linkiem z opisem, długie imię ma miejsce */
@@ -695,7 +695,7 @@ html.ramka .panel { display: block; width: 400px; max-width: 40vw; color: var(--
 .panel-osoby a.akt { box-shadow: 0 0 0 2px var(--gl); }
 .panel-osoby b { display: block; color: var(--tekst); font-size: var(--t-objasn); }
 .po-aw { flex: none; width: 44px; height: 44px; border-radius: 50%; overflow: hidden; }
-.po-aw svg { display: block; width: 100%; height: 100%; }
+.po-aw :is(svg, img) { display: block; width: 100%; height: 100%; }
 .panel-linki { display: flex; flex-wrap: wrap; gap: var(--o1) var(--o4); list-style: none; padding: 0; font-size: var(--t-objasn); margin: var(--o5) 0 var(--o2); } /* bez łączenia kropkami (Hallmark 63) */
 .panel-uw { font-size: var(--t-przypis); color: var(--tekst2); margin: 0; max-width: 46ch; }
 
@@ -783,8 +783,13 @@ html.ramka dialog.skaner .sk-wn { width: 390px; height: 794px; transform: scale(
 
 /* ---------- Ilustracje: awatary, auto, fotoradar ---------- */
 .awatar { flex: none; display: block; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: var(--wypelnienie); }
-.awatar svg { display: block; width: 100%; height: 100%; }
+.awatar :is(svg, img) { display: block; width: 100%; height: 100%; }
 .awatar.duzy { width: 64px; height: 64px; }
+/* Portrety rastrowe (4:5): na dokumencie całe zdjęcie; w kółku przybliżona twarz */
+img.portret { display: block; width: 100%; height: 100%; object-fit: cover; }
+.portret-dowod { object-position: 50% 20%; }
+.portret-awatar { object-position: 50% 0; transform: scale(1.6); transform-origin: 46% 18%; }
+.portret-dziecko { object-position: 50% 40%; }
 .osoba-karta { display: flex; align-items: center; gap: var(--o4); }
 .osoba-karta .nag { margin: 0 0 var(--o1); }
 .osoba-karta .maly { margin: 0; }

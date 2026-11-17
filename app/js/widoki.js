@@ -5,7 +5,7 @@ import { portret, yarisCross, niemowle } from './grafiki.js';
 import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, zl, OSOBA, OSOBY, osoba, adresOsoby, emerytalne } from './data.js';
 
 // Awatar osoby albo dziecka: klucz z danych („corka”, „mama”, osoba z pokazu) albo nazwa ikony.
-// Awatar osoby: kolorowy portret w kółku (ten sam rysunek co na dokumencie); dziecko: znak.
+// Awatar osoby: ten sam portret co na dokumencie, przybliżony na twarz w kółku; córka: portret niemowlęcia.
 const AWATARY = { corka: () => niemowle(), ...Object.fromEntries(['anna', 'halina', 'jakub', 'kasia'].map(k => [k, () => portret(k, null, 'awatar')])), mama: () => portret('halina', null, 'awatar') };
 const awatar = k => AWATARY[k] ? AWATARY[k]() : k;
 
