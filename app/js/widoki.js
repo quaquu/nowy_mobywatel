@@ -59,7 +59,7 @@ const dokumentyDoStosu = () => {
 const AKCJE = {
   pesel: () => { const z = peselStan().zastrzezony; return { href: '#/pesel', ik: z ? 'lock' : 'shield', t: z ? 'PESEL zastrzeżony' : 'Zastrzeż PESEL', nazwa: 'Zastrzeżenie PESEL', opis: 'stan, cofnięcie na czas kredytu', stan: z ? 'ok' : 'uwaga', aria: z ? 'PESEL zastrzeżony. Cofnij albo sprawdź' : 'PESEL nie jest zastrzeżony. Zastrzeż' }; },
   dzwoni: () => ({ href: '#/kto-dzwoni', ik: 'callcheck', t: 'Kto dzwoni?', opis: 'sprawdź numer, zanim cokolwiek powiesz' }),
-  glos: () => ({ href: '#/asystent?mow=1', ik: 'mic', t: 'Powiedz, co załatwić', opis: 'asystent słucha, zamiast pisać' }),
+  glos: () => ({ href: '#/asystent?mow=1', ik: 'mic', t: 'Asystent głosowy', opis: 'powiedz, czego szukasz, i przejdź do rozmowy' }),
   emerytura: () => emerytalne && ({ href: '#/emerytura', ik: 'sun', t: 'Emerytura', opis: 'ZUS, PPK, IKE i IKZE, prognoza' }),
   skorzystaj: () => ({ href: '#/naleznosci', ik: 'gift', t: 'Możesz skorzystać', opis: 'świadczenia i ulgi dla Ciebie' }),
   bliscy: () => ({ href: '#/bliscy', ik: 'users', t: 'Bliscy', opis: 'sprawy dzieci i rodziców' }),
