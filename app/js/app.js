@@ -41,6 +41,7 @@ const TRASY = [
   [/^\/dane\/rejestry$/, () => W.rejestry()],
   [/^\/kod\/([a-z]+)$/, async m => (await K()).kodWidok(m[1])],
   [/^\/pesel$/, () => W.peselWidok()],
+  [/^\/szybkie$/, () => W.szybkieWidok()],
   [/^\/kto-dzwoni$/, async () => (await B()).ktoDzwoni()],
   [/^\/poparcie$/, async () => (await B()).poparcieWidok()],
   [/^\/poparcie\/([a-z]+)$/, async m => (await B()).inicjatywa(m[1])],
@@ -59,7 +60,7 @@ const ZAKLADKI = [
   ['#/sprawy', 'list', 'Sprawy', /^\/(sprawy|sprawa|mandat|podatek|badanie)/],
   ['#/asystent', 'chat', 'Asystent', /^\/asystent/],
   ['#/dokumenty', 'wallet', 'Dokumenty', /^\/(dokument|pokaz)/],
-  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|osoby|emerytura|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test|kto-dzwoni|poparcie|pesel)/],
+  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|osoby|emerytura|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test|kto-dzwoni|poparcie|pesel|szybkie)/],
 ];
 
 function zastosujUstawienia() {

@@ -54,15 +54,51 @@ const dokumentyDoStosu = () => {
 };
 
 /* ---------------- Start ---------------- */
-// Szybkie akcje jak w aplikacji bankowej: cztery najczęstsze czynności jednym dotknięciem.
-// Skaner i pisma są w nagłówku na każdym ekranie, więc tu ich nie powtarzamy. PESEL pokazuje stan zastrzeżenia:
-// cofa się je przed kredytem albo kartą SIM i przywraca po sprawie, więc to czynność częsta, a zastrzeżenie dowodu jest w sprawie „Zgubione dokumenty”.
+// Szybkie akcje jak w aplikacji bankowej: trzy ulubione, które każdy wybiera sam, i „Dostosuj” na końcu.
+// Katalog bez tego, co na Starcie już jest (skaner i pisma w nagłówku, dowód jako karta pod spodem).
+const AKCJE = {
+  pesel: () => { const z = peselStan().zastrzezony; return { href: '#/pesel', ik: z ? 'lock' : 'shield', t: z ? 'PESEL zastrzeżony' : 'Zastrzeż PESEL', nazwa: 'Zastrzeżenie PESEL', opis: 'stan, cofnięcie na czas kredytu', stan: z ? 'ok' : 'uwaga', aria: z ? 'PESEL zastrzeżony. Cofnij albo sprawdź' : 'PESEL nie jest zastrzeżony. Zastrzeż' }; },
+  dzwoni: () => ({ href: '#/kto-dzwoni', ik: 'callcheck', t: 'Kto dzwoni?', opis: 'sprawdź numer, zanim cokolwiek powiesz' }),
+  glos: () => ({ href: '#/asystent?mow=1', ik: 'mic', t: 'Powiedz, co załatwić', opis: 'asystent słucha, zamiast pisać' }),
+  emerytura: () => emerytalne && ({ href: '#/emerytura', ik: 'sun', t: 'Emerytura', opis: 'ZUS, PPK, IKE i IKZE, prognoza' }),
+  skorzystaj: () => ({ href: '#/naleznosci', ik: 'gift', t: 'Możesz skorzystać', opis: 'świadczenia i ulgi dla Ciebie' }),
+  bliscy: () => ({ href: '#/bliscy', ik: 'users', t: 'Bliscy', opis: 'sprawy dzieci i rodziców' }),
+  dane: () => ({ href: '#/dane/dostep', ik: 'eye', t: 'Moje dane', opis: 'kto sprawdzał moje dane' }),
+  zgubione: () => ({ href: '#/sprawa/utrata', ik: 'alert', t: 'Zgubiony portfel', opis: 'zastrzeż dowód i karty od razu' }),
+  poparcie: () => ({ href: '#/poparcie', ik: 'pen', t: 'Podpisy', opis: 'projekty ustaw, referenda, kandydaci' }),
+  pomoc: () => ({ href: '#/konsultant', ik: 'phone', t: 'Pomoc', opis: 'rozmowa z konsultantem' }),
+  zlecenia: () => ({ href: '#/zlecenia', ik: 'clock', t: 'Zlecenia', opis: 'przypomnienia i sprawy robione za Ciebie' }),
+};
+export const ULUBIONE_MAX = 3, ULUBIONE_DOMYSLNE = ['pesel', 'dzwoni', 'zgubione']; // bezpieczeństwo pod ręką; asystent ma własną zakładkę
+const ulubione = () => (stan.szybkie || ULUBIONE_DOMYSLNE).filter(k => AKCJE[k]?.());
 const szybkie = () => `<nav class="szybkie" aria-label="Szybkie akcje">
-  <a href="#/dokument/dowod"><span class="sz-ik">${ic('id')}</span>Pokaż dowód</a>
-  ${(() => { const z = peselStan().zastrzezony; return `<a href="#/pesel" aria-label="${z ? 'PESEL zastrzeżony. Cofnij albo sprawdź' : 'PESEL nie jest zastrzeżony. Zastrzeż'}"><span class="sz-ik">${ic(z ? 'lock' : 'shield')}<i class="sz-stan ${z ? 'ok' : 'uwaga'}" aria-hidden="true"></i></span>${z ? 'PESEL zastrzeżony' : 'Zastrzeż PESEL'}</a>`; })()}
-  <a href="#/kto-dzwoni"><span class="sz-ik">${ic('callcheck')}</span>Kto dzwoni?</a>
-  <a href="#/asystent?mow=1"><span class="sz-ik">${ic('mic')}</span>Zapytaj głosem</a>
+  ${ulubione().map(k => { const a = AKCJE[k](); return `<a href="${a.href}"${a.aria ? ` aria-label="${a.aria}"` : ''}><span class="sz-ik">${ic(a.ik)}${a.stan ? `<i class="sz-stan ${a.stan}" aria-hidden="true"></i>` : ''}</span>${a.t}</a>`; }).join('')}
+  <a href="#/szybkie" class="sz-dostosuj"><span class="sz-ik">${ic('more')}</span>Dostosuj</a>
 </nav>`;
+// Wybór ulubionych: lista z przełącznikami, najwyżej trzy; kolejność jak w katalogu.
+export function szybkieWidok() {
+  const wyb = new Set(ulubione());
+  const dostepne = Object.entries(AKCJE).map(([k, f]) => [k, f()]).filter(([, a]) => a);
+  return {
+    tytul: 'Szybkie akcje',
+    html: `<h1 tabindex="-1">Szybkie akcje</h1>
+    <p class="wstep">Wybierz ${ULUBIONE_MAX}, których używasz najczęściej. Pojawią się na Starcie.</p>
+    <p class="maly" id="sz-licz" aria-live="polite"></p>
+    <ul class="lista ustaw">${dostepne.map(([k, a]) => `<li><label class="przel-duzy"><span class="sz-wybor">${ic(a.ik, 'okr')}<span><b>${a.nazwa || a.t}</b><small>${a.opis}</small></span></span><input type="checkbox" role="switch" name="szybka" value="${k}" ${wyb.has(k) ? 'checked' : ''}></label></li>`).join('')}</ul>
+    <div class="przyciski pion"><a class="btn glowny" href="#/start">Gotowe</a><button type="button" class="btn tekst" id="sz-domyslne">Przywróć domyślne</button></div>`,
+    po(root) {
+      const pola = $$('input[name=szybka]', root);
+      const odswiez = () => {
+        const n = pola.filter(i => i.checked).length;
+        pola.forEach(i => { i.disabled = !i.checked && n >= ULUBIONE_MAX; });
+        $('#sz-licz', root).textContent = `Wybrane: ${n} z ${ULUBIONE_MAX}.${n >= ULUBIONE_MAX ? ' Żeby dodać inną, wyłącz jedną z wybranych.' : ''}`;
+      };
+      pola.forEach(i => i.onchange = () => { stan.szybkie = pola.filter(x => x.checked).map(x => x.value); zapisz(); odswiez(); cel('szybkie-zmienione'); });
+      $('#sz-domyslne', root).onclick = () => { stan.szybkie = null; zapisz(); pola.forEach(i => { i.checked = ULUBIONE_DOMYSLNE.includes(i.value); }); odswiez(); toast('Przywrócono domyślne szybkie akcje.'); };
+      odswiez();
+    },
+  };
+}
 // Widżety z jedną liczbą każdy: emerytura, płatności, auto, świadczenia. Tylko te, które dotyczą tej osoby.
 function widzety() {
   const w = [];
@@ -488,6 +524,7 @@ export function ustawienia() {
     tytul: 'Ustawienia',
     html: `<h1 tabindex="-1">Ustawienia</h1>
     <ul class="lista">${poz('#/osoby', OSOBA, `${ja.imie} ${ja.nazwisko}`, 'Zmień osobę w pokazie')}</ul>
+    <ul class="lista">${poz('#/szybkie', 'star', 'Szybkie akcje na Starcie', ulubione().map(k => AKCJE[k]().t).join(', '))}</ul>
     <h2 class="grupa-t" id="wyglad-t">Wygląd</h2>
     <div class="karta" role="group" aria-labelledby="wyglad-t">${wyborMotywu()}<p class="maly">„Automatycznie” zmienia wygląd razem z telefonem.</p></div>
     <h2 class="grupa-t">Dostępność</h2>

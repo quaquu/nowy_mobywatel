@@ -257,6 +257,16 @@ export async function sprawy(url) {
     await p.click('.szybkie a[href="#/pesel"]'); await p.click('#pesel-zastrzez'); await podpisz(p);
     await p.waitForFunction(() => /jest zastrzeżony/.test(document.querySelector('.pesel-st')?.textContent || ''));
   });
+  await krok('szybkie-akcje', async p => {
+    await p.goto(url + '#/start'); await p.waitForSelector('.szybkie');
+    await p.click('.szybkie a[href="#/szybkie"]'); await p.waitForSelector('input[name=szybka]');
+    await p.click('label:has(input[name=szybka][value="zgubione"])');
+    await p.click('label:has(input[name=szybka][value="emerytura"])');
+    if (!(await p.isDisabled('input[name=szybka][value="bliscy"]'))) throw new Error('można wybrać więcej niż 3');
+    await p.click('main a.btn.glowny'); await p.waitForSelector('.szybkie');
+    const t = await p.textContent('.szybkie');
+    if (!/Emerytura/.test(t) || /Zgubiony portfel/.test(t)) throw new Error('Start nie pokazuje wybranych akcji: ' + t);
+  });
   await krok('kto-dzwoni', async p => {
     await p.goto(url + '#/kto-dzwoni'); await p.waitForSelector('#nr');
     await p.fill('#nr', '123'); await p.click('#f-nr button.glowny');

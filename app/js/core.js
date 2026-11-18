@@ -19,7 +19,8 @@ const POCZATEK = () => ({
   konsultant: null,      // zamówiony telefon od konsultanta {kiedy, temat, kontekst}
   badanie: null,         // rezerwacja na stacji kontroli {stacja, kiedy, krotko}
   postep: {},
-  pesel: null,           // zastrzeżenie PESEL zmienione w pokazie {zastrzezony, od, doKiedy}            // podgląd statusów spraw w pokazie (id sprawy -> etap)
+  pesel: null,
+  szybkie: null,         // ulubione szybkie akcje na Starcie (null: domyślne)           // zastrzeżenie PESEL zmienione w pokazie {zastrzezony, od, doKiedy}            // podgląd statusów spraw w pokazie (id sprawy -> etap)
 });
 
 function wczytaj() {

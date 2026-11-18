@@ -493,6 +493,11 @@ html.bez-notek .notka { display: none; }
 .sz-stan { position: absolute; right: 2px; bottom: 2px; width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 0 2px var(--pow); }
 .sz-stan.ok { background: var(--ok); }
 .sz-stan.uwaga { background: var(--zle); }
+/* Wybór szybkich akcji: znak, nazwa i opis po lewej, przełącznik po prawej */
+.przel-duzy > .sz-wybor { flex-direction: row; align-items: center; gap: var(--o3); }
+.sz-wybor > span { display: flex; flex-direction: column; min-width: 0; }
+.przel-duzy input:disabled { opacity: .4; cursor: not-allowed; }
+.sz-dostosuj .sz-ik { background: transparent; box-shadow: inset 0 0 0 1.5px var(--separator); }
 .data-sl { display: block; margin: var(--space-2xs) 0 var(--o3); color: var(--tekst2); font-size: var(--t-objasn); }
 
 /* ---------- Portfel kart dokumentów (wyróżnik) ---------- */
