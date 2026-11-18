@@ -483,6 +483,16 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .notka { margin: var(--o5) 0 0; padding: var(--o3) var(--o4); border: 1.5px dashed color-mix(in srgb, var(--tekst2) 45%, transparent); border-radius: var(--r-grupa); color: var(--tekst2); font-size: var(--t-objasn); line-height: 1.45; }
 .notka b { color: var(--tekst); }
 html.bez-notek .notka { display: none; }
+/* Zastrzeżenie PESEL: stan na górze ekranu i kropka stanu przy szybkiej akcji */
+.pesel-st { display: flex; gap: var(--o3); align-items: flex-start; margin: 0 0 var(--o5); padding: var(--o4); border-radius: var(--r-grupa); background: var(--pow); color: var(--tekst); box-shadow: var(--cien-widzet); }
+.pesel-st b { display: block; font-size: var(--t-naglowek); }
+.pesel-st small { display: block; color: var(--tekst2); font-size: var(--t-objasn); margin-top: var(--space-3xs); }
+.pesel-st.tak .okr { color: var(--ok); background: var(--ok-wyp); }
+.pesel-st.nie .okr { color: var(--ostrz); background: var(--ostrz-wyp); }
+.pesel-czas { margin: var(--o3) 0 var(--o2); }
+.sz-stan { position: absolute; right: 2px; bottom: 2px; width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 0 2px var(--pow); }
+.sz-stan.ok { background: var(--ok); }
+.sz-stan.uwaga { background: var(--zle); }
 .data-sl { display: block; margin: var(--space-2xs) 0 var(--o3); color: var(--tekst2); font-size: var(--t-objasn); }
 
 /* ---------- Portfel kart dokumentów (wyróżnik) ---------- */

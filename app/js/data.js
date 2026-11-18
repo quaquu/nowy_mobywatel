@@ -161,6 +161,7 @@ const peselJakuba = dwa(urJakuba.getFullYear() % 100) + dwa(urJakuba.getMonth() 
 const DANE = {
   anna: {
     ja: anna_ja, dokumenty: anna_dokumenty, zadania: anna_zadania, naleznosci: anna_naleznosci, autopilot: anna_autopilot, dostep: anna_dostep, skrzynka: anna_skrzynka,
+    pesel: { zastrzezony: true, od: new Date(2024, 2, 12) },   // zastrzeżenie PESEL: stan na początku pokazu
     hero: { id: 'narodziny', cel: '#/sprawa/narodziny', tytul: 'Urodziła się Twoja córka', opis: '5 spraw w 4 instytucjach, jeden podpis', przycisk: 'Załatw wszystko naraz', awatar: 'corka', aria: 'Sprawa przyszła do Ciebie: urodziła się Twoja córka. 5 spraw w 4 instytucjach, jeden podpis. Załatw wszystko naraz.' },
     bliscyOpis: 'mama, córka',
     rejestry: [
@@ -211,6 +212,7 @@ const DANE = {
         tresc: 'Na podstawie art. 88 ustawy o emeryturach i rentach z Funduszu Ubezpieczeń Społecznych świadczenie podlega waloryzacji od 1 marca 2026 r.',
         prosto: 'Od marca Twoja emerytura jest wyższa. Nic nie musisz robić.' },
     ],
+    pesel: { zastrzezony: true, od: new Date(2024, 5, 3) },
     hero: { id: 'renta', cel: '#/sprawa/renta', tytul: 'Możesz dostać ok. 434 zł więcej', opis: 'renta wdowia · wniosek jest gotowy', przycisk: 'Sprawdź i złóż', ikona: 'coin', aria: 'Sprawa przyszła do Ciebie: renta wdowia, około 434 zł więcej co miesiąc. Wniosek jest gotowy.' },
     bliscyOpis: 'córka Anna pomaga',
     bliscy: { wstep: 'Osoby, które upoważniłaś do spraw w Twoim imieniu. Widzisz wszystko, co robią, i możesz to cofnąć.', osoby: [['#/bliscy', 'anna', 'Anna Wójcik, córka', 'zdrowie (IKP), ZUS, dowód · ostatnio: odebrała receptę']] },
@@ -257,6 +259,7 @@ const DANE = {
         tresc: 'Informujemy, że z dniem uzyskania pełnoletności zostanie Pan ujęty w Centralnym Rejestrze Wyborców na podstawie adresu zameldowania na pobyt stały.',
         prosto: 'Po 18. urodzinach wpiszemy Cię do rejestru wyborców sami. Nic nie musisz robić.' },
     ],
+    pesel: { zastrzezony: false, niepelnoletni: true }, // usługa jest dla pełnoletnich
     hero: { id: 'osiemnastka', cel: '#/sprawa/osiemnastka', tytul: 'Za 18 dni kończysz 18 lat', opis: 'co się zmieni · prawo jazdy', przycisk: 'Zobacz', ikona: 'star', aria: 'Sprawa przyszła do Ciebie: za 18 dni kończysz 18 lat.' },
     bliscyOpis: 'rodzice',
     bliscy: { wstep: 'Do 18. urodzin rodzice mogą załatwiać sprawy w Twoim imieniu i widzą Twoje Internetowe Konto Pacjenta.', osoby: [['#/bliscy', 'users', 'Monika i Paweł Lis, rodzice', 'dostęp do IKP do ' + fmt(za(18))]] },
@@ -304,6 +307,7 @@ const DANE = {
         tresc: 'Na podstawie art. 77 § 1 Ordynacji podatkowej Naczelnik Urzędu Skarbowego zawiadamia, że nadpłata w wysokości 380,00 zł wynikająca z zeznania PIT-37 za rok 2025 zostanie zwrócona na rachunek bankowy wskazany w zeznaniu w terminie 14 dni.',
         prosto: 'Oddajemy Ci 380 zł nadpłaconego podatku za 2025 r. Pieniądze przyjdą na Twoje konto w ciągu 14 dni. Nic nie musisz robić.' },
     ],
+    pesel: { zastrzezony: false },
     hero: { id: 'slub', cel: '#/sprawa/slub', tytul: 'Tomasz zaprosił Cię do sprawy „Ślub”', opis: 'zapewnienia, termin, nazwisko', przycisk: 'Zaplanujcie razem', ikona: 'ring', aria: 'Sprawa przyszła do Ciebie: Tomasz zaprosił Cię do wspólnej sprawy „Ślub”.' },
     bliscyOpis: 'Tomasz, wspólna sprawa',
     bliscy: { wstep: 'Nikogo jeszcze nie upoważniłaś. Tomasz zaprosił Cię do wspólnej sprawy: każde z was podpisuje swoje wnioski.', osoby: [['#/sprawa/slub', 'ring', 'Tomasz Bąk', 'wspólna sprawa: ślub']] },

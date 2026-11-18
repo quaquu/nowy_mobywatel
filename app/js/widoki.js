@@ -55,10 +55,11 @@ const dokumentyDoStosu = () => {
 
 /* ---------------- Start ---------------- */
 // Szybkie akcje jak w aplikacji bankowej: cztery najczęstsze czynności jednym dotknięciem.
-// Skaner i pisma są w nagłówku na każdym ekranie, więc tu ich nie powtarzamy.
+// Skaner i pisma są w nagłówku na każdym ekranie, więc tu ich nie powtarzamy. PESEL pokazuje stan zastrzeżenia:
+// cofa się je przed kredytem albo kartą SIM i przywraca po sprawie, więc to czynność częsta, a zastrzeżenie dowodu jest w sprawie „Zgubione dokumenty”.
 const szybkie = () => `<nav class="szybkie" aria-label="Szybkie akcje">
   <a href="#/dokument/dowod"><span class="sz-ik">${ic('id')}</span>Pokaż dowód</a>
-  <a href="#/sprawa/utrata"><span class="sz-ik">${ic('shield')}</span>Zastrzeż dowód</a>
+  ${(() => { const z = peselStan().zastrzezony; return `<a href="#/pesel" aria-label="${z ? 'PESEL zastrzeżony. Cofnij albo sprawdź' : 'PESEL nie jest zastrzeżony. Zastrzeż'}"><span class="sz-ik">${ic(z ? 'lock' : 'shield')}<i class="sz-stan ${z ? 'ok' : 'uwaga'}" aria-hidden="true"></i></span>${z ? 'PESEL zastrzeżony' : 'Zastrzeż PESEL'}</a>`; })()}
   <a href="#/kto-dzwoni"><span class="sz-ik">${ic('callcheck')}</span>Kto dzwoni?</a>
   <a href="#/asystent?mow=1"><span class="sz-ik">${ic('mic')}</span>Zapytaj głosem</a>
 </nav>`;
@@ -529,6 +530,7 @@ export function wiecej() {
     <h2 class="grupa-t">Bezpieczeństwo i dane</h2>
     <ul class="lista">
       ${poz('#/dane', 'eye', 'Twoje dane i prywatność', 'kto sprawdzał moje dane')}
+      ${poz('#/pesel', 'shield', 'Zastrzeżenie PESEL', peselStan().zastrzezony ? 'zastrzeżony' : 'nie jest zastrzeżony')}
       ${poz('#/kto-dzwoni', 'callcheck', 'Kto dzwoni?', 'sprawdź numer, zanim cokolwiek powiesz')}
       ${poz('#/dostep', 'lock', 'Problem z logowaniem', '')}
     </ul>
@@ -549,6 +551,89 @@ export function wiecej() {
     </ul>`,
   };
 }
+
+/* ---------------- Zastrzeżenie PESEL ---------------- */
+// Stan: zapisany w pokazie albo początkowy z danych osoby. Czasowe cofnięcie po terminie wraca samo (jak w mObywatelu).
+export function peselStan() {
+  const s = stan.pesel || { zastrzezony: !!osoba.pesel?.zastrzezony, od: osoba.pesel?.od ? +osoba.pesel.od : null };
+  if (!s.zastrzezony && s.doKiedy && Date.now() > s.doKiedy) return { zastrzezony: true, od: s.doKiedy };
+  return s;
+}
+const kiedyDokl = t => { const d = new Date(t); return `${fmt(d, { weekday: 'long', day: 'numeric', month: 'long' })}, ${d.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}`; };
+const koniecDnia = n => { const d = za(n); d.setHours(23, 59, 0, 0); return +d; };
+export function peselWidok() {
+  const s = peselStan(), z = s.zastrzezony, czasowo = !z && s.doKiedy;
+  const spr = dostep.filter(d => /zastrze/i.test(d.co)); // tylko sprawdzenia samego zastrzeżenia, nie każdy odczyt z PESEL-em
+  const glowa = z
+    ? `<b>Twój PESEL jest zastrzeżony</b><small>${s.od ? 'od ' + fmtPelna(new Date(s.od)) + '. ' : ''}Bank, firma pożyczkowa ani operator nie zawrą umowy na Twoje dane.</small>`
+    : czasowo
+      ? `<b>Zastrzeżenie cofnięte do ${esc(kiedyDokl(s.doKiedy))}</b><small>Potem PESEL zastrzeże się sam. Przypomnimy Ci dzień wcześniej.</small>`
+      : `<b>Twój PESEL nie jest zastrzeżony</b><small>Ktoś, kto zna Twoje dane, może wziąć na nie kredyt albo kartę SIM.</small>`;
+  let akcja;
+  if (osoba.pesel?.niepelnoletni) {
+    akcja = `<p>W aplikacji zastrzeżesz PESEL od 18. urodzin. Przypomnimy Ci o tym w dniu urodzin.</p>`;
+  } else if (z) {
+    akcja = `<form id="f-pesel" class="karta" novalidate>
+      <h2 class="nag">Bierzesz kredyt, kartę SIM albo zakładasz konto?</h2>
+      <p class="maly">Cofnij zastrzeżenie tylko na czas tej sprawy. Potem PESEL zastrzeże się sam.</p>
+      <fieldset class="segment pesel-czas"><legend class="sr">Na jak długo cofnąć zastrzeżenie</legend>
+        ${[['1', 'do jutra'], ['3', 'na 3 dni'], ['7', 'na 7 dni'], ['0', 'bez terminu']].map(([v, t], i) => `<label><input type="radio" name="czas" value="${v}" ${i === 0 ? 'checked' : ''}><span>${t}</span></label>`).join('')}
+      </fieldset>
+      <p class="maly" id="pesel-do" aria-live="polite"></p>
+      <button class="btn drugi szeroki" id="pesel-cofnij">Cofnij zastrzeżenie</button>
+    </form>`;
+  } else {
+    akcja = `<button class="btn glowny szeroki" id="pesel-zastrzez">${ic('shield')}${czasowo ? 'Zastrzeż ponownie teraz' : 'Zastrzeż PESEL'}</button>
+    <p class="maly srodek">Działa od razu. Cofniesz je jednym dotknięciem.</p>`;
+  }
+  return {
+    tytul: 'Zastrzeżenie PESEL',
+    html: `<h1 tabindex="-1">Zastrzeżenie PESEL</h1>
+    <section class="pesel-st ${z ? 'tak' : 'nie'}" role="status">${ic(z ? 'lock' : 'shield', 'okr')}<span>${glowa}</span></section>
+    ${akcja}
+    <h2 class="sekcja">Kto sprawdzał zastrzeżenie</h2>
+    ${spr.length ? `<ul class="lista">${spr.map(d => poz('#/dane/dostep', d.podejrzane ? 'alert' : 'eye', d.kto, `${esc(d.po)} · ${fmt(d.kiedy)}`)).join('')}</ul>` : '<p class="pusto">Na razie nikt. Każde sprawdzenie zobaczysz tutaj i w „Twoje dane”.</p>'}
+    <p class="notka"><b>O prototypie.</b> Zastrzeżenie i cofnięcie PESEL, także czasowe z automatycznym powrotem, już działa w mObywatelu (od 1 czerwca 2024 r. banki i operatorzy muszą je sprawdzać). Nowe: stan zastrzeżenia na Starcie jednym spojrzeniem, cofnięcie w dwóch dotknięciach i lista, kto sprawdzał Twój PESEL.</p>
+    ${zrodloPesel}`,
+    po(root) {
+      const doKiedy = () => { const v = +$('input[name=czas]:checked', root).value; return v ? koniecDnia(v) : null; };
+      const pokazDo = () => { const t = doKiedy(), el = $('#pesel-do', root); if (el) el.textContent = t ? `Zastrzeże się samo: ${kiedyDokl(t)}.` : 'Zostanie cofnięte, dopóki sam go nie zastrzeżesz.'; };
+      if ($('#f-pesel', root)) {
+        pokazDo(); $$('input[name=czas]', root).forEach(i => i.onchange = pokazDo);
+        $('#f-pesel', root).onsubmit = async e => {
+          e.preventDefault();
+          const t = doKiedy();
+          const ok = await arkuszZgody({
+            tytul: 'Cofnięcie zastrzeżenia PESEL',
+            pozycje: [{ co: t ? `Cofnięcie do ${kiedyDokl(t)}, potem automatyczne zastrzeżenie` : 'Cofnięcie bez terminu', do: 'Rejestr zastrzeżeń numerów PESEL' }],
+            dane: ['Twój numer PESEL'],
+            cofniecie: 'Zastrzeżesz PESEL ponownie jednym dotknięciem, w każdej chwili.',
+            przycisk: 'Podpisz i cofnij', cel: 'pesel-cofniecie',
+          });
+          if (!ok) return;
+          stan.pesel = { zastrzezony: false, od: s.od, doKiedy: t }; zapisz();
+          toast(t ? `Zastrzeżenie cofnięte do ${kiedyDokl(t)}.` : 'Zastrzeżenie cofnięte.');
+          dispatchEvent(new HashChangeEvent('hashchange'));
+        };
+      }
+      const zb = $('#pesel-zastrzez', root);
+      if (zb) zb.onclick = async () => {
+        const ok = await arkuszZgody({
+          tytul: 'Zastrzeżenie PESEL',
+          pozycje: [{ co: 'Zastrzeżenie numeru PESEL od teraz', do: 'Rejestr zastrzeżeń numerów PESEL' }],
+          dane: ['Twój numer PESEL'],
+          cofniecie: 'Cofniesz je w każdej chwili, także tylko na kilka dni.',
+          przycisk: 'Podpisz i zastrzeż', cel: 'pesel-zastrzezenie',
+        });
+        if (!ok) return;
+        stan.pesel = { zastrzezony: true, od: Date.now() }; zapisz();
+        toast('PESEL zastrzeżony. Działa od teraz.');
+        dispatchEvent(new HashChangeEvent('hashchange'));
+      };
+    },
+  };
+}
+const zrodloPesel = `<p class="zrodlo">${ic('info')}<span>Na podstawie: <a href="https://www.gov.pl/web/gov/zastrzez-swoj-numer-pesel-lub-cofnij-zastrzezenie" target="_blank" rel="noopener">gov.pl: Zastrzeż swój numer PESEL lub cofnij zastrzeżenie</a></span></p>`;
 
 /* ---------------- Osoby w pokazie (jak „Wybierz osobę” w prototypie referencyjnym) ---------------- */
 // Zmiana osoby przeładowuje stronę z ?osoba=…; pozostałe parametry adresu (np. widok) zostają.

@@ -247,6 +247,16 @@ export async function sprawy(url) {
     await p.click('text=Załatw wszystko naraz'); await p.waitForSelector('#f-nar');
     await ukladCzatu(p);
   });
+  await krok('pesel', async p => {
+    await p.goto(url + '#/start'); await p.waitForSelector('main h1');
+    await p.click('.szybkie a[href="#/pesel"]'); await p.waitForSelector('#f-pesel');
+    await p.click('label:has(input[name=czas][value="3"])'); await p.click('#pesel-cofnij'); await podpisz(p);
+    await p.waitForFunction(() => /cofnięte do/.test(document.querySelector('.pesel-st')?.textContent || ''));
+    await p.goto(url + '#/start'); await p.waitForSelector('main h1');
+    if (!/Zastrzeż PESEL/.test(await p.textContent('.szybkie'))) throw new Error('Start nie pokazuje cofniętego zastrzeżenia');
+    await p.click('.szybkie a[href="#/pesel"]'); await p.click('#pesel-zastrzez'); await podpisz(p);
+    await p.waitForFunction(() => /jest zastrzeżony/.test(document.querySelector('.pesel-st')?.textContent || ''));
+  });
   await krok('kto-dzwoni', async p => {
     await p.goto(url + '#/kto-dzwoni'); await p.waitForSelector('#nr');
     await p.fill('#nr', '123'); await p.click('#f-nr button.glowny');
