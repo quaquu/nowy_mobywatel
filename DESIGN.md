@@ -69,6 +69,12 @@ Jeden krój: Lato (Łukasz Dziedzic, OFL), krój serwisu mObywatela, w trzech gr
 
 Kolumna telefonu (maks. 480 px), marginesy 16 px, odstępy ze skali 4 px (`--space-*`). Start: powitanie, szybkie akcje (4 okrągłe przyciski 56 px z podpisem), sprawa, portfel, siatka widżetów (2 kolumny, odstęp 12 px; nieparzysty ostatni na całą szerokość), pole pytania, „Do zrobienia” (kafelek daty z lewej, najbliższy termin pierwszy), „Dla Ciebie”. Pasek kart na całą szerokość u dołu, półprzezroczysty.
 
+**Komputer**: strona produktu. Telefon po lewej działa na żywo i zostaje na ekranie przy przewijaniu (sticky). Po prawej przewija się opowieść: hasło, trzy liczby z pomiarów, film, „Trzy sytuacje z życia” (karty z obrazem, dwoma zdaniami i liczbą; klik przełącza telefon na tę sprawę), cztery osoby, co jeszcze sprawdzić, „Uczciwie”. Przejście ekranu w telefonie nie przewija strony.
+
+**Alarm**: czerwony pas komunikatu na górze, najbliższe miejsce ochronne z odległością, kierunkiem i czasem dojścia, mapa (z siecią kafelki OpenStreetMap, bez sieci schemat z kręgami 250 i 500 m), instrukcja w trzech zdaniach, bliscy z „Wyślij drogę”, jedna główna akcja „Jestem bezpieczna”.
+
+**Prośba o dane**: lista danych, o które prosi firma; wymagane z kłódką, reszta przełącznikami wyłączonymi domyślnie; licznik „przekażesz n z m”.
+
 ## Elevation & Depth
 
 Głębia robi hierarchię: widżety i grupy unoszą się nad zabarwionym tłem miękkim cieniem, karty dokumentów mają cień z przesunięciem, arkusz zgody wysuwa się od dołu. Żadnych kolorowych poświat.

@@ -276,7 +276,7 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .hero-ik { width: 30px; height: 30px; color: var(--gl); }
 .hero-tr { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .hero-t { font-size: var(--t-naglowek); line-height: 1.25; }
-.hero-o { font-size: var(--t-objasn); opacity: .86; }
+.hero-o { font-size: var(--t-objasn); color: color-mix(in srgb, var(--marka-pole-tekst) 86%, var(--marka-pole)); } /* kolor zamiast przezroczystości: axe liczy kontrast poprawnie także na przyklejonym telefonie */
 .hero-go { display: inline-flex; align-items: center; gap: var(--space-2xs); min-height: 48px; padding: 0 var(--space-sm) 0 20px; border-radius: 99px; background: var(--marka-pole-tekst); color: var(--marka-pole); font-weight: 700; font-size: var(--t-objasn); flex: none; }
 .hero-go .ic { width: 18px; height: 18px; }
 /* Sprawa, która przyszła sama: najważniejsza rzecz na Starcie, więc większa niż wiersz listy. Cała karta to jeden cel dotyku. */
@@ -500,7 +500,7 @@ html.bez-notek .notka { display: none; }
 .sz-dostosuj .sz-ik { background: transparent; box-shadow: inset 0 0 0 1.5px var(--separator); }
 /* Alarm i miejsca ochronne */
 .alarm-pas { margin: 0 0 var(--o4); padding: var(--o4); border-radius: var(--r-arkusz); background: var(--zle); color: var(--zle-tekst); }
-.alarm-pas small { display: block; font-weight: 700; font-size: var(--t-przypis); opacity: .92; }
+.alarm-pas small { display: block; font-weight: 700; font-size: var(--t-przypis); }
 .alarm-pas h1 { margin: var(--space-2xs) 0 var(--space-xs); font-size: var(--t-tytul); line-height: 1.12; font-weight: 900; letter-spacing: -.018em; color: inherit; }
 .alarm-pas p { margin: 0; font-size: var(--t-objasn); }
 .schr-karta .maly { margin: 0 0 var(--space-2xs); }
@@ -527,7 +527,7 @@ html.bez-notek .notka { display: none; }
 .schr-tr { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .schr-tr small { color: var(--tekst2); font-size: var(--t-objasn); }
 .offline-info { display: flex; gap: var(--o2); align-items: flex-start; margin: var(--o3) 0 0; color: var(--tekst2); font-size: var(--t-objasn); }
-.offline-info .ic { flex: none; width: 18px; height: 18px; color: var(--ok); margin-top: 2px; }
+.offline-info .ic { flex: none; width: 18px; height: 18px; color: var(--ok); margin-top: var(--space-3xs); }
 .kroki-alarm li { margin: var(--space-xs) 0; }
 @media (prefers-reduced-motion: no-preference) { html:not(.bez-ruchu) .schr-mapa .ty-puls { animation: puls 1.8s ease-out infinite; transform-origin: 180px 180px; } }
 @keyframes puls { from { transform: scale(.6); opacity: .6; } to { transform: scale(1.8); opacity: 0; } }
@@ -685,8 +685,8 @@ html.pelny #telefon-btn:not([hidden]) { display: inline-flex; position: fixed; t
   html:not(.ramka) .dol { left: 50%; right: auto; width: 480px; transform: translateX(-50%); }
 }
 html.ramka body { background: var(--ramka-tlo); min-height: 100vh; }
-html.ramka .pulpit { display: flex; align-items: center; justify-content: center; gap: 72px; height: calc(100vh - var(--pasek-wys, 0px)); padding: var(--space-lg) 32px; }
-html.ramka .panel { max-height: 100%; overflow-y: auto; }
+/* Strona produktu: telefon po lewej zostaje na ekranie, opowieść po prawej przewija się z całą stroną. */
+html.ramka .pulpit { display: grid; grid-template-columns: auto minmax(0, 540px); justify-content: center; align-items: start; gap: 72px; min-height: calc(100vh - var(--pasek-wys, 0px)); padding: var(--space-lg) 32px var(--space-3xl); }
 html.ramka .telefon { --s: var(--skala-tel, 1); display: flex; flex-direction: column; position: relative; flex: none; width: 390px; height: 844px; border-radius: 54px; overflow: clip; background: var(--tlo);
   box-shadow: var(--cien-telefon);
   transform: scale(var(--s)); margin: calc((var(--s) - 1) * 422px) calc((var(--s) - 1) * 195px); }
@@ -714,7 +714,30 @@ html.ramka { --dol-wys: 86px; }
 html.ramka .dol { left: 0; right: 0; bottom: 0; width: auto; transform: none; padding-bottom: var(--space-lg); }
 html.ramka .belka-domowa { display: block; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: var(--tekst); z-index: 40; pointer-events: none; }
 html.ramka .toast { bottom: 110px; }
-html.ramka .panel { display: block; width: 400px; max-width: 40vw; color: var(--tekst); }
+html.ramka .panel { display: block; width: 100%; color: var(--tekst); padding-top: var(--space-xl); }
+html.ramka .telefon { position: sticky; top: calc(var(--pasek-wys, 0px) + 24px - (1 - var(--s)) * 422px); }
+.panel-h { font-size: 1.5rem; font-weight: 900; letter-spacing: -.015em; line-height: 1.2; margin: var(--space-3xl) 0 var(--o2); }
+/* Trzy sytuacje z życia: obraz, tytuł, dwa zdania i liczba; klik przełącza telefon obok. */
+.panel-syt { list-style: none; padding: 0; margin: var(--o4) 0 0; display: grid; gap: var(--o3); }
+.panel-syt a { display: flex; gap: var(--o4); align-items: flex-start; padding: var(--o4); border-radius: var(--r-widzet, 20px); background: var(--pow); color: var(--tekst2); text-decoration: none; box-shadow: var(--cien-widzet); outline-offset: 3px; transition: box-shadow var(--czas), transform var(--czas); }
+.panel-syt a:hover { transform: translateY(-2px); }
+.panel-syt a.akt { box-shadow: 0 0 0 2px var(--gl), var(--cien-widzet); }
+.syt-tr { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; font-size: var(--t-objasn); line-height: 1.45; }
+.syt-tr b { color: var(--tekst); font-size: 1.125rem; }
+.syt-tr strong { color: var(--gl); font-size: 1.25rem; font-weight: 900; letter-spacing: -.01em; font-variant-numeric: tabular-nums; margin-top: var(--space-2xs); }
+.syt-ob { flex: none; width: 64px; height: 64px; border-radius: 18px; overflow: hidden; display: grid; place-items: center; background: var(--wypelnienie); }
+.syt-ob img { width: 100%; height: 100%; object-fit: cover; }
+.syt-alarm { position: relative; background: var(--zle-wyp); }
+.syt-alarm i { position: absolute; left: 50%; top: 50%; border-radius: 50%; border: 2px solid var(--zle); translate: -50% -50%; }
+.syt-alarm i:nth-child(1) { width: 12px; height: 12px; background: var(--zle); }
+.syt-alarm i:nth-child(2) { width: 30px; height: 30px; opacity: .55; }
+.syt-alarm i:nth-child(3) { width: 48px; height: 48px; opacity: .25; }
+.syt-dane { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 0 var(--space-sm); }
+.syt-dane { place-items: stretch; }
+.syt-dane i { display: block; width: 100%; height: 10px; border-radius: 99px; background: var(--separator); }
+.syt-dane i:nth-child(2) { width: 75%; }
+.syt-dane i:nth-child(3) { width: 55%; }
+.syt-dane i:nth-child(1), .syt-dane i:nth-child(2) { background: var(--gl); }
 .panel-t { font-size: var(--t-figura); line-height: 1.04; font-weight: 900; letter-spacing: -.03em; margin: var(--o5) 0 var(--o3); max-width: none; }
 .panel-o { color: var(--tekst2); font-size: 1.0625rem; margin: 0 0 var(--o6); max-width: 38ch; }
 .panel-sek { font-size: var(--t-objasn); font-weight: 700; letter-spacing: 0; color: var(--tekst2); margin: 0 var(--o1) var(--o2); }

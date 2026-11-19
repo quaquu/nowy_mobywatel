@@ -112,9 +112,9 @@ async function pokaz() {
   document.title = `${widok.tytul} · mObywatel (prototyp)`;
   $$('#nawigacja a').forEach((a, i) => { const akt = ZAKLADKI[i][3].test(sciezka); a.classList.toggle('akt', akt); akt ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'); });
   naglowek();
-  scrollTo(0, 0);
+  if (!document.documentElement.classList.contains('ramka')) scrollTo(0, 0); // na komputerze strona zostaje tam, gdzie czytasz; przewija się tylko ekran telefonu
   const apl = $('.aplikacja'); if (apl) apl.scrollTop = 0;
-  $$('.panel-kroki a[data-panel]').forEach(a => a.classList.toggle('akt', a.getAttribute('href').slice(1) === sciezka));
+  $$('.panel a[data-panel]').forEach(a => a.classList.toggle('akt', a.getAttribute('href').slice(1) === sciezka));
   if (!pierwszy) { $('h1', main)?.focus({ preventScroll: true }); ogloszenie(widok.tytul); }
   const kier = kierunek(poprzednia, sciezka), gotowy = !!$('.gotowe', main);
   // Po podpisie adres się nie zmienia, ale ekran tak: potwierdzenie też ma wejść.

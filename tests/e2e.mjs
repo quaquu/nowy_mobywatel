@@ -372,7 +372,7 @@ export async function sprawy(url) {
         return { ramka: document.documentElement.classList.contains('ramka'), panel: !!document.querySelector('.panel').offsetParent, nawWTelefonie: wSrodku(n), t };
       });
       if (!w.ramka || !w.panel || !w.nawWTelefonie) throw new Error('zły układ ramki: ' + JSON.stringify(w));
-      await p.click('.panel-kroki a[data-panel="1"]'); await p.waitForSelector('#f-nar');
+      await p.click('.panel a[data-panel="1"]'); await p.waitForSelector('#f-nar');
       await p.click('[data-imie="Zofia"]'); await p.click('#nar-dalej'); await p.waitForSelector('dialog.arkusz');
       const d = await p.evaluate(() => { const t = document.getElementById('telefon').getBoundingClientRect(), r = document.querySelector('dialog.arkusz').getBoundingClientRect(), ok = document.getElementById('arkusz-ok').getBoundingClientRect();
         return r.left >= t.left - 1 && r.right <= t.right + 1 && r.bottom <= t.bottom + 1 && ok.bottom <= t.bottom + 1 && ok.top >= t.top; });

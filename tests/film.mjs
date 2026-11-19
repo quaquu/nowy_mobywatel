@@ -101,6 +101,10 @@ await p.evaluate(() => location.hash = '#/dane/dostep'); await p.waitForSelector
 await napis('Kto sprawdzał moje dane', 'Każdy odczyt z celem i podstawą prawną.', 'Podejrzany odczyt jest oznaczony, a zgłoszenie to jedno dotknięcie.');
 await czekaj(2500); await dotknij('details.podejrzane summary'); await czekaj(4500);
 
+await p.evaluate(() => location.hash = '#/alarm'); await p.waitForSelector('.schron-1'); await czekaj(900);
+await napis('Alarm', 'Najbliższe miejsce ochronne z rejestru PSP, liczone w telefonie.', 'Działa także bez internetu. Jednym dotknięciem dajesz znać bliskim, że jesteś bezpieczna.');
+await czekaj(3200); await przewin(520); await czekaj(2600);
+
 await p.evaluate(() => location.hash = '#/asystent'); await p.waitForSelector('#pytanie');
 await napis('Asystent', 'Rozumie sprawę opisaną własnymi słowami. Działa w telefonie, także bez internetu.');
 await czekaj(1200); await pisz('#pytanie', 'zgubiłem portfel z dowodem'); await czekaj(4500);

@@ -39,22 +39,30 @@
   <p class="panel-o">Klikalny prototyp mObywatela. Zamiast czekać, aż zapytasz, aplikacja sama przychodzi ze sprawą, łączy sprawy z kilku urzędów i prosi o jeden podpis.</p>
   <ul class="panel-liczby" id="panel-liczby" aria-label="Wyniki pomiarów w porównaniu z prototypem referencyjnym"></ul>
   <div class="panel-przyciski panel-gora">
-    <a class="btn glowny" href="film/pokaz.mp4" target="_blank" rel="noopener">Obejrzyj film (90 s)</a>
+    <a class="btn glowny" href="film/pokaz.mp4" target="_blank" rel="noopener">Obejrzyj film (97 s)</a>
     <a class="btn drugi" href="#/jury">Wyniki i metoda</a>
   </div>
-  <h3 class="panel-sek">Wybierz osobę</h3>
+  <h3 class="panel-h">Trzy sytuacje z życia</h3>
+  <p class="panel-o">Kliknij, a telefon obok od razu przejdzie do tej sprawy.</p>
+  <ul class="panel-syt">
+    <li><a href="#/sprawa/narodziny" data-panel="1"><span class="syt-ob"><img src="img/osoby/niemowle.webp" alt="" width="64" height="64"></span><span class="syt-tr"><b>Urodziło się dziecko</b><span>Szpital zgłosił narodziny, więc sprawa czeka na starcie: akt, PESEL, 800+, becikowe i urlop. Jeden podpis, potem śledzisz każdą sprawę jak przesyłkę.</span><strong>5 spraw · 1 podpis</strong></span></a></li>
+    <li><a href="#/alarm" data-panel="6"><span class="syt-ob syt-alarm" aria-hidden="true"><i></i><i></i><i></i></span><span class="syt-tr"><b>Alarm powietrzny</b><span>Najbliższe miejsce ochronne z rejestru PSP liczy telefon, więc działa bez internetu. Jednym dotknięciem dajesz znać bliskim, że jesteś bezpieczna.</span><strong>1 566 miejsc w Łodzi i Zgierzu</strong></span></a></li>
+    <li><a href="#/kod/wypozyczalnia" data-panel="7"><span class="syt-ob syt-dane" aria-hidden="true"><i></i><i></i><i></i></span><span class="syt-tr"><b>Wypożyczalnia prosi o dane</b><span>Firma wysyła listę, a Ty zaznaczasz, co przekazać. Domyślnie tylko to, co wymagane. PESEL i adres zostają u Ciebie.</span><strong>2 z 5 danych</strong></span></a></li>
+  </ul>
+  <h3 class="panel-h">Cztery osoby, cztery życia</h3>
   <ul class="panel-osoby" id="panel-osoby"></ul>
-  <h3 class="panel-sek">Co sprawdzić</h3>
+  <h3 class="panel-h">Co jeszcze sprawdzić</h3>
   <ol class="panel-kroki">
-    <li><a href="#/sprawa/narodziny" data-panel="1"><span><b>Narodziny dziecka:</b> 5 spraw w 4 urzędach, jeden podpis.</span></a></li>
     <li><a href="#/dane/dostep" data-panel="2"><span><b>Kto sprawdzał moje dane:</b> każdy odczyt z celem i podstawą prawną.</span></a></li>
+    <li><a href="#/pesel" data-panel="8"><span><b>Zastrzeżenie PESEL:</b> cofnięcie na czas kredytu, potem wraca samo.</span></a></li>
     <li><a href="#/asystent" data-panel="3"><span><b>Asystent:</b> napisz „zgubiłem portfel” albo spróbuj go oszukać.</span></a></li>
-    <li><a href="#/zlecenia" data-panel="4"><span><b>Przypomnienia i zlecenia:</b> co państwo zrobi za Ciebie, za zgodą.</span></a></li>
-    <li><a href="#/alarm" data-panel="6"><span><b>Alarm:</b> najbliższe miejsce ochronne z rejestru PSP, także bez internetu.</span></a></li>
+    <li><a href="#/emerytura" data-panel="9"><span><b>Twoja emerytura:</b> ZUS, PPK, IKE i IKZE razem, z prognozą.</span></a></li>
     <li><a href="#/dostep" data-panel="5"><span><b>Nie możesz się zalogować?</b> Odpowiedź na najczęstszą skargę.</span></a></li>
   </ol>
+  <h3 class="panel-h">Uczciwie</h3>
+  <p class="panel-o">Dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i osobne wnioski już działają w mObywatelu. Nowe jest to, że państwo przychodzi ze sprawą i łączy je w jedną, z jednym podpisem. W aplikacji ramki „O prototypie” pokazują, co już jest, a co nowe. <a href="#/jury">Wyniki, metoda i źródła</a></p>
   <div class="panel-kod"><img src="img/kod-sklep.svg" alt="Kod QR pokazowy: kasa w sklepie prosi o potwierdzenie pełnoletności" width="104" height="104"><p><b>Skaner kodów:</b> otwórz prototyp na telefonie, dotknij ikony skanera obok skrzynki i zeskanuj ten kod. Bez drugiego telefonu: ikona skanera i „Kody pokazowe”.</p></div>
-  <h3 class="panel-sek" id="panel-wyglad-t">Wygląd</h3>
+  <h3 class="panel-h" id="panel-wyglad-t">Wygląd</h3>
   <div id="panel-wyglad" role="group" aria-labelledby="panel-wyglad-t"></div>
   <div class="panel-przyciski">
     <button type="button" class="btn glowny" id="pelny-btn">Pełny ekran</button>

@@ -11,7 +11,7 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 - Prototyp: `https://quaquu.github.io/nowy_mobywatel/` (po włączeniu GitHub Pages, patrz niżej)
 - Na komputerze prototyp otwiera się w symulacji iPhone'a z panelem „Co sprawdzić”; przycisk **Pełny ekran** pokazuje go bez ramki (adres z `?widok=pelny` albo `?widok=telefon` wymusza widok). Na telefonie zawsze pełny ekran.
 - 60 sekund dla jury: w prototypie **Więcej → Dla jury**
-- Film 90 s z napisami: `https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4` (nagrywa go `node tests/film.mjs` z działającego prototypu; napisy i ślady dotknięć dokłada skrypt nagrania)
+- Film 97 s z napisami: `https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4` (nagrywa go `node tests/film.mjs` z działającego prototypu; napisy i ślady dotknięć dokłada skrypt nagrania)
 - Lokalnie: `node tests/serve.mjs` i otwórz `http://127.0.0.1:8080/`
 
 ## Co jest w środku
@@ -29,6 +29,9 @@ Klikalny prototyp mObywatela na [mObywatel Challenge](https://mobywatel.ai/) (zg
 | Bliscy | Sprawy mamy na podstawie upoważnienia (wizyta urzędnika w domu) |
 | Skaner kodów QR | Ikona obok skrzynki: aparat telefonu czyta kod w sklepie (tylko pełnoletność), w okienku urzędu albo przy logowaniu („Czy to Ty?”); obcy kod, np. z parkometru, wywołuje ostrzeżenie, a strona się nie otwiera; bez aparatu: kody pokazowe |
 | Kto dzwoni? | Sprawdzenie numeru: infolinia z wykazu UKE „tylko do odbierania” to oszustwo, numer instytucji z potwierdzeniem rozmowy w aplikacji, prywatnych numerów nie ujawnia |
+| Alarm i miejsca ochronne | Komunikat RCB (ćwiczenie w pokazie), najbliższe miejsce ochronne z rejestru PSP liczone w telefonie, także bez internetu (1566 miejsc dla Łodzi i Zgierza, dane.gov.pl, CC BY 4.0, `narzedzia/schrony.py`), mapa OpenStreetMap z siecią, instrukcja RCB i MSWiA, „Jestem bezpieczna” i „Wyślij drogę” bliskim |
+| Prośba o dane | Wypożyczalnia aut prosi o 5 danych: wymagane z kłódką, reszta domyślnie wyłączona; firma dostaje tylko zaznaczone, wpis w „Kto sprawdzał moje dane” |
+| Zastrzeżenie PESEL i szybkie akcje | Stan zastrzeżenia na Starcie, cofnięcie do jutra, na 3 lub 7 dni albo bez terminu; trzy ulubione szybkie akcje do wyboru |
 | Podpisy i poparcie | Projekty ustaw, referenda i kandydaci bez papierowej listy; komitet widzi tylko licznik; „Moje poparcia” wykrywają użycie danych na papierowej liście |
 | Dostęp | „Nie możesz się zalogować?”: diagnoza i jeden sposób, bez pętli |
 | Asystent | Tekst i głos, rozpoznawanie sprawy w telefonie (offline), odmowy dla złośliwych próśb, źródło przy każdej odpowiedzi |
@@ -103,3 +106,5 @@ Bielik (lokalnie na CPU, ok. 1–4 s na zdanie): `pip install llama-cpp-python==
 Kod: MIT. Prototyp referencyjny (J. Cieszyński, MIT) służył wyłącznie do pomiarów i nie jest częścią tego repozytorium. Router trybu skryptowego skopiowany do `tests/reference-router.mjs` w celu porównania (MIT).
 
 Portrety osób (`app/img/osoby/`) przedstawiają osoby fikcyjne. Wygenerowane lokalnie skryptem `narzedzia/portrety.py` modelami Stable Diffusion 1.5 (Realistic Vision 5.1 i DreamShaper 8, licencja CreativeML OpenRAIL-M) z LCM-LoRA; nie są to zdjęcia prawdziwych ludzi.
+
+Miejsca ochronne (`app/dane/schrony.json`): „Punkty schronienia w Polsce”, Komenda Główna PSP, [dane.gov.pl](https://dane.gov.pl/pl/dataset/28058), licencja CC BY 4.0, stan na 10.11.2026; wycinek dla Łodzi i Zgierza robi `narzedzia/schrony.py`. Podkład mapy (tylko z internetem): © autorzy [OpenStreetMap](https://www.openstreetmap.org/copyright).
