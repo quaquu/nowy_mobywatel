@@ -64,6 +64,7 @@ const AKCJE = {
   skorzystaj: () => ({ href: '#/naleznosci', ik: 'gift', t: 'Możesz skorzystać', opis: 'świadczenia i ulgi dla Ciebie' }),
   bliscy: () => ({ href: '#/bliscy', ik: 'users', t: 'Bliscy', opis: 'sprawy dzieci i rodziców' }),
   dane: () => ({ href: '#/dane/dostep', ik: 'eye', t: 'Moje dane', opis: 'kto sprawdzał moje dane' }),
+  schrony: () => ({ href: '#/schrony', ik: 'home', t: 'Schrony', opis: 'najbliższe miejsca ochronne, także bez internetu' }),
   zgubione: () => ({ href: '#/sprawa/utrata', ik: 'alert', t: 'Zgubiony portfel', opis: 'zastrzeż dowód i karty od razu' }),
   poparcie: () => ({ href: '#/poparcie', ik: 'pen', t: 'Podpisy', opis: 'projekty ustaw, referenda, kandydaci' }),
   pomoc: () => ({ href: '#/konsultant', ik: 'phone', t: 'Pomoc', opis: 'rozmowa z konsultantem' }),
@@ -569,6 +570,7 @@ export function wiecej() {
       ${poz('#/dane', 'eye', 'Twoje dane i prywatność', 'kto sprawdzał moje dane')}
       ${poz('#/pesel', 'shield', 'Zastrzeżenie PESEL', peselStan().zastrzezony ? 'zastrzeżony' : 'nie jest zastrzeżony')}
       ${poz('#/kto-dzwoni', 'callcheck', 'Kto dzwoni?', 'sprawdź numer, zanim cokolwiek powiesz')}
+      ${poz('#/schrony', 'home', 'Miejsca ochronne', 'najbliższe, także bez internetu')}
       ${poz('#/dostep', 'lock', 'Problem z logowaniem', '')}
     </ul>
     <h2 class="grupa-t">Udział w życiu publicznym</h2>

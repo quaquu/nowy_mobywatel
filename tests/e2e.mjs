@@ -267,6 +267,12 @@ export async function sprawy(url) {
     const t = await p.textContent('.szybkie');
     if (!/Emerytura/.test(t) || /Zgubiony portfel/.test(t)) throw new Error('Start nie pokazuje wybranych akcji: ' + t);
   });
+  await krok('alarm', async p => {
+    await p.goto(url + '#/alarm'); await p.waitForSelector('.schron-1');
+    if (!/Żeromskiego 45/.test(await p.textContent('.schron-1'))) throw new Error('złe najbliższe miejsce ochronne');
+    await p.click('[data-wyslij="0"]'); await p.waitForFunction(() => /Wysłano drogę/.test(document.querySelector('main')?.textContent || ''));
+    await p.click('#bezpieczna'); await p.waitForFunction(() => /Bliscy wiedzą/.test(document.querySelector('main')?.textContent || ''));
+  });
   await krok('kto-dzwoni', async p => {
     await p.goto(url + '#/kto-dzwoni'); await p.waitForSelector('#nr');
     await p.fill('#nr', '123'); await p.click('#f-nr button.glowny');

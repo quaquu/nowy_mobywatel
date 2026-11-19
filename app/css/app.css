@@ -498,6 +498,39 @@ html.bez-notek .notka { display: none; }
 .sz-wybor > span { display: flex; flex-direction: column; min-width: 0; }
 .przel-duzy input:disabled { opacity: .4; cursor: not-allowed; }
 .sz-dostosuj .sz-ik { background: transparent; box-shadow: inset 0 0 0 1.5px var(--separator); }
+/* Alarm i miejsca ochronne */
+.alarm-pas { margin: 0 0 var(--o4); padding: var(--o4); border-radius: var(--r-arkusz); background: var(--zle); color: var(--zle-tekst); }
+.alarm-pas small { display: block; font-weight: 700; font-size: var(--t-przypis); opacity: .92; }
+.alarm-pas h1 { margin: var(--space-2xs) 0 var(--space-xs); font-size: var(--t-tytul); line-height: 1.12; font-weight: 900; letter-spacing: -.018em; color: inherit; }
+.alarm-pas p { margin: 0; font-size: var(--t-objasn); }
+.schr-karta .maly { margin: 0 0 var(--space-2xs); }
+.schr-mapa-w { margin: var(--o3) 0; }
+.schr-mapa { display: block; width: 100%; height: auto; }
+.schr-mapa .tlo-mapy { fill: var(--wypelnienie); }
+.schr-mapa-w figcaption { margin-top: var(--space-2xs); color: var(--tekst2); font-size: var(--t-przypis); }
+.schr-mapa.z-kaflami .pkt { fill: var(--gl); opacity: .55; }
+.schr-mapa.z-kaflami .krag { stroke: var(--gl); opacity: .5; }
+:root[data-theme="dark"] .schr-mapa .kafle { filter: url(#mapa-noc); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .schr-mapa .kafle { filter: url(#mapa-noc); } }
+.schr-mapa .krag { fill: none; stroke: var(--separator); stroke-width: 1.2; stroke-dasharray: 3 4; }
+.schr-mapa .opis-kr, .schr-mapa .polnoc { font-size: 10px; fill: var(--tekst2); font-weight: 700; }
+.schr-mapa .pkt { fill: var(--tekst2); opacity: .45; }
+.schr-mapa .top circle { fill: var(--gl); }
+.schr-mapa .top.pierwszy circle { fill: var(--ok); }
+.schr-mapa .top text { fill: var(--biel); font-size: 11px; font-weight: 900; }
+.schr-mapa .ty { fill: var(--gl); stroke: var(--pow); stroke-width: 3; }
+.schr-mapa .ty-puls { fill: none; stroke: var(--gl); stroke-width: 1.5; opacity: .35; }
+.schrony { list-style: none; margin: 0; padding: 0; }
+.schron { display: flex; align-items: center; gap: var(--o3); padding: var(--space-sm) 0; border-top: 1px solid var(--separator); }
+.schr-nr { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--gl); color: var(--biel); font-weight: 900; font-size: var(--t-przypis); }
+.schron-1 .schr-nr { background: var(--ok); }
+.schr-tr { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.schr-tr small { color: var(--tekst2); font-size: var(--t-objasn); }
+.offline-info { display: flex; gap: var(--o2); align-items: flex-start; margin: var(--o3) 0 0; color: var(--tekst2); font-size: var(--t-objasn); }
+.offline-info .ic { flex: none; width: 18px; height: 18px; color: var(--ok); margin-top: 2px; }
+.kroki-alarm li { margin: var(--space-xs) 0; }
+@media (prefers-reduced-motion: no-preference) { html:not(.bez-ruchu) .schr-mapa .ty-puls { animation: puls 1.8s ease-out infinite; transform-origin: 180px 180px; } }
+@keyframes puls { from { transform: scale(.6); opacity: .6; } to { transform: scale(1.8); opacity: 0; } }
 .data-sl { display: block; margin: var(--space-2xs) 0 var(--o3); color: var(--tekst2); font-size: var(--t-objasn); }
 
 /* ---------- Portfel kart dokumentów (wyróżnik) ---------- */

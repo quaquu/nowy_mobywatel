@@ -20,6 +20,8 @@ const POCZATEK = () => ({
   badanie: null,         // rezerwacja na stacji kontroli {stacja, kiedy, krotko}
   postep: {},
   pesel: null,
+  alarm: null,           // alarm w pokazie {bezpieczna, wyslane}
+  alarmTu: null,         // lokalizacja z GPS zamiast adresu zameldowania
   szybkie: null,         // ulubione szybkie akcje na Starcie (null: domyślne)           // zastrzeżenie PESEL zmienione w pokazie {zastrzezony, od, doKiedy}            // podgląd statusów spraw w pokazie (id sprawy -> etap)
 });
 
