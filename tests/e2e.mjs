@@ -297,6 +297,15 @@ export async function sprawy(url) {
     if (!/Twój podpis/.test(await p.textContent('main'))) throw new Error('brak poparcia na liście „Moje poparcia”');
     await p.click('[data-nie-ja]'); await p.waitForSelector('.toast');
   });
+  await krok('wypozyczalnia', async p => {
+    await p.click('#skan-btn'); await p.click('[data-kod="wypozyczalnia"]'); await p.waitForSelector('#sk-ile');
+    if (!/2 z 5/.test(await p.textContent('#sk-ile'))) throw new Error('domyślnie więcej niż wymagane minimum');
+    await p.click('dialog.skaner label:has(input[name=sk-dane][value="2"])');
+    if (!/3 z 5/.test(await p.textContent('#sk-ile'))) throw new Error('wybór zakresu nie działa');
+    await p.click('#sk-tak'); await p.waitForFunction(() => /Dane przekazane/.test(document.querySelector('dialog.skaner')?.textContent || ''));
+    const po = (await p.textContent('dialog.skaner')).split('Dane przekazane')[1];
+    if (/adres|telefon/i.test(po) || !/dłużej niż 3 lata/.test(po)) throw new Error('przekazano inny zakres niż wybrany: ' + po);
+  });
   await krok('skaner', async p => {
     const tekst = () => p.textContent('dialog.skaner');
     await p.click('#skan-btn'); await p.waitForSelector('dialog.skaner [data-kod]');

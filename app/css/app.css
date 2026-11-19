@@ -531,6 +531,8 @@ html.bez-notek .notka { display: none; }
 .kroki-alarm li { margin: var(--space-xs) 0; }
 @media (prefers-reduced-motion: no-preference) { html:not(.bez-ruchu) .schr-mapa .ty-puls { animation: puls 1.8s ease-out infinite; transform-origin: 180px 180px; } }
 @keyframes puls { from { transform: scale(.6); opacity: .6; } to { transform: scale(1.8); opacity: 0; } }
+.sk-wybor .krok-zamek { width: 51px; }
+.sk-wybor { margin: 0 0 var(--o3); }
 .data-sl { display: block; margin: var(--space-2xs) 0 var(--o3); color: var(--tekst2); font-size: var(--t-objasn); }
 
 /* ---------- Portfel kart dokumentów (wyróżnik) ---------- */

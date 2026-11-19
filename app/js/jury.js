@@ -59,7 +59,7 @@ export function jury() {
 
     <h2 class="sekcja">Skaner: kody do zeskanowania</h2>
     <p>Otwórz prototyp na telefonie, dotknij ikony skanera u góry ekranu i zeskanuj kod z tego ekranu. Bez drugiego telefonu: w skanerze są „Kody pokazowe”.</p>
-    <ul class="kody-qr">${[['sklep', 'Kasa w sklepie', 'tylko pełnoletność'], ['urzad', 'Okienko urzędu', 'tożsamość'], ['logowanie', 'Logowanie na komputerze', '„Czy to Ty?”'], ['parkometr', 'Naklejka na parkometrze', 'fałszywy kod']].map(([id, t, o]) => `<li><img src="img/kod-${id}.svg" alt="Kod QR pokazowy: ${t}" width="132" height="132" loading="lazy"><b>${t}</b><small>${o}</small></li>`).join('')}</ul>
+    <ul class="kody-qr">${[['sklep', 'Kasa w sklepie', 'tylko pełnoletność'], ['wypozyczalnia', 'Wypożyczalnia aut', 'wybierasz zakres danych'], ['urzad', 'Okienko urzędu', 'tożsamość'], ['logowanie', 'Logowanie na komputerze', '„Czy to Ty?”'], ['parkometr', 'Naklejka na parkometrze', 'fałszywy kod']].map(([id, t, o]) => `<li><img src="img/kod-${id}.svg" alt="Kod QR pokazowy: ${t}" width="132" height="132" loading="lazy"><b>${t}</b><small>${o}</small></li>`).join('')}</ul>
 
     <h2 class="sekcja">Uczciwie: co już jest, a co nowe</h2>
     <div class="uczciwie">

@@ -3,16 +3,25 @@
 // Kod czyta wbudowany BarcodeDetector, a gdy go brak (np. Safari): biblioteka jsQR, ładowana dopiero tutaj.
 import { ic } from './icons.js';
 import { stan, zapisz, esc, $, $$, podpis, ogloszenie, toast, cel, wTelefonie } from './core.js';
-import { ja } from './data.js';
+import { ja, dokumenty } from './data.js';
 import { wysun, schowaj, wyskocz, kaskada } from './ruch.js';
 
 // Prośby zakodowane w kodach pokazowych (app/img/kod-*.svg). Instytucje FIKCYJNE.
 export const PROSBY = {
   sklep: { kto: 'Sklep „Przykład”, kasa nr 2', ikona: 'case', tytul: 'Potwierdź pełnoletność', widzi: [['Ukończone 18 lat', 'tak']], nieWidzi: 'imienia, nazwiska, daty urodzenia, adresu ani numeru PESEL', po: 'sprzedaż produktu dla dorosłych' },
   urzad: { kto: 'Urząd Miasta Łodzi, stanowisko 7', ikona: 'id', tytul: 'Potwierdź tożsamość w okienku', widzi: [['Imię i nazwisko', `${ja.imie} ${ja.nazwisko}`], ['Numer PESEL', ja.pesel], ['Zdjęcie', 'z dowodu osobistego']], nieWidzi: 'adresu ani innych danych z rejestrów', po: 'obsługa sprawy w okienku' },
+  wypozyczalnia: { kto: 'Wypożyczalnia aut „Przykład Rent”, Łódź Lotnisko', ikona: 'car', tytul: 'Wynajem auta: potwierdź prawo jazdy', wymagaPrawa: true,
+    wybor: [
+      { t: 'Prawo jazdy kat. B: ważne, nie zatrzymane', v: 'tak', wymagane: true },
+      { t: 'Imię i nazwisko', v: `${ja.imie} ${ja.nazwisko}`, wymagane: true },
+      { t: 'Prawo jazdy dłużej niż 3 lata', v: 'tak', opis: 'za to wypożyczalnia daje niższą kaucję' },
+      { t: 'Numer telefonu', v: '+48 600 ••• 482', opis: 'do kontaktu w sprawie auta' },
+      { t: 'Adres zameldowania', v: ja.adres, opis: 'do wynajmu nie jest potrzebny' },
+    ],
+    nieWidzi: 'numeru PESEL, numeru dokumentu, punktów karnych ani historii mandatów', po: 'wynajem auta' },
   logowanie: { kto: 'pacjent.gov.pl', ikona: 'lock', tytul: 'Czy to Ty logujesz się na komputerze?', logowanie: true, po: 'logowanie kodem QR' },
 };
-export const POKAZOWE = [['sklep', 'Kasa w sklepie'], ['urzad', 'Okienko urzędu'], ['logowanie', 'Logowanie na komputerze'], ['parkometr', 'Naklejka na parkometrze']];
+export const POKAZOWE = [['sklep', 'Kasa w sklepie'], ['wypozyczalnia', 'Wypożyczalnia aut'], ['urzad', 'Okienko urzędu'], ['logowanie', 'Logowanie na komputerze'], ['parkometr', 'Naklejka na parkometrze']];
 const PARKOMETR = 'https://oplata-parkingu.example/zaplac?strefa=A';
 
 // Co jest w kodzie: prośba mObywatela, obcy adres albo zwykły tekst.
@@ -203,6 +212,7 @@ function pokazProsbe(id) {
     $('#sk-tak', S.d).onclick = async () => { await podpis($('.sk-wn', S.d)); gotowe(p, true); };
     return;
   }
+  if (p.wybor) return prosbaZWyborem(p);
   ekran(`${gora('Przekazanie danych')}<div class="sk-tresc">
     <div class="sk-kto">${ic(p.ikona, 'okr')}<span><small>Prosi o dane</small><b>${esc(p.kto)}</b></span></div>
     <h3 class="sk-h">${esc(p.tytul)}</h3>
@@ -214,16 +224,41 @@ function pokazProsbe(id) {
   $('#sk-tak', S.d).onclick = async () => { await podpis($('.sk-wn', S.d)); gotowe(p, true); };
 }
 
+// Firma prosi o listę danych; wymagane mają kłódkę, resztę obywatel zaznacza sam (domyślnie nic ponad minimum).
+function prosbaZWyborem(p) {
+  if (p.wymagaPrawa && !dokumenty.some(d => d.id === 'prawo')) {
+    ekran(`${gora('Przekazanie danych')}<div class="sk-tresc srodek"><div class="sk-ikona zla">${ic('alert', 'duza')}</div>
+      <h3 class="sk-h">Nie masz prawa jazdy w rejestrze</h3><p>Wypożyczalnia prosi o potwierdzenie prawa jazdy. W Centralnej Ewidencji Kierowców nie ma go na Twoje dane, więc nic nie przekażemy.</p>
+      <div class="przyciski pion"><button class="btn glowny" data-zamknij>Zamknij</button></div></div>`, true);
+    return;
+  }
+  ekran(`${gora('Przekazanie danych')}<div class="sk-tresc">
+    <div class="sk-kto">${ic(p.ikona, 'okr')}<span><small>Prosi o dane</small><b>${esc(p.kto)}</b></span></div>
+    <h3 class="sk-h">${esc(p.tytul)}</h3>
+    <p class="maly">Zaznacz, co przekazać. Bez zaznaczenia firma tego nie dostanie.</p>
+    <ul class="lista ustaw sk-wybor">${p.wybor.map((w, i) => `<li><label class="przel-duzy"><span><b>${esc(w.t)}</b><small>${esc(w.v)}${w.opis ? ' · ' + esc(w.opis) : ''}${w.wymagane ? ' · wymagane do wynajmu' : ''}</small></span>${w.wymagane ? `<input type="checkbox" checked hidden name="sk-dane" value="${i}"><span class="krok-zamek" title="Wymagane">${ic('lock')}</span>` : `<input type="checkbox" role="switch" name="sk-dane" value="${i}">`}</label></li>`).join('')}</ul>
+    <p class="uwaga">${ic('eye')}<span>Nie zobaczy ${esc(p.nieWidzi)}. Dane trafią jednorazowo; zapiszemy to w „Kto sprawdzał moje dane”.</span></p>
+    <p class="maly" id="sk-ile" aria-live="polite"></p>
+    <div class="przyciski"><button class="btn drugi" id="sk-nie">Odmów</button><button class="btn glowny" id="sk-tak">${ic('key')}Przekaż</button></div></div>`, true);
+  const pola = $$('input[name=sk-dane]', S.d);
+  const wybrane = () => pola.filter(x => x.checked).map(x => p.wybor[+x.value]);
+  const licz = () => { const n = wybrane().length; $('#sk-ile', S.d).textContent = `Przekażesz ${n} z ${p.wybor.length} danych, o które prosi firma.`; };
+  pola.forEach(x => x.onchange = licz); licz();
+  $('#sk-nie', S.d).onclick = () => { toast('Odmówiono. Nic nie zostało przekazane.'); zamknij(); };
+  $('#sk-tak', S.d).onclick = async () => { await podpis($('.sk-wn', S.d)); gotowe({ ...p, widzi: wybrane().map(w => [w.t, w.v]) }, true); };
+}
+
+const malaPierwsza = t => t.charAt(0).toLowerCase() + t.slice(1); // „Prawo jazdy kat. B” -> „prawo jazdy kat. B”
 function gotowe(p, ok) {
   if (!S) return;
   const godz = new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
   if (ok) {
-    stan.noweDostepy.unshift({ kto: p.kto, co: p.logowanie ? 'potwierdzenie tożsamości przy logowaniu' : p.widzi.map(w => w[0].toLowerCase()).join(', '), po: p.po + ' (Twoja zgoda w aplikacji)', kiedy: Date.now() });
+    stan.noweDostepy.unshift({ kto: p.kto, co: p.logowanie ? 'potwierdzenie tożsamości przy logowaniu' : p.widzi.map(w => malaPierwsza(w[0])).join(', '), po: p.po + ' (Twoja zgoda w aplikacji)', kiedy: Date.now() });
     zapisz(); cel(p.logowanie ? 'logowanie-qr' : 'dane-przekazane');
   }
   const [tytul, opis] = !ok ? ['Logowanie zablokowane', 'Nikt nie zaloguje się tym kodem. Jeśli podano komuś hasło albo kod, zmień je i zgłoś sprawę na policję.']
     : p.logowanie ? ['Zalogowano na komputerze', `${p.kto}, godz. ${godz}. Sesję zakończysz w „Ustawieniach”.`]
-    : ['Dane przekazane', `${p.kto}, godz. ${godz}. Tylko: ${p.widzi.map(w => w[0].toLowerCase()).join(', ')}.`];
+    : ['Dane przekazane', `${p.kto}, godz. ${godz}. Tylko: ${p.widzi.map(w => malaPierwsza(w[0])).join(', ')}.`];
   ekran(`${gora(ok ? 'Gotowe' : 'Zablokowano')}<div class="sk-tresc srodek">
     <div class="sk-ikona ${ok ? 'ok' : 'zla'}">${ic(ok ? 'check' : 'shield', 'duza' + (ok ? ' rysuj' : ''))}</div>
     <h3 class="sk-h">${tytul}</h3><p>${esc(opis)}</p>
