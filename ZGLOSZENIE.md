@@ -37,7 +37,7 @@ Prototyp referencyjny pokazał, że z państwem można rozmawiać, zamiast szuka
 
 Ten sam wzór działa w 11 sprawach życiowych: narodziny, przeprowadzka, kupno auta, utrata dokumentów, nowy dowód, ślub, śmierć bliskiej osoby, renta wdowia, firma, emerytura, 18 lat. Do wyboru są 4 osoby, jak w referencji: Anna (33 lata, właśnie urodziła córkę), jej mama Halina (78 lat, tryb prosty), Jakub (17 lat) i Katarzyna (29 lat, planuje ślub).
 
-Pod ręką, bez szukania w menu: alarm z najbliższym miejscem ochronnym z rejestru PSP, liczonym w telefonie i działającym bez internetu, oraz „Jestem bezpieczna” dla bliskich; przekazywanie firmie tylko tych danych, które zaznaczysz (np. wypożyczalni aut: prawo jazdy bez PESEL i adresu); zastrzeżenie PESEL na Starcie (cofnięcie na czas kredytu i automatyczny powrót), „Możesz skorzystać” (świadczenia wykryte z rejestrów), Twoja emerytura (ZUS, PPK, IKE i IKZE razem, z prognozą), płatności BLIK, „Kto dzwoni?” przeciw oszustom, podpisy poparcia bez papieru i pomoc przy logowaniu (33% ocen 1–2★ z 1600 recenzji mObywatela dotyczy logowania). Asystent, tekstem albo głosem, działa w telefonie bez internetu i niczego nie wysyła sam.
+Pod ręką, bez szukania w menu: alarm, który przychodzi komunikatem z sieci komórkowej (Cell Broadcast, planowany od 2027 r.) i otwiera mObywatela z najbliższym miejscem ochronnym z rejestru PSP, liczonym w telefonie bez internetu, z instrukcją po polsku, angielsku i ukraińsku oraz „Jestem bezpieczna” dla bliskich; pokazywanie dowodu tylko w potrzebnym zakresie (wybierasz cel: zakupy 18+, hotel, wynajem auta, a aplikacja zaznacza tylko potrzebne dane); zastrzeżenie PESEL na Starcie (cofnięcie na czas kredytu i automatyczny powrót), „Możesz skorzystać” (świadczenia wykryte z rejestrów), Twoja emerytura (ZUS, PPK, IKE i IKZE razem, z prognozą), płatności BLIK, „Kto dzwoni?” przeciw oszustom, podpisy poparcia bez papieru i pomoc przy logowaniu (33% ocen 1–2★ z 1600 recenzji mObywatela dotyczy logowania). Asystent, tekstem albo głosem, działa w telefonie bez internetu i niczego nie wysyła sam.
 
 Dla kogo: rodzice, osoby starsze i ich dzieci, każdy, kto nie wie, co mu przysługuje.
 
@@ -45,7 +45,7 @@ Pomiary, nie opinie (te same narzędzia na obu prototypach, kod testów w repozy
 • narodziny dziecka: 4 dotknięcia i 1 podpis za 5 spraw, ok. 14 s (model KLM); w referencji 6 dotknięć i 2 podpisy za 2 sprawy, ok. 24 s;
 • asystent przypisał do właściwej sprawy 90,8% z 87 zdań, których nie widział przy budowie (referencja: 31,0%); złośliwe prośby odrzucone: 5 z 5;
 • dostępność: 0 błędów WCAG 2.2 AA w teście axe (referencja: 7 rodzajów), Lighthouse 100 (referencja: 87);
-• 38 ścieżek przechodzi automatycznie do końca, 52 ekrany na 4 szerokościach bez błędów; działa offline.
+• 38 ścieżek przechodzi automatycznie do końca, 51 ekranów na 4 szerokościach bez błędów; działa offline.
 
 Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i historia pojazdu już istnieją, a w mObywatelu w przeglądarce także zgłoszenie urodzenia, zameldowanie i ePłatności, każde osobno. Łączę je w sprawy życiowe. Macierz wykonalności pokazuje, co da się wdrożyć bez zmian ustaw (29 z 50 elementów), a co ich wymaga. W aplikacji ramki „O prototypie” oddzielają to, co już działa, od tego, co nowe. Na stronie „Dla jury” jest instrukcja na 60 sekund i tryb testowy z pomiarem czasu i ankietą SUS.
 ```
@@ -59,7 +59,7 @@ https://quaquu.github.io/nowy_mobywatel/
 ```
 https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4
 ```
-Film 97 s z napisami, bez dźwięku, nagrany z prototypu skryptem `tests/film.mjs` (odtwarzalny). Repozytorium idzie w pole „Strona www”.
+Film 102 s z napisami, bez dźwięku, nagrany z prototypu skryptem `tests/film.mjs` (odtwarzalny). Repozytorium idzie w pole „Strona www”.
 
 **Polskie modele i technologie** <!-- pole: technologie, max 300 -->
 ```

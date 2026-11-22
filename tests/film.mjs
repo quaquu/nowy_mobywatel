@@ -101,8 +101,10 @@ await p.evaluate(() => location.hash = '#/dane/dostep'); await p.waitForSelector
 await napis('Kto sprawdzał moje dane', 'Każdy odczyt z celem i podstawą prawną.', 'Podejrzany odczyt jest oznaczony, a zgłoszenie to jedno dotknięcie.');
 await czekaj(2500); await dotknij('details.podejrzane summary'); await czekaj(4500);
 
-await p.evaluate(() => location.hash = '#/alarm'); await p.waitForSelector('.schron-1'); await czekaj(900);
-await napis('Alarm', 'Najbliższe miejsce ochronne z rejestru PSP, liczone w telefonie.', 'Działa także bez internetu. Jednym dotknięciem dajesz znać bliskim, że jesteś bezpieczna.');
+await p.evaluate(() => location.hash = '#/alarm?cb=1'); await p.waitForSelector('.cb-alert'); await czekaj(500);
+await napis('Alarm', 'Komunikat z sieci komórkowej dociera do każdego telefonu w zasięgu.', 'Cell Broadcast ma ruszyć w Polsce w 2027 r. Tu otwiera mObywatela.');
+await czekaj(3800); await dotknij('#cb-otworz'); await p.waitForSelector('.schron-1'); await czekaj(700);
+await napis('Alarm', 'Najbliższe miejsce ochronne z rejestru PSP, liczone w telefonie.', 'Działa bez internetu, po polsku, angielsku i ukraińsku. Jednym dotknięciem dajesz znać bliskim.');
 await czekaj(3200); await przewin(520); await czekaj(2600);
 
 await p.evaluate(() => location.hash = '#/asystent'); await p.waitForSelector('#pytanie');

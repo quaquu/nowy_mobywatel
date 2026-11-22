@@ -21,7 +21,8 @@ const POCZATEK = () => ({
   postep: {},
   pesel: null,
   alarm: null,           // alarm w pokazie {bezpieczna, wyslane}
-  alarmTu: null,         // lokalizacja z GPS zamiast adresu zameldowania
+  alarmTu: null,
+  alarmJezyk: 'pl',      // język komunikatu alarmowego: pl | en | uk         // lokalizacja z GPS zamiast adresu zameldowania
   szybkie: null,         // ulubione szybkie akcje na Starcie (null: domyślne)           // zastrzeżenie PESEL zmienione w pokazie {zastrzezony, od, doKiedy}            // podgląd statusów spraw w pokazie (id sprawy -> etap)
 });
 

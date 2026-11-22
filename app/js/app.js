@@ -41,7 +41,7 @@ const TRASY = [
   [/^\/dane\/rejestry$/, () => W.rejestry()],
   [/^\/kod\/([a-z]+)$/, async m => (await K()).kodWidok(m[1])],
   [/^\/pesel$/, () => W.peselWidok()],
-  [/^\/(alarm|schrony)$/, async m => (await import('./alarm.js')).alarmWidok(m[1] === 'alarm')],
+  [/^\/(alarm|schrony)$/, async (m, q) => (await import('./alarm.js')).alarmWidok(m[1] === 'alarm', q.get('cb'))],
   [/^\/szybkie$/, () => W.szybkieWidok()],
   [/^\/kto-dzwoni$/, async () => (await B()).ktoDzwoni()],
   [/^\/poparcie$/, async () => (await B()).poparcieWidok()],

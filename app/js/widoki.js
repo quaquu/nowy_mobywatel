@@ -1,6 +1,6 @@
 // Ekrany poza przebiegami spraw: start, dokumenty, skrzynka, prywatność, bliscy, ustawienia.
 import { ic } from './icons.js';
-import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane, wyborMotywu } from './core.js';
+import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane, wyborMotywu, przewinDo } from './core.js';
 import { portret, yarisCross, niemowle } from './grafiki.js';
 import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, zl, OSOBA, OSOBY, osoba, adresOsoby, emerytalne } from './data.js';
 
@@ -131,6 +131,8 @@ function widzety() {
   if (male.length % 2) w[w.lastIndexOf(male.at(-1))] = male.at(-1).replace('class="widzet"', 'class="widzet szeroki-w"');
   return w.length ? `<section aria-label="W liczbach" class="widzety">${w.join('')}</section>` : '';
 }
+// Trwający alarm (ćwiczenie) widać na Starcie, dopóki go nie zakończysz, najwyżej 2 godziny.
+const baner = () => stan.alarm?.aktywny && Date.now() - stan.alarm.aktywny < 72e5 ? `<a class="alarm-baner" href="#/alarm">${ic('alert')}<span><b>Trwa alarm powietrzny (ćwiczenie)</b><small>Dotknij, żeby zobaczyć najbliższe miejsce ochronne</small></span>${ic('right')}</a>` : '';
 export function start() {
   if (stan.ustawienia.prosty) return startProsty();
   const h = osoba.hero, heroOtwarte = h && !stan.zrobione[h.id];
@@ -143,6 +145,7 @@ export function start() {
   return {
     tytul: 'Start',
     html: `
+    ${baner()}
     <h1 tabindex="-1" class="powitanie">${powitanie}, ${esc(ja.wolacz)}</h1>
     ${szybkie()}
     ${heroOtwarte ? `
@@ -191,6 +194,7 @@ function startProsty() {
   return {
     tytul: 'Start',
     html: `
+    ${baner()}
     <h1 tabindex="-1" class="powitanie">Dzień dobry, ${esc(ja.wolacz)}</h1>
     ${najwazniejsza ? `<a class="hero prosty-hero" href="${najwazniejsza.h}"><b class="hero-t">${esc(najwazniejsza.t)}</b><span class="btn glowny">Zacznij${ic('right')}</span></a>` : ''}
     <ul class="kafle">
@@ -221,7 +225,8 @@ export function dokument(id) {
     tytul: d.nazwa,
     html: `<h1 tabindex="-1">${esc(d.nazwa)}</h1>
     <div class="kd kd-${d.kolor} kd-przod kd-sam"><span class="kd-gora"><b class="kd-t">${esc(d.nazwa)}</b><span class="kd-holo" aria-hidden="true"></span></span><span class="kd-linia">${esc(d.linia)}</span>${id === 'pojazd' ? `<span class="kd-auto">${yarisCross({ kolor: 'bialy', opis: 'Toyota Yaris Cross, biała, czarny dach' })}</span>` : `<span class="kd-duch" aria-hidden="true">${portret(OSOBA)}</span><span class="kd-dol"><span class="kd-foto">${portret(OSOBA, 'Zdjęcie: ' + ja.imie + ' ' + ja.nazwisko)}</span><span class="kd-imie">${esc(ja.imie.toUpperCase())}<small>${esc(ja.nazwisko.toUpperCase())}</small></span></span>`}</div>
-    <details class="karta kod-qr"><summary>${ic('eye')}Pokaż kod do sprawdzenia dokumentu</summary><span class="qr duzy" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span><p class="maly srodek">Kod ważny 2 minuty. Sprawdzający zobaczy go w swojej aplikacji.</p></details>
+    ${id === 'dowod' || id === 'prawo' ? `<a class="karta link-karta" href="#/pokaz">${ic('shield', 'okr')}<span><b>Pokaż tylko to, co potrzebne</b><small>Sklep, hotel, wynajem auta: zaznaczymy tylko potrzebne dane.</small></span>${ic('right', 'strz')}</a>` : ''}
+    <details class="karta kod-qr"><summary>${ic('eye')}Pokaż cały dokument kodem</summary><span class="qr duzy" role="img" aria-label="Kod do sprawdzenia dokumentu">${kodQR(13)}</span><p class="maly srodek">Kod ważny 2 minuty. Sprawdzający zobaczy go w swojej aplikacji.</p></details>
     <section class="karta">${d.pola.map(p => wiersz(...p)).join('')}
       <p class="zrodlo">${ic('info')}<span>Źródło: ${esc(d.zrodlo)}. Aktualne na: dziś, ${new Date().toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}.</span></p>
       <button class="btn tekst" id="blad-dan">Te dane są błędne? Zgłoś to</button>
@@ -232,26 +237,59 @@ export function dokument(id) {
   };
 }
 
+// Pokaż tylko to, co potrzebne: wybierasz cel, a aplikacja zaznacza dane niezbędne do niego (zasada minimalizacji danych).
+// Możesz coś dołożyć albo odznaczyć; reszta zostaje ukryta. Kod jest jednorazowy i ważny 2 minuty.
+const DANE_POKAZ = () => {
+  const prawo = dokumenty.find(d => d.id === 'prawo');
+  return [
+    ['18', 'Ukończone 18 lat', 'tak, bez daty urodzenia'],
+    ['imie', 'Imię i nazwisko', `${ja.imie} ${ja.nazwisko}`],
+    ['foto', 'Zdjęcie', 'z dowodu osobistego'],
+    ...(prawo ? [['prawo', 'Prawo jazdy kat. B: ważne, nie zatrzymane', 'tak']] : []),
+    ['adres', 'Adres zameldowania', ja.adres],
+    ['urodz', 'Data urodzenia', ja.urodzona || ''],
+    ['pesel', 'Numer PESEL', ja.pesel],
+  ];
+};
+const CELE = [
+  ['sklep', 'Zakupy 18+', ['18']],
+  ['hotel', 'Hotel', ['imie', 'foto']],
+  ['auto', 'Wynajem auta', ['imie', 'prawo']],
+  ['kurier', 'Odbiór przesyłki', ['imie', 'foto']],
+  ['urzad', 'Urząd lub bank', ['imie', 'foto', 'urodz', 'pesel']],
+];
 export function pokaz() {
+  const dane = DANE_POKAZ();
   return {
     tytul: 'Pokaż tylko to, co potrzebne',
     html: `<h1 tabindex="-1">Pokaż tylko to, co potrzebne</h1>
-    <p class="wstep">Wybierz, co chcesz potwierdzić. Odbiorca zobaczy tylko to, a nie cały dowód.</p>
-    <form id="f-pok" class="karta">
-      <fieldset class="grupa"><legend class="etyk">Co potwierdzić</legend>
-        <label class="opcja"><input type="radio" name="co" value="18" checked> Mam ukończone 18 lat</label>
-        <label class="opcja"><input type="radio" name="co" value="tozs"> Imię, nazwisko i zdjęcie (np. w hotelu)</label>
-        <label class="opcja"><input type="radio" name="co" value="adres"> Adres zameldowania</label>
+    <p class="wstep">Wybierz, po co pokazujesz dokument. Zaznaczymy tylko dane potrzebne do tego celu. Resztę możesz dodać sam.</p>
+    <form id="f-pok" class="karta" novalidate>
+      <fieldset class="grupa"><legend class="etyk">Po co</legend>
+        <div class="chipy">${CELE.filter(([, , d]) => d.every(k => dane.some(x => x[0] === k))).map(([id, t], i) => `<label class="chip-r"><input type="radio" name="cel" value="${id}" ${i === 0 ? 'checked' : ''}><span>${t}</span></label>`).join('')}</div>
       </fieldset>
-      <button class="btn glowny szeroki">Pokaż kod</button>
+      <ul class="lista ustaw pok-dane">${dane.map(([k, t, v]) => `<li><label class="przel-duzy"><span><b>${esc(t)}</b><small>${esc(v)}</small></span><input type="checkbox" role="switch" name="dana" value="${k}"></label></li>`).join('')}</ul>
+      <p class="maly" id="pok-ukryte" aria-live="polite"></p>
+      <button class="btn glowny szeroki">${ic('scan')}Pokaż kod</button>
     </form>
     <div id="kod" aria-live="polite"></div>`,
     po(root) {
+      const pola = $$('input[name=dana]', root);
+      const nazwa = k => dane.find(x => x[0] === k)[1];
+      // pierwsza litera mała, skróty zostają: „Numer PESEL” -> „numer PESEL”
+      const ukryte = () => { const n = pola.filter(p => !p.checked).map(p => { const t = nazwa(p.value); return t.charAt(0).toLowerCase() + t.slice(1); }); $('#pok-ukryte', root).textContent = n.length ? `Ukryte: ${n.join(', ')}.` : 'Pokazujesz wszystkie dane.'; };
+      const ustawCel = () => { const c = CELE.find(x => x[0] === $('input[name=cel]:checked', root).value); pola.forEach(p => { p.checked = c[2].includes(p.value); }); ukryte(); $('#kod', root).innerHTML = ''; };
+      $$('input[name=cel]', root).forEach(r => r.onchange = ustawCel);
+      pola.forEach(p => p.onchange = () => { ukryte(); $('#kod', root).innerHTML = ''; });
+      ustawCel();
       $('#f-pok', root).onsubmit = e => {
         e.preventDefault();
-        const co = $('input[name=co]:checked', root).value;
-        const t = { 18: 'Ta osoba ma ukończone 18 lat', tozs: `${ja.imie} ${ja.nazwisko}`, adres: ja.adres }[co];
-        $('#kod', root).innerHTML = `<div class="karta srodek"><span class="qr duzy" role="img" aria-label="Kod do zeskanowania">${kodQR(Date.now() % 997)}</span><p><b>${esc(t)}</b></p><p class="maly">Kod ważny 2 minuty. Data urodzenia, PESEL i adres ${co === 'adres' ? 'poza adresem ' : ''}pozostają ukryte.</p></div>`;
+        const wyb = dane.filter(([k]) => pola.find(p => p.value === k).checked);
+        if (!wyb.length) { $('#pok-ukryte', root).textContent = 'Zaznacz przynajmniej jedną daną.'; return; }
+        $('#kod', root).innerHTML = `<div class="karta srodek"><span class="qr duzy" role="img" aria-label="Kod do zeskanowania">${kodQR(Date.now() % 997)}</span>
+          <ul class="pok-wynik">${wyb.map(([, t, v]) => `<li><span>${esc(t)}</span><b>${esc(v)}</b></li>`).join('')}</ul>
+          <p class="maly">Kod jednorazowy, ważny 2 minuty. Sprawdzający zobaczy tylko te ${wyb.length === 1 ? 'dane' : wyb.length + ' dane'}; zapiszemy to w „Kto sprawdzał moje dane”.</p></div>`;
+        przewinDo($('#kod', root), { block: 'start' });
       };
     },
   };

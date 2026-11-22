@@ -61,13 +61,40 @@ function mapa(skad, top) {
   </svg>${kafle.length ? '<figcaption>Mapa: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">autorzy OpenStreetMap</a>. Bez internetu zostaje schemat.</figcaption>' : ''}</figure>`;
 }
 
+// Komunikat i instrukcja w trzech językach (EU-Alert pozwala nadawać wersje językowe). Reszta ekranu po polsku.
+const KIER_J = { en: ['north', 'north-east', 'east', 'south-east', 'south', 'south-west', 'west', 'north-west'], uk: ['північ', 'північний схід', 'схід', 'південний схід', 'південь', 'південний захід', 'захід', 'північний захід'] };
+const J = {
+  pl: { etyk: 'Alarm powietrzny · ćwiczenie w pokazie', h1: 'Idź do najbliższego miejsca ochronnego', p: (g, a, d, k) => `Komunikat RCB dla Łodzi i Zgierza, ${g}. Najbliższe: <b>${a}</b>, ${d} na ${k}.`,
+    teraz: 'Co teraz', kroki: ['Weź telefon, leki i plecak ewakuacyjny. Dokumenty masz w mObywatelu, działają bez internetu.', 'Idź schodami, nie windą.', 'Nie zdążysz bezpiecznie dojść? Zostań w budynku, w pomieszczeniu bez okien, z dala od ścian zewnętrznych.'],
+    bezp: on => `Jestem ${on ? 'bezpieczny' : 'bezpieczna'}` },
+  en: { etyk: 'Air raid alert · demo exercise', h1: 'Go to the nearest shelter', p: (g, a, d, k) => `RCB alert for Łódź and Zgierz, ${g}. Nearest: <b>${a}</b>, ${d} to the ${k}.`,
+    teraz: 'What to do now', kroki: ['Take your phone, medicines and emergency backpack. Your documents are in mObywatel and work offline.', 'Use the stairs, not the lift.', 'Can’t get there safely in time? Stay inside, in a room without windows, away from outer walls.'],
+    bezp: () => 'I am safe' },
+  uk: { etyk: 'Повітряна тривога · навчання', h1: 'Йдіть до найближчого укриття', p: (g, a, d, k) => `Повідомлення RCB для Лодзі та Згежа, ${g}. Найближче: <b>${a}</b>, ${d} на ${k}.`,
+    teraz: 'Що робити зараз', kroki: ['Візьміть телефон, ліки та тривожний рюкзак. Документи у mObywatel працюють без інтернету.', 'Ідіть сходами, не ліфтом.', 'Не встигаєте безпечно дійти? Залишайтеся в будівлі, у приміщенні без вікон, подалі від зовнішніх стін.'],
+    bezp: () => 'Я в безпеці' },
+};
+const JEZ = [['pl', 'PL'], ['en', 'EN'], ['uk', 'UA']];
+// Komunikat z sieci komórkowej (Cell Broadcast, EU-Alert): przychodzi na każdy telefon w zasięgu, bez numeru i bez internetu.
+// mObywatel go odczytuje i otwiera na najbliższym miejscu ochronnym.
+const alertCB = godz => `<div class="cb-alert" role="alertdialog" aria-modal="true" aria-labelledby="cb-t" aria-describedby="cb-o">
+  <div class="cb-karta">
+    <p class="cb-glowa">${ic('alert')}<span>Alert ekstremalny</span><small>${godz}</small></p>
+    <h2 id="cb-t">Alarm powietrzny: Łódź, Zgierz</h2>
+    <p id="cb-o">Ogłoszono alarm powietrzny. Udaj się do najbliższego miejsca ochronnego. Szczegóły w aplikacji mObywatel. <span lang="en">Air raid alert. Go to the nearest shelter.</span></p>
+    <p class="cb-zrodlo">Rządowe Centrum Bezpieczeństwa · komunikat z sieci komórkowej (Cell Broadcast) · ćwiczenie w pokazie</p>
+    <div class="cb-przyciski"><button type="button" class="btn drugi" id="cb-ok">OK</button><button type="button" class="btn glowny" id="cb-otworz">Otwórz w mObywatelu</button></div>
+  </div></div>`;
+
 const kartaMiejsca = (p, i, skad) => `<li class="schron${i ? '' : ' schron-1'}">
   <span class="schr-nr" aria-hidden="true">${i + 1}</span>
   <span class="schr-tr"><b>${esc(p.adres)}</b><small>${metry(p.m)} na ${kierunek(p.kurs)} · ${pieszo(p.m)} · dostępne ${DOST[p.dost]}</small></span>
   <a class="btn drugi maly-btn" href="${trasa(skad, p)}" target="_blank" rel="noopener">Prowadź</a></li>`;
 
-export async function alarmWidok(alarm) {
+export async function alarmWidok(alarm, cb) {
   await wczytaj();
+  const jez = J[stan.alarmJezyk] ? stan.alarmJezyk : 'pl', T = J[jez], kier = k => jez === 'pl' ? kierunek(k) : KIER_J[jez][Math.round(k / 45) % 8];
+  if (alarm && cb) { stan.alarm = { ...stan.alarm, aktywny: Date.now() }; zapisz(); }
   const S = SKAD[OSOBA] || SKAD.anna;
   const skad = stan.alarmTu?.gdzie || S.gdzie, skadOpis = stan.alarmTu?.opis || S.opis;
   const top = najblizsze(skad), on = OSOBA === 'jakub';
@@ -83,10 +110,11 @@ export async function alarmWidok(alarm) {
   }).join('');
   return {
     tytul: alarm ? 'Alarm' : 'Miejsca ochronne',
-    html: `${alarm ? `<section class="alarm-pas" role="alert">
-        <small>Alarm powietrzny · ćwiczenie w pokazie</small>
-        <h1 tabindex="-1">Idź do najbliższego miejsca ochronnego</h1>
-        <p>Komunikat RCB dla Łodzi i Zgierza, ${godz}. Najbliższe: <b>${esc(top[0].adres)}</b>, ${metry(top[0].m)} na ${kierunek(top[0].kurs)}.</p>
+    html: `${alarm && cb ? alertCB(godz) : ''}${alarm ? `<section class="alarm-pas" role="alert" lang="${jez}">
+        <fieldset class="segment jez-alarm"><legend class="sr">Język komunikatu</legend>${JEZ.map(([k, t]) => `<label><input type="radio" name="jezyk" value="${k}" ${k === jez ? 'checked' : ''}><span lang="${k}">${t}</span></label>`).join('')}</fieldset>
+        <small>${T.etyk}</small>
+        <h1 tabindex="-1">${T.h1}</h1>
+        <p>${T.p(godz, esc(top[0].adres), metry(top[0].m), kier(top[0].kurs))}</p>
       </section>` : `<h1 tabindex="-1">Miejsca ochronne</h1><p class="wstep">Sprawdź teraz, dokąd pójdziesz, gdy usłyszysz syrenę. Działa także bez internetu.</p>`}
     <section class="karta schr-karta" aria-labelledby="h-schr">
       <h2 class="nag" id="h-schr">Najbliższe miejsca ochronne</h2>
@@ -97,15 +125,27 @@ export async function alarmWidok(alarm) {
       <ol class="schrony">${top.map((p, i) => kartaMiejsca(p, i, skad)).join('')}</ol>
       <p class="offline-info">${ic('check')}<span>Działa bez internetu: ${DANE.punkty.length.toLocaleString('pl-PL')} miejsc z rejestru PSP zapisanych w telefonie, stan na ${esc(DANE.stan)}.</span></p>
     </section>
-    ${alarm ? `<section class="karta" aria-labelledby="h-teraz"><h2 class="nag" id="h-teraz">Co teraz</h2>
-      <ol class="punkty kroki-alarm"><li>Weź telefon, leki i plecak ewakuacyjny. Dokumenty masz w mObywatelu, działają bez internetu.</li><li>Idź schodami, nie windą.</li><li>Nie zdążysz bezpiecznie dojść? Zostań w budynku, w pomieszczeniu bez okien, z dala od ścian zewnętrznych.</li></ol></section>
+    ${alarm ? `<section class="karta" aria-labelledby="h-teraz" lang="${jez}"><h2 class="nag" id="h-teraz">${T.teraz}</h2>
+      <ol class="punkty kroki-alarm">${T.kroki.map(k => `<li>${k}</li>`).join('')}</ol></section>
     <section aria-labelledby="h-bliscy"><h2 class="sekcja" id="h-bliscy">Bliscy</h2><ul class="lista">${bliscy}</ul></section>
     ${bezp ? `<p class="potw-rez" role="status">${ic('check', 'okr zielona')}<span><b>Bliscy wiedzą, że jesteś ${on ? 'bezpieczny' : 'bezpieczna'}</b><small>Wysłano ${new Date(bezp).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}. Bez lokalizacji, tylko ta wiadomość.</small></span></p>`
-      : `<button type="button" class="btn glowny szeroki" id="bezpieczna">${ic('check')}Jestem ${on ? 'bezpieczny' : 'bezpieczna'}</button><p class="maly srodek">Wiadomość dostaną bliscy z zakładki Bliscy. Bez lokalizacji.</p>`}`
-      : `<a class="btn drugi szeroki" href="#/alarm">${ic('alert')}Zobacz, jak wygląda alarm w aplikacji</a>`}
-    <p class="notka"><b>O prototypie.</b> Alert RCB przychodzi SMS-em, mapa miejsc ochronnych jest na gdziesieukryc.pl, a mObywatel objaśnia sygnały alarmowe. Nowe: alarm w aplikacji z najbliższym miejscem obliczonym w telefonie, bez sieci, z instrukcją na teraz i potwierdzeniem, że Ty i Twoi bliscy jesteście bezpieczni. W pokazie są dane dla Łodzi i Zgierza; w aplikacji byłoby 88 tys. miejsc z całej Polski.</p>
+      : `<button type="button" class="btn glowny szeroki" id="bezpieczna" lang="${jez}">${ic('check')}${T.bezp(on)}</button><p class="maly srodek">Wiadomość dostaną bliscy z zakładki Bliscy. Bez lokalizacji.</p>`}
+    <button type="button" class="btn tekst szeroki" id="alarm-koniec">Zakończ ćwiczenie</button>`
+      : `<a class="btn drugi szeroki" href="#/alarm?cb=1">${ic('alert')}Zobacz, jak przyjdzie alarm</a>`}
+    <p class="notka"><b>O prototypie.</b> Dziś Alert RCB przychodzi SMS-em, a mapa miejsc ochronnych jest na gdziesieukryc.pl. Zapowiedziano alerty RCB w mObywatelu, a 14.10.2026 MSWiA, RCB, UKE i czterej operatorzy podpisali list intencyjny w sprawie Cell Broadcast (EU-Alert, jak CMAS w USA): komunikat z sieci komórkowej trafi do każdego telefonu w zasięgu, także bez internetu, od II połowy 2027 r. Nowe w prototypie: taki komunikat otwiera mObywatela, który bez sieci pokazuje najbliższe miejsce, instrukcję w trzech językach i bliskich. W pokazie są dane dla Łodzi i Zgierza; w aplikacji byłoby 88 tys. miejsc z całej Polski.</p>
     <p class="zrodlo">${ic('info')}<span>Miejsca ochronne: <a href="${esc(DANE.url)}" target="_blank" rel="noopener">${esc(DANE.zrodlo)}</a>, stan na ${esc(DANE.stan)}. Instrukcja: <a href="https://www.gov.pl/web/rcb/instrukcje-reagowania-podczas-zagrozenia-atakiem-z-powietrza" target="_blank" rel="noopener">RCB i MSWiA, zagrożenie atakiem z powietrza</a>.</span></p>`,
     po(root) {
+      const cbA = $('.cb-alert', root);
+      if (cbA) {
+        try { if (navigator.userActivation?.hasBeenActive) navigator.vibrate?.([600, 200, 600, 200, 600]); } catch {} // bez gestu przeglądarka blokuje wibrację
+        const zamknijCB = dalej => { cbA.remove(); history.replaceState(null, '', '#/alarm'); if (dalej) $('h1', root)?.focus(); else location.hash = '#/start'; };
+        $('#cb-otworz', root).onclick = () => zamknijCB(true);
+        $('#cb-ok', root).onclick = () => zamknijCB(false);
+        requestAnimationFrame(() => $('#cb-otworz', root)?.focus({ preventScroll: true }));
+      }
+      $$('input[name=jezyk]', root).forEach(x => x.onchange = () => { stan.alarmJezyk = x.value; zapisz(); dispatchEvent(new HashChangeEvent('hashchange')); });
+      const kon = $('#alarm-koniec', root);
+      if (kon) kon.onclick = () => { stan.alarm = null; zapisz(); toast('Ćwiczenie zakończone.'); location.hash = '#/start'; };
       const b = $('#bezpieczna', root);
       if (b) b.onclick = () => { stan.alarm = { ...stan.alarm, bezpieczna: Date.now() }; zapisz(); cel('alarm-bezpieczna'); ogloszenie(`Bliscy dostali wiadomość, że jesteś ${on ? 'bezpieczny' : 'bezpieczna'}.`); dispatchEvent(new HashChangeEvent('hashchange')); };
       $$('[data-wyslij]', root).forEach(x => x.onclick = () => { const w = { ...(stan.alarm?.wyslane || {}), [x.dataset.wyslij]: Date.now() }; stan.alarm = { ...stan.alarm, wyslane: w }; zapisz(); toast('Wysłano drogę do najbliższego miejsca ochronnego.'); dispatchEvent(new HashChangeEvent('hashchange')); });

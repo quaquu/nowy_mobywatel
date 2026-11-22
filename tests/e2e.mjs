@@ -268,7 +268,10 @@ export async function sprawy(url) {
     if (!/Emerytura/.test(t) || /Zgubiony portfel/.test(t)) throw new Error('Start nie pokazuje wybranych akcji: ' + t);
   });
   await krok('alarm', async p => {
-    await p.goto(url + '#/alarm'); await p.waitForSelector('.schron-1');
+    await p.goto(url + '#/alarm?cb=1'); await p.waitForSelector('.cb-alert'); await p.click('#cb-otworz'); await p.waitForSelector('.cb-alert', { state: 'detached' });
+    await p.click('label:has(input[name=jezyk][value="en"])'); await p.waitForFunction(() => /Go to the nearest shelter/.test(document.querySelector('.alarm-pas')?.textContent || ''));
+    await p.click('label:has(input[name=jezyk][value="pl"])'); await p.waitForFunction(() => /najbliższego miejsca/.test(document.querySelector('.alarm-pas')?.textContent || ''));
+    await p.waitForSelector('.schron-1');
     if (!/Żeromskiego 45/.test(await p.textContent('.schron-1'))) throw new Error('złe najbliższe miejsce ochronne');
     await p.click('[data-wyslij="0"]'); await p.waitForFunction(() => /Wysłano drogę/.test(document.querySelector('main')?.textContent || ''));
     await p.click('#bezpieczna'); await p.waitForFunction(() => /Bliscy wiedzą/.test(document.querySelector('main')?.textContent || ''));
@@ -297,14 +300,15 @@ export async function sprawy(url) {
     if (!/Twój podpis/.test(await p.textContent('main'))) throw new Error('brak poparcia na liście „Moje poparcia”');
     await p.click('[data-nie-ja]'); await p.waitForSelector('.toast');
   });
-  await krok('wypozyczalnia', async p => {
-    await p.click('#skan-btn'); await p.click('[data-kod="wypozyczalnia"]'); await p.waitForSelector('#sk-ile');
-    if (!/2 z 5/.test(await p.textContent('#sk-ile'))) throw new Error('domyślnie więcej niż wymagane minimum');
-    await p.click('dialog.skaner label:has(input[name=sk-dane][value="2"])');
-    if (!/3 z 5/.test(await p.textContent('#sk-ile'))) throw new Error('wybór zakresu nie działa');
-    await p.click('#sk-tak'); await p.waitForFunction(() => /Dane przekazane/.test(document.querySelector('dialog.skaner')?.textContent || ''));
-    const po = (await p.textContent('dialog.skaner')).split('Dane przekazane')[1];
-    if (/adres|telefon/i.test(po) || !/dłużej niż 3 lata/.test(po)) throw new Error('przekazano inny zakres niż wybrany: ' + po);
+  await krok('pokaz-dane', async p => {
+    await p.goto(url + '#/pokaz'); await p.waitForSelector('input[name=dana]');
+    const zazn = () => p.$$eval('input[name=dana]:checked', l => l.map(x => x.value).join(','));
+    if ((await zazn()) !== '18') throw new Error('sklep: więcej niż pełnoletność');
+    await p.click('label:has(input[name=cel][value="auto"])');
+    if ((await zazn()) !== 'imie,prawo') throw new Error('wynajem auta: zły zakres ' + (await zazn()));
+    await p.click('#f-pok button.glowny'); await p.waitForSelector('.pok-wynik');
+    const t = await p.textContent('.pok-wynik');
+    if (!/Prawo jazdy/.test(t) || /PESEL|Adres/.test(t)) throw new Error('kod pokazuje inne dane niż wybrane: ' + t);
   });
   await krok('skaner', async p => {
     const tekst = () => p.textContent('dialog.skaner');

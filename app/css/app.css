@@ -531,8 +531,32 @@ html.bez-notek .notka { display: none; }
 .kroki-alarm li { margin: var(--space-xs) 0; }
 @media (prefers-reduced-motion: no-preference) { html:not(.bez-ruchu) .schr-mapa .ty-puls { animation: puls 1.8s ease-out infinite; transform-origin: 180px 180px; } }
 @keyframes puls { from { transform: scale(.6); opacity: .6; } to { transform: scale(1.8); opacity: 0; } }
-.sk-wybor .krok-zamek { width: 51px; }
-.sk-wybor { margin: 0 0 var(--o3); }
+.pok-dane { margin: var(--o3) 0 var(--o2); }
+.pok-wynik { list-style: none; margin: var(--o3) 0; padding: 0; text-align: left; }
+.pok-wynik li { display: flex; justify-content: space-between; gap: var(--o3); padding: var(--space-xs) 0; border-top: 1px solid var(--separator); font-size: var(--t-objasn); }
+.pok-wynik span { color: var(--tekst2); }
+/* Komunikat Cell Broadcast: jak systemowy alert telefonu, nad aplikacją */
+.cb-alert { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: var(--o4); background: var(--zaslona); }
+.cb-karta { width: 100%; max-width: 360px; padding: var(--o4); border-radius: var(--r-arkusz); background: var(--pow); color: var(--tekst); box-shadow: var(--cien-unies); }
+.cb-glowa { display: flex; align-items: center; gap: var(--o2); margin: 0 0 var(--o2); color: var(--zle); font-weight: 900; }
+.cb-glowa .ic { box-sizing: content-box; width: 20px; height: 20px; padding: var(--space-xs); border-radius: 50%; background: var(--zle-wyp); }
+.cb-glowa small { margin-left: auto; color: var(--tekst2); font-weight: 400; }
+.cb-karta h2 { margin: 0 0 var(--o2); font-size: var(--t-tytul); line-height: 1.15; font-weight: 900; }
+.cb-karta p { margin: 0 0 var(--o2); }
+.cb-zrodlo { color: var(--tekst2); font-size: var(--t-przypis); }
+.cb-przyciski { display: flex; gap: var(--o2); margin-top: var(--o3); }
+.cb-przyciski .btn { flex: 1; }
+.cb-przyciski .btn.glowny { flex: 2; }
+@media (prefers-reduced-motion: no-preference) { html:not(.bez-ruchu) .cb-karta { animation: cb-drgaj .5s ease-in-out 2; } }
+@keyframes cb-drgaj { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+.jez-alarm { margin: 0 0 var(--o3); max-width: 220px; background: color-mix(in srgb, var(--zle-tekst) 18%, transparent); }
+.jez-alarm span { color: var(--zle-tekst); }
+.jez-alarm input:checked + span { background: var(--zle-tekst); color: var(--zle); box-shadow: none; }
+.jez-alarm input:focus-visible + span { outline-color: var(--zle-tekst); }
+.alarm-baner { display: flex; align-items: center; gap: var(--o3); margin: 0 0 var(--o3); padding: var(--o3) var(--o4); border-radius: var(--r-grupa); background: var(--zle); color: var(--zle-tekst); text-decoration: none; }
+.alarm-baner > span { flex: 1; display: flex; flex-direction: column; }
+.alarm-baner small { font-size: var(--t-objasn); }
+.alarm-baner .ic { width: 22px; height: 22px; flex: none; }
 .data-sl { display: block; margin: var(--space-2xs) 0 var(--o3); color: var(--tekst2); font-size: var(--t-objasn); }
 
 /* ---------- Portfel kart dokumentów (wyróżnik) ---------- */

@@ -71,9 +71,9 @@ Kolumna telefonu (maks. 480 px), marginesy 16 px, odstępy ze skali 4 px (`--spa
 
 **Komputer**: strona produktu. Telefon po lewej działa na żywo i zostaje na ekranie przy przewijaniu (sticky). Po prawej przewija się opowieść: hasło, trzy liczby z pomiarów, film, „Trzy sytuacje z życia” (karty z obrazem, dwoma zdaniami i liczbą; klik przełącza telefon na tę sprawę), cztery osoby, co jeszcze sprawdzić, „Uczciwie”. Przejście ekranu w telefonie nie przewija strony.
 
-**Alarm**: czerwony pas komunikatu na górze, najbliższe miejsce ochronne z odległością, kierunkiem i czasem dojścia, mapa (z siecią kafelki OpenStreetMap, bez sieci schemat z kręgami 250 i 500 m), instrukcja w trzech zdaniach, bliscy z „Wyślij drogę”, jedna główna akcja „Jestem bezpieczna”.
+**Alarm**: najpierw komunikat Cell Broadcast jak systemowy alert telefonu (czerwona krawędź, drgnięcie, „Otwórz w mObywatelu”); potem czerwony pas komunikatu z wyborem języka PL, EN, UA, baner trwającego alarmu na Starcie; najbliższe miejsce ochronne z odległością, kierunkiem i czasem dojścia, mapa (z siecią kafelki OpenStreetMap, bez sieci schemat z kręgami 250 i 500 m), instrukcja w trzech zdaniach, bliscy z „Wyślij drogę”, jedna główna akcja „Jestem bezpieczna”.
 
-**Prośba o dane**: lista danych, o które prosi firma; wymagane z kłódką, reszta przełącznikami wyłączonymi domyślnie; licznik „przekażesz n z m”.
+**Pokaż tylko to, co potrzebne**: najpierw cel (kapsuły), potem lista danych z przełącznikami zaznaczonymi według celu; pod spodem „Ukryte: …”; kod z listą przekazanych danych.
 
 ## Elevation & Depth
 
