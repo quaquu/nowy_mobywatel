@@ -276,6 +276,26 @@ export async function sprawy(url) {
     await p.click('[data-wyslij="0"]'); await p.waitForFunction(() => /Wysłano drogę/.test(document.querySelector('main')?.textContent || ''));
     await p.click('#bezpieczna'); await p.waitForFunction(() => /Bliscy wiedzą/.test(document.querySelector('main')?.textContent || ''));
   });
+  await krok('dostep-sposoby', async p => {
+    for (const sp of ['nfc', 'pz']) {
+      await p.goto(url + '#/start'); await p.waitForSelector('main h1');
+      await p.evaluate(async () => (await import('./js/widoki.js')).resetDostepu());
+      await p.goto(url + '#/dostep'); await p.waitForSelector(`[data-sp="${sp}"]`); await p.click(`[data-sp="${sp}"]`);
+      if (sp === 'nfc') {
+        await p.waitForSelector('#f-nfc'); await p.click('#nfc-ok');
+        if (await p.isHidden('#nfc-blad')) throw new Error('brak błędu dla pustego kodu CAN');
+        await p.fill('#can', '123456'); await p.fill('#pin1', '1234'); await p.click('#nfc-ok');
+      } else { await p.waitForSelector('#pz-ok'); await p.click('#pz-ok'); }
+      await p.waitForFunction(() => /Dostęp odzyskany/.test(document.querySelector('main h1')?.textContent || ''));
+    }
+  });
+  await krok('mandat-inny', async p => {
+    await p.goto(url + '#/mandat'); await p.waitForSelector('#f-man');
+    await p.click('label:has(input[name=kto][value="inny"])'); await p.click('#man-ok');
+    if (await p.isHidden('#kier-blad')) throw new Error('brak błędu bez danych kierowcy');
+    await p.fill('#kier-imie', 'Piotr Wójcik'); await p.fill('#kier-nr', '90010112345'); await p.click('#man-ok'); await podpisz(p);
+    await p.waitForFunction(() => /Kierowca wskazany/.test(document.querySelector('main h1')?.textContent || ''));
+  });
   await krok('kto-dzwoni', async p => {
     await p.goto(url + '#/kto-dzwoni'); await p.waitForSelector('#nr');
     await p.fill('#nr', '123'); await p.click('#f-nr button.glowny');
@@ -308,7 +328,7 @@ export async function sprawy(url) {
     if ((await zazn()) !== 'imie,prawo') throw new Error('wynajem auta: zły zakres ' + (await zazn()));
     await p.click('#f-pok button.glowny'); await p.waitForSelector('.pok-wynik');
     const t = await p.textContent('.pok-wynik');
-    if (!/Prawo jazdy/.test(t) || /PESEL|Adres/.test(t)) throw new Error('kod pokazuje inne dane niż wybrane: ' + t);
+    if (!/prawo jazdy/i.test(t) || /PESEL|Adres/.test(t)) throw new Error('kod pokazuje inne dane niż wybrane: ' + t);
   });
   await krok('skaner', async p => {
     const tekst = () => p.textContent('dialog.skaner');

@@ -245,7 +245,7 @@ const DANE_POKAZ = () => {
     ['18', 'Ukończone 18 lat', 'tak, bez daty urodzenia'],
     ['imie', 'Imię i nazwisko', `${ja.imie} ${ja.nazwisko}`],
     ['foto', 'Zdjęcie', 'z dowodu osobistego'],
-    ...(prawo ? [['prawo', 'Prawo jazdy kat. B: ważne, nie zatrzymane', 'tak']] : []),
+    ...(prawo ? [['prawo', 'Ważne prawo jazdy kat. B', 'tak, nie zatrzymane']] : []),
     ['adres', 'Adres zameldowania', ja.adres],
     ['urodz', 'Data urodzenia', ja.urodzona || ''],
     ['pesel', 'Numer PESEL', ja.pesel],
@@ -366,7 +366,7 @@ export function dane() {
     tytul: 'Twoje dane',
     html: `<h1 tabindex="-1">Twoje dane i prywatność</h1>
     <ul class="lista">
-      ${poz('#/dane/dostep', 'eye', 'Kto sprawdzał moje dane', `odczyty w ostatnich 60 dniach: ${n}`, dostep.some(d => d.podejrzane) ? '<span class="plak pomaranczowa">1 do wyjaśnienia</span>' : '')}
+      ${poz('#/dane/dostep', 'eye', 'Kto sprawdzał moje dane', `odczyty w ostatnich 60 dniach: ${n}${dostep.some(d => d.podejrzane) ? ' · <b class="tekst-ostrz">1 do wyjaśnienia</b>' : ''}`)}
       ${poz('#/dane/rejestry', 'doc', 'Co państwo o mnie wie', `rejestry: ${osoba.rejestry.length}, źródło i data każdej danej`)}
       ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'co robimy za Ciebie i za jaką zgodą')}
       ${poz('#/pokaz', 'shield', 'Pokaż tylko to, co potrzebne', 'np. pełnoletność bez daty urodzenia')}
@@ -461,6 +461,61 @@ export function odzyskaj() {
   if (dostepKrok === 'gotowe') {
     return { tytul: 'Dostęp odzyskany', html: `<h1 tabindex="-1">Dostęp odzyskany</h1><div class="gotowe"><div class="gotowe-ik">${ic('check', 'duza')}</div><h2>mDowód znów działa</h2><p>Nowy certyfikat jest ważny do ${fmtPelna(za(365 * 2))}. Przypomnimy Ci miesiąc przed końcem, żeby to się nie powtórzyło.</p><div class="przyciski pion"><a class="btn glowny" href="#/start">Wróć na start</a></div></div>` };
   }
+  // Dowód z chipem: kod CAN z przodu dowodu, przyłożenie do telefonu (NFC), PIN 1 ustalony przy odbiorze dowodu.
+  if (dostepKrok === 'nfc') {
+    return {
+      tytul: 'Dowód z chipem',
+      html: `<h1 tabindex="-1">Dowód z chipem</h1>
+      <ol class="postep" aria-label="Postęp"><li class="ok">Wybór sposobu</li><li class="teraz" aria-current="step">Dowód</li><li>Gotowe</li></ol>
+      <form id="f-nfc" class="karta" novalidate>
+        <label class="etyk" for="can">Kod CAN</label>
+        <input id="can" class="pole" inputmode="numeric" maxlength="6" autocomplete="off" placeholder="6 cyfr" aria-describedby="can-pom">
+        <p class="maly" id="can-pom">Sześć cyfr w prawym dolnym rogu, z przodu dowodu.</p>
+        <label class="etyk" for="pin1">PIN do dowodu (PIN 1)</label>
+        <input id="pin1" class="pole" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="4 cyfry" aria-describedby="pin-pom">
+        <p class="maly" id="pin-pom">Ustala się go przy odbiorze dowodu. Nie znasz go? Wybierz bank albo pomoc człowieka.</p>
+        <p class="blad" id="nfc-blad" role="alert" hidden></p>
+        <p class="maly" id="nfc-st" role="status"></p>
+        <button class="btn glowny szeroki" id="nfc-ok">${ic('id')}Przyłóż dowód do telefonu</button>
+      </form>
+      <button type="button" class="btn tekst szeroki" id="dost-wroc">Wybierz inny sposób</button>`,
+      po(root) {
+        $('#dost-wroc', root).onclick = () => { dostepKrok = 'diagnoza'; dispatchEvent(new HashChangeEvent('hashchange')); };
+        $('#f-nfc', root).onsubmit = async e => {
+          e.preventDefault();
+          const can = $('#can', root).value.trim(), pin = $('#pin1', root).value.trim(), bl = $('#nfc-blad', root);
+          if (!/^\d{6}$/.test(can)) { bl.textContent = 'Kod CAN ma 6 cyfr.'; bl.hidden = false; $('#can', root).focus(); return; }
+          if (!/^\d{4}$/.test(pin)) { bl.textContent = 'PIN 1 ma 4 cyfry.'; bl.hidden = false; $('#pin1', root).focus(); return; }
+          bl.hidden = true;
+          const b = $('#nfc-ok', root); b.disabled = true; $('#nfc-st', root).textContent = 'Przyłóż dowód do tyłu telefonu i nie ruszaj go…';
+          await new Promise(r => setTimeout(r, window.__SZYBKO ? 50 : 1400));
+          dostepKrok = 'gotowe'; cel('dostep'); ogloszenie('Dowód odczytany. Dostęp odzyskany.');
+          dispatchEvent(new HashChangeEvent('hashchange'));
+        };
+      },
+    };
+  }
+  // Profil zaufany: logowanie na login.gov.pl i powrót w to samo miejsce, jak przy banku.
+  if (dostepKrok === 'pz') {
+    return {
+      tytul: 'Profil zaufany',
+      html: `<h1 tabindex="-1">Profil zaufany</h1>
+      <ol class="postep" aria-label="Postęp"><li class="ok">Wybór sposobu</li><li class="teraz" aria-current="step">Profil zaufany</li><li>Gotowe</li></ol>
+      <section class="karta"><p>Otworzymy login.gov.pl. Zaloguj się profilem zaufanym, a <b>wrócisz dokładnie w to miejsce</b>. Nie zaczynasz od nowa.</p>
+        <p class="maly">Potrzebujesz loginu i hasła do profilu zaufanego oraz kodu SMS.</p>
+        <button class="btn glowny szeroki" id="pz-ok">${ic('shield')}Otwórz login.gov.pl i wróć</button></section>
+      <button type="button" class="btn tekst szeroki" id="dost-wroc">Wybierz inny sposób</button>`,
+      po(root) {
+        $('#dost-wroc', root).onclick = () => { dostepKrok = 'diagnoza'; dispatchEvent(new HashChangeEvent('hashchange')); };
+        $('#pz-ok', root).onclick = async () => {
+          const b = $('#pz-ok', root); b.disabled = true; b.textContent = 'Czekam na potwierdzenie z login.gov.pl…';
+          await new Promise(r => setTimeout(r, window.__SZYBKO ? 50 : 1200));
+          dostepKrok = 'gotowe'; cel('dostep'); ogloszenie('Profil zaufany potwierdził tożsamość. Dostęp odzyskany.');
+          dispatchEvent(new HashChangeEvent('hashchange'));
+        };
+      },
+    };
+  }
   if (dostepKrok === 'bank') {
     return {
       tytul: 'Potwierdzenie w banku',
@@ -496,8 +551,7 @@ export function odzyskaj() {
     <p class="notka"><b>O prototypie.</b> Ten ekran odpowiada na najczęstszą skargę w recenzjach mObywatela: 33% ocen 1–2★ dotyczy logowania i „pętli” przy potwierdzaniu tożsamości.</p>`,
     po(root) {
       $$('[data-sp]', root).forEach(b => b.onclick = () => {
-        if (b.dataset.sp === 'bank') { dostepKrok = 'bank'; dispatchEvent(new HashChangeEvent('hashchange')); }
-        else toast('W prototypie pokazujemy ścieżkę przez bank. Pozostałe działają tak samo: wracasz w to samo miejsce.');
+        dostepKrok = b.dataset.sp; dispatchEvent(new HashChangeEvent('hashchange'));
       });
     },
   };
@@ -538,7 +592,7 @@ export function konsultant() {
     <form id="f-kon" class="karta" novalidate>
       <fieldset class="grupa"><legend class="etyk">W czym pomóc</legend>${tematy.map((t, i) => `<label class="opcja"><input type="radio" name="temat" value="${esc(t)}" ${i === 0 ? 'checked' : ''}> ${esc(t)}</label>`).join('')}</fieldset>
       <fieldset class="grupa"><legend class="etyk">Kiedy zadzwonić</legend>${pory.map(([t, o], i) => `<label class="opcja"><input type="radio" name="kiedy" value="${esc(t)}" ${i === 0 ? 'checked' : ''}> <span>${esc(t)}<small class="maly">${esc(o)}</small></span></label>`).join('')}</fieldset>
-      ${wierszK('Numer, na który zadzwonimy', '+48 600 ••• 412 (z Twojego profilu)')}
+      <div class="wiersz"><span>Zadzwonimy na numer z Twojego profilu</span><b class="nowrap">+48 600 ••• 412</b></div>
       <label class="opcja"><input type="checkbox" id="kon-kontekst" checked> Pokaż konsultantowi, gdzie utknęłam</label>
       <button class="btn glowny szeroki">${ic('phone')}Poproś o telefon</button>
     </form>

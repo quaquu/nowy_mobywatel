@@ -39,10 +39,10 @@ export function slub() {
     tytul: `Ślub: ${fmt(new Date(z.data), { day: 'numeric', month: 'long', year: 'numeric' })}`,
     czas: z.rodzaj,
     pozycje: [
-      [`USC: ${dataWizyty(z.wizyta)}`, 'zapewnienia podpiszecie oboje osobiście, z dowodami osobistymi'],
-      [PARA.on, 'dostał prośbę o potwierdzenie terminu w swoim mObywatelu'],
-      ['Opłata 84 zł', 'za sporządzenie aktu małżeństwa, przy pierwszej wizycie'],
-      ['Po ślubie', `nazwisko: ${z.nazwisko}; PESEL zmieni się z urzędu, przypomnimy o dowodzie i prawie jazdy (30 dni)`],
+      [`USC: ${dataWizyty(z.wizyta)}`, 'zapewnienia podpiszecie oboje osobiście, z dowodami osobistymi', 'pozniej'],
+      [PARA.on, 'dostał prośbę o potwierdzenie terminu w swoim mObywatelu', 'tok'],
+      ['Opłata 84 zł', 'za sporządzenie aktu małżeństwa, przy pierwszej wizycie', 'pozniej'],
+      ['Po ślubie', `nazwisko: ${z.nazwisko}; PESEL zmieni się z urzędu, przypomnimy o dowodzie i prawie jazdy (30 dni)`, 'pozniej'],
     ],
   }) };
   const min = isoDnia(za(35)), dom = isoDnia(za(90));
@@ -99,12 +99,12 @@ export function smierc() {
   const z = stan.zrobione.smierc;
   if (z) return { tytul: 'Śmierć bliskiej osoby', html: `<h1 tabindex="-1">Wnioski wysłane</h1>` + gotowe({
     tytul: `${ileSpraw(z.ile)} w toku`,
-    czas: 'Statusy zobaczysz tutaj i w powiadomieniach.',
+    czas: 'Każdą sprawę śledzisz tutaj jak przesyłkę. O każdej zmianie dostaniesz powiadomienie.',
     pozycje: [
-      ...(z.zasilek ? [['ZUS: zasiłek pogrzebowy', `${zl(z.zasilek)} na Twoje konto, zwykle w ciągu 30 dni od kompletu dokumentów`]] : []),
-      ...(z.wdowia ? [['ZUS: renta wdowia mamy', 'decyzja przyjdzie do mamy i do Ciebie (z upoważnienia)']] : []),
-      ...(z.spadek ? [['Poświadczenie dziedziczenia', 'lista dokumentów dla notariusza jest w Twojej skrzynce']] : []),
-      ['Przypomnimy', 'o zgłoszeniu spadku do urzędu skarbowego (SD-Z2) w 6 miesięcy od poświadczenia dziedziczenia'],
+      ...(z.zasilek ? [['ZUS: zasiłek pogrzebowy', `${zl(z.zasilek)} na Twoje konto, zwykle w ciągu 30 dni od kompletu dokumentów`, 'tok']] : []),
+      ...(z.wdowia ? [['ZUS: renta wdowia mamy', 'decyzja przyjdzie do mamy i do Ciebie (z upoważnienia)', 'tok']] : []),
+      ...(z.spadek ? [['Poświadczenie dziedziczenia', 'lista dokumentów dla notariusza jest w Twojej skrzynce', 'ok']] : []),
+      ['Przypomnimy', 'o zgłoszeniu spadku do urzędu skarbowego (SD-Z2) w 6 miesięcy od poświadczenia dziedziczenia', 'pozniej'],
     ],
   }) };
   const KROKI = () => [
@@ -171,11 +171,11 @@ export function firma() {
     tytul: z.nazwa,
     czas: `Działalność od ${fmt(new Date(z.od), { day: 'numeric', month: 'long', year: 'numeric' })}`,
     pozycje: [
-      ['CEIDG', 'wpis jest bezpłatny i widać go najpóźniej następnego dnia roboczego; działać możesz od dnia złożenia wniosku'],
-      ['Urząd skarbowy i GUS', 'NIP i REGON pojawią się we wpisie i w Twojej skrzynce, bez osobnych wniosków'],
-      ['ZUS', 'zgłoszenie do ubezpieczenia zdrowotnego; składki społeczne płacisz już z umowy o pracę'],
-      ...(z.vat ? [['Urząd skarbowy: VAT-R', 'rejestracja jako czynny podatnik VAT']] : []),
-      ['Przypomnimy', 'składka zdrowotna i zaliczka na podatek: do 20. dnia każdego miesiąca'],
+      ['CEIDG', 'wpis jest bezpłatny i widać go najpóźniej następnego dnia roboczego; działać możesz od dnia złożenia wniosku', 'tok'],
+      ['Urząd skarbowy i GUS', 'NIP i REGON pojawią się we wpisie i w Twojej skrzynce, bez osobnych wniosków', 'tok'],
+      ['ZUS', 'zgłoszenie do ubezpieczenia zdrowotnego; składki społeczne płacisz już z umowy o pracę', 'tok'],
+      ...(z.vat ? [['Urząd skarbowy: VAT-R', 'rejestracja jako czynny podatnik VAT', 'tok']] : []),
+      ['Przypomnimy', 'składka zdrowotna i zaliczka na podatek: do 20. dnia każdego miesiąca', 'pozniej'],
     ],
   }) };
   const KROKI = () => [
@@ -237,9 +237,9 @@ export function emerytura() {
   if (z) return { tytul: 'Emerytura', html: `<h1 tabindex="-1">Gotowe</h1>` + gotowe({
     tytul: z.zastrzezenie ? 'Zastrzeżenie wysłane do ZUS' : 'Okresy składkowe sprawdzone',
     pozycje: [
-      ...(z.zastrzezenie ? [['ZUS', 'sprawdzi okres 2013–2015 u płatnika i odpowie w Twojej skrzynce']] : [['2013–2015', 'umowa zlecenia studentki do 26 lat: składki nie były należne']]),
-      ['Przypomnimy', `${EMERYTURA.wniosekOd}: od tego dnia złożysz wniosek o emeryturę`],
-      ['Legitymacja emeryta-rencisty', 'po przyznaniu emerytury trafi do mObywatela automatycznie'],
+      ...(z.zastrzezenie ? [['ZUS', 'sprawdzi okres 2013–2015 u płatnika i odpowie w Twojej skrzynce', 'tok']] : [['2013–2015', 'umowa zlecenia studentki do 26 lat: składki nie były należne', 'ok']]),
+      ['Przypomnimy', `${EMERYTURA.wniosekOd}: od tego dnia złożysz wniosek o emeryturę`, 'pozniej'],
+      ['Legitymacja emeryta-rencisty', 'po przyznaniu emerytury trafi do mObywatela automatycznie', 'pozniej'],
     ],
   }) };
   return {
@@ -301,10 +301,10 @@ export function osiemnastka() {
   if (z) return { tytul: 'Kończę 18 lat', html: `<h1 tabindex="-1">Gotowe</h1>` + gotowe({
     tytul: z.pkk ? 'Wniosek o profil kandydata na kierowcę wysłany' : 'Wszystko gotowe na 18. urodziny',
     pozycje: [
-      ...(z.pkk ? [['Wydział Komunikacji', 'numer profilu (PKK) trafi do skrzynki, zwykle w ciągu 2 dni roboczych; podasz go w ośrodku szkolenia kierowców']] : []),
-      ['Rejestr wyborców', `wpis z urzędu ${fmt(KUBA.urodziny)}`],
-      ...(z.wybory ? [['Przypomnimy', 'o najbliższych wyborach i adresie lokalu wyborczego']] : []),
-      ['Internetowe Konto Pacjenta', 'od 18. urodzin rodzice nie mają już do niego dostępu'],
+      ...(z.pkk ? [['Wydział Komunikacji', 'numer profilu (PKK) trafi do skrzynki, zwykle w ciągu 2 dni roboczych; podasz go w ośrodku szkolenia kierowców', 'tok']] : []),
+      ['Rejestr wyborców', `wpis z urzędu ${fmt(KUBA.urodziny)}`, 'pozniej'],
+      ...(z.wybory ? [['Przypomnimy', 'o najbliższych wyborach i adresie lokalu wyborczego', 'pozniej']] : []),
+      ['Internetowe Konto Pacjenta', 'od 18. urodzin rodzice nie mają już do niego dostępu', 'pozniej'],
     ],
   }) };
   return {
@@ -367,9 +367,9 @@ export function renta() {
     tytul: 'Renta wdowia: wniosek w ZUS',
     czas: 'ZUS ma na decyzję 30 dni. Dostaniesz ją tutaj i listem.',
     pozycje: [
-      ['Wybrany wariant', z.wariant === 'emerytura' ? 'emerytura w całości i 15% renty rodzinnej' : 'renta rodzinna w całości i 15% emerytury'],
-      ['Więcej co miesiąc', `ok. ${zlGr(z.wiecej)} brutto, od miesiąca złożenia wniosku`],
-      ...(z.corka ? [['Anna Wójcik, córka', 'zobaczy decyzję u siebie (upoważnienie do spraw w ZUS)']] : []),
+      ['Wybrany wariant', z.wariant === 'emerytura' ? 'emerytura w całości i 15% renty rodzinnej' : 'renta rodzinna w całości i 15% emerytury', 'ok'],
+      ['Więcej co miesiąc', `ok. ${zlGr(z.wiecej)} brutto, od miesiąca złożenia wniosku`, 'pozniej'],
+      ...(z.corka ? [['Anna Wójcik, córka', 'zobaczy decyzję u siebie (upoważnienie do spraw w ZUS)', 'ok']] : []),
     ],
   }) };
   const wiersz2 = (k, v, mocny) => `<div class="wiersz"><span>${esc(k)}</span>${mocny ? `<b>${esc(v)}</b>` : `<span>${esc(v)}</span>`}</div>`;

@@ -30,8 +30,8 @@ const rad = x => x * Math.PI / 180;
 function odl([a, b], [c, d]) { const h = Math.sin(rad(c - a) / 2) ** 2 + Math.cos(rad(a)) * Math.cos(rad(c)) * Math.sin(rad(d - b) / 2) ** 2; return 2 * 6371000 * Math.asin(Math.sqrt(h)); }
 function kurs([a, b], [c, d]) { const y = Math.sin(rad(d - b)) * Math.cos(rad(c)), x = Math.cos(rad(a)) * Math.sin(rad(c)) - Math.sin(rad(a)) * Math.cos(rad(c)) * Math.cos(rad(d - b)); return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360; }
 const najblizsze = (skad, n = 3) => DANE.punkty.map(p => ({ lat: p[0], lon: p[1], adres: p[2], dost: p[3], m: odl(skad, [p[0], p[1]]), kurs: kurs(skad, [p[0], p[1]]) })).sort((x, y) => x.m - y.m).slice(0, n);
-const metry = m => m < 1000 ? `${Math.round(m / 10) * 10} m` : `${(m / 1000).toFixed(1).replace('.', ',')} km`;
-const pieszo = m => `ok. ${Math.max(1, Math.ceil(m / 80))} min pieszo`; // 4,8 km/h
+const metry = m => m < 1000 ? `${Math.round(m / 10) * 10}\u00a0m` : `${(m / 1000).toFixed(1).replace('.', ',')}\u00a0km`; // twarda spacja: liczba nie odrywa się od jednostki
+const pieszo = m => `ok.\u00a0${Math.max(1, Math.ceil(m / 80))}\u00a0min pieszo`; // 4,8 km/h
 const kierunek = k => KIER[Math.round(k / 45) % 8];
 const trasa = (z, p) => `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${z[0]}%2C${z[1]}%3B${p.lat}%2C${p.lon}`;
 
@@ -53,8 +53,9 @@ function mapa(skad, top) {
     <defs><filter id="mapa-noc"><feColorMatrix type="matrix" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/><feColorMatrix type="hueRotate" values="180"/></filter><clipPath id="mapa-ramka"><rect width="${W}" height="${W}" rx="14"/></clipPath></defs>
     <g clip-path="url(#mapa-ramka)"><rect width="${W}" height="${W}" class="tlo-mapy"/>${kafle.length ? `<g class="kafle">${kafle.join('')}</g>` : ''}
     <circle cx="${c}" cy="${c}" r="${r(500)}" class="krag"/><circle cx="${c}" cy="${c}" r="${r(250)}" class="krag"/>
-    <text x="${c + 5}" y="${(c - r(500) + 13).toFixed(1)}" class="opis-kr">500 m</text><text x="${c + 5}" y="${(c - r(250) + 13).toFixed(1)}" class="opis-kr">250 m</text>
-    <text x="${c}" y="16" class="polnoc" text-anchor="middle">N</text>
+    <g class="opis-kr-t"><rect x="${(c + +r(250) * .71 - 2).toFixed(1)}" y="${(c + +r(250) * .71 - 11).toFixed(1)}" width="40" height="15" rx="7"/><text x="${(c + +r(250) * .71 + 18).toFixed(1)}" y="${(c + +r(250) * .71).toFixed(1)}" text-anchor="middle" class="opis-kr">250 m</text></g>
+    <g class="opis-kr-t"><rect x="${(c + +r(500) * .71 - 2).toFixed(1)}" y="${(c + +r(500) * .71 - 11).toFixed(1)}" width="40" height="15" rx="7"/><text x="${(c + +r(500) * .71 + 18).toFixed(1)}" y="${(c + +r(500) * .71).toFixed(1)}" text-anchor="middle" class="opis-kr">500 m</text></g>
+    <g class="polnoc-t"><circle cx="20" cy="20" r="13"/><path d="M20 10l4 8h-8z"/><text x="20" y="29" text-anchor="middle" class="polnoc">N</text></g>
     ${inne.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" class="pkt"/>`).join('')}
     ${top.map((p, i) => { const [x, y] = xy(p.lat, p.lon); return `<g class="top${i ? '' : ' pierwszy'}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${i ? 10 : 12}"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle">${i + 1}</text></g>`; }).join('')}
     <circle cx="${c}" cy="${c}" r="9" class="ty"/><circle cx="${c}" cy="${c}" r="16" class="ty-puls"/></g>

@@ -5,6 +5,7 @@ import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast,
 import { spokojnie } from './ruch.js';
 import { autoZBoku, zdjecieFotoradaru } from './grafiki.js';
 import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy, OSOBA, OSOBY, WLASCICIEL } from './data.js';
+import { peselStan } from './widoki.js';
 
 // 1 sprawa, 2–4 sprawy, 5+ spraw (12–14: spraw)
 export const ileSpraw = n => `${n} ${n === 1 ? 'sprawa' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'sprawy' : 'spraw'}`;
@@ -152,9 +153,16 @@ const ADRESY = ['ul. Piotrkowska 210 m. 4, 90-368 Łódź', 'ul. Piłsudskiego 1
 
 export function przeprowadzka() {
   if (stan.zrobione.przeprowadzka) {
+    const z = stan.zrobione.przeprowadzka, ids = z.ids || ['meld', 'urzedy', 'pojazd', 'smieci'];
+    const P = { meld: ['Urząd gminy', 'zameldowanie zwykle w 1 dzień roboczy; wymeldowanie ze starego adresu z automatu', 'tok'],
+      urzedy: ['Urząd skarbowy, ZUS, NFZ', 'nowy adres trafi do nich sam po zameldowaniu', 'pozniej'],
+      pojazd: ['Wydział komunikacji', 'zgłoszenie nowego adresu właściciela Yarisa', 'tok'],
+      smieci: ['Nowa gmina', 'deklaracja opłaty za śmieci złożona', 'ok'] };
     return { tytul: 'Przeprowadzka', html: `<h1 tabindex="-1">Nowy adres zapisany</h1>` + gotowe({
       tytul: 'Zameldowanie wysłane',
-      pozycje: [['Urząd gminy', 'zameldowanie zwykle w 1 dzień roboczy; wymeldowanie ze starego adresu z automatu'], ['Urząd skarbowy, ZUS, NFZ', 'nowy adres trafi do nich sam po zameldowaniu'], ['Wydział komunikacji', 'zgłoszenie nowego adresu właściciela Yarisa'], ['Nowa gmina', 'deklaracja opłaty za śmieci złożona']],
+      czas: z.adres ? `Nowy adres: ${z.adres}` : '',
+      pozycje: [...ids.map(i => P[i]).filter(Boolean), ...(z.najem ? [['Właściciel mieszkania', 'dostał prośbę o potwierdzenie pobytu w swoim mObywatelu', 'tok']] : [])],
+      dalej: [['Zobacz, kto użył Twoich danych', '#/dane/dostep', 'drugi']],
     }) };
   }
   const dzieckoImie = stan.imieDziecka || 'córka';
@@ -180,7 +188,7 @@ export function przeprowadzka() {
       <fieldset class="grupa"><legend class="etyk">Kto się przeprowadza</legend>
         <p class="opcja opcja-stala"><span class="krok-zamek">${ic('user')}</span> Ty</p>
         <label class="opcja"><input type="checkbox" checked> ${esc(dzieckoImie)} (zameldujesz jako rodzic)</label>
-        <label class="opcja"><input type="checkbox" checked> ${esc(ja.partner.imie)} <small>(dostanie prośbę o podpis w swoim mObywatelu)</small></label>
+        <label class="opcja"><input type="checkbox" checked><span class="opcja-tr">${esc(ja.partner.imie)}<small>dostanie prośbę o podpis w swoim mObywatelu</small></span></label>
       </fieldset>
       <fieldset class="grupa"><legend class="etyk">Mieszkanie jest</legend>
         <label class="opcja"><input type="radio" name="tytul" value="moje"> moje (sprawdzimy w księdze wieczystej)</label>
@@ -207,7 +215,7 @@ export function przeprowadzka() {
           cel: 'przeprowadzka',
         });
         if (!ok) return;
-        stan.zrobione.przeprowadzka = true; wyb.forEach(k => dodajWyslane(k.tytul, k.doKogo)); zapisz();
+        stan.zrobione.przeprowadzka = { ids: wyb.map(k => k.id), najem, adres: pole.value.trim() }; wyb.forEach(k => dodajWyslane(k.tytul, k.doKogo)); zapisz();
         ogloszenie('Zameldowanie wysłane.');
         dispatchEvent(new HashChangeEvent('hashchange'));
       };
@@ -219,9 +227,14 @@ export function przeprowadzka() {
 let autoKrok = 'sprawdz';
 export function auto() {
   if (stan.zrobione.auto) {
+    const ids = stan.zrobione.auto.ids || ['umowa', 'pcc', 'rej', 'oc'];
+    const P = { umowa: ['Sprzedający', 'podpisze umowę w swoim mObywatelu (link ważny 24 h)', 'tok'],
+      pcc: ['Urząd skarbowy', 'PCC-3 złożony i opłacony', 'ok'],
+      rej: ['Wydział komunikacji', 'rejestracja na Ciebie; tablice zostają, decyzja w kilka dni', 'tok'],
+      oc: ['OC', 'polisa sprzedającego działa do końca okresu; przypomnimy 30 dni wcześniej', 'pozniej'] };
     return { tytul: 'Kupno auta', html: `<h1 tabindex="-1">Auto jest Twoje</h1>` + gotowe({
-      tytul: 'Umowa, podatek i rejestracja wysłane',
-      pozycje: [['Sprzedający', 'podpisze umowę w swoim mObywatelu (link ważny 24 h)'], ['Urząd skarbowy', 'PCC-3 złożony i opłacony'], ['Wydział komunikacji', 'rejestracja na Ciebie; tablice zostają, decyzja w kilka dni'], ['OC', 'polisa sprzedającego działa do końca okresu; przypomnimy 30 dni wcześniej']],
+      tytul: ids.includes('rej') ? 'Umowa, podatek i rejestracja wysłane' : 'Umowa wysłana',
+      pozycje: ids.map(i => P[i]).filter(Boolean),
     }) };
   }
   if (autoKrok === 'sprawdz') {
@@ -290,7 +303,7 @@ export function auto() {
         const wyb = zaznaczone(root, kroki);
         const ok = await arkuszZgody({ tytul: 'Zakup Toyoty Yaris', pozycje: wyb.map(k => ({ co: k.tytul, do: k.doKogo })), dane: ['imię, nazwisko, PESEL, adres', 'dane pojazdu z CEPiK', `cena: ${zl(parseInt(cena.value) || 0)}`], cofniecie: `PCC (${zl(licz())}) zapłacisz BLIK-iem po podpisie. Rejestrację można wycofać do decyzji urzędu.`, cel: 'auto' });
         if (!ok) return;
-        stan.zrobione.auto = true; autoKrok = 'sprawdz'; wyb.forEach(k => dodajWyslane(k.tytul, k.doKogo)); zapisz();
+        stan.zrobione.auto = { ids: wyb.map(k => k.id) }; autoKrok = 'sprawdz'; wyb.forEach(k => dodajWyslane(k.tytul, k.doKogo)); zapisz();
         dispatchEvent(new HashChangeEvent('hashchange'));
       };
     },
@@ -300,16 +313,20 @@ export function auto() {
 /* ---------------- Utrata dokumentów ---------------- */
 export function utrata() {
   if (stan.zrobione.utrata) {
-    return { tytul: 'Utrata dokumentów', html: `<h1 tabindex="-1">Jesteś zabezpieczona</h1>` + gotowe({
+    const ids = stan.zrobione.utrata.ids || ['dowod', 'pesel'];
+    const P = { dowod: ['Dowód osobisty', 'zawieszony na 14 dni i zastrzeżony w bankach; jeśli się znajdzie, odwiesisz go tutaj', 'ok'],
+      pesel: ['PESEL', 'zastrzeżony; cofniesz go w „Zastrzeżenie PESEL”, np. przed wzięciem kredytu', 'ok'],
+      prawo: ['Prawo jazdy', 'utrata zgłoszona, wtórnik zamówiony (100 zł); odbiór w wydziale komunikacji', 'tok'] };
+    return { tytul: 'Utrata dokumentów', html: `<h1 tabindex="-1">Jesteś ${OSOBA === 'jakub' ? 'zabezpieczony' : 'zabezpieczona'}</h1>` + gotowe({
       tytul: 'Dokumenty zastrzeżone',
       czas: 'Banki i operatorzy widzą zastrzeżenie od tej chwili.',
-      pozycje: [['Dowód osobisty', 'zawieszony na 14 dni i zastrzeżony w bankach; jeśli się znajdzie, odwiesisz go tutaj'], ['PESEL', 'zastrzeżony; cofniesz jednym przyciskiem, np. przed wzięciem kredytu'], ['mDowód w telefonie', 'działa dalej, możesz nim potwierdzać tożsamość']],
-      dalej: [['Przygotuj wniosek o nowy dowód', '#/sprawa/dowod', 'glowny'], ['Znalazłam portfel: odwieś dowód', '#/sprawa/utrata/znaleziony', 'drugi']],
+      pozycje: [...ids.map(i => P[i]).filter(Boolean), ['mDowód w telefonie', 'działa dalej, możesz nim potwierdzać tożsamość', 'ok']],
+      dalej: [['Przygotuj wniosek o nowy dowód', '#/sprawa/dowod', 'glowny'], ['Znalazł' + (OSOBA === 'jakub' ? 'em' : 'am') + ' portfel: odwieś dowód', '#/sprawa/utrata/znaleziony', 'drugi']],
     }) };
   }
   const kroki = [
     { id: 'dowod', tytul: 'Zawieś i zastrzeż dowód osobisty', opis: 'Na 14 dni. Jeśli portfel się znajdzie, cofniesz to tutaj.', doKogo: 'Rejestr Dowodów Osobistych, banki' },
-    { id: 'pesel', tytul: 'Zastrzeż PESEL', opis: 'Nikt nie weźmie kredytu ani karty SIM na Twoje dane.', doKogo: 'Rejestr zastrzeżeń PESEL' },
+    ...(peselStan().zastrzezony ? [] : [{ id: 'pesel', tytul: 'Zastrzeż PESEL', opis: 'Nikt nie weźmie kredytu ani karty SIM na Twoje dane.', doKogo: 'Rejestr zastrzeżeń PESEL' }]),
     { id: 'prawo', tytul: 'Zgłoś utratę prawa jazdy', opis: 'Uprawnienia do jazdy masz nadal. Wtórnik zamówisz w tym samym wniosku (100 zł).', doKogo: 'starosta (wydział komunikacji)', wl: false },
   ];
   return {
@@ -319,6 +336,7 @@ export function utrata() {
     <p class="wstep">Najpierw zabezpieczymy Cię przed kradzieżą tożsamości. To zajmie minutę.</p>
     <form id="f-ut" class="karta" novalidate>
       <ul class="kroki">${kroki.map(krok).join('')}</ul>
+      ${peselStan().zastrzezony ? `<p class="potw-rez">${ic('check', 'okr zielona')}<span><b>PESEL masz już zastrzeżony</b><small>Nikt nie weźmie kredytu ani karty SIM na Twoje dane. <a href="#/pesel">Zastrzeżenie PESEL</a></small></span></p>` : ''}
       <p class="uwaga">${ic('phone')}<span>Karty płatnicze zastrzeżesz pod numerem <a href="tel:+48828828828">828 828 828</a>. Kradzież zgłoś policji: <a href="tel:112">112</a>.</span></p>
       <button class="btn glowny szeroki pilny">${ic('shield')}Zastrzeż zaznaczone</button>
     </form>
@@ -328,9 +346,11 @@ export function utrata() {
         e.preventDefault();
         const wyb = zaznaczone(root, kroki);
         if (!wyb.length) return toast('Zaznacz co najmniej jedną rzecz.');
-        const ok = await arkuszZgody({ tytul: 'Zastrzeżenie dokumentów', pozycje: wyb.map(k => ({ co: k.tytul, do: k.doKogo })), dane: ['PESEL', 'seria i numer dowodu ZWA 418263'], cofniecie: 'Zawieszenie dowodu i zastrzeżenie PESEL cofniesz w aplikacji w każdej chwili.', przycisk: 'Zastrzeż', cel: 'utrata' });
+        const ok = await arkuszZgody({ tytul: 'Zastrzeżenie dokumentów', pozycje: wyb.map(k => ({ co: k.tytul, do: k.doKogo })), dane: ['PESEL', 'seria i numer dowodu ' + ((dokumenty.find(d => d.id === 'dowod')?.pola || []).find(p => p[0] === 'Seria i numer')?.[1] || '')], cofniecie: 'Zawieszenie dowodu i zastrzeżenie PESEL cofniesz w aplikacji w każdej chwili.', przycisk: 'Zastrzeż', cel: 'utrata' });
         if (!ok) return;
-        stan.zrobione.utrata = true; wyb.forEach(k => dodajWyslane(k.tytul, k.doKogo)); zapisz();
+        stan.zrobione.utrata = { ids: wyb.map(k => k.id) };
+        if (wyb.some(k => k.id === 'pesel')) stan.pesel = { zastrzezony: true, od: Date.now() }; // ten sam stan co ekran „Zastrzeżenie PESEL”
+        wyb.forEach(k => dodajWyslane(k.tytul, k.doKogo)); zapisz();
         dispatchEvent(new HashChangeEvent('hashchange'));
       };
     },
@@ -339,7 +359,7 @@ export function utrata() {
 export function znaleziony() {
   const bylo = stan.zrobione.utrata;
   stan.zrobione.utrata = false; zapisz();
-  return { tytul: 'Portfel się znalazł', html: `<h1 tabindex="-1">Portfel się znalazł</h1>` + gotowe({ tytul: bylo ? 'Dowód odwieszony' : 'Nic nie było zastrzeżone', pozycje: [['Dowód osobisty', 'znów ważny w bankach i urzędach'], ['PESEL', 'zostaje zastrzeżony, dopóki sam go nie odblokujesz']] }) };
+  return { tytul: 'Portfel się znalazł', html: `<h1 tabindex="-1">Portfel się znalazł</h1>` + gotowe({ tytul: bylo ? 'Dowód odwieszony' : 'Nic nie było zastrzeżone', pozycje: [['Dowód osobisty', 'znów ważny w bankach i urzędach', 'ok'], ['PESEL', 'zostaje zastrzeżony, dopóki sam go nie odblokujesz', 'ok']], dalej: [['Zastrzeżenie PESEL', '#/pesel', 'drugi']] }) };
 }
 
 /* ---------------- Nowy dowód osobisty ---------------- */
@@ -350,9 +370,9 @@ export function dowod() {
       tytul: 'Wniosek czeka na Ciebie w urzędzie',
       czas: typeof w === 'object' ? `${w.urzad}: ${dataWizyty(w.kiedy)}` : '',
       pozycje: [
-        ['W urzędzie, ok. 10 minut', 'urzędnik sprawdzi zdjęcie i pobierze odciski palców, wniosek podpiszesz na tablecie; weź obecny dowód'],
-        ['Nowy dowód', 'urząd ma na wydanie do 30 dni; damy znać, kiedy będzie do odbioru'],
-        ['Obecny dowód', 'używasz go do odbioru nowego'],
+        ['W urzędzie, ok. 10 minut', 'urzędnik sprawdzi zdjęcie i pobierze odciski palców, wniosek podpiszesz na tablecie; weź obecny dowód', 'pozniej'],
+        ['Nowy dowód', 'urząd ma na wydanie do 30 dni; damy znać, kiedy będzie do odbioru', 'pozniej'],
+        ['Obecny dowód', 'używasz go do odbioru nowego', 'ok'],
       ],
     }) };
   }
@@ -397,8 +417,17 @@ function blik(id) {
 const blikOk = (root, id) => { const ok = /^\d{6}$/.test($('#' + id, root).value.replace(/\s/g, '')); $('#' + id + '-blad', root).hidden = ok; if (!ok) $('#' + id, root).focus(); return ok; };
 
 export function mandat() {
-  if (stan.zrobione.mandat) {
-    return { tytul: 'Mandat', html: `<h1 tabindex="-1">Mandat zapłacony</h1>` + gotowe({ tytul: '200 zł zapłacone', pozycje: [['GITD (CANARD)', 'potwierdzenie w skrzynce'], ['Punkty karne', 'masz teraz 5 z 24; wygasną po roku od zapłaty']] }) };
+  const m = stan.zrobione.mandat;
+  if (m?.kto === 'inny') return { tytul: 'Mandat', html: `<h1 tabindex="-1">Kierowca wskazany</h1>` + gotowe({ tytul: `Wskazano: ${m.kierowca}`, pozycje: [
+    ['GITD (CANARD)', 'wskazanie przyjęte; wezwanie trafi do kierowcy (do jego mObywatela albo listem)', 'tok'],
+    ['Mandat i 3 punkty karne', 'przejdą na wskazaną osobę, gdy przyjmie mandat', 'pozniej'],
+    ['Ty', 'nic nie płacisz; mandat zniknął z „Do zapłaty”', 'ok']] }) };
+  if (m?.kto === 'nie') return { tytul: 'Mandat', html: `<h1 tabindex="-1">Odmowa wysłana</h1>` + gotowe({ tytul: 'Nie przyjęto mandatu', pozycje: [
+    ['GITD (CANARD)', 'odmowa przyjęta; GITD skieruje wniosek o ukaranie do sądu', 'tok'],
+    ['Sąd rejonowy', 'wezwanie przyjdzie przez e-Doręczenia; przedstawisz swoje racje i dowody', 'pozniej'],
+    ['Do zapłaty', 'mandat zniknął z listy do czasu decyzji sądu', 'ok']] }) };
+  if (m) {
+    return { tytul: 'Mandat', html: `<h1 tabindex="-1">Mandat zapłacony</h1>` + gotowe({ tytul: '200 zł zapłacone', pozycje: [['GITD (CANARD)', 'zapłacone; potwierdzenie w skrzynce', 'ok'], ['Punkty karne', 'masz teraz 5 z 24; wygasną po roku od zapłaty', 'ok']] }) };
   }
   return {
     tytul: 'Mandat z fotoradaru',
@@ -415,6 +444,14 @@ export function mandat() {
         <label class="opcja"><input type="radio" name="kto" value="nie"> Nie zgadzam się z mandatem.</label>
       </fieldset>
       <div id="man-ja">${blik('blik-m')}</div>
+      <div id="man-inny" hidden>
+        <label class="etyk" for="kier-imie">Imię i nazwisko kierowcy</label>
+        <input id="kier-imie" class="pole" autocomplete="off" placeholder="np. Piotr Wójcik">
+        <label class="etyk" for="kier-nr">PESEL kierowcy albo numer prawa jazdy</label>
+        <input id="kier-nr" class="pole" autocomplete="off" inputmode="text" placeholder="11 cyfr albo numer z prawa jazdy" aria-describedby="kier-pom">
+        <p class="maly" id="kier-pom">GITD wyśle wezwanie wskazanej osobie. Mandat i punkty przejdą na nią. Odmowa wskazania kierowcy to wykroczenie.</p>
+        <p class="blad" id="kier-blad" role="alert" hidden>Wpisz imię i nazwisko oraz PESEL (11 cyfr) albo numer prawa jazdy.</p>
+      </div>
       <p id="man-nie" class="uwaga" hidden>${ic('info')}<span>Możesz odmówić przyjęcia mandatu. Wtedy sprawa trafi do sądu, a Ty przedstawisz swoje racje. Wyślemy odmowę do GITD.</span></p>
       <button class="btn glowny szeroki" id="man-ok">${ic('key')}Przyjmij i zapłać 200 zł</button>
     </form>`,
@@ -422,20 +459,28 @@ export function mandat() {
       const f = $('#f-man', root);
       f.onchange = () => {
         const kto = $('input[name=kto]:checked', f).value;
-        $('#man-ja', root).hidden = kto !== 'ja'; $('#man-nie', root).hidden = kto !== 'nie';
+        $('#man-ja', root).hidden = kto !== 'ja'; $('#man-nie', root).hidden = kto !== 'nie'; $('#man-inny', root).hidden = kto !== 'inny';
         $('#man-ok', root).innerHTML = ic('key') + (kto === 'ja' ? 'Przyjmij i zapłać 200 zł' : kto === 'inny' ? 'Wskaż kierowcę' : 'Wyślij odmowę');
       };
       f.onsubmit = async e => {
         e.preventDefault();
         const kto = $('input[name=kto]:checked', f).value;
         if (kto === 'ja' && !blikOk(root, 'blik-m')) return;
-        if (kto === 'inny') { toast('W prototypie: formularz wskazania kierowcy z danymi z CEPiK.'); return; }
+        let kierowca = '';
+        if (kto === 'inny') {
+          kierowca = $('#kier-imie', root).value.trim().replace(/\s+/g, ' ');
+          const nr = $('#kier-nr', root).value.trim().replace(/\s+/g, '');
+          if (!/\S+ \S+/.test(kierowca) || !(/^\d{11}$/.test(nr) || /^[A-Za-z0-9/]{5,}$/.test(nr) && !/^\d+$/.test(nr))) { $('#kier-blad', root).hidden = false; $('#kier-imie', root).focus(); return; }
+          $('#kier-blad', root).hidden = true;
+        }
         const ok = await arkuszZgody(kto === 'ja'
           ? { tytul: 'Przyjęcie mandatu i płatność', pozycje: [{ co: 'Przyjęcie mandatu 200 zł', do: 'GITD (CANARD)' }, { co: 'Płatność BLIK 200 zł', do: 'GITD' }], cofniecie: 'Przyjętego i zapłaconego mandatu nie można cofnąć. Uchylić go może tylko sąd.', przycisk: 'Przyjmij i zapłać', cel: 'mandat' }
+          : kto === 'inny' ? { tytul: 'Wskazanie kierowcy', pozycje: [{ co: `Wskazanie kierującego: ${kierowca}`, do: 'GITD (CANARD)' }], dane: ['Twoje dane jako właściciela pojazdu EL 4K217', 'imię, nazwisko i numer wskazanej osoby'], cofniecie: 'Wskazania nie da się cofnąć. Dane muszą być prawdziwe.', przycisk: 'Podpisz i wyślij' }
           : { tytul: 'Odmowa przyjęcia mandatu', pozycje: [{ co: 'Odmowa przyjęcia mandatu', do: 'GITD (CANARD)' }], przycisk: 'Wyślij odmowę' });
         if (!ok) return;
-        if (kto === 'ja') { stan.zrobione.mandat = true; dodajWyslane('Mandat 200 zł zapłacony', 'GITD'); zapisz(); dispatchEvent(new HashChangeEvent('hashchange')); }
-        else toast('Odmowa wysłana. Sprawa trafi do sądu rejonowego.');
+        stan.zrobione.mandat = kto === 'ja' ? true : { kto, kierowca };
+        dodajWyslane(kto === 'ja' ? 'Mandat 200 zł zapłacony' : kto === 'inny' ? 'Wskazanie kierowcy' : 'Odmowa przyjęcia mandatu', 'GITD');
+        zapisz(); dispatchEvent(new HashChangeEvent('hashchange'));
       };
     },
   };
@@ -443,7 +488,7 @@ export function mandat() {
 
 export function podatek() {
   if (stan.zrobione.podatek) {
-    return { tytul: 'Podatek', html: `<h1 tabindex="-1">Rata zapłacona</h1>` + gotowe({ tytul: '186 zł zapłacone', pozycje: [['Urząd Miasta Łodzi', 'potwierdzenie w skrzynce'], ['Następne raty', stan.autopilot.podatek ? 'zapłacimy je ze zlecenia stałego; dzień wcześniej damy znać' : 'przypomnimy 7 dni przed terminem']] }) };
+    return { tytul: 'Podatek', html: `<h1 tabindex="-1">Rata zapłacona</h1>` + gotowe({ tytul: '186 zł zapłacone', pozycje: [['Urząd Miasta Łodzi', 'zapłacone; potwierdzenie w skrzynce', 'ok'], ['Następne raty', stan.autopilot.podatek ? 'zapłacimy je ze zlecenia stałego; dzień wcześniej damy znać' : 'przypomnimy 7 dni przed terminem', 'pozniej']] }) };
   }
   return {
     tytul: 'Podatek od nieruchomości',
@@ -532,7 +577,7 @@ export function badanie() {
   return {
     tytul: 'Badanie techniczne',
     html: `<h1 tabindex="-1">Badanie techniczne</h1>
-    <div class="karta link-karta">${ic('car', 'okr')}<span><b>${esc(auto.linia)}</b><small>Badanie ważne do ${fmtPelna(za(19))}</small></span><span class="plak pomaranczowa">za 19 dni</span></div>
+    <div class="karta link-karta">${ic('car', 'okr')}<span><b>${esc(auto.linia).replace(/([A-Z]{2,3}) (\w+)$/, '<span class="nowrap">$1&nbsp;$2</span>')}</b><small>Badanie ważne do ${fmtPelna(za(19))}</small></span><span class="plak pomaranczowa">za 19 dni</span></div>
     <h2 class="sekcja">Stacje w pobliżu</h2>
     <div class="mapa" role="group" aria-label="Mapa stacji kontroli pojazdów w pobliżu">
       ${MAPA}

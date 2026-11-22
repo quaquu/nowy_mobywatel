@@ -45,7 +45,7 @@ Pomiary, nie opinie (te same narzędzia na obu prototypach, kod testów w repozy
 • narodziny dziecka: 4 dotknięcia i 1 podpis za 5 spraw, ok. 14 s (model KLM); w referencji 6 dotknięć i 2 podpisy za 2 sprawy, ok. 24 s;
 • asystent przypisał do właściwej sprawy 90,8% z 87 zdań, których nie widział przy budowie (referencja: 31,0%); złośliwe prośby odrzucone: 5 z 5;
 • dostępność: 0 błędów WCAG 2.2 AA w teście axe (referencja: 7 rodzajów), Lighthouse 100 (referencja: 87);
-• 38 ścieżek przechodzi automatycznie do końca, 51 ekranów na 4 szerokościach bez błędów; działa offline.
+• 40 ścieżek przechodzi automatycznie do końca, 51 ekranów na 4 szerokościach bez błędów; działa offline.
 
 Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i historia pojazdu już istnieją, a w mObywatelu w przeglądarce także zgłoszenie urodzenia, zameldowanie i ePłatności, każde osobno. Łączę je w sprawy życiowe. Macierz wykonalności pokazuje, co da się wdrożyć bez zmian ustaw (29 z 50 elementów), a co ich wymaga. W aplikacji ramki „O prototypie” oddzielają to, co już działa, od tego, co nowe. Na stronie „Dla jury” jest instrukcja na 60 sekund i tryb testowy z pomiarem czasu i ankietą SUS.
 ```

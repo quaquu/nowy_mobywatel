@@ -94,6 +94,7 @@ button, input, select, textarea { font: inherit; }
 }
 /* Stałe, niezależne od motywu (Hallmark 48: żadnego koloru poza blokiem tokenów). */
 :root {
+  --alarm: oklch(50% 0.19 25); --alarm-tekst: oklch(99.6% 0.003 269); --alarm-wyp: oklch(50% 0.19 25 / .14); /* alarm: ta sama czerwień w obu motywach */
   --kd-krawedz: oklch(100% 0 0 / .45); --kd-prazki: oklch(100% 0 0 / .35); --kd-obwodka: oklch(100% 0 0 / .25);
   --biel: oklch(99.6% 0.003 269); --czern: oklch(13% 0.012 262); --pow-segment: oklch(99.6% 0.003 269);
   --pole-kraw: oklch(62% 0.015 262); /* krawędź pola: 3:1 do tła i do powierzchni (WCAG 1.4.11) */
@@ -371,6 +372,9 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .blik { letter-spacing: .3em; font-size: 1.35rem; text-align: center; font-variant-numeric: tabular-nums; }
 .blad { color: var(--zle); font-weight: 700; font-size: var(--t-objasn); margin: var(--space-xs) 0; }
 .grupa { border: 0; padding: 0; margin: 0; }
+/* kolejne pytanie w formularzu oddzielone od poprzedniego, jak sekcja */
+.grupa + .grupa, .grupa + .etyk, .grupa + label.etyk, .grupa + .wiersz, .grupa + div > .wiersz:first-child { margin-top: var(--o4); }
+.karta > p + .grupa, .karta > p + label.etyk, .karta > .data-sl + .grupa, .karta > .data-sl + label.etyk { margin-top: var(--o4); }
 .opcja { display: flex; align-items: center; gap: var(--o3); min-height: 44px; padding: var(--space-xs) 0; }
 .opcja input, .krok-l input { width: 22px; height: 22px; flex: none; }
 .opcja small { color: var(--tekst2); }
@@ -499,7 +503,7 @@ html.bez-notek .notka { display: none; }
 .przel-duzy input:disabled { opacity: .4; cursor: not-allowed; }
 .sz-dostosuj .sz-ik { background: transparent; box-shadow: inset 0 0 0 1.5px var(--separator); }
 /* Alarm i miejsca ochronne */
-.alarm-pas { margin: 0 0 var(--o4); padding: var(--o4); border-radius: var(--r-arkusz); background: var(--zle); color: var(--zle-tekst); }
+.alarm-pas { margin: 0 0 var(--o4); padding: var(--o4); border-radius: var(--r-arkusz); background: var(--alarm); color: var(--alarm-tekst); }
 .alarm-pas small { display: block; font-weight: 700; font-size: var(--t-przypis); }
 .alarm-pas h1 { margin: var(--space-2xs) 0 var(--space-xs); font-size: var(--t-tytul); line-height: 1.12; font-weight: 900; letter-spacing: -.018em; color: inherit; }
 .alarm-pas p { margin: 0; font-size: var(--t-objasn); }
@@ -514,6 +518,9 @@ html.bez-notek .notka { display: none; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .schr-mapa .kafle { filter: url(#mapa-noc); } }
 .schr-mapa .krag { fill: none; stroke: var(--separator); stroke-width: 1.2; stroke-dasharray: 3 4; }
 .schr-mapa .opis-kr, .schr-mapa .polnoc { font-size: 10px; fill: var(--tekst2); font-weight: 700; }
+.schr-mapa .opis-kr-t rect, .schr-mapa .polnoc-t circle { fill: var(--pow); opacity: .92; }
+.schr-mapa .polnoc-t path { fill: var(--zle); }
+.schr-mapa .polnoc { font-size: 8px; }
 .schr-mapa .pkt { fill: var(--tekst2); opacity: .45; }
 .schr-mapa .top circle { fill: var(--gl); }
 .schr-mapa .top.pierwszy circle { fill: var(--ok); }
@@ -538,7 +545,7 @@ html.bez-notek .notka { display: none; }
 /* Komunikat Cell Broadcast: jak systemowy alert telefonu, nad aplikacją */
 .cb-alert { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: var(--o4); background: var(--zaslona); }
 .cb-karta { width: 100%; max-width: 360px; padding: var(--o4); border-radius: var(--r-arkusz); background: var(--pow); color: var(--tekst); box-shadow: var(--cien-unies); }
-.cb-glowa { display: flex; align-items: center; gap: var(--o2); margin: 0 0 var(--o2); color: var(--zle); font-weight: 900; }
+.cb-glowa { display: flex; align-items: center; gap: var(--o2); margin: 0 0 var(--o2); color: var(--zle); font-weight: 900; } /* --zle ma kontrast 4,5:1 na karcie w obu motywach */
 .cb-glowa .ic { box-sizing: content-box; width: 20px; height: 20px; padding: var(--space-xs); border-radius: 50%; background: var(--zle-wyp); }
 .cb-glowa small { margin-left: auto; color: var(--tekst2); font-weight: 400; }
 .cb-karta h2 { margin: 0 0 var(--o2); font-size: var(--t-tytul); line-height: 1.15; font-weight: 900; }
@@ -549,14 +556,19 @@ html.bez-notek .notka { display: none; }
 .cb-przyciski .btn.glowny { flex: 2; }
 @media (prefers-reduced-motion: no-preference) { html:not(.bez-ruchu) .cb-karta { animation: cb-drgaj .5s ease-in-out 2; } }
 @keyframes cb-drgaj { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
-.jez-alarm { margin: 0 0 var(--o3); max-width: 220px; background: color-mix(in srgb, var(--zle-tekst) 18%, transparent); }
-.jez-alarm span { color: var(--zle-tekst); }
-.jez-alarm input:checked + span { background: var(--zle-tekst); color: var(--zle); box-shadow: none; }
-.jez-alarm input:focus-visible + span { outline-color: var(--zle-tekst); }
-.alarm-baner { display: flex; align-items: center; gap: var(--o3); margin: 0 0 var(--o3); padding: var(--o3) var(--o4); border-radius: var(--r-grupa); background: var(--zle); color: var(--zle-tekst); text-decoration: none; }
+.jez-alarm { margin: 0 0 var(--o3); max-width: 220px; background: color-mix(in srgb, var(--alarm-tekst) 18%, transparent); }
+.jez-alarm span { color: var(--alarm-tekst); }
+.jez-alarm input:checked + span { background: var(--alarm-tekst); color: var(--alarm); box-shadow: none; }
+.jez-alarm input:focus-visible + span { outline-color: var(--alarm-tekst); }
+.alarm-baner { display: flex; align-items: center; gap: var(--o3); margin: 0 0 var(--o3); padding: var(--o3) var(--o4); border-radius: var(--r-grupa); background: var(--alarm); color: var(--alarm-tekst); text-decoration: none; }
 .alarm-baner > span { flex: 1; display: flex; flex-direction: column; }
 .alarm-baner small { font-size: var(--t-objasn); }
 .alarm-baner .ic { width: 22px; height: 22px; flex: none; }
+/* opis pod etykietą opcji (np. „Piotr” i co dostanie), nie obok */
+.opcja-tr { display: flex; flex-direction: column; }
+.opcja-tr small { color: var(--tekst2); font-size: var(--t-objasn); }
+.nowrap { white-space: nowrap; }
+.tekst-ostrz { color: var(--ostrz); font-weight: 700; }
 .data-sl { display: block; margin: var(--space-2xs) 0 var(--o3); color: var(--tekst2); font-size: var(--t-objasn); }
 
 /* ---------- Portfel kart dokumentów (wyróżnik) ---------- */
