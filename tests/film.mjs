@@ -36,7 +36,11 @@ const NAKLADKA = `
   #film-koniec b { font-size: 54px; letter-spacing: -0.02em; }
   #film-koniec p { font-size: 24px; color: #4b5563; margin: 18px 0 0; }
   #film-koniec code { font: 600 26px/1.3 ui-monospace, monospace; color: #1d4ed8; margin-top: 36px; }
-  #film-koniec small { font-size: 17px; color: #6b7280; margin-top: 40px; }`;
+  #film-koniec small { font-size: 17px; color: #6b7280; margin-top: 40px; }
+  #film-koniec ul { list-style: none; display: flex; gap: 28px; margin: 44px 0 0; padding: 0; }
+  #film-koniec li { width: 300px; padding: 28px; border-radius: 24px; background: #fff; box-shadow: 0 10px 28px -18px rgba(10,30,60,.35); text-align: left; font-size: 20px; line-height: 1.35; color: #111827; }
+  #film-koniec li i { display: block; font-style: normal; font: 900 56px/1.05 Inter, system-ui, sans-serif; color: #1d4ed8; margin-bottom: 10px; }
+  #film-koniec li small { display: block; margin-top: 12px; font-size: 17px; color: #6b7280; }`;
 async function nakladka() {
   await p.addStyleTag({ content: NAKLADKA });
   await p.evaluate(() => { const d = document.createElement('div'); d.id = 'film-napis'; d.popover = 'manual'; document.body.append(d); d.showPopover(); });
@@ -80,6 +84,12 @@ await p.goto(url + '?widok=telefon&osoba=anna#/start'); await p.waitForSelector(
 await czekaj(1200);
 await nagrywaj();
 
+// Plansza otwierająca: najpierw dowód (pomiary 1:1 z prototypem referencyjnym), potem aplikacja.
+await p.evaluate(() => { const d = document.createElement('div'); d.id = 'film-koniec'; d.className = 'start'; d.popover = 'manual';
+  d.innerHTML = '<b>Państwo, które przychodzi ze sprawą</b><p>Te same testy na tym i na referencyjnym prototypie</p><ul><li><i>4</i>dotknięcia za 5 spraw po narodzinach<small>referencja: 6 dotknięć za 2 sprawy</small></li><li><i>9 na 10</i>zdań asystent przypisał do właściwej sprawy<small>referencja: 3 na 10</small></li><li><i>0</i>błędów dostępności WCAG 2.2 AA<small>referencja: 7 rodzajów</small></li></ul>';
+  document.body.append(d); d.showPopover(); });
+await czekaj(5500);
+await p.evaluate(() => document.getElementById('film-koniec')?.remove());
 await napis('Państwo, które przychodzi ze sprawą', 'Nie musisz pytać. Szpital zgłosił narodziny, więc sprawa czeka na starcie.', 'W prototypie referencyjnym sprawę zaczyna się od pytania do asystenta.');
 await czekaj(6500);
 await dotknij('a.hero');

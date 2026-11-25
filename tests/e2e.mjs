@@ -95,6 +95,9 @@ export async function sprawy(url) {
     await podpisz(p); akcje.push('tap: podpisz');
     const txt = await p.textContent('main');
     if (!/Wszystko wysłane jednym podpisem/.test(txt)) throw new Error('brak potwierdzenia');
+    if (!/Dostał prośbę o potwierdzenie imienia/.test(txt)) throw new Error('brak prośby do drugiego rodzica');
+    await p.click('#tel-piotra'); await podpisz(p);
+    await p.waitForFunction(() => /Potwierdził imię/.test(document.querySelector('main')?.textContent || ''));
     await p.goto(url + '#/dane/dostep'); await p.waitForSelector('main h1');
     if (!/wniosek 800\+/.test(await p.textContent('main'))) throw new Error('brak wpisu w rejestrze dostępu');
     return { akcje, sprawy: 5, podpisy: 1, czasSystemuS: (Date.now() - t0) / 1000 };

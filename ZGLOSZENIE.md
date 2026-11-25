@@ -25,29 +25,28 @@ Państwo, które przychodzi ze sprawą: mObywatel, w którym urodzenie dziecka t
 
 **Opis \*** <!-- pole: opis, 30–4000 -->
 ```
-Problem: żeby coś załatwić, obywatel musi sam wiedzieć, że ma sprawę, w którym urzędzie i jakim wnioskiem. Po narodzinach dziecka to 5 wniosków w 4 instytucjach, każdy osobno.
+Zmierzone, nie zadeklarowane. Te same testy na tym i na referencyjnym prototypie (kod testów w repozytorium):
+• narodziny dziecka: 5 spraw w 4 instytucjach za 4 dotknięcia i 1 podpis, ok. 14 s (model KLM); w referencji 2 sprawy, 6 dotknięć, 2 podpisy, ok. 24 s;
+• asystent przypisał do właściwej sprawy 90,8% z 87 zdań, których nie widział przy budowie (referencja: 31,0%); złośliwe prośby odrzucone: 5 z 5;
+• 0 błędów dostępności WCAG 2.2 AA (axe; referencja: 7 rodzajów), Lighthouse dostępność 100 (referencja: 87);
+• 40 ścieżek przechodzi automatycznie do końca, 51 ekranów na 4 szerokościach bez błędów, działa bez internetu.
 
-Prototyp referencyjny pokazał, że z państwem można rozmawiać, zamiast szukać usługi w menu. Idę krok dalej: państwo samo przychodzi ze sprawą. Na tym stoją trzy rzeczy.
+Problem: żeby coś załatwić, trzeba samemu wiedzieć, że ma się sprawę, w którym urzędzie i jakim wnioskiem. Po narodzinach dziecka to 5 wniosków w 4 instytucjach, każdy osobno.
 
-1. Sprawa przychodzi sama. Szpital zgłosił narodziny, więc na starcie czeka karta „Urodziła się Twoja córka”, a w niej to, co rodzina zyska: 800 zł co miesiąc i 1 000 zł becikowego.
+Pomysł: państwo samo przychodzi ze sprawą. Na tym stoją trzy rzeczy.
+1. Sprawa przychodzi sama. Szpital zgłosił narodziny, więc na starcie czeka karta „Urodziła się Twoja córka” z tym, co rodzina zyska: 800 zł co miesiąc i 1 000 zł becikowego.
+2. Jeden podpis za kilka urzędów. Akt urodzenia z PESEL i meldunkiem, 800+, becikowe, ubezpieczenie dziecka i urlop rodzicielski są wypełnione danymi, które państwo już ma. Drugi rodzic potwierdza imię w swoim mObywatelu. Po podpisie każdą sprawę śledzisz jak przesyłkę.
+3. Widzisz, kto i po co użył Twoich danych: każdy odczyt z celem i podstawą prawną, podejrzany oznaczony.
 
-2. Jeden podpis za kilka urzędów. Zgłoszenie urodzenia (akt, PESEL, meldunek), 800+, becikowe, ubezpieczenie dziecka i urlop rodzicielski są już wypełnione danymi, które państwo ma. Arkusz zgody pokazuje, co, dokąd i z jakimi danymi wyślemy. Po podpisie każdą sprawę śledzisz jak przesyłkę.
+Ten sam wzór działa w 11 sprawach życiowych (narodziny, przeprowadzka, kupno auta, zgubione dokumenty, nowy dowód, ślub, śmierć bliskiej osoby, renta wdowia, firma, emerytura, 18 lat) i dla 4 osób: Anny (33 lata, właśnie urodziła córkę), jej mamy Haliny (78 lat, tryb prosty), Jakuba (17 lat) i Katarzyny (29 lat).
 
-3. Widzisz, kto i po co użył Twoich danych. Każdy odczyt z rejestru ma cel i podstawę prawną, a podejrzany jest oznaczony.
+Na prawdziwych danych publicznych: alarm przychodzi komunikatem z sieci komórkowej (Cell Broadcast, planowany od 2027 r.) i otwiera mObywatela z najbliższym miejscem ochronnym z rejestru PSP (dane.gov.pl), liczonym w telefonie bez internetu, z instrukcją RCB po polsku, angielsku i ukraińsku i przyciskiem „Jestem bezpieczna” dla bliskich.
 
-Ten sam wzór działa w 11 sprawach życiowych: narodziny, przeprowadzka, kupno auta, utrata dokumentów, nowy dowód, ślub, śmierć bliskiej osoby, renta wdowia, firma, emerytura, 18 lat. Do wyboru są 4 osoby, jak w referencji: Anna (33 lata, właśnie urodziła córkę), jej mama Halina (78 lat, tryb prosty), Jakub (17 lat) i Katarzyna (29 lat, planuje ślub).
-
-Pod ręką, bez szukania w menu: alarm, który przychodzi komunikatem z sieci komórkowej (Cell Broadcast, planowany od 2027 r.) i otwiera mObywatela z najbliższym miejscem ochronnym z rejestru PSP, liczonym w telefonie bez internetu, z instrukcją po polsku, angielsku i ukraińsku oraz „Jestem bezpieczna” dla bliskich; pokazywanie dowodu tylko w potrzebnym zakresie (wybierasz cel: zakupy 18+, hotel, wynajem auta, a aplikacja zaznacza tylko potrzebne dane); zastrzeżenie PESEL na Starcie (cofnięcie na czas kredytu i automatyczny powrót), „Możesz skorzystać” (świadczenia wykryte z rejestrów), Twoja emerytura (ZUS, PPK, IKE i IKZE razem, z prognozą), płatności BLIK, „Kto dzwoni?” przeciw oszustom, podpisy poparcia bez papieru i pomoc przy logowaniu (33% ocen 1–2★ z 1600 recenzji mObywatela dotyczy logowania). Asystent, tekstem albo głosem, działa w telefonie bez internetu i niczego nie wysyła sam.
+Pod ręką: zastrzeżenie PESEL ze stanem na Starcie (cofnięcie na czas kredytu, potem wraca samo); pokazywanie dowodu według celu (zakupy 18+, hotel, wynajem auta: tylko potrzebne dane); „Możesz skorzystać”; Twoja emerytura (ZUS, PPK, IKE i IKZE razem, z prognozą); BLIK; „Kto dzwoni?”; podpisy poparcia; pomoc przy logowaniu (33% ocen 1–2★ z 1600 recenzji mObywatela dotyczy logowania). Asystent, tekstem albo głosem, działa w telefonie i niczego nie wysyła sam.
 
 Dla kogo: rodzice, osoby starsze i ich dzieci, każdy, kto nie wie, co mu przysługuje.
 
-Pomiary, nie opinie (te same narzędzia na obu prototypach, kod testów w repozytorium):
-• narodziny dziecka: 4 dotknięcia i 1 podpis za 5 spraw, ok. 14 s (model KLM); w referencji 6 dotknięć i 2 podpisy za 2 sprawy, ok. 24 s;
-• asystent przypisał do właściwej sprawy 90,8% z 87 zdań, których nie widział przy budowie (referencja: 31,0%); złośliwe prośby odrzucone: 5 z 5;
-• dostępność: 0 błędów WCAG 2.2 AA w teście axe (referencja: 7 rodzajów), Lighthouse 100 (referencja: 87);
-• 40 ścieżek przechodzi automatycznie do końca, 51 ekranów na 4 szerokościach bez błędów; działa offline.
-
-Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i historia pojazdu już istnieją, a w mObywatelu w przeglądarce także zgłoszenie urodzenia, zameldowanie i ePłatności, każde osobno. Łączę je w sprawy życiowe. Macierz wykonalności pokazuje, co da się wdrożyć bez zmian ustaw (29 z 50 elementów), a co ich wymaga. W aplikacji ramki „O prototypie” oddzielają to, co już działa, od tego, co nowe. Na stronie „Dla jury” jest instrukcja na 60 sekund i tryb testowy z pomiarem czasu i ankietą SUS.
+Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i osobne wnioski (zgłoszenie urodzenia, zameldowanie, ePłatności) już istnieją. Łączę je w sprawy życiowe. Macierz wykonalności pokazuje, co da się wdrożyć bez zmian ustaw (29 z 50 elementów). W aplikacji ramki „O prototypie” oddzielają to, co już działa, od tego, co nowe. Strona „Dla jury”: instrukcja na 60 sekund i tryb testowy z pomiarem czasu i ankietą SUS.
 ```
 
 **Link do klikalnego prototypu \*** <!-- pole: link -->
@@ -59,7 +58,7 @@ https://quaquu.github.io/nowy_mobywatel/
 ```
 https://quaquu.github.io/nowy_mobywatel/film/pokaz.mp4
 ```
-Film 102 s z napisami, bez dźwięku, nagrany z prototypu skryptem `tests/film.mjs` (odtwarzalny). Repozytorium idzie w pole „Strona www”.
+Film 107 s z napisami, bez dźwięku, nagrany z prototypu skryptem `tests/film.mjs` (odtwarzalny). Repozytorium idzie w pole „Strona www”.
 
 **Polskie modele i technologie** <!-- pole: technologie, max 300 -->
 ```

@@ -81,14 +81,32 @@ export function narodziny() {
        PRACA, SAMO],
     ];
     const KIEDY = ['dziś', 'za 3 dni', 'za 6 tygodni'];
+    // Drugi rodzic: imię wybierają rodzice razem, więc Piotr potwierdza je w swoim mObywatelu (po 3 dniach już na pewno).
+    const tata = stan.postep?.tata || etap > 0;
+    const PIOTR = tata ? [`${ja.partner.imie}, tata`, `Potwierdził imię „${imie || 'córki'}” w swoim mObywatelu. Dostał też odpis aktu.`, 'ok']
+      : [`${ja.partner.imie}, tata`, `Dostał prośbę o potwierdzenie imienia „${imie || 'córki'}” w swoim mObywatelu. USC sporządzi akt po jego potwierdzeniu.`, 'tok'];
     return { tytul: 'Urodziło się dziecko', html: `<h1 tabindex="-1">Witaj na świecie, ${esc(imie || 'córeczko')}!</h1>` + gotowe({
       tytul: etap === 2 ? 'Wszystko załatwione' : 'Wszystko wysłane jednym podpisem',
       czas: 'Każdą sprawę śledzisz tutaj jak przesyłkę. O każdej zmianie dostaniesz powiadomienie.',
-      pozycje: ETAPY[etap],
-      extra: `<fieldset class="segment etapy"><legend class="maly">Podgląd w pokazie: jak to będzie wyglądać</legend>${KIEDY.map((k, i) => `<label><input type="radio" name="etap" value="${i}" ${i === etap ? 'checked' : ''}><span>${k}</span></label>`).join('')}</fieldset>`,
+      pozycje: [PIOTR, ...ETAPY[etap]],
+      extra: `${tata ? '' : `<button type="button" class="btn drugi szeroki" id="tel-piotra">${ic('phone')}Zobacz w telefonie ${esc(ja.partner.imie === 'Piotr' ? 'Piotra' : ja.partner.imie)}</button>`}<fieldset class="segment etapy"><legend class="maly">Podgląd w pokazie: jak to będzie wyglądać</legend>${KIEDY.map((k, i) => `<label><input type="radio" name="etap" value="${i}" ${i === etap ? 'checked' : ''}><span>${k}</span></label>`).join('')}</fieldset>`,
       dalej: [['Zobacz, kto użył Twoich danych', '#/dane/dostep', 'drugi']],
     }), po(root) {
       $$('input[name=etap]', root).forEach(i => i.onchange = () => { stan.postep = { ...stan.postep, narodziny: +i.value }; zapisz(); dispatchEvent(new HashChangeEvent('hashchange')); });
+      const tp = $('#tel-piotra', root);
+      if (tp) tp.onclick = async () => {
+        // Telefon drugiego rodzica: jego mObywatel pokazuje prośbę i ten sam arkusz zgody, podpisuje on, nie Anna.
+        const ok = await arkuszZgody({
+          tytul: `${ja.partner.imie} ${ja.partner.nazwisko}: potwierdź imię córki`,
+          pozycje: [{ co: `Imię: ${imie || 'Zofia'}, nazwisko: ${ja.nazwisko}`, do: 'Urząd Stanu Cywilnego w Łodzi' }],
+          dane: ['Twoje imię, nazwisko i PESEL', 'imię, które wpisała ' + ja.imie],
+          cofniecie: 'Jeśli się nie zgadzasz, odrzuć prośbę. USC poprosi was o wspólną decyzję, zanim sporządzi akt.',
+          przycisk: 'Potwierdzam jako tata', cel: 'narodziny-tata',
+        });
+        if (!ok) return;
+        stan.postep = { ...stan.postep, tata: true }; zapisz(); ogloszenie(`${ja.partner.imie} potwierdził imię.`);
+        dispatchEvent(new HashChangeEvent('hashchange'));
+      };
     } };
   }
   return {
@@ -99,7 +117,7 @@ export function narodziny() {
     <form id="f-nar" class="karta" novalidate>
       <label for="imie" class="etyk">Jak córka będzie miała na imię?</label>
       <input id="imie" name="imie" class="pole" autocomplete="off" value="${esc(imie)}" placeholder="np. Zofia" aria-describedby="imie-pom" required>
-      <p id="imie-pom" class="maly">Najwyżej dwa imiona, bez zdrobnień. Nazwisko: ${esc(ja.nazwisko)}, jak rodziców.</p>
+      <p id="imie-pom" class="maly">Najwyżej dwa imiona, bez zdrobnień. Nazwisko: ${esc(ja.nazwisko)}, jak rodziców. ${esc(ja.partner.imie)} potwierdzi imię w swoim mObywatelu.</p>
       <div class="chipy" role="group" aria-label="Podpowiedzi imion">${dziecko.propozycjeImion.filter(n => n !== 'Jan').map(n => `<button type="button" class="chip" data-imie="${n}">${n}</button>`).join('')}</div>
       <p class="blad" id="imie-blad" role="alert" hidden>Wpisz imię córki.</p>
       <h2 class="nag">Co zyskujesz</h2>
@@ -130,7 +148,7 @@ export function narodziny() {
         const nazwa = imie.charAt(0).toUpperCase() + imie.slice(1);
         const ok = await arkuszZgody({
           tytul: `${nazwa} ${ja.nazwisko}: ${ileSpraw(wyb.filter(k => k.id !== 'mob').length)} do wysłania`,
-          pozycje: wyb.map(k => ({ co: k.tytul, do: k.doKogo })),
+          pozycje: [...wyb.map(k => ({ co: k.tytul, do: k.doKogo })), { co: 'Prośba o potwierdzenie imienia', do: `${ja.partner.imie} ${ja.partner.nazwisko}, tata (w jego mObywatelu)` }],
           dane: ['Twoje imię, nazwisko i PESEL', 'adres zameldowania', 'numer konta', 'dane z karty urodzenia'],
           cofniecie: 'Wnioski o świadczenia możesz wycofać do czasu decyzji. Zgłoszenia urodzenia nie da się cofnąć, ale błąd w akcie poprawi USC.',
           cel: 'narodziny',
