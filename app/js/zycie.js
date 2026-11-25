@@ -3,7 +3,7 @@
 // Fakty i kwoty sprawdzone 02.11.2026 (źródła przy każdej sprawie). Osoby, adresy i liczby są fikcyjne.
 import { ic } from './icons.js';
 import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, przypnijAkcje, przewinDo } from './core.js';
-import { ja, mama, za, fmt, fmtPelna, zl, zmarl } from './data.js';
+import { ja, mama, za, fmt, fmtPelna, zl, zmarl, emerytalne } from './data.js';
 import { krok, gotowe, zaznaczone, wiersz, zrodlo, wyborTerminu, dataWizyty, ileSpraw } from './sprawy.js';
 
 const wybor = (nazwa, opcje, legenda) => `<fieldset class="grupa"><legend class="etyk">${esc(legenda)}</legend>${opcje.map(([v, t, opis], i) => `<label class="opcja"><input type="radio" name="${nazwa}" value="${v}" ${i === 0 ? 'checked' : ''}> <span>${esc(t)}${opis ? `<small class="maly">${esc(opis)}</small>` : ''}</span></label>`).join('')}</fieldset>`;
@@ -248,13 +248,13 @@ export function emerytura() {
     <p class="wstep">Wiek emerytalny osiągniesz ${EMERYTURA.wiek} (60 lat). Wniosek złożysz najwcześniej 30 dni wcześniej; przypomnimy.</p>
     <section class="karta">
       <h2 class="nag">Twoje konto w ZUS</h2>
-      ${wiersz('Składki na koncie (stan na 31.12.2025)', '168 400 zł')}${wiersz('Subkonto', '42 300 zł')}
+      ${wiersz('Składki na koncie (stan na 31.12.2025)', zl(emerytalne.pozycje.find(p => p.id === 'konto').kwota))}${wiersz('Subkonto', zl(emerytalne.pozycje.find(p => p.id === 'subkonto').kwota))}
       <p class="maly">Dane przykładowe. Prognozę emerytury ZUS liczy przy obecnych zarobkach; zobaczysz ją w informacji o stanie konta.</p>
     </section>
     <section class="karta">
       <h2 class="nag">Okresy składkowe</h2>
       <ul class="lista mala">
-        <li class="poz">${ic('check', 'okr zielona')}<span><b>od 2016: umowa o pracę</b><small>${esc(ja.pracodawca)}</small></span></li>
+        <li class="poz">${ic('check', 'okr zielona')}<span><b>od 2015: umowa o pracę</b><small>Agencja Reklamowa „Kadr”, od 2019 ${esc(ja.pracodawca)}</small></span></li>
         <li class="poz">${ic('check', 'okr zielona')}<span><b>${fmt(za(-10), { month: 'long', year: 'numeric' })}: zasiłek macierzyński</b><small>składki emerytalne finansuje budżet państwa</small></span></li>
         <li class="poz">${ic('alert', 'okr')}<span><b>2013–2015: umowa zlecenia</b><small>Kawiarnia „Pod Lipą”, Łódź. Urząd skarbowy ma Twój przychód z tej umowy, a ZUS nie ma za ten czas składek.</small></span></li>
       </ul>

@@ -4,7 +4,7 @@ import { ic } from './icons.js';
 import { stan, zapisz, esc, $, $$, arkuszZgody, dodajWyslane, ogloszenie, toast, cel, przypnijAkcje, przewinDo } from './core.js';
 import { spokojnie } from './ruch.js';
 import { autoZBoku, zdjecieFotoradaru } from './grafiki.js';
-import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy, OSOBA, OSOBY, WLASCICIEL } from './data.js';
+import { ja, dziecko, dokumenty, za, fmt, fmtPelna, zl, sprawy, OSOBA, OSOBY, WLASCICIEL, RATA4, rataPo } from './data.js';
 import { peselStan } from './widoki.js';
 
 // 1 sprawa, 2–4 sprawy, 5+ spraw (12–14: spraw)
@@ -52,7 +52,7 @@ const NARODZINY = () => [
   { id: 'usc', tytul: 'Zgłoszenie urodzenia', opis: 'Akt urodzenia, numer PESEL i zameldowanie u Ciebie załatwia jeden wniosek.', doKogo: 'Urząd Stanu Cywilnego w Łodzi', wymagany: true, plakietka: ['zielona', 'obowiązkowe, 21 dni'] },
   { id: '800', tytul: 'Świadczenie 800+', opis: `800 zł miesięcznie od miesiąca urodzenia, na konto ${esc(ja.konto)}.`, doKogo: 'ZUS' },
   { id: 'becikowe', tytul: 'Becikowe 1 000 zł', opis: 'Dochód sprawdziliśmy w urzędzie skarbowym: mieścisz się w progu. Zaświadczenie o opiece w ciąży pobierzemy z Internetowego Konta Pacjenta.', doKogo: 'Urząd Miasta Łodzi' },
-  { id: 'nfz', tytul: 'Ubezpieczenie zdrowotne córki', opis: 'Przekażemy PESEL córki Twojemu pracodawcy, który zgłosi ją do ZUS (masz na to 7 dni).', doKogo: ja.pracodawca },
+  { id: 'nfz', tytul: 'Ubezpieczenie zdrowotne córki', opis: 'Przekażemy PESEL córki Twojemu pracodawcy, a on w ciągu 7 dni zgłosi ją do ubezpieczenia zdrowotnego w ZUS.', doKogo: ja.pracodawca },
   { id: 'urlop', tytul: 'Urlop rodzicielski po macierzyńskim', opis: 'Wniosek złożony teraz daje 81,5% pensji przez cały rok, zamiast 100% i 70% osobno.', doKogo: ja.pracodawca },
   { id: 'mob', tytul: 'Córka w Twoim mObywatelu', opis: 'PESEL, odpis aktu urodzenia i jej sprawy zobaczysz w zakładce Bliscy.', doKogo: 'mObywatel' },
 ];
@@ -89,7 +89,7 @@ export function narodziny() {
       tytul: etap === 2 ? 'Wszystko załatwione' : 'Wszystko wysłane jednym podpisem',
       czas: 'Każdą sprawę śledzisz tutaj jak przesyłkę. O każdej zmianie dostaniesz powiadomienie.',
       pozycje: [PIOTR, ...ETAPY[etap]],
-      extra: `${tata ? '' : `<button type="button" class="btn drugi szeroki" id="tel-piotra">${ic('phone')}Zobacz w telefonie ${esc(ja.partner.imie === 'Piotr' ? 'Piotra' : ja.partner.imie)}</button>`}<fieldset class="segment etapy"><legend class="maly">Podgląd w pokazie: jak to będzie wyglądać</legend>${KIEDY.map((k, i) => `<label><input type="radio" name="etap" value="${i}" ${i === etap ? 'checked' : ''}><span>${k}</span></label>`).join('')}</fieldset>`,
+      extra: `${tata ? '' : `<button type="button" class="btn drugi szeroki" id="tel-piotra">${ic('phone')}Zobacz w telefonie ${esc(ja.partner.imie === 'Piotr' ? 'Piotra' : ja.partner.imie)}</button>`}<fieldset class="segment-pole etapy"><legend class="maly">Podgląd w pokazie: jak to będzie wyglądać</legend><div class="segment">${KIEDY.map((k, i) => `<label><input type="radio" name="etap" value="${i}" ${i === etap ? 'checked' : ''}><span>${k}</span></label>`).join('')}</div></fieldset>`,
       dalej: [['Zobacz, kto użył Twoich danych', '#/dane/dostep', 'drugi']],
     }), po(root) {
       $$('input[name=etap]', root).forEach(i => i.onchange = () => { stan.postep = { ...stan.postep, narodziny: +i.value }; zapisz(); dispatchEvent(new HashChangeEvent('hashchange')); });
@@ -399,7 +399,7 @@ export function dowod() {
     tytul: 'Nowy dowód osobisty',
     html: `
     <h1 tabindex="-1">Nowy dowód osobisty</h1>
-    <p class="wstep">Twój dowód traci ważność ${fmt(za(41))}. Wniosek wypełniliśmy danymi z rejestru. Dorosły składa go w urzędzie osobiście, bo urzędnik pobiera odciski palców, więc wybierz urząd i termin wizyty.</p>
+    <p class="wstep">${{ anna: `Twój dowód traci ważność ${fmt(za(41))}.`, halina: `Twój dowód traci ważność ${fmt(za(77))}.` }[OSOBA] || `Twój dowód jest ważny do ${esc(dokumenty.find(x => x.id === 'dowod')?.pola.find(p => p[0] === 'Ważny do')?.[1] || '')}. Nowy złożysz, gdy zmienisz dane, np. nazwisko, albo gdy dowód się zniszczy.`} Wniosek wypełniliśmy danymi z rejestru. Dorosły składa go w urzędzie osobiście, bo urzędnik pobiera odciski palców, więc wybierz urząd i termin wizyty.</p>
     <form id="f-dow" class="karta" novalidate>
       ${d.pola.slice(0, 2).map(p => wiersz(...p)).join('')}${wiersz('Adres do korespondencji', ja.adres)}
       <fieldset class="grupa"><legend class="etyk">Zdjęcie</legend>
@@ -512,7 +512,8 @@ export function podatek() {
     tytul: 'Podatek od nieruchomości',
     html: `
     <h1 tabindex="-1">Podatek od nieruchomości</h1>
-    <section class="karta">${wiersz('Rata', 'IV rata za 2026 r.')}${wiersz('Kwota', '186 zł')}${wiersz('Termin', fmt(za(23)))}${wiersz('Odbiorca', 'Urząd Miasta Łodzi')}</section>
+    <section class="karta">${wiersz('Rata', 'IV rata za 2026 r.')}${wiersz('Kwota', '186 zł')}${wiersz('Termin', fmt(RATA4) + (rataPo() ? ' (minął)' : ''))}${wiersz('Odbiorca', 'Urząd Miasta Łodzi')}</section>
+    ${rataPo() ? `<p class="uwaga">${ic('info')}<span>Po porodzie łatwo przeoczyć termin. Odsetek nie zapłacisz: urząd ich nie pobiera, gdy wynoszą do 8,70 zł.</span></p>` : ''}
     <form id="f-pod" class="karta" novalidate>
       ${blik('blik-p')}
       <label class="opcja przel"><input type="checkbox" id="auto-pod" ${stan.autopilot.podatek ? 'checked' : ''}> <span><b>Włącz zlecenie stałe:</b> kolejne raty zapłacimy z Twojego konta w dniu terminu. Dzień wcześniej damy znać i będzie można płatność wstrzymać.</span></label>

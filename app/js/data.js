@@ -4,8 +4,14 @@
 const DZIEN = 864e5;
 export const dzis = new Date(new Date().toDateString());
 export const za = n => new Date(dzis.getTime() + n * DZIEN);
+// dzień roboczy: wizyta w sobotę albo niedzielę przesuwa się na poniedziałek
+export const zaRob = n => { const d = za(n); d.setDate(d.getDate() + ({ 6: 2, 0: 1 }[d.getDay()] || 0)); return d; };
 export const fmt = (d, o = { day: 'numeric', month: 'long' }) => d.toLocaleDateString('pl-PL', o);
 export const fmtPelna = d => d.toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+// IV rata podatku od nieruchomości: 15 listopada (raty: 15 marca, 15 maja, 15 września, 15 listopada)
+export const RATA4 = new Date(dzis.getFullYear(), 10, 15);
+export const rataPo = () => dzis > RATA4;
+export const rataOpis = () => rataPo() ? 'termin minął ' + fmt(RATA4) : 'do ' + fmt(RATA4);
 export const zl = n => n.toLocaleString('pl-PL', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' zł';
 
 const anna_ja = {
@@ -48,10 +54,10 @@ const anna_dokumenty = [
 // Lista „Do zrobienia”: posortowana po terminie. `cel` to trasa w aplikacji.
 const anna_zadania = [
   { id: 'mandat', tytul: 'Mandat z fotoradaru', opis: '200 zł · przyjmij i zapłać do ' + fmt(za(6)), termin: za(6), pilne: true, cel: '#/mandat', ikona: 'coin' },
-  { id: 'podatek', tytul: 'Podatek od nieruchomości', opis: 'IV rata 186 zł do ' + fmt(za(23)), termin: za(23), cel: '#/podatek', ikona: 'coin' },
+  { id: 'podatek', tytul: 'Podatek od nieruchomości', opis: 'IV rata 186 zł, ' + rataOpis(), termin: RATA4, pilne: rataPo(), cel: '#/podatek', ikona: 'coin' },
   { id: 'badanie', tytul: 'Badanie techniczne Yarisa Cross', opis: 'do ' + fmt(za(19)) + ' · stacje w pobliżu', termin: za(19), cel: '#/badanie', ikona: 'car' },
   { id: 'dowod', tytul: 'Twój dowód traci ważność', opis: 'za 41 dni · wniosek gotowy, umów wizytę', termin: za(41), cel: '#/sprawa/dowod', ikona: 'id' },
-  { id: 'smierc', tytul: 'Zasiłek pogrzebowy po tacie', opis: 'wniosek do ' + fmt(za(323)) + ' · potrzebny rachunek', termin: za(323), cel: '#/sprawa/smierc', ikona: 'leaf' },
+  { id: 'smierc', tytul: 'Zasiłek pogrzebowy po tacie', opis: 'wniosek do ' + fmtPelna(za(323)) + ' · potrzebny rachunek', termin: za(323), cel: '#/sprawa/smierc', ikona: 'leaf' },
 ];
 
 const anna_naleznosci = [
@@ -74,19 +80,19 @@ const anna_autopilot = [
 const anna_dostep = [
   { kto: 'Policja (KMP Łódź)', co: 'dane z prawa jazdy i pojazdu', po: 'kontrola drogowa', kiedy: za(-2), podstawa: 'art. 129 ustawy Prawo o ruchu drogowym', id: 'policja' },
   { kto: 'Szpital im. M. Kopernika', co: 'Twój PESEL i adres', po: 'karta urodzenia dziecka przekazana do USC', kiedy: za(-3), podstawa: 'art. 54 ustawy Prawo o aktach stanu cywilnego', id: 'szpital' },
-  { kto: 'Bank (PKO BP)', co: 'potwierdzenie, że dowód nie jest zastrzeżony', po: 'Twój wniosek o kartę kredytową', kiedy: za(-16), podstawa: 'Twoja zgoda i ustawa o dowodach osobistych', id: 'bank' },
+  { kto: 'Bank Przykładowy S.A.', co: 'potwierdzenie, że dowód nie jest zastrzeżony', po: 'Twój wniosek o kartę kredytową', kiedy: za(-16), podstawa: 'Twoja zgoda i ustawa o dowodach osobistych', id: 'bank' },
   { kto: 'Urząd Miasta Łodzi', co: 'adres zameldowania', po: 'naliczenie podatku od nieruchomości', kiedy: za(-38), podstawa: 'ustawa o podatkach i opłatach lokalnych', id: 'gmina' },
-  { kto: 'Operator telekomunikacyjny', co: 'sprawdzenie zastrzeżenia PESEL', po: 'zakup karty SIM na Twoje dane', kiedy: za(-51), podstawa: 'ustawa o zastrzeganiu numeru PESEL', id: 'operator', podejrzane: 'Nie kupowałaś karty SIM? Ktoś mógł próbować użyć Twoich danych. Zastrzeżenie PESEL zadziałało i operator odmówił.' },
+  { kto: 'Operator telekomunikacyjny', co: 'sprawdzenie zastrzeżenia PESEL', po: 'zakup karty SIM na Twoje dane', kiedy: za(-51), podstawa: 'ustawa o ograniczaniu skutków kradzieży tożsamości', id: 'operator', podejrzane: 'Nie kupowałaś karty SIM? Ktoś mógł próbować użyć Twoich danych. Zastrzeżenie PESEL zadziałało i operator odmówił.' },
 ];
 
 const anna_skrzynka = [
   { id: 'us', od: 'Urząd Skarbowy Łódź-Polesie', tytul: 'Zwrot nadpłaty podatku', data: za(-1), nowa: true,
-    tresc: 'Na podstawie art. 77 § 1 Ordynacji podatkowej Naczelnik Urzędu Skarbowego zawiadamia, że nadpłata w wysokości 214,00 zł wynikająca z zeznania PIT-37 za rok 2025 zostanie zwrócona na rachunek bankowy wskazany w zeznaniu w terminie 14 dni.',
-    prosto: 'Oddajemy Ci 214 zł nadpłaconego podatku za 2025 r. Pieniądze przyjdą na Twoje konto w ciągu 14 dni. Nic nie musisz robić.' },
+    tresc: 'Na podstawie przepisów Ordynacji podatkowej Naczelnik Urzędu Skarbowego zawiadamia, że nadpłata w wysokości 214,00 zł wynikająca z korekty zeznania PIT-37 za rok 2025, złożonej elektronicznie ' + fmtPelna(za(-30)) + ', zostanie zwrócona na rachunek bankowy wskazany w zeznaniu w terminie 45 dni od dnia złożenia korekty.',
+    prosto: 'Po Twojej korekcie PIT za 2025 r. oddajemy Ci 214 zł. Pieniądze przyjdą na Twoje konto najpóźniej ' + fmt(za(15)) + '. Nic nie musisz robić.' },
   { id: 'mandat', od: 'CANARD (GITD)', tytul: 'Wezwanie: przekroczenie prędkości', data: za(-2), nowa: true, cel: '#/mandat',
     tresc: 'Urządzenie rejestrujące zarejestrowało przekroczenie dopuszczalnej prędkości o 18 km/h. Wzywa się właściciela pojazdu EL 4K217 do wskazania kierującego w terminie 7 dni od doręczenia.',
     prosto: 'Fotoradar zrobił zdjęcie Twojemu autu: jechało 18 km/h za szybko. Masz 7 dni, żeby powiedzieć, kto prowadził. Jeśli Ty, możesz od razu przyjąć mandat 200 zł i zapłacić.' },
-  { id: 'gmina', od: 'Urząd Miasta Łodzi', tytul: 'Decyzja: podatek od nieruchomości 2026', data: za(-200),
+  { id: 'gmina', od: 'Urząd Miasta Łodzi', tytul: 'Decyzja: podatek od nieruchomości 2026', data: new Date(dzis.getFullYear(), 1, 9),
     tresc: 'Ustala się wysokość zobowiązania podatkowego w podatku od nieruchomości na rok 2026 w kwocie 744,00 zł, płatnego w czterech ratach.',
     prosto: 'Podatek za mieszkanie na 2026 r. to 744 zł. Płacisz w 4 ratach po 186 zł.' },
 ];
@@ -201,7 +207,7 @@ const DANE = {
     dostep: [
       { kto: 'Anna Wójcik (córka, upoważnienie)', co: 'recepty w Internetowym Koncie Pacjenta', po: 'odbiór recepty', kiedy: za(-1), podstawa: 'Twoje upoważnienie', id: 'corka' },
       { kto: 'Przychodnia „Zdrowie”, Zgierz', co: 'recepty i skierowania', po: 'wystawienie recepty', kiedy: za(-2), podstawa: 'ustawa o systemie informacji w ochronie zdrowia', id: 'przychodnia' },
-      { kto: 'Bank (Pekao)', co: 'sprawdzenie zastrzeżenia PESEL', po: 'próba otwarcia konta na Twoje dane', kiedy: za(-9), podstawa: 'ustawa o zastrzeganiu numeru PESEL', id: 'bank', podejrzane: 'Nie otwierałaś konta? Ktoś mógł podać Twoje dane, np. po telefonie „na wnuczka”. PESEL był zastrzeżony, więc bank odmówił.' },
+      { kto: 'Bank Przykładowy S.A.', co: 'sprawdzenie zastrzeżenia PESEL', po: 'próba otwarcia konta na Twoje dane', kiedy: za(-9), podstawa: 'ustawa o ograniczaniu skutków kradzieży tożsamości', id: 'bank', podejrzane: 'Nie otwierałaś konta? Ktoś mógł podać Twoje dane, np. po telefonie „na wnuczka”. PESEL był zastrzeżony, więc bank odmówił.' },
       { kto: 'ZUS, Oddział w Łodzi', co: 'akt zgonu męża z rejestru stanu cywilnego', po: 'wstrzymanie emerytury męża', kiedy: za(-41), podstawa: 'ustawa o emeryturach i rentach z FUS', id: 'zus' },
     ],
     skrzynka: [
@@ -230,7 +236,7 @@ const DANE = {
       bliscy: { t: 'Twoja córka Anna ma upoważnienie do spraw zdrowia, ZUS i dowodu. Wszystko, co robi w Twoim imieniu, widzisz w zakładce Bliscy.', a: [['Bliscy', '#/bliscy']] },
       nowy_dowod: { t: `Twój dowód jest ważny do ${fmt(za(77))}. Urzędnik może przyjść do Ciebie do domu. Córka Anna już się tym zajmuje.`, a: [['Bliscy', '#/bliscy']] },
       skrzynka: { t: 'Masz nową receptę na Metformax 500. Kod 4821. Lek jest bezpłatny.', a: [['Pokaż receptę', '#/pismo/recepta']] },
-      zdrowie: { t: 'Masz dwie recepty, obie bezpłatne: Metformax 500 (kod 4821) i Polpril 5 mg (kod 5590). Wizyta u diabetologa: ' + fmt(za(17)) + ', 10:30. Wynik cukru (HbA1c) jest trochę powyżej celu: pokaż go lekarzowi.', a: [['Zdrowie', '#/zdrowie']] },
+      zdrowie: { t: 'Masz dwie recepty, obie bezpłatne: Metformax 500 (kod 4821) i Polpril 5 mg (kod 5590). Wizyta u diabetologa: ' + fmt(zaRob(17)) + ', 10:30. Wynik cukru (HbA1c) jest trochę powyżej celu: pokaż go lekarzowi.', a: [['Zdrowie', '#/zdrowie']] },
       do_zrobienia: { t: 'Najważniejsze: renta wdowia, około 434 zł więcej co miesiąc. Do tego gotowa recepta i dowód, którym zajmuje się córka.', a: [['Renta wdowia', '#/sprawa/renta']] },
       smierc: { t: 'Przykro mi z powodu śmierci męża. Zasiłkiem pogrzebowym zajęła się córka Anna. Dla Ciebie jest gotowy wniosek o rentę wdowią.', a: [['Renta wdowia', '#/sprawa/renta']] },
     },
@@ -292,7 +298,7 @@ const DANE = {
     ],
     zadania: [
       { id: 'slub', tytul: 'Ślub: zacznij od zapewnień', opis: 'Tomasz zaprosił Cię do wspólnej sprawy', termin: za(0), cel: '#/sprawa/slub', ikona: 'ring' },
-      { id: 'us', tytul: 'Zwrot podatku 380 zł', opis: 'przyjdzie sam w ciągu 14 dni', termin: za(14), cel: '#/pismo/us', ikona: 'coin' },
+      { id: 'us', tytul: 'Zwrot podatku 380 zł', opis: 'po korekcie PIT; przyjdzie sam do ' + fmt(za(14)), termin: za(14), cel: '#/pismo/us', ikona: 'coin' },
     ],
     naleznosci: [],
     autopilot: [
@@ -305,8 +311,8 @@ const DANE = {
     ],
     skrzynka: [
       { id: 'us', od: 'Urząd Skarbowy Łódź-Śródmieście', tytul: 'Zwrot nadpłaty podatku', data: za(-3), nowa: true,
-        tresc: 'Na podstawie art. 77 § 1 Ordynacji podatkowej Naczelnik Urzędu Skarbowego zawiadamia, że nadpłata w wysokości 380,00 zł wynikająca z zeznania PIT-37 za rok 2025 zostanie zwrócona na rachunek bankowy wskazany w zeznaniu w terminie 14 dni.',
-        prosto: 'Oddajemy Ci 380 zł nadpłaconego podatku za 2025 r. Pieniądze przyjdą na Twoje konto w ciągu 14 dni. Nic nie musisz robić.' },
+        tresc: 'Na podstawie przepisów Ordynacji podatkowej Naczelnik Urzędu Skarbowego zawiadamia, że nadpłata w wysokości 380,00 zł wynikająca z korekty zeznania PIT-37 za rok 2025, złożonej elektronicznie ' + fmtPelna(za(-31)) + ', zostanie zwrócona na rachunek bankowy wskazany w zeznaniu w terminie 45 dni od dnia złożenia korekty.',
+        prosto: 'Po Twojej korekcie PIT za 2025 r. oddajemy Ci 380 zł. Pieniądze przyjdą na Twoje konto najpóźniej ' + fmt(za(14)) + '. Nic nie musisz robić.' },
     ],
     pesel: { zastrzezony: false },
     hero: { id: 'slub', cel: '#/sprawa/slub', tytul: 'Tomasz zaprosił Cię do sprawy „Ślub”', opis: 'zapewnienia, termin, nazwisko', przycisk: 'Zaplanujcie razem', ikona: 'ring', aria: 'Sprawa przyszła do Ciebie: Tomasz zaprosił Cię do wspólnej sprawy „Ślub”.' },

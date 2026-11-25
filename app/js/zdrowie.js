@@ -3,11 +3,11 @@
 // pokazujemy wartość, zakres referencyjny laboratorium i co z tym zrobić (najczęściej: omów z lekarzem).
 import { ic } from './icons.js';
 import { stan, zapisz, esc, $, $$, arkuszZgody, toast, ogloszenie, cel } from './core.js';
-import { OSOBA, ja, za, fmt, fmtPelna, mama } from './data.js';
+import { OSOBA, ja, za, zaRob, fmt, fmtPelna, mama } from './data.js';
 
 const godz = d => d.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
 const dzien = d => fmt(d, { weekday: 'long', day: 'numeric', month: 'long' });
-const wizytaO = (dni, h, m) => { const d = za(dni); d.setHours(h, m, 0, 0); return d; };
+const wizytaO = (dni, h, m) => { const d = zaRob(dni); d.setHours(h, m, 0, 0); return d; }; // przychodnie: dni robocze
 
 const Z = {
   anna: {
@@ -21,12 +21,14 @@ const Z = {
         opis: 'Pokazuje zapas żelaza w organizmie.', co: 'Mieści się w zakresie, przy dolnej granicy.' },
     ],
     wizyty: [
+      { id: 'szczep', hero: 'Przychodnia proponuje termin szczepienia córki', co: 'Bilans i pierwsze szczepienia córki', gdzie: 'Przychodnia „Zdrowie”, ul. Zielona 2, Łódź', kiedy: wizytaO(43, 10, 0), kto: 'termin zaproponowała Twoja przychodnia, bo córka kończy 6 tygodni', potwierdz: true,
+        dodatek: 'Szczepienia obowiązkowe są bezpłatne. Weź książeczkę zdrowia dziecka. Termin nie pasuje? Odwołaj, a przychodnia zaproponuje inny.' },
       { id: 'patronaz', co: 'Wizyta patronażowa położnej', gdzie: 'w domu, ul. Zielona 8 m. 12', kiedy: wizytaO(2, 11, 0), kto: 'położna Joanna Kubiak, POZ „Zdrowie”', potwierdz: true,
         dodatek: 'Położna przychodzi 4–6 razy w pierwszych 2 miesiącach. Sprawdzi Ciebie i córkę. Bez skierowania, bezpłatnie.' },
     ],
     szczepienia: [
       { kto: 'Córka', co: 'Gruźlica (BCG) i WZW typu B', kiedy: 'w szpitalu, po urodzeniu', zrobione: true },
-      { kto: 'Córka', co: 'Kolejne szczepienia z kalendarza (m.in. błonica, tężec, krztusiec, pneumokoki)', kiedy: 'w 6.–8. tygodniu życia, w przychodni', zrobione: false },
+      { kto: 'Córka', co: 'Kolejne szczepienia z kalendarza (m.in. błonica, tężec, krztusiec, pneumokoki)', kiedy: `${fmt(zaRob(43))}, w przychodni`, zrobione: false },
     ],
     dostep: [['Ty', 'pełny dostęp do swojego konta'], ['Córka', 'dane dziecka widzisz jako rodzic do jej 18. urodzin']],
   },
@@ -58,7 +60,7 @@ const Z = {
     wyniki: [],
     wizyty: [
       { id: 'kierowca', co: 'Badanie lekarskie kandydata na kierowcę', gdzie: 'lekarz uprawniony do badania kierowców', kiedy: null, kto: 'potrzebne do prawa jazdy kat. B; płatne, ok. 200 zł', link: ['Profil kandydata na kierowcę', '#/sprawa/osiemnastka'],
-        dodatek: 'Orzeczenie lekarza trafi do profilu kandydata na kierowcę.' },
+        dodatek: 'Orzeczenie dołączysz do wniosku o profil kandydata na kierowcę.' },
     ],
     szczepienia: [{ kto: 'Ty', co: 'Szczepienia obowiązkowe z kalendarza', kiedy: 'komplet', zrobione: true }],
     dostep: [['Ty', 'Twoje konto pacjenta'], ['Monika i Paweł Lis, rodzice', 'widzą Twoje dane do 18. urodzin; potem tylko Ty decydujesz, komu je pokazać']],
@@ -94,7 +96,7 @@ function skala(w) {
 
 export function zdrowieWidok() {
   const d = D(), potw = stan.zdrowie?.potwierdzone || {}, odw = stan.zdrowie?.odwolane || {};
-  const najbl = d.wizyty.find(v => v.kiedy && !odw[v.id]);
+  const najbl = d.wizyty.find(v => v.hero && !odw[v.id]) || d.wizyty.find(v => v.kiedy && !odw[v.id]);
   const recepty = d.recepty.map(r => `<li class="rec">
     <div class="rec-g">${ic('pill', 'okr')}<span><b>${esc(r.lek)}</b><small>${esc(r.dawka)}</small></span></div>
     <div class="rec-d"><span>Kod</span><b class="rec-kod">${r.kod}</b><span>Ważna do</span><b>${fmt(r.wazna)}${r.roczna ? ' (roczna)' : ''}</b><span>Odpłatność</span><b>${esc(r.odplatnosc)}</b></div>
@@ -106,9 +108,9 @@ export function zdrowieWidok() {
     ${s.html}
     <p class="wyn-st ${s.poza ? 'poza' : 'ok'}">${ic(s.poza ? 'alert' : 'check')}<span>${esc(w.co)}</span></p>
     <details class="rozw"><summary>Co to znaczy</summary><p class="maly">${esc(w.opis)}</p><p class="maly">${esc(w.lab)}, ${fmt(w.data)}.</p></details></li>`; }).join('');
-  const wizyty = d.wizyty.map(v => {
+  const wizyty = [...d.wizyty].sort((a, b) => (a.kiedy || Infinity) - (b.kiedy || Infinity)).map(v => {
     const status = odw[v.id] ? '<span class="st st-pozniej">Odwołana</span>' : potw[v.id] ? '<span class="st st-ok">Potwierdzona</span>' : '';
-    return `<li class="wiz">
+    return `<li class="wiz" id="wiz-${v.id}">
       <div class="wiz-g">${v.kiedy ? `<span class="zad-data"><b>${v.kiedy.getDate()}</b><small>${fmt(v.kiedy, { month: 'short' })}</small></span>` : ic('doc', 'okr')}
         <span><b>${esc(v.co)} ${status}</b><small>${v.kiedy ? esc(dzien(v.kiedy)) + ', ' + godz(v.kiedy) + ' · ' : ''}${esc(v.gdzie)}</small><small>${esc(v.kto)}</small></span></div>
       <p class="maly">${esc(v.dodatek)}</p>
@@ -119,7 +121,7 @@ export function zdrowieWidok() {
   return {
     tytul: 'Zdrowie',
     html: `<h1 tabindex="-1">Zdrowie</h1>
-    ${najbl ? `<a class="hero zdr-hero" href="#zdr-wizyty"><span class="hero-ikona">${ic('heart')}</span><span class="hero-tr"><b class="hero-t">${esc(najbl.co)}</b><span class="hero-o">${esc(dzien(najbl.kiedy))}, ${godz(najbl.kiedy)}${potw[najbl.id] ? ' · potwierdzona' : ''}</span></span></a>` : ''}
+    ${najbl ? `<a class="hero zdr-hero" href="#wiz-${najbl.id}"><span class="hero-ikona">${ic(najbl.hero ? 'syringe' : 'heart')}</span><span class="hero-tr"><b class="hero-t">${esc(najbl.hero || najbl.co)}</b><span class="hero-o">${esc(dzien(najbl.kiedy))}, ${godz(najbl.kiedy)}${potw[najbl.id] ? ' · potwierdzona' : ''}</span></span></a>` : ''}
 
     <section aria-labelledby="h-rec"><h2 class="sekcja" id="h-rec">Recepty <span class="licz">${d.recepty.length}</span></h2>
       ${recepty ? `<ul class="lista zdr-lista">${recepty}</ul>` : '<p class="pusto">Nie masz aktywnych recept.</p>'}</section>

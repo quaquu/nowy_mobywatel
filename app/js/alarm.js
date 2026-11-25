@@ -12,7 +12,7 @@ const wczytaj = async () => DANE || (DANE = await (await fetch('dane/schrony.jso
 const SKAD = {
   anna: { gdzie: [51.7712, 19.45], opis: 'ul. Zielona 8, Łódź (adres zameldowania)', bliscy: [
     { kto: 'Mama, Halina Nowicka', k: 1, gdzie: [51.8575, 19.406], tel: '+48 600 410 233' },
-    { kto: 'Piotr, partner', k: 0, kiedy: '2 minuty temu' }] },
+    { kto: 'Piotr, mąż', k: 0, kiedy: '2 minuty temu' }] },
   halina: { gdzie: [51.8575, 19.406], opis: 'ul. Lipowa 3, Zgierz (adres zameldowania)', bliscy: [
     { kto: 'Córka, Anna Wójcik', k: 1, kiedy: 'minutę temu' }] },
   jakub: { gdzie: [51.738, 19.465], opis: 'ul. Wróblewskiego 18, Łódź (adres zameldowania)', bliscy: [

@@ -2,7 +2,7 @@
 import { ic } from './icons.js';
 import { stan, zapisz, resetuj, esc, $, $$, arkuszZgody, ogloszenie, toast, cel, dodajWyslane, wyborMotywu, przewinDo } from './core.js';
 import { portret, yarisCross, niemowle } from './grafiki.js';
-import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, zl, OSOBA, OSOBY, osoba, adresOsoby, emerytalne } from './data.js';
+import { ja, dziecko, mama, dokumenty, zadania, naleznosci, autopilot, dostep, skrzynka, za, fmt, fmtPelna, zl, OSOBA, OSOBY, osoba, adresOsoby, emerytalne, rataOpis, zaRob } from './data.js';
 
 // Awatar osoby albo dziecka: klucz z danych („corka”, „mama”, osoba z pokazu) albo nazwa ikony.
 // Awatar osoby: ten sam portret co na dokumencie, przybliżony na twarz w kółku; córka: portret niemowlęcia.
@@ -126,7 +126,7 @@ function widzety() {
     w.push(`<a class="widzet" href="#/naleznosci"><span class="w-etyk">${ic('gift')}Możesz skorzystać</span><span class="w-liczba">${rok ? zl(Math.round(rok / 100) * 100) : n}</span><span class="w-pod">${rok ? `w ciągu roku · ${ile}` : ile}</span></a>`);
   }
   const zwrot = skrzynka.find(p => p.id === 'us' && /zwrot/i.test(p.tytul));
-  if (zwrot && OSOBA === 'kasia') w.push(`<a class="widzet" href="#/pismo/us"><span class="w-etyk">${ic('coin')}Zwrot podatku</span><span class="w-liczba">380 zł</span><span class="w-pod">przyjdzie sam w 14 dni</span></a>`);
+  if (zwrot && OSOBA === 'kasia') w.push(`<a class="widzet" href="#/pismo/us"><span class="w-etyk">${ic('coin')}Zwrot podatku</span><span class="w-liczba">380 zł</span><span class="w-pod">przyjdzie sam do ${fmt(za(14))}ni</span></a>`);
   // nieparzysta liczba małych kafli: ostatni na całą szerokość, bez dziury w siatce
   const male = w.filter(x => !x.includes('szeroki-w'));
   if (male.length % 2) w[w.lastIndexOf(male.at(-1))] = male.at(-1).replace('class="widzet"', 'class="widzet szeroki-w"');
@@ -175,7 +175,7 @@ export function start() {
       <ul class="lista">
         ${OSOBA === 'anna' ? `${poz('#/bliscy/mama', 'mama', `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}` : ``}
         ${OSOBA === 'anna' ? '' : osoba.bliscy.osoby.map(([href, a, t, o]) => poz(href, a, t, esc(o))).join('')}
-        ${poz('#/zdrowie', 'heart', 'Zdrowie', { anna: 'położna przyjdzie pojutrze; nowe wyniki morfologii', halina: 'recepta na Metformax; diabetolog ' + fmt(za(17)), jakub: 'badanie lekarskie do prawa jazdy', kasia: 'recepta roczna; badania okresowe ' + fmt(za(40)) }[OSOBA] || 'recepty, wyniki badań, wizyty')}
+        ${poz('#/zdrowie', 'heart', 'Zdrowie', { anna: 'termin szczepienia córki do potwierdzenia; nowe wyniki morfologii', halina: 'recepta na Metformax; diabetolog ' + fmt(zaRob(17)), jakub: 'badanie lekarskie do prawa jazdy', kasia: 'recepta roczna; badania okresowe ' + fmt(zaRob(40)) }[OSOBA] || 'recepty, wyniki badań, wizyty')}
         ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', `włączone: ${odm(ileWl('przypomnienie'), 'przypomnienie', 'przypomnienia', 'przypomnień')}, ${odm(ileWl('zlecenie'), 'zlecenie', 'zlecenia', 'zleceń')}`)}
       </ul>
     </section>
@@ -254,9 +254,9 @@ const DANE_POKAZ = () => {
   ];
 };
 const CELE = [
-  ['sklep', 'Zakupy 18+', ['18']],
+  ['sklep', 'Zakupy 18+', ['18', 'foto']],
   ['hotel', 'Hotel', ['imie', 'foto']],
-  ['auto', 'Wynajem auta', ['imie', 'prawo']],
+  ['auto', 'Wynajem auta', ['imie', 'foto', 'prawo']],
   ['kurier', 'Odbiór przesyłki', ['imie', 'foto']],
   ['urzad', 'Urząd lub bank', ['imie', 'foto', 'urodz', 'pesel']],
 ];
@@ -265,7 +265,7 @@ export function pokaz() {
   return {
     tytul: 'Pokaż tylko to, co potrzebne',
     html: `<h1 tabindex="-1">Pokaż tylko to, co potrzebne</h1>
-    <p class="wstep">Wybierz, po co pokazujesz dokument. Zaznaczymy tylko dane potrzebne do tego celu. Resztę możesz dodać sam.</p>
+    <p class="wstep">Wybierz, po co pokazujesz dokument. Zaznaczymy tylko dane potrzebne do tego celu. Resztę dodasz, jeśli chcesz.</p>
     <form id="f-pok" class="karta" novalidate>
       <fieldset class="grupa"><legend class="etyk">Po co</legend>
         <div class="chipy">${CELE.filter(([, , d]) => d.every(k => dane.some(x => x[0] === k))).map(([id, t], i) => `<label class="chip-r"><input type="radio" name="cel" value="${id}" ${i === 0 ? 'checked' : ''}><span>${t}</span></label>`).join('')}</div>
@@ -299,7 +299,7 @@ export function pokaz() {
 
 /* ---------------- Skrzynka ---------------- */
 export function skrzynkaWidok() {
-  const doZap = OSOBA !== 'anna' ? [] : [!stan.zrobione.mandat && ['#/mandat', 'Mandat z fotoradaru', '200 zł do ' + fmt(za(6))], !stan.zrobione.podatek && ['#/podatek', 'Podatek od nieruchomości', '186 zł do ' + fmt(za(23))]].filter(Boolean);
+  const doZap = OSOBA !== 'anna' ? [] : [!stan.zrobione.mandat && ['#/mandat', 'Mandat z fotoradaru', '200 zł do ' + fmt(za(6))], !stan.zrobione.podatek && ['#/podatek', 'Podatek od nieruchomości', '186 zł, ' + rataOpis()]].filter(Boolean);
   return {
     tytul: 'Skrzynka',
     html: `<h1 tabindex="-1">Pisma i płatności</h1>
@@ -321,7 +321,7 @@ export function pismo(id) {
     <section class="karta prosto" aria-labelledby="h-pr"><h2 id="h-pr" class="nag">${ic('chat')}Prostym językiem</h2><p>${esc(p.prosto)}</p></section>
     ${p.cel ? `<a class="btn glowny szeroki" href="${p.cel}">Załatw tę sprawę</a>` : ''}
     <details class="rozw"><summary>Oryginalna treść pisma</summary><p>${esc(p.tresc)}</p></details>
-    <p class="zrodlo">${ic('info')}<span>Wersję prostym językiem przygotowuje urząd razem z pismem i odpowiada za nią tak samo jak za oryginał.</span></p>`,
+    <p class="zrodlo">${ic('info')}<span>Wersję prostym językiem przygotowuje nadawca razem z pismem i odpowiada za nią tak samo jak za oryginał.</span></p>`,
   };
 }
 
@@ -398,7 +398,7 @@ export function dostepWidok() {
 
 export function rejestry() {
   // Administrator każdego rejestru; dane z rejestrów różnią się między osobami w pokazie.
-  const ADMIN = { 'Rejestr PESEL': 'Ministerstwo Cyfryzacji', 'Centralna Ewidencja Pojazdów i Kierowców': 'Ministerstwo Cyfryzacji', 'Centralna Ewidencja Kierowców': 'Ministerstwo Cyfryzacji', 'Rejestr Dowodów Osobistych': 'Ministerstwo Cyfryzacji', 'Krajowa Administracja Skarbowa': 'Ministerstwo Finansów', ZUS: 'ZUS', 'NFZ / Internetowe Konto Pacjenta': 'NFZ, Ministerstwo Zdrowia', 'System Informacji Oświatowej': 'Ministerstwo Edukacji' };
+  const ADMIN = { 'Rejestr PESEL': 'Ministerstwo Cyfryzacji', 'Centralna Ewidencja Pojazdów i Kierowców': 'Ministerstwo Cyfryzacji', 'Centralna Ewidencja Kierowców': 'Ministerstwo Cyfryzacji', 'Rejestr Dowodów Osobistych': 'Ministerstwo Cyfryzacji', 'Krajowa Administracja Skarbowa': 'Ministerstwo Finansów', ZUS: 'ZUS', 'NFZ / Internetowe Konto Pacjenta': 'Centrum e-Zdrowia, NFZ', 'System Informacji Oświatowej': 'Ministerstwo Edukacji Narodowej' };
   const R = osoba.rejestry.map(([n, co]) => [n, co, ADMIN[n] || '']);
   return {
     tytul: 'Co państwo o mnie wie',

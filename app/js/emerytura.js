@@ -76,8 +76,8 @@ function pasekUdzialow() {
 }
 // Kapitał rok po roku do emerytury: pole pod linią, podpisane początek i koniec, najechanie pokazuje rok i kwotę.
 function wykresKapitalu(wiek, ikze) {
-  const n = Math.round(lataDo(wiek)), rok0 = new Date().getFullYear();
-  const pkt = Array.from({ length: n + 1 }, (_, t) => ({ rok: rok0 + t, v: kapital(t, ikze).razem }));
+  const doEm = lataDo(wiek), n = Math.ceil(doEm), rok0 = new Date().getFullYear();
+  const pkt = Array.from({ length: n + 1 }, (_, t) => ({ rok: rok0 + t, v: kapital(Math.min(t, doEm), ikze).razem }));
   const W = 340, H = 150, L = 4, R = 4, T = 22, B = 24, max = Math.max(...pkt.map(p => p.v)) * 1.05;
   const x = i => L + i * (W - L - R) / n, y = v => T + (H - T - B) * (1 - v / max);
   const linia = pkt.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join('');

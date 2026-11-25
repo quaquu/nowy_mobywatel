@@ -202,6 +202,17 @@ function powloka() {
   addEventListener('change', e => { if (e.target.name?.startsWith('motyw')) ustawMotyw(e.target.value); });
   addEventListener('ustawienia', () => { zastosujUstawienia(); pokaz(); });
   addEventListener('hashchange', pokaz);
+  // Kotwice na tej samej stronie (#tresc, #zdr-wizyty) przewijają i ustawiają fokus, a nie zmieniają ekranu:
+  // router czyta każdy hash jako trasę, więc bez tego link „Przejdź do treści” otwierał pustą stronę.
+  document.addEventListener('click', e => {
+    const a = e.target.closest?.('a[href^="#"]'), h = a?.getAttribute('href');
+    if (!h || h.startsWith('#/') || h === '#') return;
+    const cel = document.getElementById(h.slice(1)); if (!cel) return;
+    e.preventDefault();
+    if (!cel.hasAttribute('tabindex')) cel.setAttribute('tabindex', '-1');
+    cel.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    cel.focus({ preventScroll: true });
+  });
   podlacz();
   pokaz();
   if ('serviceWorker' in navigator && location.protocol === 'https:' || location.hostname === '127.0.0.1' || location.hostname === 'localhost') {

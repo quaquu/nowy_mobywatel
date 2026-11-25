@@ -360,9 +360,9 @@ export async function sprawy(url) {
   await krok('pokaz-dane', async p => {
     await p.goto(url + '#/pokaz'); await p.waitForSelector('input[name=dana]');
     const zazn = () => p.$$eval('input[name=dana]:checked', l => l.map(x => x.value).join(','));
-    if ((await zazn()) !== '18') throw new Error('sklep: więcej niż pełnoletność');
+    if ((await zazn()) !== '18,foto') throw new Error('sklep: nie pełnoletność i zdjęcie: ' + (await zazn()));
     await p.click('label:has(input[name=cel][value="auto"])');
-    if ((await zazn()) !== 'imie,prawo') throw new Error('wynajem auta: zły zakres ' + (await zazn()));
+    if ((await zazn()) !== 'imie,foto,prawo') throw new Error('wynajem auta: zły zakres ' + (await zazn()));
     await p.click('#f-pok button.glowny'); await p.waitForSelector('.pok-wynik');
     const t = await p.textContent('.pok-wynik');
     if (!/prawo jazdy/i.test(t) || /PESEL|Adres/.test(t)) throw new Error('kod pokazuje inne dane niż wybrane: ' + t);

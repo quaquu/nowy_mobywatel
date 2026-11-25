@@ -469,8 +469,8 @@ a.poz:hover, button.poz:hover { background: var(--wypelnienie); }
 .st-ok { background: color-mix(in srgb, var(--ok) 14%, var(--pow)); color: var(--ok); }
 .st-tok { background: var(--wypelnienie); color: var(--gl); }
 .st-pozniej { background: color-mix(in srgb, var(--tekst2) 12%, var(--pow)); color: var(--tekst2); }
-.etapy { margin-top: var(--o4); }
-.etapy legend { margin-bottom: var(--space-xs); }
+.etapy { margin-top: var(--o5); }
+.etapy legend { margin: 0 0 var(--space-xs); padding: 0; }
 /* obowiązkowy krok: kłódka zamiast wyszarzonego pola */
 .krok-zamek { display: grid; place-items: center; width: 24px; height: 24px; flex: none; color: var(--tekst2); }
 .krok-zamek .ic { width: 20px; height: 20px; }
@@ -760,7 +760,7 @@ html.ramka .telefon { position: sticky; top: calc(var(--pasek-wys, 0px) + 24px -
 .panel-syt a.akt { box-shadow: 0 0 0 2px var(--gl), var(--cien-widzet); }
 .syt-tr { display: flex; flex-direction: column; gap: var(--space-2xs); min-width: 0; font-size: var(--t-objasn); line-height: 1.45; }
 .syt-tr b { color: var(--tekst); font-size: 1.125rem; }
-.syt-tr strong { color: var(--gl); font-size: 1.25rem; font-weight: 900; letter-spacing: -.01em; font-variant-numeric: tabular-nums; margin-top: var(--space-2xs); }
+.syt-tr strong { color: var(--gl); font-size: 1.25rem; font-weight: 900; letter-spacing: -.01em; font-variant-numeric: tabular-nums; margin-top: var(--space-2xs); line-height: 1.3; text-wrap: balance; }
 .syt-ob { flex: none; width: 64px; height: 64px; border-radius: var(--r-grupa); overflow: hidden; display: grid; place-items: center; background: var(--wypelnienie); }
 .syt-ob img { width: 100%; height: 100%; object-fit: cover; }
 .syt-alarm { position: relative; background: var(--zle-wyp); }
