@@ -25,6 +25,7 @@ const TRASY = [
   [/^\/sprawa\/(slub|smierc|firma|emerytura|osiemnastka|renta)$/, async (m, q) => czyja(m[1], async () => (await Z())[m[1]]())(m, q)],
   [/^\/osoby$/, () => W.osoby()],
   [/^\/emerytura$/, async () => (await import('./emerytura.js')).emeryturaWidok()],
+  [/^\/zdrowie$/, async () => (await import('./zdrowie.js')).zdrowieWidok()],
   [/^\/mandat$/, czyja('mandat', async () => (await S()).mandat())],
   [/^\/podatek$/, czyja('podatek', async () => (await S()).podatek())],
   [/^\/badanie$/, czyja('badanie', async () => (await S()).badanie())],
@@ -61,7 +62,7 @@ const ZAKLADKI = [
   ['#/sprawy', 'list', 'Sprawy', /^\/(sprawy|sprawa|mandat|podatek|badanie)/],
   ['#/asystent', 'chat', 'Asystent', /^\/asystent/],
   ['#/dokumenty', 'wallet', 'Dokumenty', /^\/(dokument|pokaz)/],
-  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|osoby|emerytura|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test|kto-dzwoni|poparcie|pesel|szybkie|alarm|schrony)/],
+  ['#/wiecej', 'more', 'Więcej', /^\/(wiecej|osoby|emerytura|zdrowie|skrzynka|pismo|naleznosci|zlecenia|autopilot|dane|bliscy|dostep|konsultant|ustawienia|jury|test|kto-dzwoni|poparcie|pesel|szybkie|alarm|schrony)/],
 ];
 
 function zastosujUstawienia() {

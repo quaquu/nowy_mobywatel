@@ -33,6 +33,7 @@ export const O = {
   emerytura: { t: 'Na emeryturę zgromadziłaś 250 890 zł w ZUS, PPK, IKZE i IKE. Wiek emerytalny osiągniesz 15 maja 2053 r. W koncie w ZUS brakuje składek za lata 2013–2015: sprawdźmy, czy to w porządku.', a: [['Twoja emerytura', '#/emerytura'], ['Brakujące składki', '#/sprawa/emerytura']], z: ['ZUS: Emerytura w wieku powszechnym', 'https://www.zus.pl/swiadczenia/emerytury/emerytura-dla-osob-urodzonych-po-31-grudnia-1948/emerytura-w-wieku-powszechnym'] },
   osiemnastka: { t: 'Po 18. urodzinach wpis do rejestru wyborców zrobi się sam, a rodzice tracą dostęp do Internetowego Konta Pacjenta. Dowód wydany po 12. roku życia jest ważny 10 lat i nie trzeba go wymieniać.', a: [['Co się zmienia po 18 latach', '#/sprawa/osiemnastka']], z: null },
   prawo_jazdy: { t: 'Najpierw profil kandydata na kierowcę: wniosek do starosty ze zdjęciem i orzeczeniem lekarskim. Profil jest bezpłatny, a kurs możesz zacząć 3 miesiące przed 18. urodzinami.', a: [['Profil kandydata na kierowcę', '#/sprawa/osiemnastka']], z: ['gov.pl: Uzyskaj prawo jazdy', GOV + 'uzyskaj-prawo-jazdy'] },
+  zdrowie: { t: 'Położna przyjdzie pojutrze o 11:00. Masz receptę na Tardyferon (kod 7315) i nowe wyniki morfologii: hemoglobina jest trochę poniżej zakresu, dlatego lekarz przepisał żelazo. To nie jest diagnoza; o wyniku decyduje lekarz.', a: [['Zdrowie', '#/zdrowie']], z: ['Internetowe Konto Pacjenta', 'https://pacjent.gov.pl'] },
   konsultant: { t: 'Jasne. Konsultant oddzwoni i, jeśli się zgodzisz, zobaczy, na którym kroku jest Twoja sprawa.', a: [['Poproś o telefon', '#/konsultant']], z: null },
 };
 const ODMOWY = {
@@ -40,18 +41,19 @@ const ODMOWY = {
   cudze_dane: 'Nie pokazuję danych innych osób. Jeśli działasz w czyimś imieniu, ta osoba może Cię upoważnić w zakładce Bliscy.',
   niezgodne_z_prawem: 'W tym nie pomogę. Mogę za to wyjaśnić, jak sprawa wygląda zgodnie z prawem, np. kiedy wygasają punkty karne albo jakie ulgi Ci przysługują.',
 };
-const NAZWY = { slub: 'ślub', smierc: 'śmierć bliskiej osoby', firma: 'zakładanie firmy', emerytura: 'emeryturę', osiemnastka: '18. urodziny', prawo_jazdy: 'prawo jazdy', narodziny: 'narodziny dziecka', przeprowadzka: 'przeprowadzkę', kupno_auta: 'kupno auta', utrata_dokumentu: 'zgubione dokumenty', nowy_dowod: 'nowy dowód', mandat: 'mandat', platnosci: 'płatności', skrzynka: 'pisma', swiadczenia: 'świadczenia', dostep_danych: 'Twoje dane', bliscy: 'sprawy bliskich', logowanie: 'logowanie', dokumenty: 'dokumenty', pojazd: 'auto: OC i badanie', stluczka: 'stłuczkę', oszustwo: 'podejrzaną wiadomość', kto_dzwoni: 'podejrzany telefon', poparcie: 'podpisy poparcia', do_zrobienia: 'terminy', konsultant: 'rozmowę z człowiekiem' };
+const NAZWY = { zdrowie: 'zdrowie: recepty i wyniki', slub: 'ślub', smierc: 'śmierć bliskiej osoby', firma: 'zakładanie firmy', emerytura: 'emeryturę', osiemnastka: '18. urodziny', prawo_jazdy: 'prawo jazdy', narodziny: 'narodziny dziecka', przeprowadzka: 'przeprowadzkę', kupno_auta: 'kupno auta', utrata_dokumentu: 'zgubione dokumenty', nowy_dowod: 'nowy dowód', mandat: 'mandat', platnosci: 'płatności', skrzynka: 'pisma', swiadczenia: 'świadczenia', dostep_danych: 'Twoje dane', bliscy: 'sprawy bliskich', logowanie: 'logowanie', dokumenty: 'dokumenty', pojazd: 'auto: OC i badanie', stluczka: 'stłuczkę', oszustwo: 'podejrzaną wiadomość', kto_dzwoni: 'podejrzany telefon', poparcie: 'podpisy poparcia', do_zrobienia: 'terminy', konsultant: 'rozmowę z człowiekiem' };
 const PODPOWIEDZI = osoba.podpowiedzi;
 
 // Odpowiedzi zależą od osoby w pokazie. Kolejność: odpowiedź tej osoby z danych, odpowiedź zbudowana z jej danych,
 // a gdy odpowiedź opisuje fakty Anny, a sprawa należy w pokazie do innej osoby: „pokaż jako …”.
-const FAKTY_ANNY = new Set(['narodziny', 'mandat', 'platnosci', 'pojazd', 'emerytura', 'firma', 'skrzynka', 'swiadczenia', 'do_zrobienia', 'nowy_dowod', 'dokumenty', 'dostep_danych', 'bliscy']);
+const FAKTY_ANNY = new Set(['zdrowie', 'narodziny', 'mandat', 'platnosci', 'pojazd', 'emerytura', 'firma', 'skrzynka', 'swiadczenia', 'do_zrobienia', 'nowy_dowod', 'dokumenty', 'dostep_danych', 'bliscy']);
 const zDanych = {
   dokumenty: () => ({ t: `Twoje dokumenty: ${dokumenty.map(d => d.nazwa).join(', ')}. Jeśli chcesz potwierdzić tylko wiek albo tożsamość, mogę pokazać kod bez reszty danych.`, a: [['Dokumenty', '#/dokumenty'], ['Pokaż tylko to, co potrzebne', '#/pokaz']] }),
   dostep_danych: () => { const p = dostep.find(d => d.podejrzane); return { t: `W ostatnich 60 dniach Twoje dane odczytano ${dostep.length} razy.${p ? ` Jeden odczyt warto sprawdzić: ${p.kto}.` : ' Wszystkie odczyty mają cel i podstawę prawną.'}`, a: [['Kto sprawdzał moje dane', '#/dane/dostep'], ['Co państwo o mnie wie', '#/dane/rejestry']] }; },
   bliscy: () => ({ t: osoba.bliscy.wstep, a: [['Bliscy', '#/bliscy']] }),
   skrzynka: () => ({ t: 'Twoje pisma są w skrzynce. Każde pokazuję też prostym językiem.', a: [['Otwórz skrzynkę', '#/skrzynka']] }),
   do_zrobienia: () => ({ t: 'Twoje sprawy i terminy są na Starcie.', a: [['Pokaż wszystko', '#/start']] }),
+  zdrowie: () => ({ t: 'Twoje recepty z kodem dla apteki, wyniki badań objaśnione prostym językiem, wizyty i szczepienia są w jednym miejscu.', a: [['Zdrowie', '#/zdrowie']] }),
   emerytura: () => ({ t: 'Stan oszczędności emerytalnych z ZUS, PPK, IKE i IKZE oraz prognozę zobaczysz w jednym miejscu.', a: [['Twoja emerytura', '#/emerytura']] }),
 };
 const doOdpowiedzi = i => {

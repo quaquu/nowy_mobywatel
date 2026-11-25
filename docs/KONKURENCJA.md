@@ -31,7 +31,7 @@ Bez publicznej wersji w chwili przeglądu: molk915 (React, duży), VerySillyCatP
 ## Wnioski dla tego prototypu
 
 - Nikt poza Kozłowskim nie ma testów z ludźmi. To wciąż największa luka.
-- Nikt nie ma pomiarów 1:1 z referencją (dotknięcia, trafność asystenta, axe, Lighthouse) ani 40 ścieżek sprawdzanych automatycznie.
+- Nikt nie ma pomiarów 1:1 z referencją (dotknięcia, trafność asystenta, axe, Lighthouse) ani 42 ścieżek sprawdzanych automatycznie.
 - Dane publiczne na żywo ma tylko Kozłowski (CERT, IMGW, PSP); my mamy PSP w telefonie, bez sieci.
 - Koncepcja „państwo przychodzi ze sprawą” nie jest już jedyna („Załatwione”, „W tle”), więc zgłoszenie zaczyna się od pomiarów, a nie od pomysłu.
 - Wielu ma film (48–80 s) i pokaz automatyczny; kilku ma 2–5 języków.

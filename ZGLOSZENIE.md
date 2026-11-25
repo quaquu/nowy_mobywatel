@@ -29,7 +29,7 @@ Zmierzone, nie zadeklarowane. Te same testy na tym i na referencyjnym prototypie
 • narodziny dziecka: 5 spraw w 4 instytucjach za 4 dotknięcia i 1 podpis, ok. 14 s (model KLM); w referencji 2 sprawy, 6 dotknięć, 2 podpisy, ok. 24 s;
 • asystent przypisał do właściwej sprawy 90,8% z 87 zdań, których nie widział przy budowie (referencja: 31,0%); złośliwe prośby odrzucone: 5 z 5;
 • 0 błędów dostępności WCAG 2.2 AA (axe; referencja: 7 rodzajów), Lighthouse dostępność 100 (referencja: 87);
-• 40 ścieżek przechodzi automatycznie do końca, 51 ekranów na 4 szerokościach bez błędów, działa bez internetu.
+• 42 ścieżki przechodzą automatycznie do końca, 52 ekrany na 4 szerokościach bez błędów, działa bez internetu.
 
 Problem: żeby coś załatwić, trzeba samemu wiedzieć, że ma się sprawę, w którym urzędzie i jakim wnioskiem. Po narodzinach dziecka to 5 wniosków w 4 instytucjach, każdy osobno.
 
@@ -42,7 +42,7 @@ Ten sam wzór działa w 11 sprawach życiowych (narodziny, przeprowadzka, kupno 
 
 Na prawdziwych danych publicznych: alarm przychodzi komunikatem z sieci komórkowej (Cell Broadcast, planowany od 2027 r.) i otwiera mObywatela z najbliższym miejscem ochronnym z rejestru PSP (dane.gov.pl), liczonym w telefonie bez internetu, z instrukcją RCB po polsku, angielsku i ukraińsku i przyciskiem „Jestem bezpieczna” dla bliskich.
 
-Pod ręką: zastrzeżenie PESEL ze stanem na Starcie (cofnięcie na czas kredytu, potem wraca samo); pokazywanie dowodu według celu (zakupy 18+, hotel, wynajem auta: tylko potrzebne dane); „Możesz skorzystać”; Twoja emerytura (ZUS, PPK, IKE i IKZE razem, z prognozą); BLIK; „Kto dzwoni?”; podpisy poparcia; pomoc przy logowaniu (33% ocen 1–2★ z 1600 recenzji mObywatela dotyczy logowania). Asystent, tekstem albo głosem, działa w telefonie i niczego nie wysyła sam.
+Pod ręką: zastrzeżenie PESEL ze stanem na Starcie (cofnięcie na czas kredytu, potem wraca samo); pokazywanie dowodu według celu (zakupy 18+, hotel, wynajem auta: tylko potrzebne dane); „Możesz skorzystać”; Twoja emerytura (ZUS, PPK, IKE i IKZE razem, z prognozą, składkami miesiąc po miesiącu i osobami uprawnionymi); Zdrowie (recepty z kodem dla apteki, wyniki prostym językiem, bez diagnozy); BLIK; „Kto dzwoni?”; podpisy poparcia; pomoc przy logowaniu (33% ocen 1–2★ z 1600 recenzji mObywatela dotyczy logowania). Asystent, tekstem albo głosem, działa w telefonie i niczego nie wysyła sam.
 
 Dla kogo: rodzice, osoby starsze i ich dzieci, każdy, kto nie wie, co mu przysługuje.
 

@@ -230,6 +230,7 @@ const DANE = {
       bliscy: { t: 'Twoja córka Anna ma upoważnienie do spraw zdrowia, ZUS i dowodu. Wszystko, co robi w Twoim imieniu, widzisz w zakładce Bliscy.', a: [['Bliscy', '#/bliscy']] },
       nowy_dowod: { t: `Twój dowód jest ważny do ${fmt(za(77))}. Urzędnik może przyjść do Ciebie do domu. Córka Anna już się tym zajmuje.`, a: [['Bliscy', '#/bliscy']] },
       skrzynka: { t: 'Masz nową receptę na Metformax 500. Kod 4821. Lek jest bezpłatny.', a: [['Pokaż receptę', '#/pismo/recepta']] },
+      zdrowie: { t: 'Masz dwie recepty, obie bezpłatne: Metformax 500 (kod 4821) i Polpril 5 mg (kod 5590). Wizyta u diabetologa: ' + fmt(za(17)) + ', 10:30. Wynik cukru (HbA1c) jest trochę powyżej celu: pokaż go lekarzowi.', a: [['Zdrowie', '#/zdrowie']] },
       do_zrobienia: { t: 'Najważniejsze: renta wdowia, około 434 zł więcej co miesiąc. Do tego gotowa recepta i dowód, którym zajmuje się córka.', a: [['Renta wdowia', '#/sprawa/renta']] },
       smierc: { t: 'Przykro mi z powodu śmierci męża. Zasiłkiem pogrzebowym zajęła się córka Anna. Dla Ciebie jest gotowy wniosek o rentę wdowią.', a: [['Renta wdowia', '#/sprawa/renta']] },
     },
@@ -354,6 +355,11 @@ const EMERYTURY = {
       { id: 'ikze', grupa: 'dobr', nazwa: 'IKZE', opis: 'fundusz akcji, odliczasz wpłaty od dochodu', kwota: 9870, zrodlo: 'Bank Przykładowy S.A.', dziedziczne: true },
       { id: 'ike', grupa: 'dobr', nazwa: 'IKE-Obligacje', opis: '10-letnie obligacje skarbowe EDO', kwota: 12400, zrodlo: 'agent emisji obligacji skarbowych', dziedziczne: true },
     ],
+    // składki z ostatnich 12 miesięcy: kto płacił; brak = ile miesięcy temu składka nie wpłynęła
+    skladki: { platnik: 'Drukarnia Kolor sp. z o.o.', poPorodzie: 'budżet państwa, za okres zasiłku macierzyńskiego', zasilek: 0.815 },
+    // osoby uprawnione: dostają pieniądze poza spadkiem, bez sprawy w sądzie i u notariusza
+    uprawnieni: { subkonto: [], ppk: [['Piotr Wójcik (mąż)', 100]], ike: [['Piotr Wójcik (mąż)', 100]], ikze: [] },
+    nowaOsoba: { kto: 'córka', kiedy: 'porod' },
   },
   kasia: {
     pensja: 8200, wiek: 60, ur: [1997, 2], pit: 0.12,
@@ -367,6 +373,9 @@ const EMERYTURY = {
       { id: 'subkonto', grupa: 'sub', nazwa: 'Subkonto w ZUS', opis: 'część dziedziczona', kwota: 16800, zrodlo: 'ZUS', dziedziczne: true },
       { id: 'ppk', grupa: 'ppk', nazwa: 'PPK', opis: 'Szpital im. M. Kopernika: 2% Twoje, 1,5% pracodawcy', kwota: 9450, zrodlo: 'mojePPK', dziedziczne: true, wplata: 287 },
     ],
+    skladki: { platnik: 'Szpital im. M. Kopernika w Łodzi', brak: 4 },
+    uprawnieni: { subkonto: [], ppk: [] },
+    nowaOsoba: { kto: 'Tomasz Bąk', kiedy: null },
   },
   halina: { wyplata: { kwota: 2900, dzien: 10, waloryzacja: '1 marca 2027' } },
   jakub: null,

@@ -77,7 +77,7 @@ export const INTENCJE = {
     [/zgod|prywatn|udostepnian|wiedzial wszystko|sprawdzala? moj|pobieral\w* moje dane/, 3.5],
   ],
   bliscy: [
-    [/\bmam(a|ie|e|ą)\b|(dowod|recept\w*|spraw\w*|dane|konto|emerytur\w*|leki|za) mamy\b|\btat(a|y|e|ą|u)\b|\btacie\b|\bojc|rodzic|babci|babcia|dziadk|\bcork|corki|podopieczn/, 3],
+    [/\bmam(a|ie|e|ą)\b|(dowod|recept\w*|spraw\w*|dane|konto|emerytur\w*|leki|za) mamy\b|moj\w* (mamy|taty|babci|dziadka)\b|\btat(a|y|e|ą|u)\b|\btacie\b|\bojc|rodzic|babci|babcia|dziadk|\bcork|corki|podopieczn/, 3],
     [/pelnomocn|upowazn|opiekuj|za mame|za tate|za (starsz|chor)/, 3],
   ],
   logowanie: [
@@ -124,6 +124,9 @@ export const INTENCJE = {
     [/firm|dzialalnos|ceidg|\bjdg\b|samozatrudn|na swoim|regon|opodatkowani|ulga na start/, 4],
     [/\bvat\b/, 2],
   ],
+  zdrowie: [
+    [/recept|e ?recept|skierowan|szczepi|wynik\w* (badan|krwi|morfolog)|morfologi|konto pacjenta|\bikp\b|mojeikp|lekarz|przychodni|wizyt\w* (u|do) |apte[kc]/, 4],
+  ],
   emerytura: [
     [/emerytur|emeryt|wiek\w* emerytaln|okres\w* sklad|sklad(ek|ki) (w|do) zus|odprowadz\w* sklad|lat pracy|konta? w zus|kapital\w* poczatk/, 4.5],
   ],
@@ -147,7 +150,7 @@ const PRIORYTETY = [
 ];
 
 // Sprawa starszego członka rodziny (np. „dowód mamy”) to sprawa „bliscy”, nie własna.
-const STARSI = /\bmam(a|ie|e|ą)\b|(dowod|recept\w*|spraw\w*|dane|konto|emerytur\w*|leki|za) mamy\b|\btat(a|y|e|ą|u)\b|\btacie\b|\bojc|rodzic|babci|dziadk/;
+const STARSI = /\bmam(a|ie|e|ą)\b|(dowod|recept\w*|spraw\w*|dane|konto|emerytur\w*|leki|za) mamy\b|moj\w* (mamy|taty|babci|dziadka)\b|\btat(a|y|e|ą|u)\b|\btacie\b|\bojc|rodzic|babci|dziadk/;
 
 // Porównywanie ofert prywatnych firm (ubezpieczenia, banki) to nie sprawa urzędowa.
 const POZA = /najlepsz\w* (ubezpiecz|ofert|bank|kredyt)|ranking|ktor\w* (bank|ubezpieczyciel)|jaka firma ma/;

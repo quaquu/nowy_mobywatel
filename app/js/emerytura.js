@@ -2,8 +2,8 @@
 // Od 2026 r. ZUS ma udostępniać w mObywatelu dane z systemu powszechnego i z programów dobrowolnych
 // (PPK, PPE, IKE, IKZE). Dane osób w pokazie są fikcyjne, prognoza poglądowa (model niżej, w „Jak liczymy”).
 import { ic } from './icons.js';
-import { esc, $ } from './core.js';
-import { emerytalne as E, ja, dziecko, zl, za, OSOBA, WLASCICIEL } from './data.js';
+import { esc, $, $$, stan, zapisz, arkuszZgody, dodajWyslane, toast } from './core.js';
+import { emerytalne as E, ja, dziecko, zl, za, fmt, OSOBA, WLASCICIEL } from './data.js';
 
 const GRUPY = [
   ['zus', 'Konto w ZUS'],
@@ -183,6 +183,99 @@ function celWynik(wiek, ikze, proc) {
     </ul>`;
 }
 
+/* ---------- Składki miesiąc po miesiącu ---------- */
+// Ostatnie 12 miesięcy: kto zapłacił składkę emerytalną. Brak składki to częsty, niewidoczny powód niższej emerytury.
+const SKL = { ok: ['check', 'opłacona'], tok: ['clock', 'w toku'], brak: ['alert', 'brak składki'], zgl: ['doc', 'zgłoszone do ZUS'] };
+const zlGr = n => zl(Math.round(n * 100) / 100);
+function miesiaceSkladek() {
+  const S = E.skladki, d0 = new Date(), kw = E.pensja * SKLADKA, zgl = stan.emer?.zgloszone;
+  return Array.from({ length: 12 }, (_, i) => {
+    const k = 11 - i, d = new Date(d0.getFullYear(), d0.getMonth() - k, 1);
+    const nazwa = d.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' });
+    const krotko = d.toLocaleDateString('pl-PL', { month: 'short' }).replace('.', '');
+    const termin = fmt(new Date(d.getFullYear(), d.getMonth() + 1, 15));
+    if (S.brak === k) return { k, krotko, nazwa, s: zgl ? 'zgl' : 'brak', t: zgl
+      ? `Zgłoszone do ZUS ${fmt(new Date(zgl))}. ZUS wyjaśni to z pracodawcą i odpowie w ciągu miesiąca.`
+      : `Składka nie wpłynęła. Płatnik: ${S.platnik}. Powinno wpłynąć ok. ${zlGr(kw)}.` };
+    const u = dziecko.urodzone, wzgl = S.poPorodzie ? Math.sign((d.getFullYear() - u.getFullYear()) * 12 + d.getMonth() - u.getMonth()) : -1;
+    const kto = wzgl < 0 ? `${zlGr(kw)} na konto i subkonto w ZUS. Płatnik: ${S.platnik}.`
+      : wzgl === 0 ? `Do porodu płaci ${S.platnik}, od porodu ${S.poPorodzie}.`
+      : `Ok. ${zlGr(kw * S.zasilek)}. Płaci ${S.poPorodzie}.`;
+    if (k === 0) return { k, krotko, nazwa, s: 'tok', t: `${kto} Składka za ten miesiąc wpłynie do ${termin}.` };
+    return { k, krotko, nazwa, s: 'ok', t: kto };
+  });
+}
+function skladki() {
+  if (!E.skladki) return '';
+  const m = miesiaceSkladek(), brak = m.find(x => x.s === 'brak' || x.s === 'zgl'), ile = m.filter(x => x.s === 'ok').length;
+  const wyb = m.indexOf(brak || m[11]), mies = brak && brak.nazwa.split(' ')[0];
+  const teza = !brak ? `${ic('check')}<span>Każda składka z ostatnich ${ile} miesięcy wpłynęła${E.skladki.poPorodzie ? '. Od porodu płaci je za Ciebie budżet państwa' : ''}.</span>`
+    : brak.s === 'brak' ? `${ic('alert')}<span>Za ${mies} składka nie wpłynęła. Bez niej emerytura będzie niższa.</span>`
+    : `${ic('clock')}<span>Brak za ${mies} zgłoszony. Powiadomimy Cię, gdy składka wpłynie.</span>`;
+  return `<section class="karta" aria-labelledby="h-skl">
+      <h2 class="nag" id="h-skl">${ic('coin')}Składki miesiąc po miesiącu</h2>
+      <p class="skl-teza${brak?.s === 'brak' ? ' zle' : ''}">${teza}</p>
+      <div class="skl-siatka" role="group" aria-label="Składki z ostatnich 12 miesięcy">${m.map((x, i) => `<button type="button" class="skl-m" data-s="${x.s}" data-i="${i}" aria-pressed="${i === wyb}" aria-label="${esc(x.nazwa)}: ${SKL[x.s][1]}"><span>${esc(x.krotko)}</span>${ic(SKL[x.s][0])}</button>`).join('')}</div>
+      <p class="skl-opis" id="skl-opis" aria-live="polite"><b>${esc(m[wyb].nazwa)}.</b> ${esc(m[wyb].t)}</p>
+      ${brak?.s === 'brak' ? `<button type="button" class="btn glowny szeroki" id="skl-zglos">Zgłoś brak do ZUS</button><p class="maly">ZUS sprawdzi to z pracodawcą. Nie piszesz pisma i nie dzwonisz do kadr.</p>` : ''}
+    </section>`;
+}
+
+/* ---------- Kto odziedziczy ---------- */
+// Osoby uprawnione w PPK, IKE i IKZE dostają pieniądze poza spadkiem. Po narodzinach albo przed ślubem aplikacja proponuje zmianę.
+function dziedziczenie() {
+  if (!E.uprawnieni) return '';
+  const U = { ...E.uprawnieni, ...(stan.emer?.uprawnieni || {}) }, poz = E.pozycje.filter(p => p.dziedziczne), dopisani = !!stan.emer?.uprawnieni;
+  const wiersz = p => {
+    const l = U[p.id] || [];
+    return `<li class="poz">${l.length ? ic('check', 'okr zielona') : ic('alert', 'okr')}<span><b>${esc(p.nazwa)} · ${zl(p.kwota)}</b><small>${l.length ? l.map(([k, pr]) => `${esc(k)}: ${pr}%`).join(', ') : 'nikt nie jest wskazany: pieniądze trafią do spadku'}</small></span></li>`;
+  };
+  const N = E.nowaOsoba, corka = N?.kiedy === 'porod';
+  const propozycja = N && !dopisani ? `<div class="dz-prop">
+      <p>${corka ? `Od ${fmt(dziecko.urodzone)} masz córkę. Nie jest wskazana w subkoncie ZUS, PPK, IKE ani IKZE.` : `${esc(N.kto)} nie jest wskazany w subkoncie ZUS ani w PPK. Przed ślubem nie dziedziczy po Tobie z mocy prawa, więc bez wskazania nie dostałby nic.`}</p>
+      ${corka ? wybor('podzial', [['pol', 'Piotr i córka po 50%'], ['caly', 'córka 100%']], 'Jak podzielić', 'pol') : ''}
+      <button type="button" class="btn glowny szeroki" id="dz-dodaj">${corka ? 'Wskaż córkę' : `Wskaż: ${esc(N.kto)}`}</button>
+    </div>` : '';
+  return `<section class="karta" aria-labelledby="h-dz">
+      <h2 class="nag" id="h-dz">${ic('users')}Kto odziedziczy</h2>
+      <p class="maly">Osoby wskazane w subkoncie ZUS, PPK, IKE i IKZE dostają pieniądze bez sprawy spadkowej. Część należną mężowi lub żonie rozlicza się osobno.</p>
+      <ul class="lista dz-lista">${poz.map(wiersz).join('')}</ul>
+      ${propozycja}
+      ${dopisani ? `<p class="skl-teza">${ic('check')}<span>Wysłane. Instytucje potwierdzą zmianę w ciągu kilku dni; zmienisz ją w każdej chwili.</span></p>` : ''}
+    </section>`;
+}
+function obsluzDodatki(root) {
+  $$('.skl-m', root).forEach(b => b.onclick = () => {
+    const m = miesiaceSkladek()[+b.dataset.i];
+    $$('.skl-m', root).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    $('#skl-opis', root).innerHTML = `<b>${esc(m.nazwa)}.</b> ${esc(m.t)}`;
+  });
+  const zg = $('#skl-zglos', root);
+  if (zg) zg.onclick = async () => {
+    const m = miesiaceSkladek().find(x => x.s === 'brak');
+    const ok = await arkuszZgody({ tytul: 'Zgłoszenie braku składki', pozycje: [{ co: `Brak składki emerytalnej za ${m.nazwa}`, do: 'ZUS, I Oddział w Łodzi' }],
+      dane: ['PESEL', 'okresy zatrudnienia z ZUS', `płatnik: ${E.skladki.platnik}`],
+      cofniecie: 'ZUS wyjaśni to z pracodawcą. Zgłoszenie wycofasz, jeśli składka wpłynie wcześniej.', przycisk: 'Podpisz i zgłoś', cel: 'skladka-zgloszona' });
+    if (!ok) return;
+    stan.emer = { ...stan.emer, zgloszone: Date.now() }; zapisz(); dodajWyslane(`Zgłoszenie braku składki za ${m.nazwa}`, 'ZUS');
+    toast('Zgłoszone do ZUS. Odpowiedź w ciągu miesiąca.'); dispatchEvent(new HashChangeEvent('hashchange'));
+  };
+  const dz = $('#dz-dodaj', root);
+  if (dz) dz.onclick = async () => {
+    const N = E.nowaOsoba, corka = N.kiedy === 'porod', kto = corka ? (stan.imieDziecka ? `${stan.imieDziecka} Wójcik (córka)` : 'córka') : N.kto;
+    const caly = $('input[name=podzial]:checked', root)?.value === 'caly';
+    const lista = corka ? (caly ? [[kto, 100]] : [['Piotr Wójcik (mąż)', 50], [kto, 50]]) : [[N.kto, 100]];
+    const cele = E.pozycje.filter(p => p.dziedziczne);
+    const ok = await arkuszZgody({ tytul: 'Osoby uprawnione', pozycje: cele.map(p => ({ co: `${p.nazwa}: ${lista.map(([k, pr]) => `${k} ${pr}%`).join(', ')}`, do: p.id === 'subkonto' ? 'ZUS (wskazanie UWU)' : p.zrodlo === 'mojePPK' ? 'instytucja prowadząca Twoje PPK' : p.zrodlo })),
+      dane: [corka ? 'imię, nazwisko i PESEL córki z rejestru PESEL' : `imię, nazwisko i PESEL: ${N.kto}`, 'Twoje dane z mObywatela'],
+      cofniecie: 'Wskazanie zmienisz albo odwołasz w każdej chwili. Osoba wskazana nie dostaje o tym wiadomości.', cel: 'uprawnieni' });
+    if (!ok) return;
+    stan.emer = { ...stan.emer, uprawnieni: Object.fromEntries(cele.map(p => [p.id, lista])) }; zapisz();
+    dodajWyslane('Osoby uprawnione: ' + cele.map(p => p.nazwa).join(', '), cele.length === 1 ? cele[0].zrodlo : `${cele.length} instytucje`);
+    toast('Wysłane. Instytucje potwierdzą zmianę w ciągu kilku dni.'); dispatchEvent(new HashChangeEvent('hashchange'));
+  };
+}
+
 export function emeryturaWidok() {
   if (!E) return {
     tytul: 'Twoja emerytura',
@@ -212,7 +305,7 @@ export function emeryturaWidok() {
     <section class="emer-glowa" aria-labelledby="h-zgr">
       <p class="emer-etyk" id="h-zgr">Zgromadzone na emeryturę</p>
       <p class="emer-suma">${zl(s)}</p>
-      <p class="emer-pod">z tego ${zl(dziedz)} przejdzie na bliskich w spadku</p>
+      <p class="emer-pod">z tego ${zl(dziedz)} odziedziczą bliscy</p>
       ${pasekUdzialow()}
     </section>
     <ul class="lista emer-lista">${E.pozycje.map(p => {
@@ -256,6 +349,10 @@ export function emeryturaWidok() {
       ${mojaLuka ? `<a class="btn drugi szeroki" href="#/sprawa/emerytura">Sprawdź lata 2013–2015 bez składek</a>` : ''}
     </section>
 
+    ${skladki()}
+
+    ${dziedziczenie()}
+
     ${ikzeKonto && ikzeZostalo ? `<section class="karta termin-ikze" aria-labelledby="h-ikze">
       <h2 class="nag" id="h-ikze">${ic('clock')}IKZE: do końca roku ${dniDoKonca} ${dniDoKonca === 1 ? 'dzień' : 'dni'}</h2>
       <p>W ${new Date().getFullYear()} r. wpłaciłaś ${zl(E.ikzeWplacone)}. Do 31 grudnia możesz dopłacić jeszcze <b>${zl(ikzeZostalo)}</b> i odliczyć to w zeznaniu: ok. <b>${zlOkr(ikzeZostalo * E.pit)} zwrotu</b> podatku.</p>
@@ -279,7 +376,7 @@ export function emeryturaWidok() {
         $('#cel-wynik', root).innerHTML = celWynik(wiek, ikze, cel);
         $('#schody-wynik', root).innerHTML = schody(wiek, ikze);
       };
-      fp.onchange = odswiez; fc.onchange = odswiez; obsluzWykres(root);
+      fp.onchange = odswiez; fc.onchange = odswiez; obsluzWykres(root); obsluzDodatki(root);
     },
   };
 }

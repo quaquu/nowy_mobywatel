@@ -213,6 +213,40 @@ export async function sprawy(url) {
     await p.goto(url + '?osoba=halina#/emerytura'); await p.waitForSelector('.emer-suma');
     if (!/2900 zł/.test(await p.textContent('.emer-suma'))) throw new Error('Halina: brak wypłaty');
   });
+  // Emerytura: brak składki zgłoszony jednym podpisem; po narodzinach córka wskazana w PPK, IKE i IKZE.
+  await krok('emerytura-skladki', async p => {
+    await p.goto(url + '?osoba=kasia#/emerytura'); await p.waitForSelector('.skl-siatka');
+    if ((await p.locator('.skl-m').count()) !== 12) throw new Error('nie 12 miesięcy składek');
+    if (!/nie wpłynęła/.test(await p.textContent('#skl-opis'))) throw new Error('brak opisu brakującej składki');
+    await p.click('.skl-m[data-s="ok"] >> nth=0');
+    if (!/Płatnik: Szpital/.test(await p.textContent('#skl-opis'))) throw new Error('wybór miesiąca nie zmienia opisu');
+    await p.click('#skl-zglos'); await podpisz(p);
+    await p.waitForSelector('.skl-m[data-s="zgl"]');
+    if (await p.isVisible('#skl-zglos')) throw new Error('przycisk zgłoszenia nie zniknął');
+    await p.goto(url + '?osoba=anna#/emerytura'); await p.waitForSelector('#dz-dodaj');
+    if (!/nikt nie jest wskazany/.test(await p.textContent('.dz-lista'))) throw new Error('IKZE bez osoby uprawnionej nie oznaczone');
+    await p.check('input[name=podzial][value="caly"]', { force: true });
+    await p.click('#dz-dodaj');
+    if ((await p.locator('dialog.arkusz .kontrolna li').count()) !== 4) throw new Error('arkusz: nie 4 instytucje (subkonto, PPK, IKZE, IKE)');
+    await podpisz(p); await p.waitForSelector('.dz-lista'); await p.waitForFunction(() => !document.querySelector('#dz-dodaj'));
+    const t = await p.textContent('.dz-lista');
+    if (/nikt nie jest wskazany/.test(t) || !/córka\)?: 100%/.test(t)) throw new Error('córka nie wskazana: ' + t);
+  });
+  // Zdrowie: kod recepty dla apteki, wynik na tle zakresu, potwierdzenie i odwołanie wizyty.
+  await krok('zdrowie', async p => {
+    await p.goto(url + '?osoba=halina#/zdrowie'); await p.waitForSelector('.rec');
+    await p.click('.rec-apteka summary >> nth=0');
+    if (!/4 8 2 1/.test(await p.textContent('.rec-duzy >> nth=0'))) throw new Error('brak kodu recepty dla apteki');
+    if ((await p.locator('.wyn-skala').count()) !== 3) throw new Error('nie 3 wyniki na skali');
+    if (!/HbA1c\): 7,4/.test(await p.getAttribute('.wyn-skala >> nth=0', 'aria-label') || '')) throw new Error('skala bez opisu dla czytnika');
+    if (!/nie jest diagnoza/.test(await p.textContent('main'))) throw new Error('brak zastrzeżenia o diagnozie');
+    await p.click('[data-potw="diab"]'); await p.waitForSelector('.st-ok');
+    await p.goto(url + '?osoba=kasia#/zdrowie'); await p.waitForSelector('[data-odw]');
+    await p.click('[data-odw]'); await podpisz(p); await p.waitForSelector('.st-pozniej');
+    if (await p.isVisible('.zdr-hero')) throw new Error('odwołana wizyta dalej na górze');
+    await p.goto(url + '?osoba=jakub#/zdrowie'); await p.waitForSelector('main h1');
+    if (!/18\. urodzin/.test(await p.textContent('main'))) throw new Error('Jakub: brak informacji o dostępie rodziców');
+  });
   await krok('mandat', async p => {
     await p.goto(url + '#/mandat'); await p.click('#man-ok');
     if (!(await p.isVisible('#blik-m-blad'))) throw new Error('brak walidacji BLIK');

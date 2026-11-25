@@ -61,6 +61,7 @@ const AKCJE = {
   dzwoni: () => ({ href: '#/kto-dzwoni', ik: 'callcheck', t: 'Kto dzwoni?', opis: 'sprawdź numer, zanim cokolwiek powiesz' }),
   glos: () => ({ href: '#/asystent?mow=1', ik: 'mic', t: 'Asystent głosowy', opis: 'powiedz, czego szukasz, i przejdź do rozmowy' }),
   emerytura: () => emerytalne && ({ href: '#/emerytura', ik: 'sun', t: 'Emerytura', opis: 'ZUS, PPK, IKE i IKZE, prognoza' }),
+  zdrowie: () => ({ href: '#/zdrowie', ik: 'heart', t: 'Zdrowie', opis: 'recepty, wyniki badań, wizyty' }),
   skorzystaj: () => ({ href: '#/naleznosci', ik: 'gift', t: 'Możesz skorzystać', opis: 'świadczenia i ulgi dla Ciebie' }),
   bliscy: () => ({ href: '#/bliscy', ik: 'users', t: 'Bliscy', opis: 'sprawy dzieci i rodziców' }),
   dane: () => ({ href: '#/dane/dostep', ik: 'eye', t: 'Moje dane', opis: 'kto sprawdzał moje dane' }),
@@ -174,6 +175,7 @@ export function start() {
       <ul class="lista">
         ${OSOBA === 'anna' ? `${poz('#/bliscy/mama', 'mama', `Mama: ${mama.imie} ${mama.nazwisko}`, stan.zrobione.mama ? 'Wszystko załatwione' : 'Dowód traci ważność ' + fmt(za(77)), stan.zrobione.mama ? '' : '<span class="plak pomaranczowa">1</span>')}` : ``}
         ${OSOBA === 'anna' ? '' : osoba.bliscy.osoby.map(([href, a, t, o]) => poz(href, a, t, esc(o))).join('')}
+        ${poz('#/zdrowie', 'heart', 'Zdrowie', { anna: 'położna przyjdzie pojutrze; nowe wyniki morfologii', halina: 'recepta na Metformax; diabetolog ' + fmt(za(17)), jakub: 'badanie lekarskie do prawa jazdy', kasia: 'recepta roczna; badania okresowe ' + fmt(za(40)) }[OSOBA] || 'recepty, wyniki badań, wizyty')}
         ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', `włączone: ${odm(ileWl('przypomnienie'), 'przypomnienie', 'przypomnienia', 'przypomnień')}, ${odm(ileWl('zlecenie'), 'zlecenie', 'zlecenia', 'zleceń')}`)}
       </ul>
     </section>
@@ -653,6 +655,7 @@ export function wiecej() {
     <ul class="lista">
       ${poz('#/skrzynka', 'mail', 'Pisma i płatności', nowePisma() ? nowePisma() + ' nowe' : '')}
       ${emerytalne ? poz('#/emerytura', 'sun', 'Twoja emerytura', emerytalne.wyplata ? 'wypłata, waloryzacja, renta wdowia' : 'ZUS, PPK, IKE i IKZE, prognoza') : ''}
+      ${poz('#/zdrowie', 'heart', 'Zdrowie', 'recepty, wyniki badań, wizyty, szczepienia')}
       ${poz('#/naleznosci', 'gift', 'Możesz skorzystać', naleznosci.length ? naleznosci.map(n => n.tytul.split(':')[0]).join(', ') : 'sprawdzamy co miesiąc')}
       ${poz('#/bliscy', 'users', 'Bliscy', esc(osoba.bliscyOpis))}
       ${poz('#/zlecenia', 'clock', 'Przypomnienia i zlecenia', 'terminy i sprawy, które robimy za Ciebie')}

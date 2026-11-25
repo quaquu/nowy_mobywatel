@@ -99,6 +99,12 @@ Do silnika doszło sześć intencji (ślub, śmierć bliskiej osoby, firma, emer
 | jak przeprowadzić spadek po rodzicach (zbiór 2) | śmierć bliskiej osoby | bliscy |
 | jaki tort na osiemnastkę (zbiór 2) | poza zakresem | 18 lat |
 
+### Wersja 3 silnika (25.11.2026): intencja „zdrowie”
+
+Doszła intencja „zdrowie” (recepty, wyniki, skierowania, szczepienia). Zdanie „recepty mojej mamy” ze zbioru dev zaczęło trafiać do „zdrowia” zamiast do „bliskich”, więc „moja mama/tata” dopisaliśmy do reguły o bliskich. Wynik: dev 100%, zbiór 1 test **92,0%**, zbiór 2 test 91,9%.
+
+**Uczciwie:** części testowe zmierzyliśmy już po kilku zmianach silnika, więc nie są w pełni „ślepe”. W zgłoszeniu zostaje liczba z zamrożonej wersji 2 (90,8%). Czysty pomiar wymaga nowego zbioru zdań, napisanego przez osobę spoza projektu przed kolejną zmianą silnika.
+
 Pozostałe błędy zbioru 1 są te same co w tabeli wyżej. Pomiary Bielika (niżej) dotyczą wersji 1 silnika; połączenia Bielika z wersją 2 nie mierzyliśmy. Oba zbiory napisał autor prototypu, co ogranicza ich niezależność.
 
 ### Polski model językowy: Bielik (SpeakLeash)

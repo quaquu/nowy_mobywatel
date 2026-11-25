@@ -18,12 +18,14 @@ const POCZATEK = () => ({
   sprawdzoneNumery: 0,
   konsultant: null,      // zamówiony telefon od konsultanta {kiedy, temat, kontekst}
   badanie: null,         // rezerwacja na stacji kontroli {stacja, kiedy, krotko}
-  postep: {},
-  pesel: null,
+  postep: {},            // podgląd statusów spraw w pokazie (id sprawy -> etap)
+  pesel: null,           // zastrzeżenie PESEL zmienione w pokazie {zastrzezony, od, doKiedy}
   alarm: null,           // alarm w pokazie {bezpieczna, wyslane}
-  alarmTu: null,
-  alarmJezyk: 'pl',      // język komunikatu alarmowego: pl | en | uk         // lokalizacja z GPS zamiast adresu zameldowania
-  szybkie: null,         // ulubione szybkie akcje na Starcie (null: domyślne)           // zastrzeżenie PESEL zmienione w pokazie {zastrzezony, od, doKiedy}            // podgląd statusów spraw w pokazie (id sprawy -> etap)
+  alarmTu: null,         // lokalizacja z GPS zamiast adresu zameldowania
+  alarmJezyk: 'pl',      // język komunikatu alarmowego: pl | en | uk
+  szybkie: null,         // ulubione szybkie akcje na Starcie (null: domyślne)
+  zdrowie: null,         // wizyty potwierdzone i odwołane {potwierdzone, odwolane}
+  emer: {},              // emerytura: zgłoszony brak składki, dopisani uprawnieni
 });
 
 function wczytaj() {

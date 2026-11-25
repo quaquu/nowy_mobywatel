@@ -41,11 +41,13 @@ rounded:
 
 Obywatel korzysta na co dzień z aplikacji banku. Jeśli mObywatel wygląda jak formularz, przegrywa z nimi już na pierwszym ekranie. Dlatego układ i rzemiosło biorą z aplikacji bankowych to, co działa (liczba zamiast akapitu, widżety, szybkie akcje, wykres z danymi), a tożsamość zostaje państwowa: granat i krój Lato z serwisu mObywatela, karty dokumentów w ich prawdziwych barwach, bez godła.
 
-Cztery rzeczy niosą charakter:
+Sześć rzeczy niosą charakter:
 1. **Sprawa, która przychodzi sama**: granatowe pole na górze Startu, jedna akcja na białej pigułce.
 2. **Portfel dokumentów**: stos kart w barwach mObywatela.
 3. **Widżety z jedną liczbą**: emerytura, do zapłaty, dni do badania auta, świadczenia. Każdy prowadzi do sprawy.
-4. **Twoja emerytura**: suma ze wszystkich filarów, pasek udziałów i wykres prognozy, którą zmieniasz dwoma przełącznikami.
+4. **Twoja emerytura**: suma ze wszystkich filarów, pasek udziałów i wykres prognozy, którą zmieniasz dwoma przełącznikami. Składki jako siatka 12 miesięcy (opłacona, w toku, brak), osoby uprawnione jako lista z ostrzeżeniem przy pustym wskazaniu.
+5. **Zdrowie**: wynik jako znacznik na pasku zakresu laboratorium, zawsze z liczbą, jednostką i zdaniem „co z tym zrobić”; kolor ostrzeżenia, nigdy czerwień alarmu. Kod recepty duży, z odstępami, do pokazania w aptece.
+6. **Krzywizny**: jeden zestaw promieni (4, 8, 12, 16, 20, 24 px i pigułka). W przeglądarkach z `corner-shape` (Chrome 139+) rogi ciągłe jak w iOS, promień ~1,5 raza większy; Safari i Firefox pokazują zwykłe zaokrąglenia (sprawdzone: Safari do 26.6 tego nie obsługuje).
 
 ### Decyzja z 16–17.11.2026 (redesign Hallmark, pełny)
 
