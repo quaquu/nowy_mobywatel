@@ -3,7 +3,7 @@
  * nav: kept (pasek kart u dołu, nagłówek z marką, symulacja telefonu na komputerze) · signature: sprawa, która przyszła sama, jako granatowe pole nad portfelem dokumentów · states: pusto, błąd pola, wysłane, odmowa, offline
  * axes: light/grotesk-sans/cool · posture: committed · contrast: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V3 · weakest: V, jeden granat marki zamiast palety kategorii; kolor zostaje w kartach dokumentów, a terminy dostają kafelek z datą */
-/* Hallmark · waive 24b · jedyny wyjątek to html.ramka .telefon, margines równy połowie ekranu 390 × 844 pomnożonej przez skalę · ramka telefonu na komputerze ma wymiary sprzętu, a nie siatki odstępów aplikacji */
+/* Hallmark · waive 24b · jedyny wyjątek to html.ramka .obudowa, margines równy połowie ekranu 390 × 844 pomnożonej przez skalę · ramka telefonu na komputerze ma wymiary sprzętu, a nie siatki odstępów aplikacji */
 /* Hallmark · waive 72 · trzy trafienia, wszystkie w pojemnikach przewijanych albo zwiniętych (ekran telefonu w ramce, szczegóły wpisu, formularz z przypiętym przyciskiem) · w telefonie i w otwartym wpisie tekst ma pełne marginesy karty */
 /* Hallmark · dismissed 40 · napisy na kartach dokumentów stoją na gradiencie, którego linter nie mierzy; najjaśniejszy stopień każdej karty daje białemu tekstowi co najmniej 4,9:1, a axe w przeglądarce nie zgłasza naruszeń (npm test) */
 /* Hallmark · dropped "Dobry wieczór, Anno" · powitanie zależy od pory dnia; za dnia ten sam nagłówek brzmi „Dzień dobry, Anno” */
@@ -110,7 +110,9 @@ button, input, select, textarea { font: inherit; }
   --cien-hud: 0 10px 30px -10px oklch(15% 0.03 255 / .45);
   --cien-toast: 0 10px 30px -12px oklch(15% 0.03 255 / .45);
   --cien-unies: 0 4px 16px -6px oklch(15% 0.03 255 / .3);
-  --cien-telefon: 0 0 0 11px oklch(16% 0.005 262), 0 0 0 12px oklch(32% 0.01 262), 0 40px 80px -24px oklch(15% 0.03 255 / .45);
+  --cien-telefon: 0 60px 90px -40px oklch(15% 0.03 255 / .55), 0 24px 40px -24px oklch(15% 0.03 255 / .35);
+  --obudowa-jasna: oklch(66% 0.05 305); --obudowa: oklch(45% 0.045 305); --obudowa-ciemna: oklch(31% 0.035 305);
+  --obudowa-szklo: oklch(11% 0.004 285); --obudowa-blask: oklch(100% 0 0 / .5); --obudowa-cien: oklch(0% 0 0 / .35);
   --cien-celownik: 0 0 0 100vmax oklch(13% 0.012 262 / .45);
   --cien-auto: drop-shadow(0 6px 8px oklch(15% 0.03 255 / .18));
   --zaslona: oklch(15% 0.03 255 / .4); --zaslona-skaner: oklch(13% 0.012 262 / .5); --zaslona-podpis: oklch(15% 0.03 255 / .25);
@@ -711,7 +713,7 @@ td { font-weight: 700; font-variant-numeric: tabular-nums; }
 th[scope="row"] { width: 55%; font-weight: 400; }
 
 /* ---------- Komputer: symulacja telefonu z panelem albo pełny ekran ---------- */
-.pulpit, .telefon { display: contents; }
+.pulpit, .obudowa, .telefon { display: contents; }
 .pasek-stanu, .belka-domowa, .panel { display: none; }
 #telefon-btn { display: none; }
 html.pelny #telefon-btn:not([hidden]) { display: inline-flex; position: fixed; top: 12px; right: 16px; z-index: 60; min-height: 40px; padding: var(--space-xs) var(--space-md); box-shadow: var(--cien-unies); }
@@ -723,9 +725,21 @@ html.pelny #telefon-btn:not([hidden]) { display: inline-flex; position: fixed; t
 html.ramka body { background: var(--ramka-tlo); min-height: 100vh; }
 /* Strona produktu: telefon po lewej zostaje na ekranie, opowieść po prawej przewija się z całą stroną. */
 html.ramka .pulpit { display: grid; grid-template-columns: auto minmax(0, 540px); justify-content: center; align-items: start; gap: 72px; min-height: calc(100vh - var(--pasek-wys, 0px)); padding: var(--space-lg) 32px var(--space-3xl); }
-html.ramka .telefon { --s: var(--skala-tel, 1); display: flex; flex-direction: column; position: relative; flex: none; width: 390px; height: 844px; border-radius: 54px; overflow: clip; background: var(--tlo);
-  box-shadow: var(--cien-telefon);
-  transform: scale(var(--s)); margin: calc((var(--s) - 1) * 422px) calc((var(--s) - 1) * 195px); }
+/* Obudowa jak w iPhonie: tytanowa krawędź 4 px, czarna ramka ekranu 12 px, przyciski po bokach. Ekran 390 × 844 bez zmian. */
+html.ramka .obudowa { --s: var(--skala-tel, 1); display: block; position: sticky; top: calc(var(--pasek-wys, 0px) + 24px - (1 - var(--s)) * 438px); flex: none;
+  padding: var(--space-md); border-radius: 70px;
+  background: linear-gradient(140deg, var(--obudowa-jasna) 0%, var(--obudowa) 16%, var(--obudowa-ciemna) 38%, var(--obudowa) 60%, var(--obudowa-jasna) 82%, var(--obudowa-ciemna) 100%);
+  box-shadow: inset 0 0 0 1px var(--obudowa-blask), inset 0 0 0 2.5px var(--obudowa-cien), var(--cien-telefon);
+  transform: scale(var(--s)); margin: calc((var(--s) - 1) * 438px) calc((var(--s) - 1) * 211px); }
+/* lewa strona: przycisk czynności i dwa głośności (jeden element, przerwy z gradientu); prawa: boczny */
+html.ramka .obudowa::before, html.ramka .obudowa::after { content: ""; position: absolute; width: 4px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--obudowa-ciemna), var(--obudowa-jasna) 60%, var(--obudowa)); }
+html.ramka .obudowa::before { left: -3px; top: 190px; height: 214px;
+  -webkit-mask: linear-gradient(transparent 0, var(--obudowa-szklo) 0 34px, transparent 34px 62px, var(--obudowa-szklo) 62px 132px, transparent 132px 148px, var(--obudowa-szklo) 148px 214px); mask: linear-gradient(transparent 0, var(--obudowa-szklo) 0 34px, transparent 34px 62px, var(--obudowa-szklo) 62px 132px, transparent 132px 148px, var(--obudowa-szklo) 148px 214px); }
+html.ramka .obudowa::after { right: -3px; top: 262px; height: 104px; }
+html.ramka .telefon { display: flex; flex-direction: column; position: relative; width: 390px; height: 844px; border-radius: 54px; overflow: clip; background: var(--tlo);
+  contain: layout; /* pasek zakładek, toast i arkusze (position: fixed) liczą się od ekranu, nie od obudowy */
+  box-shadow: 0 0 0 12px var(--obudowa-szklo), 0 0 0 12.5px var(--obudowa-cien); }
 /* Pasek stanu jak w iPhonie z Dynamic Island: godzina i ikony wyśrodkowane w „uszach” po obu stronach wyspy, na jej wysokości. */
 html.ramka .pasek-stanu { display: grid; grid-template-columns: 1fr 126px 1fr; position: relative; flex: none; height: 54px; padding: var(--space-sm) 0 var(--space-xs); align-items: center; justify-items: center; font-size: 17px; letter-spacing: -.02em; font-weight: 700; color: var(--tekst); background: var(--tlo); z-index: 30; font-variant-numeric: tabular-nums; }
 .wyspa { position: absolute; top: 11px; left: 50%; width: 150px; height: 150px; translate: -50% 0; border-radius: 0; /* kształt robi wyłącznie clip-path; zaokrąglenie elementu ścinało rogi wyspy */ background: var(--czern); z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-xs); color: var(--biel); font-size: 14px; font-weight: 700; overflow: hidden;
@@ -751,7 +765,6 @@ html.ramka .dol { left: 0; right: 0; bottom: 0; width: auto; transform: none; pa
 html.ramka .belka-domowa { display: block; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; border-radius: var(--r-pigulka); background: var(--tekst); z-index: 40; pointer-events: none; }
 html.ramka .toast { bottom: 110px; }
 html.ramka .panel { display: block; width: 100%; color: var(--tekst); padding-top: var(--space-xl); }
-html.ramka .telefon { position: sticky; top: calc(var(--pasek-wys, 0px) + 24px - (1 - var(--s)) * 422px); }
 .panel-h { font-size: 1.5rem; font-weight: 900; letter-spacing: -.015em; line-height: 1.2; margin: var(--space-3xl) 0 var(--o2); }
 /* Trzy sytuacje z życia: obraz, tytuł, dwa zdania i liczba; klik przełącza telefon obok. */
 .panel-syt { list-style: none; padding: 0; margin: var(--o4) 0 0; display: grid; gap: var(--o3); }
@@ -1148,3 +1161,17 @@ html.kontrast .gora { background: var(--tlo); }
 @supports (corner-shape: squircle) { .skl-m, .dz-lista { corner-shape: squircle; } }
 @media (max-width: 359px) { .skl-siatka { grid-template-columns: repeat(4, 1fr); } }
 .rec-pesel { margin: 0 0 var(--space-2xs); font-size: var(--t-naglowek); font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+
+/* Ruch: przesuwane podświetlenie w przełącznikach, ikona zakładki, wjazd telefonu na komputerze */
+.segment.z-kciukiem { position: relative; isolation: isolate; }
+.segment.z-kciukiem label { flex: 1 1 0; min-width: auto; } /* równe opcje (chyba że słowo się nie mieści): podświetlenie tylko się przesuwa */
+.segment .seg-kciuk { display: block; min-height: 0; padding: 0; position: absolute; top: var(--space-2xs); bottom: var(--space-2xs); left: 0; width: 0; z-index: -1; border-radius: var(--r-pigulka); background: var(--pow-segment); box-shadow: var(--cien-segment);
+  transition: translate .34s cubic-bezier(.32, .72, 0, 1), opacity .15s; pointer-events: none; }
+.segment.z-kciukiem input:checked + span { background: none; box-shadow: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .dol a.akt .pelna { animation: zakladka .36s cubic-bezier(.16, 1, .3, 1); }
+  html.ramka .obudowa { animation: tel-wejscie .8s cubic-bezier(.16, 1, .3, 1) both; }
+}
+@media (prefers-reduced-motion: reduce) { .segment .seg-kciuk { transition: opacity .15s; } }
+@keyframes zakladka { from { transform: scale(.82); } }
+@keyframes tel-wejscie { from { opacity: 0; translate: 0 32px; } }

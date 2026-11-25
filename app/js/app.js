@@ -9,7 +9,7 @@ const S = () => import('./sprawy.js'), Z = () => import('./zycie.js'), B = () =>
 const asystent = async q => (await import('./asystent.js')).asystent(q);
 const jury = async () => (await import('./jury.js')).jury();
 import { testWidok, podlacz } from './test.js';
-import { wjazdEkranu, wyskocz, kaskada, spokojnie } from './ruch.js';
+import { wjazdEkranu, wyskocz, kaskada, spokojnie, dobiegnij, segmenty } from './ruch.js';
 
 // Sprawy osób z pokazu: u innej osoby zamiast przebiegu ekran „Pokaż jako …”.
 const czyja = (id, f) => async (m, q) => WLASCICIEL[id] && WLASCICIEL[id] !== OSOBA ? W.innaOsoba(WLASCICIEL[id]) : f(m, q);
@@ -104,6 +104,7 @@ async function pokaz() {
   const main = $('#tresc');
   main.innerHTML = widok.html;
   widok.po?.(main);
+  segmenty(main);
   // Pole daty wygląda jak w języku przeglądarki (np. 11/17/2026). Pod nim ta sama data słownie, po polsku.
   $$('input[type=date]', main).forEach(i => {
     const sl = document.createElement('small'); sl.className = 'data-sl'; sl.setAttribute('aria-hidden', 'true');
@@ -119,8 +120,10 @@ async function pokaz() {
   if (!pierwszy) { $('h1', main)?.focus({ preventScroll: true }); ogloszenie(widok.tytul); }
   const kier = kierunek(poprzednia, sciezka), gotowy = !!$('.gotowe', main);
   // Po podpisie adres się nie zmienia, ale ekran tak: potwierdzenie też ma wejść.
-  if (kier) wjazdEkranu(main, kier); else if (gotowy && !bylGotowy && !pierwszy) wjazdEkranu(main, 'zakladka');
+  // Zmiana zakładki: sekcje wchodzą po kolei (łącznie < 0,4 s); głębiej: ekran wjeżdża z boku.
+  if (kier === 'zakladka') kaskada([...main.children].slice(0, 6), 45); else if (kier) wjazdEkranu(main, kier); else if (gotowy && !bylGotowy && !pierwszy) wjazdEkranu(main, 'zakladka');
   if (gotowy && (kier || !bylGotowy) && !pierwszy) { wyskocz($('.gotowe-ik', main)); kaskada($$('.os-czasu li', main)); }
+  if (kier && !pierwszy) dobiegnij($$('.w-liczba, .emer-suma', main));
   bylGotowy = gotowy;
   if (pierwszy) odwiedzone.push(sciezka);
   pierwszy = false; poprzednia = sciezka;
@@ -143,7 +146,7 @@ function ustawWidok(tryb = trybWidoku()) {
   // Pasek trybu testowego zabiera górę okna: telefon ma się zmieścić pod nim w całości.
   const pasek = $('#pasek-testu')?.offsetHeight || 0;
   h.style.setProperty('--pasek-wys', pasek + 'px');
-  h.style.setProperty('--skala-tel', Math.min(1, (innerHeight - 48 - pasek) / 868).toFixed(3));
+  h.style.setProperty('--skala-tel', Math.min(1, (innerHeight - 48 - pasek) / 876).toFixed(3));
 }
 function zmienWidok(tryb) {
   try { localStorage.setItem(KLUCZ_WIDOKU, tryb); } catch {}
@@ -187,7 +190,7 @@ function powloka() {
   $('#skan-btn').innerHTML = ic('scan');
   $('#skan-btn').onclick = async () => (await K()).otworzSkaner();
   zastosujUstawienia();
-  $('#panel-wyglad').innerHTML = wyborMotywu('motyw-panel');
+  $('#panel-wyglad').innerHTML = wyborMotywu('motyw-panel'); segmenty($('#panel-wyglad'));
   $('#panel-osoby').innerHTML = Object.entries(OSOBY).map(([id, o]) => `<li><a href="${adresOsoby(id)}"${id === OSOBA ? ' class="akt" aria-current="true"' : ''}><span class="po-aw">${portret(id, null, 'awatar')}</span><span><b>${o.nazwa}</b><small>${o.krotko}</small></span></a></li>`).join('');
   // Trzy liczby z ostatniego `npm test` (ten sam plik co strona „Dla jury”); ładowane po starcie, tylko na komputerze.
   if (matchMedia('(min-width: 900px)').matches) import('./wyniki.js').then(({ WYNIKI: m }) => {
