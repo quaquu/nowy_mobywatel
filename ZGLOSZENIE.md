@@ -25,22 +25,22 @@ Państwo, które przychodzi ze sprawą: mObywatel, w którym urodzenie dziecka t
 
 **Opis \*** <!-- pole: opis, 30–4000 -->
 ```
-Kiedy rodzi się dziecko, rodzice myślą o wszystkim, tylko nie o urzędach. A właśnie wtedy państwo oczekuje od nich pięciu wniosków w czterech instytucjach: zgłoszenia urodzenia, 800+, becikowego, ubezpieczenia dziecka i urlopu rodzicielskiego. Każdy trzeba znaleźć, wypełnić i wysłać osobno, choć prawie wszystkie potrzebne dane państwo już ma.
+Kiedy rodzi się dziecko, rodzice myślą o wszystkim, tylko nie o urzędach. A właśnie wtedy czeka ich pięć wniosków w czterech instytucjach: zgłoszenie urodzenia, 800+, becikowe, ubezpieczenie dziecka i urlop rodzicielski. Każdy osobno, choć prawie wszystkie dane państwo już ma.
 
-Mój mObywatel odwraca ten porządek: to nie człowiek szuka sprawy, tylko sprawa przychodzi do niego. Szpital zgłasza narodziny, a na ekranie Anny pojawia się karta „Urodziła się Twoja córka”. Anna od razu widzi, co rodzina dostanie (800 zł co miesiąc i 1000 zł becikowego), wpisuje imię, sprawdza, co i dokąd zostanie wysłane, i podpisuje raz. Piotr potwierdza imię w swoim telefonie. Potem każdą sprawę śledzą jak paczkę: przyjęta, w toku, gotowa.
+Mój mObywatel odwraca ten porządek: to nie człowiek szuka sprawy, tylko sprawa przychodzi do niego. Szpital zgłasza narodziny, a Anna widzi na ekranie kartę „Urodziła się Twoja córka” i to, co rodzina dostanie. Wpisuje imię, sprawdza, co i dokąd zostanie wysłane, i podpisuje raz. Potem śledzi każdą sprawę jak paczkę.
 
-Ten sam pomysł działa w 11 sytuacjach z życia, m.in. przy przeprowadzce, kupnie auta, zgubionym portfelu, ślubie, śmierci bliskiej osoby i 18. urodzinach. Prototyp można przejść jako jedna z czterech osób: Anna (33 lata, właśnie urodziła córkę), jej mama Halina (78 lat, prosty tryb z dużymi przyciskami; córka pomaga jej z upoważnienia), Jakub (za chwilę kończy 18 lat) i Katarzyna (planuje ślub).
+Ten sam pomysł działa w 11 sytuacjach z życia, m.in. przy przeprowadzce, zgubionym portfelu, ślubie i śmierci bliskiej osoby. Prototyp można przejść jako jedna z czterech osób, w tym 78-letnia Halina w prostym trybie, której córka pomaga z upoważnienia.
 
-Dla kogo? Dla ludzi w ważnych momentach życia, którzy nie mają czasu ani siły uczyć się procedur. I dla starszych rodziców oraz ich dzieci, które dziś załatwiają wszystko za nich przez telefon.
+Dla kogo? Dla ludzi w ważnych momentach życia, którzy nie mają czasu uczyć się procedur, i dla starszych rodziców oraz ich dzieci.
 
-Co jest dla mnie najważniejsze:
-Jeden podpis zamiast pięciu wniosków, ale nigdy w ciemno. Przed podpisem zawsze widać, co, dokąd i z jakimi danymi idzie. Bez podpisu nic nie wychodzi, także z asystenta.
-Zaufanie. Ekran „Kto sprawdzał moje dane” pokazuje każdy odczyt: kto, po co i na jakiej podstawie. Halina widzi, że ktoś próbował otworzyć konto na jej PESEL i że zastrzeżenie zadziałało.
-Sprawy, które dziś są rozrzucone po różnych serwisach, w jednym miejscu: emerytura z ZUS, PPK, IKE i IKZE razem z prognozą; recepty z kodem dla apteki i wyniki badań objaśnione prostym językiem; przy alarmie najbliższe schronienie z rejestru PSP, także bez internetu.
+Najważniejsze dla mnie:
+Jeden podpis, ale nigdy w ciemno: przed podpisem widać, co, dokąd i z jakimi danymi idzie.
+Zaufanie: każdy odczyt Twoich danych widać razem z celem i podstawą prawną.
+Jedno miejsce na to, co dziś jest rozrzucone: emerytura z ZUS, PPK, IKE i IKZE, recepty i wyniki badań prostym językiem, najbliższe schronienie przy alarmie, także bez internetu.
 
-Sprawdziłem to tymi samymi testami na swoim i na referencyjnym prototypie. Po narodzinach dziecka: 5 spraw załatwionych 4 dotknięciami i jednym podpisem (ok. 14 s); w referencji 2 sprawy i 2 podpisy (ok. 24 s). Asystent rozumie 9 na 10 zdań pisanych własnymi słowami (referencja: 3 na 10). Automatyczny test dostępności (WCAG 2.2 AA) nie znajduje żadnego błędu.
+Sprawdziłem to tymi samymi testami na swoim i na referencyjnym prototypie. Po narodzinach dziecka: 5 spraw za 4 dotknięcia i jeden podpis (w referencji 2 sprawy i 2 podpisy). Asystent rozumie 9 na 10 zdań pisanych własnymi słowami (referencja: 3 na 10). Automatyczny test dostępności nie znajduje żadnego błędu.
 
-Nie zaczynam od zera. Dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i wiele pojedynczych wniosków już działa w mObywatelu; w prototypie oznaczam to w ramkach „O prototypie”. Moja zmiana polega na tym, że państwo samo zaczyna sprawę i zbiera te usługi w jeden pakiet. W repozytorium rozpisałem, co da się wdrożyć od razu, a co wymaga zmiany przepisów. Najszybciej zobaczycie to na stronie „Dla jury”: przejście zajmuje minutę.
+Nie zaczynam od zera: dokumenty w telefonie, e-Doręczenia i pojedyncze wnioski już działają w mObywatelu. Moja zmiana polega na tym, że państwo samo zaczyna sprawę i zbiera te usługi w jeden pakiet. Najszybciej zobaczycie to na stronie „Dla jury”: przejście zajmuje minutę.
 ```
 
 **Link do klikalnego prototypu \*** <!-- pole: link -->
