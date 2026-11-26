@@ -25,28 +25,22 @@ Państwo, które przychodzi ze sprawą: mObywatel, w którym urodzenie dziecka t
 
 **Opis \*** <!-- pole: opis, 30–4000 -->
 ```
-Zmierzone, nie zadeklarowane. Te same testy na tym i na referencyjnym prototypie (kod testów w repozytorium):
-• narodziny dziecka: 5 spraw w 4 instytucjach za 4 dotknięcia i 1 podpis, ok. 14 s (model KLM); w referencji 2 sprawy, 6 dotknięć, 2 podpisy, ok. 24 s;
-• asystent przypisał do właściwej sprawy 90,8% z 87 zdań, których nie widział przy budowie (referencja: 31,0%); złośliwe prośby odrzucone: 5 z 5;
-• 0 błędów dostępności WCAG 2.2 AA (axe; referencja: 7 rodzajów), Lighthouse dostępność 100 (referencja: 87);
-• 42 ścieżki przechodzą automatycznie do końca, 52 ekrany na 4 szerokościach bez błędów, działa bez internetu.
+Kiedy rodzi się dziecko, rodzice myślą o wszystkim, tylko nie o urzędach. A właśnie wtedy państwo oczekuje od nich pięciu wniosków w czterech instytucjach: zgłoszenia urodzenia, 800+, becikowego, ubezpieczenia dziecka i urlopu rodzicielskiego. Każdy trzeba znaleźć, wypełnić i wysłać osobno, choć prawie wszystkie potrzebne dane państwo już ma.
 
-Problem: żeby coś załatwić, trzeba samemu wiedzieć, że ma się sprawę, w którym urzędzie i jakim wnioskiem. Po narodzinach dziecka to 5 wniosków w 4 instytucjach, każdy osobno.
+Mój mObywatel odwraca ten porządek: to nie człowiek szuka sprawy, tylko sprawa przychodzi do niego. Szpital zgłasza narodziny, a na ekranie Anny pojawia się karta „Urodziła się Twoja córka”. Anna od razu widzi, co rodzina dostanie (800 zł co miesiąc i 1000 zł becikowego), wpisuje imię, sprawdza, co i dokąd zostanie wysłane, i podpisuje raz. Piotr potwierdza imię w swoim telefonie. Potem każdą sprawę śledzą jak paczkę: przyjęta, w toku, gotowa.
 
-Pomysł: państwo samo przychodzi ze sprawą. Na tym stoją trzy rzeczy.
-1. Sprawa przychodzi sama. Szpital zgłosił narodziny, więc na starcie czeka karta „Urodziła się Twoja córka” z tym, co rodzina zyska: 800 zł co miesiąc i 1 000 zł becikowego.
-2. Jeden podpis za kilka urzędów. Akt urodzenia z PESEL i meldunkiem, 800+, becikowe, ubezpieczenie dziecka i urlop rodzicielski są wypełnione danymi, które państwo już ma. Drugi rodzic potwierdza imię w swoim mObywatelu. Po podpisie każdą sprawę śledzisz jak przesyłkę.
-3. Widzisz, kto i po co użył Twoich danych: każdy odczyt z celem i podstawą prawną, podejrzany oznaczony.
+Ten sam pomysł działa w 11 sytuacjach z życia, m.in. przy przeprowadzce, kupnie auta, zgubionym portfelu, ślubie, śmierci bliskiej osoby i 18. urodzinach. Prototyp można przejść jako jedna z czterech osób: Anna (33 lata, właśnie urodziła córkę), jej mama Halina (78 lat, prosty tryb z dużymi przyciskami; córka pomaga jej z upoważnienia), Jakub (za chwilę kończy 18 lat) i Katarzyna (planuje ślub).
 
-Ten sam wzór działa w 11 sprawach życiowych (narodziny, przeprowadzka, kupno auta, zgubione dokumenty, nowy dowód, ślub, śmierć bliskiej osoby, renta wdowia, firma, emerytura, 18 lat) i dla 4 osób: Anny (33 lata, właśnie urodziła córkę), jej mamy Haliny (78 lat, tryb prosty), Jakuba (17 lat) i Katarzyny (29 lat).
+Dla kogo? Dla ludzi w ważnych momentach życia, którzy nie mają czasu ani siły uczyć się procedur. I dla starszych rodziców oraz ich dzieci, które dziś załatwiają wszystko za nich przez telefon.
 
-Na prawdziwych danych publicznych: alarm przychodzi komunikatem z sieci komórkowej (Cell Broadcast, planowany od 2027 r.) i otwiera mObywatela z najbliższym miejscem ochronnym z rejestru PSP (dane.gov.pl), liczonym w telefonie bez internetu, z instrukcją RCB po polsku, angielsku i ukraińsku i przyciskiem „Jestem bezpieczna” dla bliskich.
+Co jest dla mnie najważniejsze:
+Jeden podpis zamiast pięciu wniosków, ale nigdy w ciemno. Przed podpisem zawsze widać, co, dokąd i z jakimi danymi idzie. Bez podpisu nic nie wychodzi, także z asystenta.
+Zaufanie. Ekran „Kto sprawdzał moje dane” pokazuje każdy odczyt: kto, po co i na jakiej podstawie. Halina widzi, że ktoś próbował otworzyć konto na jej PESEL i że zastrzeżenie zadziałało.
+Sprawy, które dziś są rozrzucone po różnych serwisach, w jednym miejscu: emerytura z ZUS, PPK, IKE i IKZE razem z prognozą; recepty z kodem dla apteki i wyniki badań objaśnione prostym językiem; przy alarmie najbliższe schronienie z rejestru PSP, także bez internetu.
 
-Pod ręką: zastrzeżenie PESEL ze stanem na Starcie (cofnięcie na czas kredytu, potem wraca samo); pokazywanie dowodu według celu (zakupy 18+, hotel, wynajem auta: tylko potrzebne dane); „Możesz skorzystać”; Twoja emerytura (ZUS, PPK, IKE i IKZE razem, z prognozą, składkami miesiąc po miesiącu i osobami uprawnionymi); Zdrowie (recepty z kodem dla apteki, wyniki prostym językiem, bez diagnozy); BLIK; „Kto dzwoni?”; podpisy poparcia; pomoc przy logowaniu (33% ocen 1–2★ z 1600 recenzji mObywatela dotyczy logowania). Asystent, tekstem albo głosem, działa w telefonie i niczego nie wysyła sam.
+Sprawdziłem to tymi samymi testami na swoim i na referencyjnym prototypie. Po narodzinach dziecka: 5 spraw załatwionych 4 dotknięciami i jednym podpisem (ok. 14 s); w referencji 2 sprawy i 2 podpisy (ok. 24 s). Asystent rozumie 9 na 10 zdań pisanych własnymi słowami (referencja: 3 na 10). Automatyczny test dostępności (WCAG 2.2 AA) nie znajduje żadnego błędu.
 
-Dla kogo: rodzice, osoby starsze i ich dzieci, każdy, kto nie wie, co mu przysługuje.
-
-Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i osobne wnioski (zgłoszenie urodzenia, zameldowanie, ePłatności) już istnieją. Łączę je w sprawy życiowe. Macierz wykonalności pokazuje, co da się wdrożyć bez zmian ustaw (33 z 62 elementów). W aplikacji ramki „O prototypie” oddzielają to, co już działa, od tego, co nowe. Strona „Dla jury”: instrukcja na 60 sekund i tryb testowy z pomiarem czasu i ankietą SUS.
+Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i pojedyncze wnioski już istnieją. Nowe jest to, że państwo samo zaczyna sprawę i zbiera wnioski w jeden pakiet. Co da się wdrożyć bez zmiany przepisów, a co wymaga ustawy, opisuję w macierzy wykonalności w repozytorium. Na stronie „Dla jury” jest ścieżka na 60 sekund.
 ```
 
 **Link do klikalnego prototypu \*** <!-- pole: link -->
