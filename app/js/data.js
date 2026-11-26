@@ -16,7 +16,7 @@ export const zl = n => n.toLocaleString('pl-PL', { minimumFractionDigits: n % 1 
 
 const anna_ja = {
   imie: 'Anna', nazwisko: 'Wójcik', wolacz: 'Anno',
-  pesel: '93051507780', urodzona: '15.05.1993',
+  pesel: '93051507787', urodzona: '15.05.1993',
   adres: 'ul. Zielona 8 m. 12, 90-601 Łódź',
   konto: 'PL 61 1090 •••• •••• 4412',
   pracodawca: 'Drukarnia Kolor sp. z o.o.',
@@ -39,7 +39,7 @@ export const mama = {
 const anna_dokumenty = [
   { id: 'dowod', nazwa: 'mDowód', kolor: 'niebieski', istnieje: true,
     linia: 'Ważny do ' + fmtPelna(za(41)), alert: 'Ważny jeszcze 41 dni',
-    pola: [['Imię i nazwisko', 'Anna Wójcik'], ['PESEL', '93051507780'], ['Seria i numer', 'ZWA 418263'], ['Ważny do', fmtPelna(za(41))]],
+    pola: [['Imię i nazwisko', 'Anna Wójcik'], ['PESEL', '93051507787'], ['Seria i numer', 'ZWA 518263'], ['Ważny do', fmtPelna(za(41))]],
     zrodlo: 'Rejestr Dowodów Osobistych', akcja: ['Przygotuj wniosek o nowy dowód', '#/sprawa/dowod'] },
   { id: 'prawo', nazwa: 'mPrawo jazdy', kolor: 'purpura', istnieje: true,
     linia: 'Kat. B · 2 punkty karne',
@@ -162,7 +162,8 @@ export const zmarl = za(-42); // tata Anny, mąż Haliny
 // Jakub kończy 18 lat za 18 dni: data urodzenia i PESEL liczone od dziś (w PESEL po 2000 r. miesiąc + 20).
 const urJakuba = (() => { const d = za(18); d.setFullYear(d.getFullYear() - 18); return d; })();
 const dwa = n => String(n).padStart(2, '0');
-const peselJakuba = dwa(urJakuba.getFullYear() % 100) + dwa(urJakuba.getMonth() + 21) + dwa(urJakuba.getDate()) + '04315';
+// cyfra kontrolna liczona jak w prawdziwym numerze (wagi 1-3-7-9), bo data urodzenia zależy od dzisiejszej daty
+const peselJakuba = (p => p + (10 - [...p].reduce((s, c, i) => s + c * [1, 3, 7, 9][i % 4], 0) % 10) % 10)(dwa(urJakuba.getFullYear() % 100) + dwa(urJakuba.getMonth() + 21) + dwa(urJakuba.getDate()) + '0431');
 
 const DANE = {
   anna: {
@@ -180,10 +181,10 @@ const DANE = {
     podpowiedzi: ['Urodziło nam się dziecko', 'Zgubiłam portfel', 'Przeprowadzam się', 'Kto sprawdzał moje dane?', 'Z czego mogę skorzystać?', 'Chcę poprzeć projekt ustawy'],
   },
   halina: {
-    ja: { imie: 'Halina', nazwisko: 'Nowicka', wolacz: 'Pani Halino', pesel: '48031207461', urodzona: '12.03.1948', adres: 'ul. Lipowa 3 m. 5, 95-100 Zgierz', konto: 'PL 27 1020 •••• •••• 9083' },
+    ja: { imie: 'Halina', nazwisko: 'Nowicka', wolacz: 'Pani Halino', pesel: '48031207463', urodzona: '12.03.1948', adres: 'ul. Lipowa 3 m. 5, 95-100 Zgierz', konto: 'PL 27 1020 •••• •••• 9083' },
     dokumenty: [
       { id: 'dowod', nazwa: 'mDowód', kolor: 'niebieski', linia: 'Ważny do ' + fmtPelna(za(77)), alert: 'Ważny jeszcze 77 dni',
-        pola: [['Imię i nazwisko', 'Halina Nowicka'], ['PESEL', '48031207461'], ['Seria i numer', 'ZGB 204517'], ['Ważny do', fmtPelna(za(77))]],
+        pola: [['Imię i nazwisko', 'Halina Nowicka'], ['PESEL', '48031207463'], ['Seria i numer', 'ZGB 904517'], ['Ważny do', fmtPelna(za(77))]],
         zrodlo: 'Rejestr Dowodów Osobistych', akcja: ['Urzędnik może przyjść do domu', '#/bliscy'] },
       { id: 'legitymacja', nazwa: 'Legitymacja emeryta-rencisty', kolor: 'zielony', linia: 'ZUS, Oddział w Łodzi',
         pola: [['Imię i nazwisko', 'Halina Nowicka'], ['Świadczenie', 'emerytura'], ['Wystawca', 'ZUS, Oddział w Łodzi']],
@@ -245,7 +246,7 @@ const DANE = {
     ja: { imie: 'Jakub', nazwisko: 'Lis', wolacz: 'Jakubie', pesel: peselJakuba, urodzona: fmtPelna(urJakuba), adres: 'ul. Wróblewskiego 18 m. 7, 93-578 Łódź', konto: 'PL 74 1140 •••• •••• 3021' },
     dokumenty: [
       { id: 'dowod', nazwa: 'mDowód', kolor: 'niebieski', linia: 'Ważny do 14.06.2033',
-        pola: [['Imię i nazwisko', 'Jakub Lis'], ['PESEL', peselJakuba], ['Seria i numer', 'ZWB 771204'], ['Ważny do', '14.06.2033']], zrodlo: 'Rejestr Dowodów Osobistych' },
+        pola: [['Imię i nazwisko', 'Jakub Lis'], ['PESEL', peselJakuba], ['Seria i numer', 'ZWB 871204'], ['Ważny do', '14.06.2033']], zrodlo: 'Rejestr Dowodów Osobistych' },
       { id: 'legitymacja', nazwa: 'mLegitymacja szkolna', kolor: 'zielony', linia: 'XV Liceum Ogólnokształcące w Łodzi',
         pola: [['Imię i nazwisko', 'Jakub Lis'], ['Szkoła', 'XV Liceum Ogólnokształcące w Łodzi'], ['Ważna do', '30.09.2027']], zrodlo: 'System Informacji Oświatowej' },
     ],
@@ -289,10 +290,10 @@ const DANE = {
     },
   },
   kasia: {
-    ja: { imie: 'Katarzyna', nazwisko: 'Lis', wolacz: 'Katarzyno', pesel: '97022503482', urodzona: '25.02.1997', adres: 'ul. Narutowicza 40 m. 11, 90-135 Łódź', konto: 'PL 15 1050 •••• •••• 6620', pracodawca: 'Szpital im. M. Kopernika w Łodzi', partner: { imie: 'Tomasz', nazwisko: 'Bąk' } },
+    ja: { imie: 'Katarzyna', nazwisko: 'Lis', wolacz: 'Katarzyno', pesel: '97022503480', urodzona: '25.02.1997', adres: 'ul. Narutowicza 40 m. 11, 90-135 Łódź', konto: 'PL 15 1050 •••• •••• 6620', pracodawca: 'Szpital im. M. Kopernika w Łodzi', partner: { imie: 'Tomasz', nazwisko: 'Bąk' } },
     dokumenty: [
       { id: 'dowod', nazwa: 'mDowód', kolor: 'niebieski', linia: 'Ważny do 03.09.2031',
-        pola: [['Imię i nazwisko', 'Katarzyna Lis'], ['PESEL', '97022503482'], ['Seria i numer', 'ZWC 318840'], ['Ważny do', '03.09.2031']], zrodlo: 'Rejestr Dowodów Osobistych' },
+        pola: [['Imię i nazwisko', 'Katarzyna Lis'], ['PESEL', '97022503480'], ['Seria i numer', 'ZWC 018840'], ['Ważny do', '03.09.2031']], zrodlo: 'Rejestr Dowodów Osobistych' },
       { id: 'prawo', nazwa: 'mPrawo jazdy', kolor: 'purpura', linia: 'Kat. B · 0 punktów karnych',
         pola: [['Kategorie', 'B'], ['Ważne do', '21.07.2031'], ['Punkty karne', '0']], zrodlo: 'Centralna Ewidencja Kierowców' },
     ],

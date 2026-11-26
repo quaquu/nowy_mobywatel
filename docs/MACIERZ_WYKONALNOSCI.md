@@ -75,12 +75,29 @@ To analiza autora prototypu, a nie opinia prawna. Pozycje 🔴 i 🟡 należy pr
 | Ostrzeżenie przed kodem QR prowadzącym poza gov.pl (np. naklejki na parkometrach) | 🟢 | Zmiana wyłącznie techniczna; strona nie jest otwierana. |
 | E-podpisy pod wnioskami o referendum ogólnokrajowe i lokalne | 🔴 | Ustawy o referendum ogólnokrajowym i lokalnym przewidują tylko listy papierowe. |
 
+## Emerytura, zdrowie, alarm i dowód według celu
+
+| Element | Status | Podstawa / uwagi |
+|---|:---:|---|
+| Twoja emerytura: ZUS (konto i subkonto), PPK, IKE i IKZE w jednym miejscu | 🟡 | ZUS zapowiedział pokazywanie tych danych w mObywatelu (money.pl, 11.08.2025). Dane PPK są w mojePPK, a IKE i IKZE u instytucji finansowych: potrzebne połączenie systemów; udział instytucji IKE i IKZE jest dobrowolny. |
+| Prognoza i scenariusze (wiek przejścia, dopłata do IKZE, ulga w PIT, cel) | 🟢 | Obliczenia po stronie aplikacji na danych, które obywatel już widzi; ZUS udostępnia własny kalkulator. Model opisany na ekranie. |
+| Składki miesiąc po miesiącu i zgłoszenie braku składki do ZUS | 🟡 | Informacje o składkach są dziś w eZUS (PUE). Zgłoszenie z mObywatela wymaga integracji z ZUS. |
+| Osoby uprawnione: subkonto w ZUS, PPK, IKE i IKZE jednym podpisem | 🟡 | Wskazanie do subkonta składa się w ZUS (formularz UWU, także w eZUS); w PPK, IKE i IKZE u każdej instytucji osobno. Jeden podpis wymaga kanału do tych instytucji. |
+| Zdrowie: recepty, skierowania, wyniki i szczepienia z Internetowego Konta Pacjenta w mObywatelu | 🟡 | Dane są w P1 (IKP, mojeIKP). Pokazanie ich w mObywatelu wymaga integracji z Centrum e-Zdrowia; dane o zdrowiu to szczególna kategoria (art. 9 RODO). |
+| Wyniki badań prostym językiem, na tle zakresu laboratorium | 🟡 | Tylko z zakresem podanym przez laboratorium i bez diagnozy; treści objaśnień wymagają weryfikacji medycznej. Nie wszystkie wyniki trafiają dziś do P1. |
+| Potwierdzenie albo odwołanie wizyty jednym dotknięciem | 🟡 | Centralna e-rejestracja obejmuje część świadczeń; pozostałe przychodnie wymagają połączenia z ich systemami. |
+| Alarm z sieci komórkowej (Cell Broadcast) otwiera mObywatela | 🟡 | Cell Broadcast ma ruszyć w II połowie 2027 r. Otwarcie aplikacji z komunikatu wymaga linku w treści alertu i wsparcia systemu telefonu. |
+| Najbliższe miejsca ochronne bez internetu (rejestr PSP) | 🟢 | Dane otwarte w dane.gov.pl (CC BY 4.0); liczenie odległości w telefonie. |
+| „Jestem bezpieczna”: wiadomość do bliskich bez lokalizacji | 🟢 | Zmiana techniczna; odbiorcy wybrani przez obywatela. |
+| Pokazywanie dowodu według celu (np. pełnoletność i zdjęcie zamiast całego dowodu) | 🟡 | Potwierdzanie danych kodem QR już istnieje; wybór zakresu danych przez obywatela wymaga zmian po stronie aplikacji weryfikującej. |
+| Czasowe cofnięcie zastrzeżenia PESEL z automatycznym powrotem | 🟢 | Istnieje w mObywatelu; w prototypie stan zastrzeżenia na Starcie. |
+
 ## Podsumowanie
 
 | Status | Liczba elementów |
 |---|---:|
-| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 29 |
-| 🟡 integracja, rozporządzenie albo zgoda | 13 |
+| 🟢 dziś (w tym 🟢 / 🟡; 2 od lutego 2027) | 33 |
+| 🟡 integracja, rozporządzenie albo zgoda | 21 |
 | 🔴 zmiana ustawy (w tym warianty 🔴 / 🟡 i 🟡 / 🔴) | 8 |
 
 **Pierwszy etap (bez zmian ustaw):** pakiet „Narodziny dziecka” bez automatycznego zaświadczenia lekarskiego, odzyskiwanie dostępu, tryb prosty, pisma prostym językiem, rozszerzony rejestr dostępu dla PESEL i RDO, przypomnienia o terminach.

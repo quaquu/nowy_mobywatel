@@ -42,7 +42,7 @@ export function slub() {
       [`USC: ${dataWizyty(z.wizyta)}`, 'zapewnienia podpiszecie oboje osobiście, z dowodami osobistymi', 'pozniej'],
       [PARA.on, 'dostał prośbę o potwierdzenie terminu w swoim mObywatelu', 'tok'],
       ['Opłata 84 zł', 'za sporządzenie aktu małżeństwa, przy pierwszej wizycie', 'pozniej'],
-      ['Po ślubie', `nazwisko: ${z.nazwisko}; PESEL zmieni się z urzędu, przypomnimy o dowodzie i prawie jazdy (30 dni)`, 'pozniej'],
+      ['Po ślubie', `nazwisko: ${z.nazwisko}; w rejestrze PESEL zmieni się z urzędu, przypomnimy o dowodzie i prawie jazdy (30 dni)`, 'pozniej'],
     ],
   }) };
   const min = isoDnia(za(35)), dom = isoDnia(za(90));
@@ -217,7 +217,7 @@ export function firma() {
         const wyb = zaznaczone(root, KROKI()), od = $('#firma-od', root).value || isoDnia(za(1));
         wyslij(root, {
           id: 'firma',
-          pozycje: { tytul: `Firma „${nazwa}”`, lista: wyb.map(k => ({ co: k.id === 'pit' ? `${k.tytul}: ${$('input[name=podatek]:checked', root).parentElement.textContent.trim().split('\n')[0]}` : k.tytul, do: k.doKogo })) },
+          pozycje: { tytul: `Firma „${nazwa}”`, lista: wyb.map(k => ({ co: k.id === 'pit' ? `${k.tytul}: ${$('input[name=podatek]:checked', root).closest('label').querySelector('b')?.textContent.trim().toLowerCase()}` : k.tytul, do: k.doKogo })) },
           dane: ['imię, nazwisko, PESEL, adres', 'rodzaj działalności i data rozpoczęcia', 'numer rachunku'],
           cofniecie: 'Wpis w CEIDG możesz zmienić albo zawiesić działalność w każdej chwili, bez opłat.',
           stan: { nazwa, od, vat: wyb.some(k => k.id === 'vat') },

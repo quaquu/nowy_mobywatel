@@ -46,7 +46,7 @@ Pod ręką: zastrzeżenie PESEL ze stanem na Starcie (cofnięcie na czas kredytu
 
 Dla kogo: rodzice, osoby starsze i ich dzieci, każdy, kto nie wie, co mu przysługuje.
 
-Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i osobne wnioski (zgłoszenie urodzenia, zameldowanie, ePłatności) już istnieją. Łączę je w sprawy życiowe. Macierz wykonalności pokazuje, co da się wdrożyć bez zmian ustaw (29 z 50 elementów). W aplikacji ramki „O prototypie” oddzielają to, co już działa, od tego, co nowe. Strona „Dla jury”: instrukcja na 60 sekund i tryb testowy z pomiarem czasu i ankietą SUS.
+Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i osobne wnioski (zgłoszenie urodzenia, zameldowanie, ePłatności) już istnieją. Łączę je w sprawy życiowe. Macierz wykonalności pokazuje, co da się wdrożyć bez zmian ustaw (33 z 62 elementów). W aplikacji ramki „O prototypie” oddzielają to, co już działa, od tego, co nowe. Strona „Dla jury”: instrukcja na 60 sekund i tryb testowy z pomiarem czasu i ankietą SUS.
 ```
 
 **Link do klikalnego prototypu \*** <!-- pole: link -->

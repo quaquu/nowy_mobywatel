@@ -290,7 +290,7 @@ export function pokaz() {
         if (!wyb.length) { $('#pok-ukryte', root).textContent = 'Zaznacz przynajmniej jedną daną.'; return; }
         $('#kod', root).innerHTML = `<div class="karta srodek"><span class="qr duzy" role="img" aria-label="Kod do zeskanowania">${kodQR(Date.now() % 997)}</span>
           <ul class="pok-wynik">${wyb.map(([, t, v]) => `<li><span>${esc(t)}</span><b>${esc(v)}</b></li>`).join('')}</ul>
-          <p class="maly">Kod jednorazowy, ważny 2 minuty. Sprawdzający zobaczy tylko te ${wyb.length === 1 ? 'dane' : wyb.length + ' dane'}; zapiszemy to w „Kto sprawdzał moje dane”.</p></div>`;
+          <p class="maly">Kod jednorazowy, ważny 2 minuty. Sprawdzający zobaczy tylko zaznaczone dane; zapiszemy to w „Kto sprawdzał moje dane”.</p></div>`;
         przewinDo($('#kod', root), { block: 'start' });
       };
     },
@@ -693,6 +693,7 @@ export function peselStan() {
   if (!s.zastrzezony && s.doKiedy && Date.now() > s.doKiedy) return { zastrzezony: true, od: s.doKiedy };
   return s;
 }
+const kiedyDo = t => { const d = new Date(t); return `${fmt(d)} (${d.toLocaleDateString('pl-PL', { weekday: 'long' })}), ${d.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}`; };
 const kiedyDokl = t => { const d = new Date(t); return `${fmt(d, { weekday: 'long', day: 'numeric', month: 'long' })}, ${d.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}`; };
 const koniecDnia = n => { const d = za(n); d.setHours(23, 59, 0, 0); return +d; };
 export function peselWidok() {
@@ -701,7 +702,7 @@ export function peselWidok() {
   const glowa = z
     ? `<b>Twój PESEL jest zastrzeżony</b><small>${s.od ? 'od ' + fmtPelna(new Date(s.od)) + '. ' : ''}Bank, firma pożyczkowa ani operator nie zawrą umowy na Twoje dane.</small>`
     : czasowo
-      ? `<b>Zastrzeżenie cofnięte do ${esc(kiedyDokl(s.doKiedy))}</b><small>Potem PESEL zastrzeże się sam. Przypomnimy Ci dzień wcześniej.</small>`
+      ? `<b>Zastrzeżenie cofnięte do ${esc(kiedyDo(s.doKiedy))}</b><small>Potem PESEL zastrzeże się sam. Przypomnimy Ci dzień wcześniej.</small>`
       : `<b>Twój PESEL nie jest zastrzeżony</b><small>Ktoś, kto zna Twoje dane, może wziąć na nie kredyt albo kartę SIM.</small>`;
   let akcja;
   if (osoba.pesel?.niepelnoletni) {
@@ -739,7 +740,7 @@ export function peselWidok() {
           const t = doKiedy();
           const ok = await arkuszZgody({
             tytul: 'Cofnięcie zastrzeżenia PESEL',
-            pozycje: [{ co: t ? `Cofnięcie do ${kiedyDokl(t)}, potem automatyczne zastrzeżenie` : 'Cofnięcie bez terminu', do: 'Rejestr zastrzeżeń numerów PESEL' }],
+            pozycje: [{ co: t ? `Cofnięcie do ${kiedyDo(t)}, potem automatyczne zastrzeżenie` : 'Cofnięcie bez terminu', do: 'Rejestr zastrzeżeń numerów PESEL' }],
             dane: ['Twój numer PESEL'],
             cofniecie: 'Zastrzeżesz PESEL ponownie jednym dotknięciem, w każdej chwili.',
             przycisk: 'Podpisz i cofnij', cel: 'pesel-cofniecie',

@@ -175,7 +175,7 @@ export function przeprowadzka() {
     const P = { meld: ['Urząd gminy', 'zameldowanie zwykle w 1 dzień roboczy; wymeldowanie ze starego adresu z automatu', 'tok'],
       urzedy: ['Urząd skarbowy, ZUS, NFZ', 'nowy adres trafi do nich sam po zameldowaniu', 'pozniej'],
       pojazd: ['Wydział komunikacji', 'zgłoszenie nowego adresu właściciela Yarisa', 'tok'],
-      smieci: ['Nowa gmina', 'deklaracja opłaty za śmieci złożona', 'ok'] };
+      smieci: ['Urząd gminy: odpady', 'deklaracja dla nowego adresu złożona', 'ok'] };
     return { tytul: 'Przeprowadzka', html: `<h1 tabindex="-1">Nowy adres zapisany</h1>` + gotowe({
       tytul: 'Zameldowanie wysłane',
       czas: z.adres ? `Nowy adres: ${z.adres}` : '',
@@ -188,7 +188,7 @@ export function przeprowadzka() {
     { id: 'meld', tytul: 'Zameldowanie na pobyt stały', opis: 'Wymeldowanie ze starego adresu zrobi się samo.', doKogo: 'urząd gminy właściwy dla nowego adresu', wymagany: true },
     { id: 'urzedy', tytul: 'Nowy adres w urzędach', opis: 'Urząd skarbowy, ZUS i NFZ dostaną adres z rejestru. Nie musisz pisać do każdego z osobna.', doKogo: 'US, ZUS, NFZ', plakietka: ['niebieska', 'zlecenie'] },
     { id: 'pojazd', tytul: 'Nowy adres właściciela pojazdu', opis: 'Zgłoszenie zmiany adresu dla Yarisa Cross. Masz na to 30 dni.', doKogo: 'wydział komunikacji' },
-    { id: 'smieci', tytul: 'Deklaracja opłaty za śmieci', opis: 'Obowiązkowa w nowej gminie w ciągu 14 dni. Liczba osób: 3.', doKogo: 'nowa gmina' },
+    { id: 'smieci', tytul: 'Deklaracja opłaty za śmieci', opis: 'Dla nowego adresu, obowiązkowa w ciągu 14 dni od zamieszkania. Liczba osób: 3.', doKogo: 'urząd gminy właściwy dla nowego adresu' },
   ];
   return {
     tytul: 'Przeprowadzka',
@@ -247,7 +247,7 @@ export function auto() {
   if (stan.zrobione.auto) {
     const ids = stan.zrobione.auto.ids || ['umowa', 'pcc', 'rej', 'oc'];
     const P = { umowa: ['Sprzedający', 'podpisze umowę w swoim mObywatelu (link ważny 24 h)', 'tok'],
-      pcc: ['Urząd skarbowy', 'PCC-3 złożony i opłacony', 'ok'],
+      pcc: ['Urząd skarbowy', 'PCC-3 złożony; podatek zapłacisz BLIK-iem w ciągu 14 dni, przypomnimy', 'tok'],
       rej: ['Wydział komunikacji', 'rejestracja na Ciebie; tablice zostają, decyzja w kilka dni', 'tok'],
       oc: ['OC', 'polisa sprzedającego działa do końca okresu; przypomnimy 30 dni wcześniej', 'pozniej'] };
     return { tytul: 'Kupno auta', html: `<h1 tabindex="-1">Auto jest Twoje</h1>` + gotowe({
@@ -319,7 +319,7 @@ export function auto() {
       $('#f-kup', root).onsubmit = async e => {
         e.preventDefault();
         const wyb = zaznaczone(root, kroki);
-        const ok = await arkuszZgody({ tytul: 'Zakup Toyoty Yaris', pozycje: wyb.map(k => ({ co: k.tytul, do: k.doKogo })), dane: ['imię, nazwisko, PESEL, adres', 'dane pojazdu z CEPiK', `cena: ${zl(parseInt(cena.value) || 0)}`], cofniecie: `PCC (${zl(licz())}) zapłacisz BLIK-iem po podpisie. Rejestrację można wycofać do decyzji urzędu.`, cel: 'auto' });
+        const ok = await arkuszZgody({ tytul: 'Zakup Toyoty Yaris', pozycje: wyb.map(k => ({ co: k.tytul, do: k.doKogo })), dane: ['imię, nazwisko, PESEL, adres', 'dane pojazdu z CEPiK', `cena: ${zl(parseInt(cena.value) || 0)}`], cofniecie: `PCC (${zl(licz())}) zapłacisz BLIK-iem w ciągu 14 dni; przypomnimy. Rejestrację można wycofać do decyzji urzędu.`, cel: 'auto' });
         if (!ok) return;
         stan.zrobione.auto = { ids: wyb.map(k => k.id) }; autoKrok = 'sprawdz'; wyb.forEach(k => dodajWyslane(k.tytul, k.doKogo)); zapisz();
         dispatchEvent(new HashChangeEvent('hashchange'));
