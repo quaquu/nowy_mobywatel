@@ -25,22 +25,13 @@ Państwo, które przychodzi ze sprawą: mObywatel, w którym urodzenie dziecka t
 
 **Opis \*** <!-- pole: opis, 30–4000 -->
 ```
-Kiedy rodzi się dziecko, rodzice myślą o wszystkim, tylko nie o urzędach. A właśnie wtedy czeka ich pięć wniosków w czterech instytucjach: zgłoszenie urodzenia, 800+, becikowe, ubezpieczenie dziecka i urlop rodzicielski. Każdy osobno, choć prawie wszystkie dane państwo już ma.
+Problem. Żeby coś załatwić w państwie, trzeba samemu wiedzieć, że ma się sprawę, w którym urzędzie i jakim wnioskiem. Najgorzej wtedy, gdy głowę ma się zajętą czymś ważniejszym. Po narodzinach dziecka to pięć wniosków w czterech instytucjach (zgłoszenie urodzenia, 800+, becikowe, ubezpieczenie dziecka, urlop rodzicielski), każdy osobno, choć prawie wszystkie dane państwo już ma.
 
-Mój mObywatel odwraca ten porządek: to nie człowiek szuka sprawy, tylko sprawa przychodzi do niego. Szpital zgłasza narodziny, a Anna widzi na ekranie kartę „Urodziła się Twoja córka” i to, co rodzina dostanie. Wpisuje imię, sprawdza, co i dokąd zostanie wysłane, i podpisuje raz. Potem śledzi każdą sprawę jak paczkę.
+Dla kogo. Dla rodziców w pierwszych tygodniach z dzieckiem, dla osób starszych i dla ich dzieci, które załatwiają za nich wszystko przez telefon. I dla każdego, kto trafia w moment z własną procedurą: przeprowadzka, ślub, 18. urodziny, śmierć bliskiej osoby. W prototypie można przejść cztery takie życia, od 17-letniego Jakuba po 78-letnią Halinę w trybie prostym.
 
-Ten sam pomysł działa w 11 sytuacjach z życia, m.in. przy przeprowadzce, zgubionym portfelu, ślubie i śmierci bliskiej osoby. Prototyp można przejść jako jedna z czterech osób, w tym 78-letnia Halina w prostym trybie, której córka pomaga z upoważnienia.
+Co jest najważniejsze w mojej wersji. Sprawa przychodzi do człowieka, a nie odwrotnie. Szpital zgłasza narodziny, a Anna dostaje na starcie kartę „Urodziła się Twoja córka”: wpisuje imię, widzi, co i dokąd zostanie wysłane, i podpisuje raz. Pięć spraw załatwia 4 dotknięciami i jednym podpisem, a potem śledzi je jak paczkę. Nic nie wychodzi w ciemno ani bez podpisu, a każdy odczyt jej danych przez urząd widać razem z celem i podstawą prawną.
 
-Dla kogo? Dla ludzi w ważnych momentach życia, którzy nie mają czasu uczyć się procedur, i dla starszych rodziców oraz ich dzieci.
-
-Najważniejsze dla mnie:
-Jeden podpis, ale nigdy w ciemno: przed podpisem widać, co, dokąd i z jakimi danymi idzie.
-Zaufanie: każdy odczyt Twoich danych widać razem z celem i podstawą prawną.
-Jedno miejsce na to, co dziś jest rozrzucone: emerytura z ZUS, PPK, IKE i IKZE, recepty i wyniki badań prostym językiem, najbliższe schronienie przy alarmie, także bez internetu.
-
-Sprawdziłem to tymi samymi testami na swoim i na referencyjnym prototypie. Po narodzinach dziecka: 5 spraw za 4 dotknięcia i jeden podpis (w referencji 2 sprawy i 2 podpisy). Asystent rozumie 9 na 10 zdań pisanych własnymi słowami (referencja: 3 na 10). Automatyczny test dostępności nie znajduje żadnego błędu.
-
-Nie zaczynam od zera: dokumenty w telefonie, e-Doręczenia i pojedyncze wnioski już działają w mObywatelu. Moja zmiana polega na tym, że państwo samo zaczyna sprawę i zbiera te usługi w jeden pakiet. Najszybciej zobaczycie to na stronie „Dla jury”: przejście zajmuje minutę.
+W tych samych testach prototyp referencyjny załatwia po narodzinach 2 sprawy dwoma podpisami, a jego asystent rozumie 3 na 10 zdań pisanych własnymi słowami (mój: 9 na 10). Nie zaczynam od zera: dokumenty w telefonie i pojedyncze wnioski już działają w mObywatelu, a ja łączę je w jeden pakiet. Najszybciej zobaczycie to na stronie „Dla jury”: przejście zajmuje minutę.
 ```
 
 **Link do klikalnego prototypu \*** <!-- pole: link -->
