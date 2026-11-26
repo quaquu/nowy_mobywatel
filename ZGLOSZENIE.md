@@ -40,7 +40,7 @@ Sprawy, które dziś są rozrzucone po różnych serwisach, w jednym miejscu: em
 
 Sprawdziłem to tymi samymi testami na swoim i na referencyjnym prototypie. Po narodzinach dziecka: 5 spraw załatwionych 4 dotknięciami i jednym podpisem (ok. 14 s); w referencji 2 sprawy i 2 podpisy (ok. 24 s). Asystent rozumie 9 na 10 zdań pisanych własnymi słowami (referencja: 3 na 10). Automatyczny test dostępności (WCAG 2.2 AA) nie znajduje żadnego błędu.
 
-Uczciwie: dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i pojedyncze wnioski już istnieją. Nowe jest to, że państwo samo zaczyna sprawę i zbiera wnioski w jeden pakiet. Co da się wdrożyć bez zmiany przepisów, a co wymaga ustawy, opisuję w macierzy wykonalności w repozytorium. Na stronie „Dla jury” jest ścieżka na 60 sekund.
+Nie zaczynam od zera. Dokumenty w telefonie, e-Doręczenia, zastrzeżenie PESEL i wiele pojedynczych wniosków już działa w mObywatelu; w prototypie oznaczam to w ramkach „O prototypie”. Moja zmiana polega na tym, że państwo samo zaczyna sprawę i zbiera te usługi w jeden pakiet. W repozytorium rozpisałem, co da się wdrożyć od razu, a co wymaga zmiany przepisów. Najszybciej zobaczycie to na stronie „Dla jury”: przejście zajmuje minutę.
 ```
 
 **Link do klikalnego prototypu \*** <!-- pole: link -->
